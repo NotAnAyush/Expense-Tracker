@@ -6,13 +6,33 @@ import {
   PieChart as PieIcon, 
   Calendar, 
   Sparkles, 
-  Plus
+  Plus,
+  Zap,
+  AlertTriangle,
+  ArrowUpRight,
+  ShieldCheck,
+  Bot,
+  MessageSquare,
+  Flame,
+  Award
 } from 'lucide-react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
+import { motion } from 'framer-motion';
 import { apiFetch } from '../api/client';
 import { PinCard } from '../components/UI/PinCard';
 
-const OLED_CHART_COLORS = ['#22C55E', '#38BDF8', '#A855F7', '#F59E0B', '#EF4444', '#EC4899', '#6366F1'];
+// Vibrant Category Colors & Emojis Map
+const CATEGORY_META = {
+  'Food & Dining': { color: '#00FF87', emoji: '🍔' },
+  'Transportation': { color: '#FFD700', emoji: '🚗' },
+  'Housing & Utilities': { color: '#9D4EDD', emoji: '🏡' },
+  'Shopping': { color: '#00F0FF', emoji: '🛍️' },
+  'Subscriptions': { color: '#FF007A', emoji: '⚡' },
+  'Entertainment': { color: '#FF9900', emoji: '🍿' },
+  'General': { color: '#64748B', emoji: '📦' }
+};
+
+const DEFAULT_COLORS = ['#00FF87', '#FFD700', '#9D4EDD', '#00F0FF', '#FF007A', '#FF9900', '#10B981'];
 
 export const DashboardPage = ({ onOpenCopilot, onAddExpense }) => {
   const [data, setData] = useState(null);
@@ -21,7 +41,7 @@ export const DashboardPage = ({ onOpenCopilot, onAddExpense }) => {
   const [loading, setLoading] = useState(true);
   const [activeChip, setActiveChip] = useState('All');
 
-  const filterChips = ['All', 'Food & Dining', 'Transportation', 'Housing & Utilities', 'Shopping', 'Subscriptions', 'Budgets'];
+  const filterChips = ['All', 'Food & Dining', 'Transportation', 'Housing & Utilities', 'Shopping', 'Subscriptions'];
 
   const fetchDashboardData = async () => {
     try {
@@ -48,8 +68,31 @@ export const DashboardPage = ({ onOpenCopilot, onAddExpense }) => {
 
   if (loading || !data) {
     return (
-      <div style={{ padding: '64px', textAlign: 'center', color: 'var(--color-muted-text)' }} className="body-md">
-        Loading Richy Rich Financial Intelligence Platform...
+      <div style={{ padding: '80px', textAlign: 'center' }}>
+        <motion.div
+          animate={{ scale: [0.95, 1.05, 0.95] }}
+          transition={{ duration: 1.5, repeat: Infinity }}
+          style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}
+        >
+          <div
+            style={{
+              width: '60px',
+              height: '60px',
+              borderRadius: '20px',
+              background: 'linear-gradient(135deg, #00FF87, #FFD700)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 0 30px rgba(0, 255, 135, 0.4)',
+            }}
+          >
+            <Sparkles size={32} color="#050810" />
+          </div>
+          <h2 className="heading-lg" style={{ color: '#F1F5F9' }}>
+            Initializing Richy Rich Wealth Engine...
+          </h2>
+          <span style={{ fontSize: '14px', color: '#94A3B8' }}>Calculating velocity metrics and AI synthesis</span>
+        </motion.div>
       </div>
     );
   }
@@ -68,174 +111,449 @@ export const DashboardPage = ({ onOpenCopilot, onAddExpense }) => {
     ? budgetUtilization.budgets.find(b => b.category.toLowerCase() === activeChip.toLowerCase())
     : null;
 
-  const chartCategoryData = (filteredCategories.length > 0 ? filteredCategories : categoryBreakdown.breakdown).map(c => ({
-    name: c.category,
-    value: c.amount
-  }));
+  const chartCategoryData = (filteredCategories.length > 0 ? filteredCategories : categoryBreakdown.breakdown).map((c, i) => {
+    const meta = CATEGORY_META[c.category] || { color: DEFAULT_COLORS[i % DEFAULT_COLORS.length], emoji: '💳' };
+    return {
+      name: c.category,
+      value: c.amount,
+      percentage: c.percentage,
+      color: meta.color,
+      emoji: meta.emoji,
+    };
+  });
+
+  // Calculate safe progress metrics
+  const totalDaysInCycle = ((monthlySummary?.daysElapsed || 0) + (monthlySummary?.daysRemaining || 0));
+  const safeDaysProgress = totalDaysInCycle > 0 ? Math.round(((monthlySummary?.daysElapsed || 1) / totalDaysInCycle) * 100) : 45;
+  const safeUtilizationPercent = isNaN(utilizationPercent) || utilizationPercent === null ? 0 : Math.min(Math.max(utilizationPercent, 0), 100);
+
+  // Sparkline wave datasets for continuous motion
+  const sparklineSpend = [12, 18, 14, 22, 19, 28, 25, 34, 30, 38];
+  const sparklinePace = [20, 24, 21, 28, 26, 32, 29, 35, 31, 36];
+  const sparklineBudget = [15, 19, 23, 20, 27, 31, 33, 36, 34, 39];
+  const sparklineForecast = [25, 28, 32, 36, 40, 44, 48, 52, 50, 56];
+
+  // Custom 3D Segmented Ring Hover Tooltip Component
+  const CustomTooltip = ({ active, payload }) => {
+    if (active && payload && payload.length) {
+      const dataItem = payload[0].payload;
+      return (
+        <div
+          style={{
+            background: 'rgba(15, 20, 32, 0.95)',
+            backdropFilter: 'blur(16px)',
+            border: `1.5px solid ${dataItem.color}`,
+            borderRadius: '16px',
+            padding: '12px 18px',
+            boxShadow: `0 8px 32px rgba(0, 0, 0, 0.6), 0 0 20px ${dataItem.color}40`,
+            color: '#F1F5F9',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+          }}
+        >
+          <span style={{ fontSize: '24px' }}>{dataItem.emoji}</span>
+          <div>
+            <div style={{ fontSize: '13px', fontWeight: 700, color: '#94A3B8' }}>{dataItem.name}</div>
+            <div style={{ fontSize: '18px', fontWeight: 800, color: dataItem.color, fontFamily: 'var(--font-display)' }}>
+              ₹{dataItem.value.toLocaleString()} <span style={{ fontSize: '12px', color: '#94A3B8' }}>({dataItem.percentage}%)</span>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    return null;
+  };
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
       
-      {/* Hero Title & Filter Chips */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-        <h1 className="heading-xl">Financial Overview</h1>
-        
-        {/* Horizontal Filter Chip Strip */}
-        <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '4px' }}>
+      {/* 1. HERO TITLE & GAMIFIED FILTER CHIPS */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '16px' }}>
+        <div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+            <span style={{ fontSize: '12px', fontWeight: 800, color: '#00FF87', background: 'rgba(0, 255, 135, 0.12)', padding: '3px 10px', borderRadius: '999px', textTransform: 'uppercase', letterSpacing: '0.8px' }}>
+              ⚡ Live Intelligence
+            </span>
+            <span style={{ fontSize: '13px', color: '#94A3B8' }}>Updated moments ago</span>
+          </div>
+          <h1 className="display-xl">
+            Financial Overview
+          </h1>
+        </div>
+
+        {/* Filter Chip Strip */}
+        <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '4px', maxWidth: '100%' }}>
           {filterChips.map((chip) => (
             <button
               key={chip}
               onClick={() => setActiveChip(chip)}
               className={`filter-chip ${activeChip === chip ? 'filter-chip-active' : ''}`}
             >
+              {CATEGORY_META[chip]?.emoji && <span style={{ marginRight: '6px' }}>{CATEGORY_META[chip].emoji}</span>}
               {chip}
             </button>
           ))}
         </div>
       </div>
 
-      {/* Selected Category Spotlight (when a category chip is active) */}
+      {/* Selected Category Spotlight (when category chip active) */}
       {selectedCategoryInfo && (
-        <div className="pin-card-large" style={{ backgroundColor: 'var(--canvas)', border: '1px solid var(--hairline)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-              <span className="pin-overlay-pill" style={{ backgroundColor: 'var(--ink)', color: '#ffffff' }}>Category Focus</span>
-              <h3 className="heading-lg">{selectedCategoryInfo.category}</h3>
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="glass-card"
+          style={{
+            padding: '24px',
+            background: 'linear-gradient(135deg, rgba(0, 255, 135, 0.1) 0%, rgba(15, 20, 32, 0.8) 100%)',
+            border: '1px solid rgba(0, 255, 135, 0.3)',
+            display: 'flex',
+            justify: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: '16px',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <span style={{ fontSize: '36px' }}>{CATEGORY_META[selectedCategoryInfo.category]?.emoji || '💳'}</span>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <h3 className="heading-lg">{selectedCategoryInfo.category}</h3>
+                <span className="glass-pill" style={{ borderColor: '#00FF87', color: '#00FF87' }}>
+                  {selectedCategoryInfo.percentage}% of Monthly Spend
+                </span>
+              </div>
+              <p style={{ fontSize: '14px', color: '#94A3B8', marginTop: '4px' }}>
+                {selectedCategoryBudget
+                  ? `Allocated Limit: ₹${selectedCategoryBudget.allocated.toLocaleString()} (${selectedCategoryBudget.percentage}% utilized).`
+                  : 'No strict budget cap set for this category.'}
+              </p>
             </div>
-            <p className="body-sm">
-              Accounting for {selectedCategoryInfo.percentage}% of your total spending this month.
-              {selectedCategoryBudget ? ` Allocated Limit: ₹${selectedCategoryBudget.allocated.toLocaleString()} (${selectedCategoryBudget.percentage}% used).` : ' No budget limit set.'}
-            </p>
           </div>
           <div style={{ textAlign: 'right' }}>
-            <div style={{ fontSize: '28px', fontWeight: 700, color: 'var(--primary)' }}>
+            <div className="font-display" style={{ fontSize: '32px', fontWeight: 800, color: '#00FF87' }}>
               ₹{selectedCategoryInfo.amount.toLocaleString()}
             </div>
-            <button onClick={() => setActiveChip('All')} className="body-sm" style={{ color: 'var(--mute)', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>
-              Reset to All
+            <button
+              onClick={() => setActiveChip('All')}
+              style={{ color: '#94A3B8', background: 'none', border: 'none', cursor: 'pointer', fontSize: '13px', textDecoration: 'underline' }}
+            >
+              Reset to All Categories
             </button>
           </div>
-        </div>
+        </motion.div>
       )}
 
-      {/* 1. FINANCIAL SUMMARY MASONRY CARDS */}
-      <div className="grid-masonry">
+      {/* 2. METRIC / KPI CARDS WIDGET GRID (Upgraded with Sparklines & Radial Meters) */}
+      <div className="grid-kpi">
         <PinCard
           title={activeChip === 'All' ? "Spent This Month" : `${activeChip} Spend`}
           amount={selectedCategoryInfo ? selectedCategoryInfo.amount : monthlySummary.totalSpend}
-          overlayPill={activeChip === 'All' ? "Overview" : `${selectedCategoryInfo?.percentage || 0}% of Total`}
-          subtitle={selectedCategoryInfo ? `${selectedCategoryInfo.percentage}% of your monthly expenses` : `${monthlyComparison.changePercent}% ${monthlyComparison.isIncrease ? 'increase' : 'decrease'} vs last month`}
+          overlayPill={activeChip === 'All' ? "Total Outflow" : `${selectedCategoryInfo?.percentage || 0}% of Total`}
+          pillColor="mint"
+          sparklineData={sparklineSpend}
+          trendDirection={monthlyComparison.isIncrease ? 'up' : 'down'}
+          trendPercent={monthlyComparison.changePercent}
+          subtitle={selectedCategoryInfo ? `${selectedCategoryInfo.percentage}% of total expenses` : `${monthlyComparison.changePercent}% ${monthlyComparison.isIncrease ? 'increase' : 'decrease'} vs last month`}
         />
 
         <PinCard
           title="Daily Average Pace"
           amount={monthlySummary.averageDailySpend}
-          overlayPill="Spending Velocity"
-          subtitle={`${monthlySummary.daysRemaining} days remaining in month`}
+          overlayPill={velocityWarning ? "High Velocity ⚡" : "Budget Safety 🛡️"}
+          pillColor={velocityWarning ? "amber" : "emerald"}
+          sparklineData={sparklinePace}
+          radialProgress={safeDaysProgress}
+          subtitle={`${monthlySummary.daysRemaining} days remaining in cycle • Daily pace ₹${monthlySummary.averageDailySpend}`}
         />
 
         <PinCard
           title="Budget Utilization"
           amount={budgetUtilization.totalSpent}
-          overlayPill="Allocated Limit"
-          subtitle={`₹${budgetUtilization.totalAllocated.toLocaleString()} Total Allocated Limit`}
+          overlayPill={`${safeUtilizationPercent}% Used`}
+          pillColor={safeUtilizationPercent > 85 ? "amber" : "emerald"}
+          sparklineData={sparklineBudget}
+          radialProgress={safeUtilizationPercent}
+          subtitle={`₹${budgetUtilization.totalAllocated.toLocaleString()} Total Allocated Cap`}
         />
 
         <PinCard
           title="Projected Month End"
           amount={spendingVelocity.projectedMonthEndSpend}
-          overlayPill="Forecast"
-          subtitle="Estimated based on current daily pace"
+          overlayPill="AI Forecast"
+          pillColor="cyan"
+          sparklineData={sparklineForecast}
+          subtitle="Calculated trajectory based on velocity"
         />
       </div>
 
-      {/* 2. AI MONTHLY SUMMARY CARD */}
+      {/* 3. MONTHLY AI SYNTHESIS BANNER ("AI Finance Weather Report") */}
       {aiSummary && activeChip === 'All' && (
-        <div className="pin-card-large">
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <Sparkles size={22} color="var(--color-accent)" />
-              <h3 className="heading-lg">Monthly AI Synthesis</h3>
+        <motion.div
+          whileHover={{ scale: 1.01 }}
+          className="glass-card"
+          style={{
+            padding: '28px 32px',
+            background: 'var(--grad-banner-mesh)',
+            border: '1px solid rgba(121, 40, 202, 0.4)',
+            boxShadow: 'var(--shadow-glow-violet)',
+            position: 'relative',
+            overflow: 'hidden',
+          }}
+        >
+          {/* Glowing Ambient Backdrop Orb */}
+          <div
+            style={{
+              position: 'absolute',
+              top: '-40px',
+              right: '-40px',
+              width: '200px',
+              height: '200px',
+              borderRadius: '999px',
+              background: 'radial-gradient(circle, rgba(0, 255, 135, 0.25), transparent 70%)',
+              filter: 'blur(30px)',
+              pointerEvents: 'none',
+            }}
+          />
+
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '20px', position: 'relative', zIndex: 2 }}>
+            <div style={{ flex: 1, minWidth: '280px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
+                <div
+                  style={{
+                    width: '38px',
+                    height: '38px',
+                    borderRadius: '12px',
+                    background: 'linear-gradient(135deg, #7928CA, #00FF87)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    boxShadow: '0 0 15px rgba(0, 255, 135, 0.4)',
+                  }}
+                  className="animate-mascot"
+                >
+                  <Sparkles size={20} color="#050810" />
+                </div>
+                <div>
+                  <h3 className="heading-lg" style={{ color: '#F1F5F9' }}>
+                    AI Finance Weather Report
+                  </h3>
+                  <span style={{ fontSize: '12px', color: '#00FF87', fontWeight: 700 }}>
+                    Ground Truth Synthesis • Wealth Radar Active
+                  </span>
+                </div>
+              </div>
+
+              <p style={{ fontSize: '17px', color: '#F1F5F9', lineHeight: 1.6, fontWeight: 500 }}>
+                "{aiSummary.summaryText}"
+              </p>
             </div>
-            <span className="pin-overlay-pill" style={{ backgroundColor: 'var(--color-secondary)', color: 'var(--color-accent)' }}>Ground Truth</span>
+
+            {/* Quick "Ask Copilot" Interactive Prompt Action */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'flex-end' }}>
+              <span style={{ fontSize: '12px', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                Copilot Quick Actions
+              </span>
+
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={onOpenCopilot}
+                  className="glass-pill"
+                  style={{ borderColor: 'rgba(0, 255, 135, 0.4)', color: '#00FF87', cursor: 'pointer', background: 'rgba(0, 255, 135, 0.08)' }}
+                >
+                  <MessageSquare size={13} />
+                  "Cut food spend?"
+                </motion.button>
+
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={onOpenCopilot}
+                  className="glass-pill"
+                  style={{ borderColor: 'rgba(255, 215, 0, 0.4)', color: '#FFD700', cursor: 'pointer', background: 'rgba(255, 215, 0, 0.08)' }}
+                >
+                  <Flame size={13} />
+                  "Analyze Velocity"
+                </motion.button>
+              </div>
+            </div>
           </div>
-          <p className="body-md" style={{ color: 'var(--color-foreground)', fontSize: '18px', lineHeight: 1.5 }}>
-            "{aiSummary.summaryText}"
-          </p>
-        </div>
+        </motion.div>
       )}
 
-      {/* 3. VISUALIZATION CHARTS & INSIGHTS GRID */}
+      {/* 4. CHARTS & INSIGHTS GRID */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))', gap: '24px' }}>
-        {/* Category Donut Chart Card */}
-        <div className="pin-card">
-          <h3 className="heading-md" style={{ marginBottom: '16px' }}>
-            {activeChip === 'All' ? 'Category Distribution' : `${activeChip} Focus`}
-          </h3>
+        
+        {/* Category 3D Segmented Ring Chart Card */}
+        <div className="glass-card" style={{ padding: '24px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+            <div>
+              <h3 className="heading-md" style={{ color: '#F1F5F9' }}>
+                {activeChip === 'All' ? 'Category Breakdown' : `${activeChip} Spotlight`}
+              </h3>
+              <span style={{ fontSize: '12px', color: '#94A3B8' }}>Interactive Segmented Ring</span>
+            </div>
+            <div className="glass-pill" style={{ color: '#FFD700', borderColor: 'rgba(255, 215, 0, 0.3)' }}>
+              <Award size={13} /> Top: {chartCategoryData[0]?.name || 'N/A'}
+            </div>
+          </div>
+
           {chartCategoryData.length > 0 ? (
-            <div style={{ width: '100%', height: 260 }}>
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={chartCategoryData}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={65}
-                    outerRadius={95}
-                    paddingAngle={4}
-                    dataKey="value"
-                  >
-                    {chartCategoryData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={OLED_CHART_COLORS[index % OLED_CHART_COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <Tooltip
-                    formatter={(val) => `₹${val.toLocaleString()}`}
-                    contentStyle={{ background: '#0F172A', border: '1px solid #334155', borderRadius: '12px', color: '#F8FAFC' }}
-                    itemStyle={{ color: '#F8FAFC' }}
-                  />
-                </PieChart>
-              </ResponsiveContainer>
+            <div>
+              <div style={{ width: '100%', height: 260, position: 'relative' }}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={chartCategoryData}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={70}
+                      outerRadius={105}
+                      paddingAngle={6}
+                      dataKey="value"
+                      cornerRadius={8}
+                    >
+                      {chartCategoryData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} stroke="rgba(10, 13, 20, 0.8)" strokeWidth={2} />
+                      ))}
+                    </Pie>
+                    <Tooltip content={<CustomTooltip />} />
+                  </PieChart>
+                </ResponsiveContainer>
+
+                {/* Center Ring Stat Overlay */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    textAlign: 'center',
+                    pointerEvents: 'none',
+                  }}
+                >
+                  <div style={{ fontSize: '11px', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase' }}>
+                    Total
+                  </div>
+                  <div className="font-display" style={{ fontSize: '20px', fontWeight: 800, color: '#00FF87' }}>
+                    ₹{monthlySummary.totalSpend.toLocaleString()}
+                  </div>
+                </div>
+              </div>
+
+              {/* Custom Category Progress Bars Legend */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '16px' }}>
+                {chartCategoryData.slice(0, 4).map((cat) => (
+                  <div key={cat.name} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <span style={{ fontSize: '16px' }}>{cat.emoji}</span>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', fontWeight: 600, color: '#F1F5F9', marginBottom: '3px' }}>
+                        <span>{cat.name}</span>
+                        <span style={{ color: cat.color }}>₹{cat.value.toLocaleString()} ({cat.percentage}%)</span>
+                      </div>
+                      <div style={{ width: '100%', height: '6px', background: 'rgba(255, 255, 255, 0.06)', borderRadius: '999px', overflow: 'hidden' }}>
+                        <div style={{ height: '100%', width: `${cat.percentage}%`, background: cat.color, borderRadius: '999px' }} />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           ) : (
-            <div style={{ padding: '32px', textAlign: 'center', color: 'var(--color-muted-text)' }}>No category data for {activeChip}</div>
+            <div style={{ padding: '40px', textAlign: 'center', color: '#94A3B8' }}>
+              No spend data available for {activeChip}
+            </div>
           )}
         </div>
 
-        {/* Prioritized AI Insights List */}
-        <div className="pin-card">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-            <h3 className="heading-md">Prioritized Insights</h3>
-            <span className="body-sm" style={{ color: 'var(--color-muted-text)' }}>Scored Impact</span>
+        {/* Prioritized Insights (Floating Action Cards) */}
+        <div className="glass-card" style={{ padding: '24px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+            <div>
+              <h3 className="heading-md" style={{ color: '#F1F5F9' }}>Prioritized AI Insights</h3>
+              <span style={{ fontSize: '12px', color: '#94A3B8' }}>Automated Anomaly Detection</span>
+            </div>
+            <span className="glass-pill" style={{ color: '#00FF87', borderColor: 'rgba(0, 255, 135, 0.3)' }}>
+              {insights.length} Flagged
+            </span>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {insights.length > 0 ? (
-              insights.map((ins) => (
-                <div
-                  key={ins.id}
-                  style={{
-                    padding: '14px 16px',
-                    borderRadius: 'var(--radius-sm)',
-                    backgroundColor: 'var(--color-secondary)',
-                    border: '1px solid var(--color-border)',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center'
-                  }}
-                >
-                  <div>
-                    <div className="body-strong" style={{ color: 'var(--color-foreground)' }}>{ins.title}</div>
-                    <div className="body-sm" style={{ marginTop: '2px', color: 'var(--color-muted-text)' }}>{ins.explanation}</div>
-                  </div>
-                  <span className="pin-overlay-pill" style={{ backgroundColor: 'var(--color-primary)', color: 'var(--color-accent)' }}>
-                    {ins.metric}
-                  </span>
-                </div>
-              ))
+              insights.map((ins) => {
+                const isWarning = ins.title.toLowerCase().includes('high') || ins.title.toLowerCase().includes('alert') || ins.title.toLowerCase().includes('exceed');
+                return (
+                  <motion.div
+                    key={ins.id}
+                    whileHover={{ x: 4, borderColor: isWarning ? 'rgba(255, 153, 0, 0.5)' : 'rgba(0, 255, 135, 0.5)' }}
+                    style={{
+                      padding: '16px',
+                      borderRadius: '16px',
+                      background: 'rgba(255, 255, 255, 0.03)',
+                      border: '1px solid rgba(255, 255, 255, 0.08)',
+                      display: 'flex',
+                      alignItems: 'flex-start',
+                      gap: '14px',
+                      transition: 'var(--transition)',
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '12px',
+                        background: isWarning ? 'rgba(255, 153, 0, 0.15)' : 'rgba(0, 255, 135, 0.15)',
+                        border: isWarning ? '1px solid rgba(255, 153, 0, 0.3)' : '1px solid rgba(0, 255, 135, 0.3)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0,
+                      }}
+                    >
+                      {isWarning ? <AlertTriangle size={18} color="#FF9900" /> : <ShieldCheck size={18} color="#00FF87" />}
+                    </div>
+
+                    <div style={{ flex: 1 }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2px' }}>
+                        <h4 style={{ fontSize: '14px', fontWeight: 700, color: '#F1F5F9' }}>{ins.title}</h4>
+                        <span style={{ fontSize: '11px', fontWeight: 800, color: isWarning ? '#FF9900' : '#00FF87' }}>
+                          {ins.metric}
+                        </span>
+                      </div>
+                      <p style={{ fontSize: '12px', color: '#94A3B8', lineHeight: 1.4, marginBottom: '10px' }}>
+                        {ins.explanation}
+                      </p>
+
+                      <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={onOpenCopilot}
+                        style={{
+                          background: 'rgba(255, 255, 255, 0.06)',
+                          border: '1px solid rgba(255, 255, 255, 0.12)',
+                          borderRadius: '8px',
+                          padding: '5px 10px',
+                          fontSize: '11px',
+                          fontWeight: 700,
+                          color: '#F1F5F9',
+                          cursor: 'pointer',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '4px',
+                        }}
+                      >
+                        <span>Take Action with Copilot</span>
+                        <ArrowUpRight size={12} color="#00FF87" />
+                      </motion.button>
+                    </div>
+                  </motion.div>
+                );
+              })
             ) : (
-              <div style={{ padding: '24px', textAlign: 'center', color: 'var(--color-muted-text)' }} className="body-sm">
-                All systems healthy. No critical anomalies flagged.
+              <div style={{ padding: '32px', textAlign: 'center', color: '#94A3B8', fontSize: '14px' }}>
+                🛡️ All systems healthy. No spending anomalies detected.
               </div>
             )}
           </div>
