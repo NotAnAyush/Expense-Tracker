@@ -26,8 +26,8 @@ export const Sidebar = ({ activeTab, setActiveTab, onOpenCopilot }) => {
   return (
     <aside style={{
       width: '240px',
-      background: 'var(--canvas)',
-      borderRight: '1px solid var(--hairline)',
+      background: 'var(--color-primary)',
+      borderRight: '1px solid var(--color-border)',
       padding: '24px 16px',
       display: 'flex',
       flexDirection: 'column',
@@ -51,9 +51,9 @@ export const Sidebar = ({ activeTab, setActiveTab, onOpenCopilot }) => {
                   alignItems: 'center',
                   gap: '12px',
                   padding: '10px 16px',
-                  borderRadius: 'var(--radius-md)',
-                  color: isActive ? 'var(--canvas)' : 'var(--ink)',
-                  backgroundColor: isActive ? 'var(--ink)' : 'transparent',
+                  borderRadius: 'var(--radius-sm)',
+                  color: isActive ? '#020617' : 'var(--color-foreground)',
+                  backgroundColor: isActive ? 'var(--color-accent)' : 'transparent',
                   fontWeight: isActive ? 700 : 600,
                   fontSize: '14px',
                   transition: 'var(--transition)',
@@ -61,9 +61,10 @@ export const Sidebar = ({ activeTab, setActiveTab, onOpenCopilot }) => {
                   cursor: 'pointer',
                   width: '100%',
                   textAlign: 'left',
+                  boxShadow: isActive ? 'var(--glow-accent)' : 'none'
                 }}
               >
-                <Icon size={18} color={isActive ? 'var(--canvas)' : 'var(--ink)'} />
+                <Icon size={18} color={isActive ? '#020617' : 'var(--color-muted-text)'} />
                 {item.label}
               </button>
             );
@@ -83,17 +84,18 @@ export const Sidebar = ({ activeTab, setActiveTab, onOpenCopilot }) => {
 
         <div style={{
           padding: '12px',
-          borderRadius: 'var(--radius-md)',
-          backgroundColor: 'var(--surface-card)',
+          borderRadius: 'var(--radius-sm)',
+          backgroundColor: 'var(--color-secondary)',
+          border: '1px solid var(--color-border)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between'
         }}>
           <div>
-            <div className="body-sm-strong" style={{ color: 'var(--ink)' }}>{user?.name || 'User'}</div>
-            <div style={{ fontSize: '12px', color: 'var(--mute)' }}>{user?.email || 'demo@user.com'}</div>
+            <div className="body-sm-strong" style={{ color: 'var(--color-foreground)' }}>{user?.name || 'User'}</div>
+            <div style={{ fontSize: '12px', color: 'var(--color-muted-text)' }}>{user?.email || 'demo@user.com'}</div>
           </div>
-          <button onClick={logout} title="Sign Out" style={{ color: 'var(--mute)', padding: '4px', cursor: 'pointer', border: 'none', background: 'none' }}>
+          <button onClick={logout} title="Sign Out" style={{ color: 'var(--color-muted-text)', padding: '4px', cursor: 'pointer', border: 'none', background: 'none' }}>
             <LogOut size={16} />
           </button>
         </div>

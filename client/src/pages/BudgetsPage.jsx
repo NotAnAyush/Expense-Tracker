@@ -49,7 +49,7 @@ export const BudgetsPage = ({ categories = [] }) => {
   };
 
   if (loading || !budgetData) {
-    return <div style={{ padding: '64px', textAlign: 'center', color: 'var(--mute)' }} className="body-md">Loading Budgets Engine...</div>;
+    return <div style={{ padding: '64px', textAlign: 'center', color: 'var(--color-muted-text)' }} className="body-md">Loading Budgets Engine...</div>;
   }
 
   return (
@@ -57,7 +57,7 @@ export const BudgetsPage = ({ categories = [] }) => {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
           <h1 className="heading-xl">Category Budgets</h1>
-          <p className="body-sm">Deterministic budget allocation and real-time pace monitoring.</p>
+          <p className="body-sm" style={{ color: 'var(--color-muted-text)' }}>Deterministic budget allocation and real-time pace monitoring.</p>
         </div>
         <button onClick={() => setShowModal(true)} className="button-primary">
           <Plus size={18} /> Set Budget Limit
@@ -75,31 +75,31 @@ export const BudgetsPage = ({ categories = [] }) => {
       {/* Category Budget Grid */}
       <div className="grid-masonry">
         {budgetData.budgets.map((b) => (
-          <div key={b.budgetId} className="pin-card" style={{ backgroundColor: 'var(--canvas)', border: '1px solid var(--hairline)' }}>
+          <div key={b.budgetId} className="pin-card">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
               <h3 className="heading-md">{b.category}</h3>
-              <span className="pin-overlay-pill" style={{ backgroundColor: b.isOverBudget ? 'var(--error-deep)' : 'var(--surface-card)', color: b.isOverBudget ? '#ffffff' : 'var(--ink)' }}>
+              <span className="pin-overlay-pill" style={{ backgroundColor: b.isOverBudget ? 'var(--color-destructive)' : 'var(--color-secondary)', color: b.isOverBudget ? '#FFFFFF' : 'var(--color-accent)', borderColor: 'var(--color-border)' }}>
                 {b.percentage}% Used
               </span>
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }} className="body-sm">
-              <span>Spent: ₹{b.spent.toLocaleString()}</span>
-              <span>Limit: ₹{b.allocated.toLocaleString()}</span>
+              <span style={{ color: 'var(--color-muted-text)' }}>Spent: ₹{b.spent.toLocaleString()}</span>
+              <span style={{ color: 'var(--color-muted-text)' }}>Limit: ₹{b.allocated.toLocaleString()}</span>
             </div>
 
             {/* Progress Bar */}
-            <div style={{ width: '100%', height: '8px', backgroundColor: 'var(--surface-card)', borderRadius: '4px', overflow: 'hidden' }}>
+            <div style={{ width: '100%', height: '8px', backgroundColor: 'var(--color-secondary)', borderRadius: '4px', overflow: 'hidden' }}>
               <div style={{
                 height: '100%',
                 width: `${Math.min(100, b.percentage)}%`,
-                backgroundColor: b.isOverBudget ? 'var(--error-deep)' : 'var(--primary)',
+                backgroundColor: b.isOverBudget ? 'var(--color-destructive)' : 'var(--color-accent)',
                 borderRadius: '4px',
                 transition: 'var(--transition)'
               }} />
             </div>
 
-            <div className="body-sm" style={{ marginTop: '8px', textAlign: 'right', fontSize: '12px' }}>
+            <div className="body-sm" style={{ marginTop: '8px', textAlign: 'right', fontSize: '12px', color: b.isOverBudget ? 'var(--color-destructive)' : 'var(--color-muted-text)' }}>
               {b.isOverBudget ? `Exceeded by ₹${(b.spent - b.allocated).toLocaleString()}` : `₹${b.remaining.toLocaleString()} remaining`}
             </div>
           </div>
@@ -108,13 +108,13 @@ export const BudgetsPage = ({ categories = [] }) => {
 
       {/* Budget Modal */}
       {showModal && (
-        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 110 }}>
+        <div className="modal-overlay">
           <div className="modal-card">
             <h3 className="heading-lg" style={{ marginBottom: '16px' }}>Set Category Budget</h3>
             <form onSubmit={handleCreateBudget}>
               <div style={{ marginBottom: '16px' }}>
                 <label className="body-sm-strong" style={{ display: 'block', marginBottom: '6px' }}>Category</label>
-                <select className="text-input" value={category} onChange={(e) => setCategory(e.target.value)}>
+                <select className="text-input" value={category} onChange={(e) => setCategory(e.target.value)} style={{ backgroundColor: 'var(--color-secondary)', color: 'var(--color-foreground)' }}>
                   {availableCategories.map((cat, idx) => (
                     <option key={idx} value={cat}>{cat}</option>
                   ))}

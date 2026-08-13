@@ -12,7 +12,7 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import { apiFetch } from '../api/client';
 import { PinCard } from '../components/UI/PinCard';
 
-const PINTEREST_COLORS = ['#e60023', '#262622', '#62625b', '#91918c', '#dadad3', '#435ee5', '#7e238b'];
+const OLED_CHART_COLORS = ['#22C55E', '#38BDF8', '#A855F7', '#F59E0B', '#EF4444', '#EC4899', '#6366F1'];
 
 export const DashboardPage = ({ onOpenCopilot, onAddExpense }) => {
   const [data, setData] = useState(null);
@@ -48,8 +48,8 @@ export const DashboardPage = ({ onOpenCopilot, onAddExpense }) => {
 
   if (loading || !data) {
     return (
-      <div style={{ padding: '64px', textAlign: 'center', color: 'var(--mute)' }} className="body-md">
-        Loading Pinterest Financial Intelligence Platform...
+      <div style={{ padding: '64px', textAlign: 'center', color: 'var(--color-muted-text)' }} className="body-md">
+        Loading Richy Rich Financial Intelligence Platform...
       </div>
     );
   }
@@ -151,15 +151,15 @@ export const DashboardPage = ({ onOpenCopilot, onAddExpense }) => {
 
       {/* 2. AI MONTHLY SUMMARY CARD */}
       {aiSummary && activeChip === 'All' && (
-        <div className="pin-card-large" style={{ backgroundColor: 'var(--canvas)', border: '1px solid var(--hairline)' }}>
+        <div className="pin-card-large">
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Sparkles size={20} color="var(--primary)" />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <Sparkles size={22} color="var(--color-accent)" />
               <h3 className="heading-lg">Monthly AI Synthesis</h3>
             </div>
-            <span className="pin-overlay-pill">Ground Truth</span>
+            <span className="pin-overlay-pill" style={{ backgroundColor: 'var(--color-secondary)', color: 'var(--color-accent)' }}>Ground Truth</span>
           </div>
-          <p className="body-md" style={{ color: 'var(--body)', fontSize: '18px', lineHeight: 1.5 }}>
+          <p className="body-md" style={{ color: 'var(--color-foreground)', fontSize: '18px', lineHeight: 1.5 }}>
             "{aiSummary.summaryText}"
           </p>
         </div>
@@ -168,7 +168,7 @@ export const DashboardPage = ({ onOpenCopilot, onAddExpense }) => {
       {/* 3. VISUALIZATION CHARTS & INSIGHTS GRID */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))', gap: '24px' }}>
         {/* Category Donut Chart Card */}
-        <div className="pin-card" style={{ backgroundColor: 'var(--canvas)', border: '1px solid var(--hairline)' }}>
+        <div className="pin-card">
           <h3 className="heading-md" style={{ marginBottom: '16px' }}>
             {activeChip === 'All' ? 'Category Distribution' : `${activeChip} Focus`}
           </h3>
@@ -186,23 +186,27 @@ export const DashboardPage = ({ onOpenCopilot, onAddExpense }) => {
                     dataKey="value"
                   >
                     {chartCategoryData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={PINTEREST_COLORS[index % PINTEREST_COLORS.length]} />
+                      <Cell key={`cell-${index}`} fill={OLED_CHART_COLORS[index % OLED_CHART_COLORS.length]} />
                     ))}
                   </Pie>
-                  <Tooltip formatter={(val) => `₹${val.toLocaleString()}`} contentStyle={{ background: '#ffffff', border: '1px solid var(--hairline)', borderRadius: '16px', color: '#000000' }} />
+                  <Tooltip
+                    formatter={(val) => `₹${val.toLocaleString()}`}
+                    contentStyle={{ background: '#0F172A', border: '1px solid #334155', borderRadius: '12px', color: '#F8FAFC' }}
+                    itemStyle={{ color: '#F8FAFC' }}
+                  />
                 </PieChart>
               </ResponsiveContainer>
             </div>
           ) : (
-            <div style={{ padding: '32px', textAlign: 'center', color: 'var(--mute)' }}>No category data for {activeChip}</div>
+            <div style={{ padding: '32px', textAlign: 'center', color: 'var(--color-muted-text)' }}>No category data for {activeChip}</div>
           )}
         </div>
 
         {/* Prioritized AI Insights List */}
-        <div className="pin-card" style={{ backgroundColor: 'var(--canvas)', border: '1px solid var(--hairline)' }}>
+        <div className="pin-card">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
             <h3 className="heading-md">Prioritized Insights</h3>
-            <span className="body-sm">Scored Impact</span>
+            <span className="body-sm" style={{ color: 'var(--color-muted-text)' }}>Scored Impact</span>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -212,24 +216,25 @@ export const DashboardPage = ({ onOpenCopilot, onAddExpense }) => {
                   key={ins.id}
                   style={{
                     padding: '14px 16px',
-                    borderRadius: 'var(--radius-md)',
-                    backgroundColor: 'var(--surface-card)',
+                    borderRadius: 'var(--radius-sm)',
+                    backgroundColor: 'var(--color-secondary)',
+                    border: '1px solid var(--color-border)',
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'center'
                   }}
                 >
                   <div>
-                    <div className="body-strong">{ins.title}</div>
-                    <div className="body-sm" style={{ marginTop: '2px' }}>{ins.explanation}</div>
+                    <div className="body-strong" style={{ color: 'var(--color-foreground)' }}>{ins.title}</div>
+                    <div className="body-sm" style={{ marginTop: '2px', color: 'var(--color-muted-text)' }}>{ins.explanation}</div>
                   </div>
-                  <span className="pin-overlay-pill">
+                  <span className="pin-overlay-pill" style={{ backgroundColor: 'var(--color-primary)', color: 'var(--color-accent)' }}>
                     {ins.metric}
                   </span>
                 </div>
               ))
             ) : (
-              <div style={{ padding: '24px', textAlign: 'center', color: 'var(--mute)' }} className="body-sm">
+              <div style={{ padding: '24px', textAlign: 'center', color: 'var(--color-muted-text)' }} className="body-sm">
                 All systems healthy. No critical anomalies flagged.
               </div>
             )}

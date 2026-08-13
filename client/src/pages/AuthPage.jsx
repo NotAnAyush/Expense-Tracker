@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Wallet, Sparkles } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export const AuthPage = () => {
@@ -46,32 +46,32 @@ export const AuthPage = () => {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: 'var(--surface-soft)',
+      backgroundColor: 'var(--color-background)',
       padding: '16px'
     }}>
       <div className="modal-card">
         <div style={{ textAlign: 'center', marginBottom: '28px' }}>
-          <div style={{
-            width: '56px',
-            height: '56px',
-            borderRadius: 'var(--radius-full)',
-            backgroundColor: 'var(--primary)',
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: '#ffffff',
-            marginBottom: '12px',
-          }}>
-            <Wallet size={28} />
-          </div>
-          <h1 className="heading-xl" style={{ fontSize: '26px' }}>Antigravity Finance</h1>
-          <p className="body-sm" style={{ marginTop: '4px' }}>
+          <img
+            src="/logo.jpg"
+            alt="Richy Rich Logo"
+            style={{
+              width: '64px',
+              height: '64px',
+              borderRadius: 'var(--radius-md)',
+              objectFit: 'cover',
+              border: '2px solid var(--color-accent)',
+              boxShadow: 'var(--glow-accent)',
+              marginBottom: '12px'
+            }}
+          />
+          <h1 className="heading-xl" style={{ fontSize: '26px' }}>Richy Rich</h1>
+          <p className="body-sm" style={{ marginTop: '4px', color: 'var(--color-muted-text)' }}>
             AI-First Personal Finance Intelligence Platform
           </p>
         </div>
 
         {error && (
-          <div style={{ padding: '12px', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--surface-card)', border: '1px solid var(--error)', color: 'var(--error)', fontSize: '14px', marginBottom: '20px', textAlign: 'center' }}>
+          <div style={{ padding: '12px', borderRadius: 'var(--radius-sm)', backgroundColor: 'var(--color-secondary)', border: '1px solid var(--color-destructive)', color: 'var(--color-destructive)', fontSize: '14px', marginBottom: '20px', textAlign: 'center' }}>
             {error}
           </div>
         )}
@@ -99,10 +99,10 @@ export const AuthPage = () => {
           </button>
         </form>
 
-        <div style={{ display: 'flex', alignItems: 'center', margin: '20px 0', color: 'var(--mute)', fontSize: '12px' }}>
-          <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--hairline)' }} />
+        <div style={{ display: 'flex', alignItems: 'center', margin: '20px 0', color: 'var(--color-muted-text)', fontSize: '12px' }}>
+          <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--color-border)' }} />
           <span style={{ padding: '0 12px' }}>OR</span>
-          <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--hairline)' }} />
+          <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--color-border)' }} />
         </div>
 
         {/* Demo Account Button */}
@@ -116,13 +116,13 @@ export const AuthPage = () => {
             gap: '8px',
           }}
         >
-          <Sparkles size={18} color="var(--primary)" />
+          <Sparkles size={18} color="var(--color-accent)" />
           Explore Instant Demo Account
         </button>
 
-        <div style={{ marginTop: '24px', textAlign: 'center' }} className="body-sm">
+        <div style={{ marginTop: '24px', textAlign: 'center', color: 'var(--color-muted-text)' }} className="body-sm">
           {isRegister ? 'Already have an account?' : "Don't have an account?"}{' '}
-          <button onClick={() => setIsRegister(!isRegister)} style={{ color: 'var(--primary)', fontWeight: 700, border: 'none', background: 'none', cursor: 'pointer' }}>
+          <button onClick={() => setIsRegister(!isRegister)} style={{ color: 'var(--color-accent)', fontWeight: 700, border: 'none', background: 'none', cursor: 'pointer' }}>
             {isRegister ? 'Sign In' : 'Create One'}
           </button>
         </div>

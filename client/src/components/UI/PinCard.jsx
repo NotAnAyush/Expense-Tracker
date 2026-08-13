@@ -15,7 +15,7 @@ export const PinCard = ({ title, subtitle, amount, category, date, overlayPill, 
         ) : <div />}
 
         {amount !== undefined && (
-          <div style={{ fontSize: '20px', fontWeight: 700, color: 'var(--ink)' }}>
+          <div style={{ fontSize: '20px', fontWeight: 700, fontFamily: 'var(--font-heading)', color: 'var(--color-foreground)' }}>
             ₹{amount.toLocaleString()}
           </div>
         )}
@@ -28,7 +28,7 @@ export const PinCard = ({ title, subtitle, amount, category, date, overlayPill, 
       )}
 
       {subtitle && (
-        <p className="body-sm" style={{ marginBottom: '12px' }}>
+        <p className="body-sm" style={{ marginBottom: '12px', color: 'var(--color-muted-text)' }}>
           {subtitle}
         </p>
       )}
@@ -36,8 +36,8 @@ export const PinCard = ({ title, subtitle, amount, category, date, overlayPill, 
       {children}
 
       {date && (
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '16px', paddingTop: '12px', borderTop: '1px solid var(--hairline-soft)' }}>
-          <span className="body-sm" style={{ fontSize: '12px' }}>{new Date(date).toLocaleDateString()}</span>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '16px', paddingTop: '12px', borderTop: '1px solid var(--color-border)' }}>
+          <span className="body-sm" style={{ fontSize: '12px', color: 'var(--color-muted-text)' }}>{new Date(date).toLocaleDateString()}</span>
           {actionLabel && (
             <button onClick={onAction} className="button-secondary" style={{ height: '32px', padding: '4px 12px', fontSize: '12px' }}>
               {actionLabel}

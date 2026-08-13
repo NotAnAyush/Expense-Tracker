@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Edit2, Trash2, CheckCircle2, History, X, Clock, DollarSign, Calendar, Sparkles } from 'lucide-react';
+import { Plus, Edit2, Trash2, CheckCircle2, History, X } from 'lucide-react';
 import { apiFetch, getLocalDateString } from '../api/client';
 import { PinCard } from '../components/UI/PinCard';
 
@@ -137,7 +137,7 @@ export const RecurringPage = () => {
       return sum + item.amount;
     }, 0);
 
-  if (loading) return <div style={{ padding: '64px', textAlign: 'center', color: 'var(--mute)' }} className="body-md">Loading Subscriptions Engine...</div>;
+  if (loading) return <div style={{ padding: '64px', textAlign: 'center', color: 'var(--color-muted-text)' }} className="body-md">Loading Subscriptions Engine...</div>;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
@@ -145,7 +145,7 @@ export const RecurringPage = () => {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
         <div>
           <h1 className="heading-xl">Subscriptions & Obligations</h1>
-          <p className="body-sm">Deterministic calculation of recurring monthly commitments and payment history timeline.</p>
+          <p className="body-sm" style={{ color: 'var(--color-muted-text)' }}>Deterministic calculation of recurring monthly commitments and payment history timeline.</p>
         </div>
         <button onClick={openCreateModal} className="button-primary">
           <Plus size={18} /> Add Subscription
@@ -163,40 +163,40 @@ export const RecurringPage = () => {
       {/* Subscriptions Grid */}
       <div className="grid-masonry">
         {recurring.map((item) => (
-          <div key={item._id} className="pin-card" style={{ backgroundColor: 'var(--canvas)', border: '1px solid var(--hairline)', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <div key={item._id} className="pin-card" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
               <div>
                 <h3 className="heading-md">{item.title}</h3>
-                <span className="body-sm">{item.category}</span>
+                <span className="body-sm" style={{ color: 'var(--color-muted-text)' }}>{item.category}</span>
               </div>
               <div style={{ display: 'flex', gap: '4px' }}>
                 <button onClick={() => openEditModal(item)} className="button-icon-circular" style={{ width: '32px', height: '32px' }} title="Edit Subscription">
                   <Edit2 size={14} />
                 </button>
-                <button onClick={() => handleDelete(item._id)} className="button-icon-circular" style={{ width: '32px', height: '32px', color: 'var(--error)' }} title="Delete Subscription">
+                <button onClick={() => handleDelete(item._id)} className="button-icon-circular" style={{ width: '32px', height: '32px', color: 'var(--color-destructive)' }} title="Delete Subscription">
                   <Trash2 size={14} />
                 </button>
               </div>
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-              <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--primary)' }}>
+              <div style={{ fontSize: '24px', fontWeight: 700, fontFamily: 'var(--font-heading)', color: 'var(--color-accent)' }}>
                 ₹{item.amount.toLocaleString()}
               </div>
-              <span className="pin-overlay-pill" style={{ backgroundColor: item.active !== false ? 'var(--surface-card)' : 'var(--secondary-bg)' }}>
+              <span className="pin-overlay-pill" style={{ backgroundColor: 'var(--color-secondary)', color: 'var(--color-foreground)', borderColor: 'var(--color-border)' }}>
                 {item.active !== false ? item.frequency : 'Paused'}
               </span>
             </div>
 
-            <div className="body-sm" style={{ borderTop: '1px solid var(--hairline-soft)', paddingTop: '8px', fontSize: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span>Next Due: {new Date(item.nextOccurrence).toLocaleDateString()}</span>
+            <div className="body-sm" style={{ borderTop: '1px solid var(--color-border)', paddingTop: '8px', fontSize: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ color: 'var(--color-muted-text)' }}>Next Due: {new Date(item.nextOccurrence).toLocaleDateString()}</span>
               <button
                 onClick={() => handleMarkPaid(item._id)}
                 className="button-secondary"
                 style={{ height: '28px', padding: '2px 10px', fontSize: '11px', gap: '4px' }}
                 title="Record cycle payment now"
               >
-                <CheckCircle2 size={12} color="var(--success-deep)" />
+                <CheckCircle2 size={12} color="var(--color-accent)" />
                 Mark Paid
               </button>
             </div>
@@ -215,7 +215,7 @@ export const RecurringPage = () => {
 
       {/* Create / Edit Subscription Modal */}
       {showModal && (
-        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 110 }}>
+        <div className="modal-overlay">
           <div className="modal-card">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
               <h3 className="heading-lg">{editingItem ? 'Edit Subscription' : 'Add Subscription'}</h3>
@@ -235,7 +235,7 @@ export const RecurringPage = () => {
                 </div>
                 <div>
                   <label className="body-sm-strong" style={{ display: 'block', marginBottom: '6px' }}>Category *</label>
-                  <select className="text-input" value={category} onChange={(e) => setCategory(e.target.value)}>
+                  <select className="text-input" value={category} onChange={(e) => setCategory(e.target.value)} style={{ backgroundColor: 'var(--color-secondary)', color: 'var(--color-foreground)' }}>
                     <option value="Subscriptions">Subscriptions</option>
                     <option value="Housing & Utilities">Housing & Utilities</option>
                     <option value="Health & Medical">Health & Medical</option>
@@ -249,7 +249,7 @@ export const RecurringPage = () => {
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
                 <div>
                   <label className="body-sm-strong" style={{ display: 'block', marginBottom: '6px' }}>Frequency</label>
-                  <select className="text-input" value={frequency} onChange={(e) => setFrequency(e.target.value)}>
+                  <select className="text-input" value={frequency} onChange={(e) => setFrequency(e.target.value)} style={{ backgroundColor: 'var(--color-secondary)', color: 'var(--color-foreground)' }}>
                     <option value="monthly">Monthly</option>
                     <option value="weekly">Weekly</option>
                     <option value="yearly">Yearly</option>
@@ -288,49 +288,49 @@ export const RecurringPage = () => {
 
       {/* Subscription Payment History Drawer / Modal */}
       {historyDrawerItem && (
-        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 120 }}>
+        <div className="modal-overlay">
           <div className="modal-card" style={{ maxWidth: '580px', maxHeight: '85vh', display: 'flex', flexDirection: 'column' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', paddingBottom: '12px', borderBottom: '1px solid var(--hairline)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', paddingBottom: '12px', borderBottom: '1px solid var(--color-border)' }}>
               <div>
                 <h3 className="heading-lg">{historyDrawerItem.title}</h3>
-                <span className="body-sm">Payment History Timeline</span>
+                <span className="body-sm" style={{ color: 'var(--color-muted-text)' }}>Payment History Timeline</span>
               </div>
               <button onClick={() => setHistoryDrawerItem(null)} className="button-icon-circular"><X size={18} /></button>
             </div>
 
             {historyLoading || !historyData ? (
-              <div style={{ padding: '32px', textAlign: 'center', color: 'var(--mute)' }} className="body-md">
+              <div style={{ padding: '32px', textAlign: 'center', color: 'var(--color-muted-text)' }} className="body-md">
                 Fetching payment timeline...
               </div>
             ) : (
               <div style={{ overflowY: 'auto', flex: 1, display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 {/* Timeline Analytics KPI grid */}
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
-                  <div style={{ padding: '12px', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--surface-card)' }}>
-                    <div className="body-sm">All-Time Spent</div>
-                    <div style={{ fontSize: '18px', fontWeight: 700, color: 'var(--ink)' }}>
+                  <div style={{ padding: '12px', borderRadius: 'var(--radius-sm)', backgroundColor: 'var(--color-secondary)', border: '1px solid var(--color-border)' }}>
+                    <div className="body-sm" style={{ color: 'var(--color-muted-text)' }}>All-Time Spent</div>
+                    <div style={{ fontSize: '18px', fontWeight: 700, fontFamily: 'var(--font-heading)', color: 'var(--color-foreground)' }}>
                       ₹{historyData.totalSpentAllTime.toLocaleString()}
                     </div>
                   </div>
-                  <div style={{ padding: '12px', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--surface-card)' }}>
-                    <div className="body-sm">Cycles Paid</div>
-                    <div style={{ fontSize: '18px', fontWeight: 700, color: 'var(--ink)' }}>
+                  <div style={{ padding: '12px', borderRadius: 'var(--radius-sm)', backgroundColor: 'var(--color-secondary)', border: '1px solid var(--color-border)' }}>
+                    <div className="body-sm" style={{ color: 'var(--color-muted-text)' }}>Cycles Paid</div>
+                    <div style={{ fontSize: '18px', fontWeight: 700, fontFamily: 'var(--font-heading)', color: 'var(--color-foreground)' }}>
                       {historyData.paymentCount} Cycles
                     </div>
                   </div>
-                  <div style={{ padding: '12px', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--surface-card)' }}>
-                    <div className="body-sm">Status</div>
-                    <span className="pin-overlay-pill" style={{ marginTop: '4px', backgroundColor: historyData.status === 'Overdue' ? 'var(--error-deep)' : 'var(--canvas)', color: historyData.status === 'Overdue' ? '#ffffff' : 'var(--ink)' }}>
+                  <div style={{ padding: '12px', borderRadius: 'var(--radius-sm)', backgroundColor: 'var(--color-secondary)', border: '1px solid var(--color-border)' }}>
+                    <div className="body-sm" style={{ color: 'var(--color-muted-text)' }}>Status</div>
+                    <span className="pin-overlay-pill" style={{ marginTop: '4px', backgroundColor: historyData.status === 'Overdue' ? 'var(--color-destructive)' : 'var(--color-primary)', color: historyData.status === 'Overdue' ? '#FFFFFF' : 'var(--color-accent)' }}>
                       {historyData.status}
                     </span>
                   </div>
                 </div>
 
                 {/* Mark Paid Quick Action */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--surface-card)', border: '1px solid var(--hairline)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px', borderRadius: 'var(--radius-sm)', backgroundColor: 'var(--color-secondary)', border: '1px solid var(--color-border)' }}>
                   <div>
-                    <div className="body-sm-strong">Current Cycle Due</div>
-                    <div className="body-sm">Next Due: {new Date(historyData.subscription.nextOccurrence).toLocaleDateString()}</div>
+                    <div className="body-sm-strong" style={{ color: 'var(--color-foreground)' }}>Current Cycle Due</div>
+                    <div className="body-sm" style={{ color: 'var(--color-muted-text)' }}>Next Due: {new Date(historyData.subscription.nextOccurrence).toLocaleDateString()}</div>
                   </div>
                   <button
                     onClick={() => handleMarkPaid(historyDrawerItem._id)}
@@ -346,18 +346,18 @@ export const RecurringPage = () => {
                 <div>
                   <h4 className="heading-md" style={{ fontSize: '16px', marginBottom: '12px' }}>Chronological Transactions Log</h4>
                   {historyData.history.length === 0 ? (
-                    <div style={{ padding: '24px', textAlign: 'center', color: 'var(--mute)' }} className="body-sm">
+                    <div style={{ padding: '24px', textAlign: 'center', color: 'var(--color-muted-text)' }} className="body-sm">
                       No past payments recorded yet. Click "Record Paid Cycle" to log your first payment.
                     </div>
                   ) : (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                       {historyData.history.map((tx) => (
-                        <div key={tx._id} style={{ padding: '12px 14px', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--surface-card)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <div key={tx._id} style={{ padding: '12px 14px', borderRadius: 'var(--radius-sm)', backgroundColor: 'var(--color-secondary)', border: '1px solid var(--color-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                           <div>
-                            <div className="body-sm-strong">{tx.title}</div>
-                            <div className="body-sm" style={{ fontSize: '12px' }}>{new Date(tx.date).toLocaleDateString()} | {tx.paymentMethod}</div>
+                            <div className="body-sm-strong" style={{ color: 'var(--color-foreground)' }}>{tx.title}</div>
+                            <div className="body-sm" style={{ fontSize: '12px', color: 'var(--color-muted-text)' }}>{new Date(tx.date).toLocaleDateString()} | {tx.paymentMethod}</div>
                           </div>
-                          <div style={{ fontWeight: 700, color: 'var(--ink)' }}>
+                          <div style={{ fontWeight: 700, fontFamily: 'var(--font-heading)', color: 'var(--color-foreground)' }}>
                             ₹{tx.amount.toLocaleString()}
                           </div>
                         </div>
