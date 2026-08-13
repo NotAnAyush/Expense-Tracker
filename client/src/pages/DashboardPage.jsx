@@ -56,7 +56,19 @@ export const DashboardPage = ({ onOpenCopilot, onAddExpense }) => {
 
   const { monthlySummary, categoryBreakdown, monthlyComparison, budgetUtilization, spendingVelocity } = data;
 
-  const chartCategoryData = categoryBreakdown.breakdown.map(c => ({
+  const filteredCategories = activeChip === 'All'
+    ? categoryBreakdown.breakdown
+    : categoryBreakdown.breakdown.filter(c => c.category.toLowerCase() === activeChip.toLowerCase());
+
+  const selectedCategoryInfo = activeChip !== 'All'
+    ? categoryBreakdown.breakdown.find(c => c.category.toLowerCase() === activeChip.toLowerCase())
+    : null;
+
+  const selectedCategoryBudget = activeChip !== 'All'
+    ? budgetUtilization.budgets.find(b => b.category.toLowerCase() === activeChip.toLowerCase())
+    : null;
+
+  const chartCategoryData = (filteredCategories.length > 0 ? filteredCategories : categoryBreakdown.breakdown).map(c => ({
     name: c.category,
     value: c.amount
   }));
@@ -82,13 +94,37 @@ export const DashboardPage = ({ onOpenCopilot, onAddExpense }) => {
         </div>
       </div>
 
+      {/* Selected Category Spotlight (when a category chip is active) */}
+      {selectedCategoryInfo && (
+        <div className="pin-card-large" style={{ backgroundColor: 'var(--canvas)', border: '1px solid var(--hairline)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+              <span className="pin-overlay-pill" style={{ backgroundColor: 'var(--ink)', color: '#ffffff' }}>Category Focus</span>
+              <h3 className="heading-lg">{selectedCategoryInfo.category}</h3>
+            </div>
+            <p className="body-sm">
+              Accounting for {selectedCategoryInfo.percentage}% of your total spending this month.
+              {selectedCategoryBudget ? ` Allocated Limit: ₹${selectedCategoryBudget.allocated.toLocaleString()} (${selectedCategoryBudget.percentage}% used).` : ' No budget limit set.'}
+            </p>
+          </div>
+          <div style={{ textAlign: 'right' }}>
+            <div style={{ fontSize: '28px', fontWeight: 700, color: 'var(--primary)' }}>
+              ₹{selectedCategoryInfo.amount.toLocaleString()}
+            </div>
+            <button onClick={() => setActiveChip('All')} className="body-sm" style={{ color: 'var(--mute)', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>
+              Reset to All
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* 1. FINANCIAL SUMMARY MASONRY CARDS */}
       <div className="grid-masonry">
         <PinCard
-          title="Spent This Month"
-          amount={monthlySummary.totalSpend}
-          overlayPill="Overview"
-          subtitle={`${monthlyComparison.changePercent}% ${monthlyComparison.isIncrease ? 'increase' : 'decrease'} vs last month`}
+          title={activeChip === 'All' ? "Spent This Month" : `${activeChip} Spend`}
+          amount={selectedCategoryInfo ? selectedCategoryInfo.amount : monthlySummary.totalSpend}
+          overlayPill={activeChip === 'All' ? "Overview" : `${selectedCategoryInfo?.percentage || 0}% of Total`}
+          subtitle={selectedCategoryInfo ? `${selectedCategoryInfo.percentage}% of your monthly expenses` : `${monthlyComparison.changePercent}% ${monthlyComparison.isIncrease ? 'increase' : 'decrease'} vs last month`}
         />
 
         <PinCard
@@ -114,7 +150,7 @@ export const DashboardPage = ({ onOpenCopilot, onAddExpense }) => {
       </div>
 
       {/* 2. AI MONTHLY SUMMARY CARD */}
-      {aiSummary && (
+      {aiSummary && activeChip === 'All' && (
         <div className="pin-card-large" style={{ backgroundColor: 'var(--canvas)', border: '1px solid var(--hairline)' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -133,7 +169,9 @@ export const DashboardPage = ({ onOpenCopilot, onAddExpense }) => {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))', gap: '24px' }}>
         {/* Category Donut Chart Card */}
         <div className="pin-card" style={{ backgroundColor: 'var(--canvas)', border: '1px solid var(--hairline)' }}>
-          <h3 className="heading-md" style={{ marginBottom: '16px' }}>Category Distribution</h3>
+          <h3 className="heading-md" style={{ marginBottom: '16px' }}>
+            {activeChip === 'All' ? 'Category Distribution' : `${activeChip} Focus`}
+          </h3>
           {chartCategoryData.length > 0 ? (
             <div style={{ width: '100%', height: 260 }}>
               <ResponsiveContainer width="100%" height="100%">
@@ -156,7 +194,7 @@ export const DashboardPage = ({ onOpenCopilot, onAddExpense }) => {
               </ResponsiveContainer>
             </div>
           ) : (
-            <div style={{ padding: '32px', textAlign: 'center', color: 'var(--mute)' }}>No category data</div>
+            <div style={{ padding: '32px', textAlign: 'center', color: 'var(--mute)' }}>No category data for {activeChip}</div>
           )}
         </div>
 

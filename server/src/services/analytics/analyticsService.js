@@ -276,8 +276,8 @@ class AnalyticsService {
 
     const anomalies = [];
     allExpenses.forEach(e => {
-      // Flag if transaction is > 2.2 standard deviations above mean, or > 3x mean (for small datasets)
-      if (stdDev > 0 && (e.amount - mean) / stdDev > 2.0) {
+      // Flag if transaction is > 2.0 standard deviations above mean AND at least 1.5x mean
+      if (stdDev > 0 && mean > 0 && ((e.amount - mean) / stdDev) > 2.0 && e.amount >= (mean * 1.5)) {
         anomalies.push({
           expenseId: e._id,
           title: e.title,
