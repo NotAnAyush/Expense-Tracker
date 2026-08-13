@@ -1,0 +1,337 @@
+/* Pinterest Design System Engine */
+:root {
+  /* Brand Colors */
+  --primary: #e60023;
+  --on-primary: #ffffff;
+  --primary-pressed: #cc001f;
+
+  /* Neutrals & Surfaces */
+  --canvas: #ffffff;
+  --surface-soft: #fbfbf9;
+  --surface-card: #f6f6f3;
+  --surface-dark: #262622;
+  
+  --secondary-bg: #e5e5e0;
+  --secondary-pressed: #c8c8c1;
+  --on-secondary: #000000;
+
+  /* Lines & Borders */
+  --hairline: #dadad3;
+  --hairline-soft: #e5e5e0;
+  --stone: #c8c8c1;
+
+  /* Typography Colors */
+  --ink: #000000;
+  --ink-soft: #211922;
+  --body: #33332e;
+  --charcoal: #262622;
+  --mute: #62625b;
+  --ash: #91918c;
+
+  /* Focus & Semantics */
+  --focus-outer: #435ee5;
+  --focus-inner: #ffffff;
+  --error: #9e0a0a;
+  --error-deep: #cc001f;
+  --success-deep: #103c25;
+  --success-pale: #c7f0da;
+
+  /* Radii Scale (Strict Three-Radius Vocabulary) */
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 32px;
+  --radius-full: 9999px;
+
+  /* Typography Stack */
+  --font-family: 'Pin Sans', 'Inter', -apple-system, system-ui, 'Segoe UI', Roboto, sans-serif;
+  --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--surface-soft);
+  color: var(--body);
+  font-family: var(--font-family);
+  font-size: 16px;
+  line-height: 1.4;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Typography Utility Classes */
+.display-xl {
+  font-family: var(--font-family);
+  font-size: 70px;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -1.2px;
+  color: var(--ink);
+}
+
+.heading-xl {
+  font-family: var(--font-family);
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -1.2px;
+  color: var(--ink);
+}
+
+.heading-lg {
+  font-family: var(--font-family);
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: 0;
+  color: var(--ink);
+}
+
+.heading-md {
+  font-family: var(--font-family);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+.body-md {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--body);
+}
+
+.body-strong {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--ink);
+}
+
+.body-sm {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--mute);
+}
+
+.body-sm-strong {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--ink);
+}
+
+/* Button Components */
+.button-primary {
+  background-color: var(--primary);
+  color: var(--on-primary);
+  font-family: var(--font-family);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  padding: 10px 18px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: var(--transition);
+}
+
+.button-primary:hover, .button-primary:active {
+  background-color: var(--primary-pressed);
+}
+
+.button-secondary {
+  background-color: var(--secondary-bg);
+  color: var(--on-secondary);
+  font-family: var(--font-family);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  padding: 10px 18px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: var(--transition);
+}
+
+.button-secondary:hover, .button-secondary:active {
+  background-color: var(--secondary-pressed);
+}
+
+.button-icon-circular {
+  background-color: var(--surface-card);
+  color: var(--ink);
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+}
+
+.button-icon-circular:hover {
+  background-color: var(--secondary-bg);
+}
+
+/* Filter Chip Components */
+.filter-chip {
+  background-color: var(--surface-card);
+  color: var(--ink);
+  font-family: var(--font-family);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  padding: 10px 18px;
+  border-radius: var(--radius-full);
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  transition: var(--transition);
+}
+
+.filter-chip-active {
+  background-color: var(--ink);
+  color: var(--canvas);
+}
+
+/* Search Bar Component */
+.search-bar-container {
+  position: relative;
+  width: 100%;
+}
+
+.search-bar {
+  background-color: var(--surface-card);
+  color: var(--ink);
+  font-family: var(--font-family);
+  font-size: 16px;
+  border-radius: var(--radius-full);
+  padding: 11px 16px 11px 44px;
+  height: 48px;
+  width: 100%;
+  border: none;
+  outline: none;
+  transition: var(--transition);
+}
+
+.search-bar:focus {
+  background-color: var(--canvas);
+  box-shadow: 0 0 0 2px var(--ink), 0 0 0 5px var(--focus-outer);
+}
+
+/* Form Text Input Component */
+.text-input {
+  background-color: var(--canvas);
+  color: var(--ink);
+  font-family: var(--font-family);
+  font-size: 16px;
+  border-radius: var(--radius-md);
+  padding: 11px 15px;
+  height: 44px;
+  width: 100%;
+  border: 1px solid var(--stone);
+  outline: none;
+  transition: var(--transition);
+}
+
+.text-input:focus {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 2px var(--ink), 0 0 0 5px var(--focus-outer);
+}
+
+/* Pin Card Component */
+.pin-card {
+  background-color: var(--surface-card);
+  color: var(--ink);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  position: relative;
+  transition: var(--transition);
+}
+
+.pin-card-large {
+  background-color: var(--surface-card);
+  color: var(--ink);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  position: relative;
+}
+
+.pin-overlay-pill {
+  background-color: var(--canvas);
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: var(--radius-full);
+  padding: 6px 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+/* Modal Card Component */
+.modal-card {
+  background-color: var(--canvas);
+  color: var(--ink);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
+  width: 100%;
+  max-width: 480px;
+}
+
+/* App Shell Layout */
+.app-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--surface-soft);
+}
+
+.main-content {
+  flex: 1;
+  padding: 32px 32px 64px 32px;
+  max-width: 1360px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.grid-masonry {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding: 16px;
+  }
+  .display-xl {
+    font-size: 44px;
+  }
+  .grid-masonry {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,5058 @@
+{
+  "directed": false,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "label": "App.jsx",
+      "file_type": "code",
+      "source_file": "client/src/App.jsx",
+      "source_location": "L1",
+      "id": "client_src_app_jsx",
+      "community": 0,
+      "norm_label": "app.jsx"
+    },
+    {
+      "label": "MainApp()",
+      "file_type": "code",
+      "source_file": "client/src/App.jsx",
+      "source_location": "L17",
+      "id": "src_app_mainapp",
+      "community": 0,
+      "norm_label": "mainapp()"
+    },
+    {
+      "label": "App()",
+      "file_type": "code",
+      "source_file": "client/src/App.jsx",
+      "source_location": "L91",
+      "id": "src_app_app",
+      "community": 0,
+      "norm_label": "app()"
+    },
+    {
+      "label": "main.jsx",
+      "file_type": "code",
+      "source_file": "client/src/main.jsx",
+      "source_location": "L1",
+      "id": "client_src_main_jsx",
+      "community": 0,
+      "norm_label": "main.jsx"
+    },
+    {
+      "label": "client.js",
+      "file_type": "code",
+      "source_file": "client/src/api/client.js",
+      "source_location": "L1",
+      "id": "client_src_api_client_js",
+      "community": 0,
+      "norm_label": "client.js"
+    },
+    {
+      "label": "apiFetch()",
+      "file_type": "code",
+      "source_file": "client/src/api/client.js",
+      "source_location": "L3",
+      "id": "api_client_apifetch",
+      "community": 0,
+      "norm_label": "apifetch()"
+    },
+    {
+      "label": "CopilotDrawer.jsx",
+      "file_type": "code",
+      "source_file": "client/src/components/Copilot/CopilotDrawer.jsx",
+      "source_location": "L1",
+      "id": "client_src_components_copilot_copilotdrawer_jsx",
+      "community": 0,
+      "norm_label": "copilotdrawer.jsx"
+    },
+    {
+      "label": "CopilotDrawer()",
+      "file_type": "code",
+      "source_file": "client/src/components/Copilot/CopilotDrawer.jsx",
+      "source_location": "L5",
+      "id": "copilot_copilotdrawer_copilotdrawer",
+      "community": 0,
+      "norm_label": "copilotdrawer()"
+    },
+    {
+      "label": "ExpenseFormModal.jsx",
+      "file_type": "code",
+      "source_file": "client/src/components/Expenses/ExpenseFormModal.jsx",
+      "source_location": "L1",
+      "id": "client_src_components_expenses_expenseformmodal_jsx",
+      "community": 0,
+      "norm_label": "expenseformmodal.jsx"
+    },
+    {
+      "label": "ExpenseFormModal()",
+      "file_type": "code",
+      "source_file": "client/src/components/Expenses/ExpenseFormModal.jsx",
+      "source_location": "L5",
+      "id": "expenses_expenseformmodal_expenseformmodal",
+      "community": 0,
+      "norm_label": "expenseformmodal()"
+    },
+    {
+      "label": "Header.jsx",
+      "file_type": "code",
+      "source_file": "client/src/components/Shell/Header.jsx",
+      "source_location": "L1",
+      "id": "client_src_components_shell_header_jsx",
+      "community": 0,
+      "norm_label": "header.jsx"
+    },
+    {
+      "label": "Header()",
+      "file_type": "code",
+      "source_file": "client/src/components/Shell/Header.jsx",
+      "source_location": "L5",
+      "id": "shell_header_header",
+      "community": 0,
+      "norm_label": "header()"
+    },
+    {
+      "label": "Sidebar.jsx",
+      "file_type": "code",
+      "source_file": "client/src/components/Shell/Sidebar.jsx",
+      "source_location": "L1",
+      "id": "client_src_components_shell_sidebar_jsx",
+      "community": 0,
+      "norm_label": "sidebar.jsx"
+    },
+    {
+      "label": "Sidebar()",
+      "file_type": "code",
+      "source_file": "client/src/components/Shell/Sidebar.jsx",
+      "source_location": "L14",
+      "id": "shell_sidebar_sidebar",
+      "community": 0,
+      "norm_label": "sidebar()"
+    },
+    {
+      "label": "PinCard.jsx",
+      "file_type": "code",
+      "source_file": "client/src/components/UI/PinCard.jsx",
+      "source_location": "L1",
+      "id": "client_src_components_ui_pincard_jsx",
+      "community": 0,
+      "norm_label": "pincard.jsx"
+    },
+    {
+      "label": "PinCard()",
+      "file_type": "code",
+      "source_file": "client/src/components/UI/PinCard.jsx",
+      "source_location": "L3",
+      "id": "ui_pincard_pincard",
+      "community": 0,
+      "norm_label": "pincard()"
+    },
+    {
+      "label": "AuthContext.jsx",
+      "file_type": "code",
+      "source_file": "client/src/context/AuthContext.jsx",
+      "source_location": "L1",
+      "id": "client_src_context_authcontext_jsx",
+      "community": 0,
+      "norm_label": "authcontext.jsx"
+    },
+    {
+      "label": "AuthContext",
+      "file_type": "code",
+      "source_file": "client/src/context/AuthContext.jsx",
+      "source_location": "L4",
+      "id": "context_authcontext_authcontext",
+      "community": 0,
+      "norm_label": "authcontext"
+    },
+    {
+      "label": "AuthProvider()",
+      "file_type": "code",
+      "source_file": "client/src/context/AuthContext.jsx",
+      "source_location": "L6",
+      "id": "context_authcontext_authprovider",
+      "community": 0,
+      "norm_label": "authprovider()"
+    },
+    {
+      "label": "useAuth()",
+      "file_type": "code",
+      "source_file": "client/src/context/AuthContext.jsx",
+      "source_location": "L73",
+      "id": "context_authcontext_useauth",
+      "community": 0,
+      "norm_label": "useauth()"
+    },
+    {
+      "label": "AnalyticsPage.jsx",
+      "file_type": "code",
+      "source_file": "client/src/pages/AnalyticsPage.jsx",
+      "source_location": "L1",
+      "id": "client_src_pages_analyticspage_jsx",
+      "community": 0,
+      "norm_label": "analyticspage.jsx"
+    },
+    {
+      "label": "AnalyticsPage()",
+      "file_type": "code",
+      "source_file": "client/src/pages/AnalyticsPage.jsx",
+      "source_location": "L5",
+      "id": "pages_analyticspage_analyticspage",
+      "community": 0,
+      "norm_label": "analyticspage()"
+    },
+    {
+      "label": "AuthPage.jsx",
+      "file_type": "code",
+      "source_file": "client/src/pages/AuthPage.jsx",
+      "source_location": "L1",
+      "id": "client_src_pages_authpage_jsx",
+      "community": 0,
+      "norm_label": "authpage.jsx"
+    },
+    {
+      "label": "AuthPage()",
+      "file_type": "code",
+      "source_file": "client/src/pages/AuthPage.jsx",
+      "source_location": "L5",
+      "id": "pages_authpage_authpage",
+      "community": 0,
+      "norm_label": "authpage()"
+    },
+    {
+      "label": "BudgetsPage.jsx",
+      "file_type": "code",
+      "source_file": "client/src/pages/BudgetsPage.jsx",
+      "source_location": "L1",
+      "id": "client_src_pages_budgetspage_jsx",
+      "community": 0,
+      "norm_label": "budgetspage.jsx"
+    },
+    {
+      "label": "BudgetsPage()",
+      "file_type": "code",
+      "source_file": "client/src/pages/BudgetsPage.jsx",
+      "source_location": "L6",
+      "id": "pages_budgetspage_budgetspage",
+      "community": 0,
+      "norm_label": "budgetspage()"
+    },
+    {
+      "label": "DashboardPage.jsx",
+      "file_type": "code",
+      "source_file": "client/src/pages/DashboardPage.jsx",
+      "source_location": "L1",
+      "id": "client_src_pages_dashboardpage_jsx",
+      "community": 0,
+      "norm_label": "dashboardpage.jsx"
+    },
+    {
+      "label": "PINTEREST_COLORS",
+      "file_type": "code",
+      "source_file": "client/src/pages/DashboardPage.jsx",
+      "source_location": "L15",
+      "id": "pages_dashboardpage_pinterest_colors",
+      "community": 0,
+      "norm_label": "pinterest_colors"
+    },
+    {
+      "label": "DashboardPage()",
+      "file_type": "code",
+      "source_file": "client/src/pages/DashboardPage.jsx",
+      "source_location": "L17",
+      "id": "pages_dashboardpage_dashboardpage",
+      "community": 0,
+      "norm_label": "dashboardpage()"
+    },
+    {
+      "label": "ExpensesPage.jsx",
+      "file_type": "code",
+      "source_file": "client/src/pages/ExpensesPage.jsx",
+      "source_location": "L1",
+      "id": "client_src_pages_expensespage_jsx",
+      "community": 0,
+      "norm_label": "expensespage.jsx"
+    },
+    {
+      "label": "ExpensesPage()",
+      "file_type": "code",
+      "source_file": "client/src/pages/ExpensesPage.jsx",
+      "source_location": "L5",
+      "id": "pages_expensespage_expensespage",
+      "community": 0,
+      "norm_label": "expensespage()"
+    },
+    {
+      "label": "GoalsPage.jsx",
+      "file_type": "code",
+      "source_file": "client/src/pages/GoalsPage.jsx",
+      "source_location": "L1",
+      "id": "client_src_pages_goalspage_jsx",
+      "community": 0,
+      "norm_label": "goalspage.jsx"
+    },
+    {
+      "label": "GoalsPage()",
+      "file_type": "code",
+      "source_file": "client/src/pages/GoalsPage.jsx",
+      "source_location": "L6",
+      "id": "pages_goalspage_goalspage",
+      "community": 0,
+      "norm_label": "goalspage()"
+    },
+    {
+      "label": "RecurringPage.jsx",
+      "file_type": "code",
+      "source_file": "client/src/pages/RecurringPage.jsx",
+      "source_location": "L1",
+      "id": "client_src_pages_recurringpage_jsx",
+      "community": 0,
+      "norm_label": "recurringpage.jsx"
+    },
+    {
+      "label": "RecurringPage()",
+      "file_type": "code",
+      "source_file": "client/src/pages/RecurringPage.jsx",
+      "source_location": "L6",
+      "id": "pages_recurringpage_recurringpage",
+      "community": 0,
+      "norm_label": "recurringpage()"
+    },
+    {
+      "label": "server.js",
+      "file_type": "code",
+      "source_file": "server/src/server.js",
+      "source_location": "L1",
+      "id": "server_src_server_js",
+      "community": 4,
+      "norm_label": "server.js"
+    },
+    {
+      "label": "express",
+      "file_type": "code",
+      "source_file": "server/src/server.js",
+      "source_location": "L1",
+      "id": "src_server_express",
+      "community": 4,
+      "norm_label": "express"
+    },
+    {
+      "label": "cors",
+      "file_type": "code",
+      "source_file": "server/src/server.js",
+      "source_location": "L2",
+      "id": "src_server_cors",
+      "community": 4,
+      "norm_label": "cors"
+    },
+    {
+      "label": "dotenv",
+      "file_type": "code",
+      "source_file": "server/src/server.js",
+      "source_location": "L3",
+      "id": "src_server_dotenv",
+      "community": 4,
+      "norm_label": "dotenv"
+    },
+    {
+      "label": "path",
+      "file_type": "code",
+      "source_file": "server/src/server.js",
+      "source_location": "L4",
+      "id": "src_server_path",
+      "community": 4,
+      "norm_label": "path"
+    },
+    {
+      "label": "connectDB",
+      "file_type": "code",
+      "source_file": "server/src/server.js",
+      "source_location": "L8",
+      "id": "src_server_connectdb",
+      "community": 4,
+      "norm_label": "connectdb"
+    },
+    {
+      "label": "sanitizeInput",
+      "file_type": "code",
+      "source_file": "server/src/server.js",
+      "source_location": "L9",
+      "id": "src_server_sanitizeinput",
+      "community": 4,
+      "norm_label": "sanitizeinput"
+    },
+    {
+      "label": "authRoutes",
+      "file_type": "code",
+      "source_file": "server/src/server.js",
+      "source_location": "L12",
+      "id": "src_server_authroutes",
+      "community": 4,
+      "norm_label": "authroutes"
+    },
+    {
+      "label": "expenseRoutes",
+      "file_type": "code",
+      "source_file": "server/src/server.js",
+      "source_location": "L13",
+      "id": "src_server_expenseroutes",
+      "community": 4,
+      "norm_label": "expenseroutes"
+    },
+    {
+      "label": "budgetRoutes",
+      "file_type": "code",
+      "source_file": "server/src/server.js",
+      "source_location": "L14",
+      "id": "src_server_budgetroutes",
+      "community": 4,
+      "norm_label": "budgetroutes"
+    },
+    {
+      "label": "goalRoutes",
+      "file_type": "code",
+      "source_file": "server/src/server.js",
+      "source_location": "L15",
+      "id": "src_server_goalroutes",
+      "community": 4,
+      "norm_label": "goalroutes"
+    },
+    {
+      "label": "recurringRoutes",
+      "file_type": "code",
+      "source_file": "server/src/server.js",
+      "source_location": "L16",
+      "id": "src_server_recurringroutes",
+      "community": 4,
+      "norm_label": "recurringroutes"
+    },
+    {
+      "label": "categoryRoutes",
+      "file_type": "code",
+      "source_file": "server/src/server.js",
+      "source_location": "L17",
+      "id": "src_server_categoryroutes",
+      "community": 4,
+      "norm_label": "categoryroutes"
+    },
+    {
+      "label": "analyticsRoutes",
+      "file_type": "code",
+      "source_file": "server/src/server.js",
+      "source_location": "L18",
+      "id": "src_server_analyticsroutes",
+      "community": 4,
+      "norm_label": "analyticsroutes"
+    },
+    {
+      "label": "aiRoutes",
+      "file_type": "code",
+      "source_file": "server/src/server.js",
+      "source_location": "L19",
+      "id": "src_server_airoutes",
+      "community": 4,
+      "norm_label": "airoutes"
+    },
+    {
+      "label": "app",
+      "file_type": "code",
+      "source_file": "server/src/server.js",
+      "source_location": "L21",
+      "id": "src_server_app",
+      "community": 4,
+      "norm_label": "app"
+    },
+    {
+      "label": "db.js",
+      "file_type": "code",
+      "source_file": "server/src/config/db.js",
+      "source_location": "L1",
+      "id": "server_src_config_db_js",
+      "community": 4,
+      "norm_label": "db.js"
+    },
+    {
+      "label": "mongoose",
+      "file_type": "code",
+      "source_file": "server/src/config/db.js",
+      "source_location": "L1",
+      "id": "config_db_mongoose",
+      "community": 4,
+      "norm_label": "mongoose"
+    },
+    {
+      "label": "connectDB()",
+      "file_type": "code",
+      "source_file": "server/src/config/db.js",
+      "source_location": "L5",
+      "id": "config_db_connectdb",
+      "community": 4,
+      "norm_label": "connectdb()"
+    },
+    {
+      "label": "aiController.js",
+      "file_type": "code",
+      "source_file": "server/src/controllers/aiController.js",
+      "source_location": "L1",
+      "id": "server_src_controllers_aicontroller_js",
+      "community": 1,
+      "norm_label": "aicontroller.js"
+    },
+    {
+      "label": "AIService",
+      "file_type": "code",
+      "source_file": "server/src/controllers/aiController.js",
+      "source_location": "L1",
+      "id": "controllers_aicontroller_aiservice",
+      "community": 1,
+      "norm_label": "aiservice"
+    },
+    {
+      "label": "analyticsController.js",
+      "file_type": "code",
+      "source_file": "server/src/controllers/analyticsController.js",
+      "source_location": "L1",
+      "id": "server_src_controllers_analyticscontroller_js",
+      "community": 10,
+      "norm_label": "analyticscontroller.js"
+    },
+    {
+      "label": "AnalyticsService",
+      "file_type": "code",
+      "source_file": "server/src/controllers/analyticsController.js",
+      "source_location": "L1",
+      "id": "controllers_analyticscontroller_analyticsservice",
+      "community": 10,
+      "norm_label": "analyticsservice"
+    },
+    {
+      "label": "authController.js",
+      "file_type": "code",
+      "source_file": "server/src/controllers/authController.js",
+      "source_location": "L1",
+      "id": "server_src_controllers_authcontroller_js",
+      "community": 5,
+      "norm_label": "authcontroller.js"
+    },
+    {
+      "label": "bcrypt",
+      "file_type": "code",
+      "source_file": "server/src/controllers/authController.js",
+      "source_location": "L1",
+      "id": "controllers_authcontroller_bcrypt",
+      "community": 5,
+      "norm_label": "bcrypt"
+    },
+    {
+      "label": "jwt",
+      "file_type": "code",
+      "source_file": "server/src/controllers/authController.js",
+      "source_location": "L2",
+      "id": "controllers_authcontroller_jwt",
+      "community": 5,
+      "norm_label": "jwt"
+    },
+    {
+      "label": "User",
+      "file_type": "code",
+      "source_file": "server/src/controllers/authController.js",
+      "source_location": "L3",
+      "id": "controllers_authcontroller_user",
+      "community": 5,
+      "norm_label": "user"
+    },
+    {
+      "label": "Expense",
+      "file_type": "code",
+      "source_file": "server/src/controllers/authController.js",
+      "source_location": "L4",
+      "id": "controllers_authcontroller_expense",
+      "community": 5,
+      "norm_label": "expense"
+    },
+    {
+      "label": "Budget",
+      "file_type": "code",
+      "source_file": "server/src/controllers/authController.js",
+      "source_location": "L5",
+      "id": "controllers_authcontroller_budget",
+      "community": 5,
+      "norm_label": "budget"
+    },
+    {
+      "label": "Goal",
+      "file_type": "code",
+      "source_file": "server/src/controllers/authController.js",
+      "source_location": "L6",
+      "id": "controllers_authcontroller_goal",
+      "community": 5,
+      "norm_label": "goal"
+    },
+    {
+      "label": "RecurringExpense",
+      "file_type": "code",
+      "source_file": "server/src/controllers/authController.js",
+      "source_location": "L7",
+      "id": "controllers_authcontroller_recurringexpense",
+      "community": 5,
+      "norm_label": "recurringexpense"
+    },
+    {
+      "label": "Category",
+      "file_type": "code",
+      "source_file": "server/src/controllers/authController.js",
+      "source_location": "L8",
+      "id": "controllers_authcontroller_category",
+      "community": 5,
+      "norm_label": "category"
+    },
+    {
+      "label": "generateToken()",
+      "file_type": "code",
+      "source_file": "server/src/controllers/authController.js",
+      "source_location": "L10",
+      "id": "controllers_authcontroller_generatetoken",
+      "community": 5,
+      "norm_label": "generatetoken()"
+    },
+    {
+      "label": "defaultCategories",
+      "file_type": "code",
+      "source_file": "server/src/controllers/authController.js",
+      "source_location": "L41",
+      "id": "controllers_authcontroller_defaultcategories",
+      "community": 5,
+      "norm_label": "defaultcategories"
+    },
+    {
+      "label": "now",
+      "file_type": "code",
+      "source_file": "server/src/controllers/authController.js",
+      "source_location": "L135",
+      "id": "controllers_authcontroller_now",
+      "community": 5,
+      "norm_label": "now"
+    },
+    {
+      "label": "currentYear",
+      "file_type": "code",
+      "source_file": "server/src/controllers/authController.js",
+      "source_location": "L136",
+      "id": "controllers_authcontroller_currentyear",
+      "community": 5,
+      "norm_label": "currentyear"
+    },
+    {
+      "label": "currentMonth",
+      "file_type": "code",
+      "source_file": "server/src/controllers/authController.js",
+      "source_location": "L137",
+      "id": "controllers_authcontroller_currentmonth",
+      "community": 5,
+      "norm_label": "currentmonth"
+    },
+    {
+      "label": "sampleExpenses",
+      "file_type": "code",
+      "source_file": "server/src/controllers/authController.js",
+      "source_location": "L140",
+      "id": "controllers_authcontroller_sampleexpenses",
+      "community": 5,
+      "norm_label": "sampleexpenses"
+    },
+    {
+      "label": "budgetController.js",
+      "file_type": "code",
+      "source_file": "server/src/controllers/budgetController.js",
+      "source_location": "L1",
+      "id": "server_src_controllers_budgetcontroller_js",
+      "community": 6,
+      "norm_label": "budgetcontroller.js"
+    },
+    {
+      "label": "Budget",
+      "file_type": "code",
+      "source_file": "server/src/controllers/budgetController.js",
+      "source_location": "L1",
+      "id": "controllers_budgetcontroller_budget",
+      "community": 6,
+      "norm_label": "budget"
+    },
+    {
+      "label": "categoryController.js",
+      "file_type": "code",
+      "source_file": "server/src/controllers/categoryController.js",
+      "source_location": "L1",
+      "id": "server_src_controllers_categorycontroller_js",
+      "community": 5,
+      "norm_label": "categorycontroller.js"
+    },
+    {
+      "label": "Category",
+      "file_type": "code",
+      "source_file": "server/src/controllers/categoryController.js",
+      "source_location": "L1",
+      "id": "controllers_categorycontroller_category",
+      "community": 5,
+      "norm_label": "category"
+    },
+    {
+      "label": "expenseController.js",
+      "file_type": "code",
+      "source_file": "server/src/controllers/expenseController.js",
+      "source_location": "L1",
+      "id": "server_src_controllers_expensecontroller_js",
+      "community": 8,
+      "norm_label": "expensecontroller.js"
+    },
+    {
+      "label": "Expense",
+      "file_type": "code",
+      "source_file": "server/src/controllers/expenseController.js",
+      "source_location": "L1",
+      "id": "controllers_expensecontroller_expense",
+      "community": 8,
+      "norm_label": "expense"
+    },
+    {
+      "label": "query",
+      "file_type": "code",
+      "source_file": "server/src/controllers/expenseController.js",
+      "source_location": "L22",
+      "id": "controllers_expensecontroller_query",
+      "community": 8,
+      "norm_label": "query"
+    },
+    {
+      "label": "sortOptions",
+      "file_type": "code",
+      "source_file": "server/src/controllers/expenseController.js",
+      "source_location": "L57",
+      "id": "controllers_expensecontroller_sortoptions",
+      "community": 8,
+      "norm_label": "sortoptions"
+    },
+    {
+      "label": "totalAmount",
+      "file_type": "code",
+      "source_file": "server/src/controllers/expenseController.js",
+      "source_location": "L174",
+      "id": "controllers_expensecontroller_totalamount",
+      "community": 8,
+      "norm_label": "totalamount"
+    },
+    {
+      "label": "goalController.js",
+      "file_type": "code",
+      "source_file": "server/src/controllers/goalController.js",
+      "source_location": "L1",
+      "id": "server_src_controllers_goalcontroller_js",
+      "community": 7,
+      "norm_label": "goalcontroller.js"
+    },
+    {
+      "label": "Goal",
+      "file_type": "code",
+      "source_file": "server/src/controllers/goalController.js",
+      "source_location": "L1",
+      "id": "controllers_goalcontroller_goal",
+      "community": 7,
+      "norm_label": "goal"
+    },
+    {
+      "label": "recurringController.js",
+      "file_type": "code",
+      "source_file": "server/src/controllers/recurringController.js",
+      "source_location": "L1",
+      "id": "server_src_controllers_recurringcontroller_js",
+      "community": 3,
+      "norm_label": "recurringcontroller.js"
+    },
+    {
+      "label": "RecurringExpense",
+      "file_type": "code",
+      "source_file": "server/src/controllers/recurringController.js",
+      "source_location": "L1",
+      "id": "controllers_recurringcontroller_recurringexpense",
+      "community": 3,
+      "norm_label": "recurringexpense"
+    },
+    {
+      "label": "Expense",
+      "file_type": "code",
+      "source_file": "server/src/controllers/recurringController.js",
+      "source_location": "L2",
+      "id": "controllers_recurringcontroller_expense",
+      "community": 3,
+      "norm_label": "expense"
+    },
+    {
+      "label": "totalSpentAllTime",
+      "file_type": "code",
+      "source_file": "server/src/controllers/recurringController.js",
+      "source_location": "L91",
+      "id": "controllers_recurringcontroller_totalspentalltime",
+      "community": 3,
+      "norm_label": "totalspentalltime"
+    },
+    {
+      "label": "now",
+      "file_type": "code",
+      "source_file": "server/src/controllers/recurringController.js",
+      "source_location": "L96",
+      "id": "controllers_recurringcontroller_now",
+      "community": 3,
+      "norm_label": "now"
+    },
+    {
+      "label": "nextDate",
+      "file_type": "code",
+      "source_file": "server/src/controllers/recurringController.js",
+      "source_location": "L97",
+      "id": "controllers_recurringcontroller_nextdate",
+      "community": 3,
+      "norm_label": "nextdate"
+    },
+    {
+      "label": "diffDays",
+      "file_type": "code",
+      "source_file": "server/src/controllers/recurringController.js",
+      "source_location": "L98",
+      "id": "controllers_recurringcontroller_diffdays",
+      "community": 3,
+      "norm_label": "diffdays"
+    },
+    {
+      "label": "currentNext",
+      "file_type": "code",
+      "source_file": "server/src/controllers/recurringController.js",
+      "source_location": "L143",
+      "id": "controllers_recurringcontroller_currentnext",
+      "community": 3,
+      "norm_label": "currentnext"
+    },
+    {
+      "label": "auth.js",
+      "file_type": "code",
+      "source_file": "server/src/middleware/auth.js",
+      "source_location": "L1",
+      "id": "server_src_middleware_auth_js",
+      "community": 1,
+      "norm_label": "auth.js"
+    },
+    {
+      "label": "jwt",
+      "file_type": "code",
+      "source_file": "server/src/middleware/auth.js",
+      "source_location": "L1",
+      "id": "middleware_auth_jwt",
+      "community": 1,
+      "norm_label": "jwt"
+    },
+    {
+      "label": "User",
+      "file_type": "code",
+      "source_file": "server/src/middleware/auth.js",
+      "source_location": "L2",
+      "id": "middleware_auth_user",
+      "community": 1,
+      "norm_label": "user"
+    },
+    {
+      "label": "protect()",
+      "file_type": "code",
+      "source_file": "server/src/middleware/auth.js",
+      "source_location": "L4",
+      "id": "middleware_auth_protect",
+      "community": 1,
+      "norm_label": "protect()"
+    },
+    {
+      "label": "sanitize.js",
+      "file_type": "code",
+      "source_file": "server/src/middleware/sanitize.js",
+      "source_location": "L1",
+      "id": "server_src_middleware_sanitize_js",
+      "community": 4,
+      "norm_label": "sanitize.js"
+    },
+    {
+      "label": "sanitizeValue()",
+      "file_type": "code",
+      "source_file": "server/src/middleware/sanitize.js",
+      "source_location": "L5",
+      "id": "middleware_sanitize_sanitizevalue",
+      "community": 4,
+      "norm_label": "sanitizevalue()"
+    },
+    {
+      "label": "sanitizeInput()",
+      "file_type": "code",
+      "source_file": "server/src/middleware/sanitize.js",
+      "source_location": "L30",
+      "id": "middleware_sanitize_sanitizeinput",
+      "community": 4,
+      "norm_label": "sanitizeinput()"
+    },
+    {
+      "label": "Budget.js",
+      "file_type": "code",
+      "source_file": "server/src/models/Budget.js",
+      "source_location": "L1",
+      "id": "server_src_models_budget_js",
+      "community": 6,
+      "norm_label": "budget.js"
+    },
+    {
+      "label": "mongoose",
+      "file_type": "code",
+      "source_file": "server/src/models/Budget.js",
+      "source_location": "L1",
+      "id": "models_budget_mongoose",
+      "community": 6,
+      "norm_label": "mongoose"
+    },
+    {
+      "label": "budgetSchema",
+      "file_type": "code",
+      "source_file": "server/src/models/Budget.js",
+      "source_location": "L3",
+      "id": "models_budget_budgetschema",
+      "community": 6,
+      "norm_label": "budgetschema"
+    },
+    {
+      "label": "Category.js",
+      "file_type": "code",
+      "source_file": "server/src/models/Category.js",
+      "source_location": "L1",
+      "id": "server_src_models_category_js",
+      "community": 5,
+      "norm_label": "category.js"
+    },
+    {
+      "label": "mongoose",
+      "file_type": "code",
+      "source_file": "server/src/models/Category.js",
+      "source_location": "L1",
+      "id": "models_category_mongoose",
+      "community": 5,
+      "norm_label": "mongoose"
+    },
+    {
+      "label": "categorySchema",
+      "file_type": "code",
+      "source_file": "server/src/models/Category.js",
+      "source_location": "L3",
+      "id": "models_category_categoryschema",
+      "community": 5,
+      "norm_label": "categoryschema"
+    },
+    {
+      "label": "Expense.js",
+      "file_type": "code",
+      "source_file": "server/src/models/Expense.js",
+      "source_location": "L1",
+      "id": "server_src_models_expense_js",
+      "community": 3,
+      "norm_label": "expense.js"
+    },
+    {
+      "label": "mongoose",
+      "file_type": "code",
+      "source_file": "server/src/models/Expense.js",
+      "source_location": "L1",
+      "id": "models_expense_mongoose",
+      "community": 3,
+      "norm_label": "mongoose"
+    },
+    {
+      "label": "expenseSchema",
+      "file_type": "code",
+      "source_file": "server/src/models/Expense.js",
+      "source_location": "L3",
+      "id": "models_expense_expenseschema",
+      "community": 3,
+      "norm_label": "expenseschema"
+    },
+    {
+      "label": "Goal.js",
+      "file_type": "code",
+      "source_file": "server/src/models/Goal.js",
+      "source_location": "L1",
+      "id": "server_src_models_goal_js",
+      "community": 7,
+      "norm_label": "goal.js"
+    },
+    {
+      "label": "mongoose",
+      "file_type": "code",
+      "source_file": "server/src/models/Goal.js",
+      "source_location": "L1",
+      "id": "models_goal_mongoose",
+      "community": 7,
+      "norm_label": "mongoose"
+    },
+    {
+      "label": "goalSchema",
+      "file_type": "code",
+      "source_file": "server/src/models/Goal.js",
+      "source_location": "L3",
+      "id": "models_goal_goalschema",
+      "community": 7,
+      "norm_label": "goalschema"
+    },
+    {
+      "label": "RecurringExpense.js",
+      "file_type": "code",
+      "source_file": "server/src/models/RecurringExpense.js",
+      "source_location": "L1",
+      "id": "server_src_models_recurringexpense_js",
+      "community": 3,
+      "norm_label": "recurringexpense.js"
+    },
+    {
+      "label": "mongoose",
+      "file_type": "code",
+      "source_file": "server/src/models/RecurringExpense.js",
+      "source_location": "L1",
+      "id": "models_recurringexpense_mongoose",
+      "community": 3,
+      "norm_label": "mongoose"
+    },
+    {
+      "label": "recurringExpenseSchema",
+      "file_type": "code",
+      "source_file": "server/src/models/RecurringExpense.js",
+      "source_location": "L3",
+      "id": "models_recurringexpense_recurringexpenseschema",
+      "community": 3,
+      "norm_label": "recurringexpenseschema"
+    },
+    {
+      "label": "User.js",
+      "file_type": "code",
+      "source_file": "server/src/models/User.js",
+      "source_location": "L1",
+      "id": "server_src_models_user_js",
+      "community": 6,
+      "norm_label": "user.js"
+    },
+    {
+      "label": "mongoose",
+      "file_type": "code",
+      "source_file": "server/src/models/User.js",
+      "source_location": "L1",
+      "id": "models_user_mongoose",
+      "community": 6,
+      "norm_label": "mongoose"
+    },
+    {
+      "label": "userSchema",
+      "file_type": "code",
+      "source_file": "server/src/models/User.js",
+      "source_location": "L3",
+      "id": "models_user_userschema",
+      "community": 6,
+      "norm_label": "userschema"
+    },
+    {
+      "label": "aiRoutes.js",
+      "file_type": "code",
+      "source_file": "server/src/routes/aiRoutes.js",
+      "source_location": "L1",
+      "id": "server_src_routes_airoutes_js",
+      "community": 1,
+      "norm_label": "airoutes.js"
+    },
+    {
+      "label": "express",
+      "file_type": "code",
+      "source_file": "server/src/routes/aiRoutes.js",
+      "source_location": "L1",
+      "id": "routes_airoutes_express",
+      "community": 1,
+      "norm_label": "express"
+    },
+    {
+      "label": "router",
+      "file_type": "code",
+      "source_file": "server/src/routes/aiRoutes.js",
+      "source_location": "L2",
+      "id": "routes_airoutes_router",
+      "community": 1,
+      "norm_label": "router"
+    },
+    {
+      "label": "{\n  suggestCategory,\n  getMonthlySummaryAI,\n  getSpendingExplanation,\n  copilotChat,\n  getInsights,\n}",
+      "file_type": "code",
+      "source_file": "server/src/routes/aiRoutes.js",
+      "source_location": "L3",
+      "id": "routes_airoutes_suggestcategory_getmonthlysummaryai_getspendingexplanation_copilotchat_getinsights",
+      "community": 1,
+      "norm_label": "{\n  suggestcategory,\n  getmonthlysummaryai,\n  getspendingexplanation,\n  copilotchat,\n  getinsights,\n}"
+    },
+    {
+      "label": "{ protect }",
+      "file_type": "code",
+      "source_file": "server/src/routes/aiRoutes.js",
+      "source_location": "L10",
+      "id": "routes_airoutes_protect",
+      "community": 1,
+      "norm_label": "{ protect }"
+    },
+    {
+      "label": "analyticsRoutes.js",
+      "file_type": "code",
+      "source_file": "server/src/routes/analyticsRoutes.js",
+      "source_location": "L1",
+      "id": "server_src_routes_analyticsroutes_js",
+      "community": 10,
+      "norm_label": "analyticsroutes.js"
+    },
+    {
+      "label": "express",
+      "file_type": "code",
+      "source_file": "server/src/routes/analyticsRoutes.js",
+      "source_location": "L1",
+      "id": "routes_analyticsroutes_express",
+      "community": 10,
+      "norm_label": "express"
+    },
+    {
+      "label": "router",
+      "file_type": "code",
+      "source_file": "server/src/routes/analyticsRoutes.js",
+      "source_location": "L2",
+      "id": "routes_analyticsroutes_router",
+      "community": 10,
+      "norm_label": "router"
+    },
+    {
+      "label": "{ getAnalyticsOverview }",
+      "file_type": "code",
+      "source_file": "server/src/routes/analyticsRoutes.js",
+      "source_location": "L3",
+      "id": "routes_analyticsroutes_getanalyticsoverview",
+      "community": 10,
+      "norm_label": "{ getanalyticsoverview }"
+    },
+    {
+      "label": "{ protect }",
+      "file_type": "code",
+      "source_file": "server/src/routes/analyticsRoutes.js",
+      "source_location": "L4",
+      "id": "routes_analyticsroutes_protect",
+      "community": 10,
+      "norm_label": "{ protect }"
+    },
+    {
+      "label": "authRoutes.js",
+      "file_type": "code",
+      "source_file": "server/src/routes/authRoutes.js",
+      "source_location": "L1",
+      "id": "server_src_routes_authroutes_js",
+      "community": 1,
+      "norm_label": "authroutes.js"
+    },
+    {
+      "label": "express",
+      "file_type": "code",
+      "source_file": "server/src/routes/authRoutes.js",
+      "source_location": "L1",
+      "id": "routes_authroutes_express",
+      "community": 1,
+      "norm_label": "express"
+    },
+    {
+      "label": "router",
+      "file_type": "code",
+      "source_file": "server/src/routes/authRoutes.js",
+      "source_location": "L2",
+      "id": "routes_authroutes_router",
+      "community": 1,
+      "norm_label": "router"
+    },
+    {
+      "label": "{ registerUser, loginUser, getMe, seedDemoAccount }",
+      "file_type": "code",
+      "source_file": "server/src/routes/authRoutes.js",
+      "source_location": "L3",
+      "id": "routes_authroutes_registeruser_loginuser_getme_seeddemoaccount",
+      "community": 1,
+      "norm_label": "{ registeruser, loginuser, getme, seeddemoaccount }"
+    },
+    {
+      "label": "{ protect }",
+      "file_type": "code",
+      "source_file": "server/src/routes/authRoutes.js",
+      "source_location": "L4",
+      "id": "routes_authroutes_protect",
+      "community": 1,
+      "norm_label": "{ protect }"
+    },
+    {
+      "label": "budgetRoutes.js",
+      "file_type": "code",
+      "source_file": "server/src/routes/budgetRoutes.js",
+      "source_location": "L1",
+      "id": "server_src_routes_budgetroutes_js",
+      "community": 1,
+      "norm_label": "budgetroutes.js"
+    },
+    {
+      "label": "express",
+      "file_type": "code",
+      "source_file": "server/src/routes/budgetRoutes.js",
+      "source_location": "L1",
+      "id": "routes_budgetroutes_express",
+      "community": 1,
+      "norm_label": "express"
+    },
+    {
+      "label": "router",
+      "file_type": "code",
+      "source_file": "server/src/routes/budgetRoutes.js",
+      "source_location": "L2",
+      "id": "routes_budgetroutes_router",
+      "community": 1,
+      "norm_label": "router"
+    },
+    {
+      "label": "{ getBudgets, createBudget, updateBudget, deleteBudget }",
+      "file_type": "code",
+      "source_file": "server/src/routes/budgetRoutes.js",
+      "source_location": "L3",
+      "id": "routes_budgetroutes_getbudgets_createbudget_updatebudget_deletebudget",
+      "community": 1,
+      "norm_label": "{ getbudgets, createbudget, updatebudget, deletebudget }"
+    },
+    {
+      "label": "{ protect }",
+      "file_type": "code",
+      "source_file": "server/src/routes/budgetRoutes.js",
+      "source_location": "L4",
+      "id": "routes_budgetroutes_protect",
+      "community": 1,
+      "norm_label": "{ protect }"
+    },
+    {
+      "label": "categoryRoutes.js",
+      "file_type": "code",
+      "source_file": "server/src/routes/categoryRoutes.js",
+      "source_location": "L1",
+      "id": "server_src_routes_categoryroutes_js",
+      "community": 1,
+      "norm_label": "categoryroutes.js"
+    },
+    {
+      "label": "express",
+      "file_type": "code",
+      "source_file": "server/src/routes/categoryRoutes.js",
+      "source_location": "L1",
+      "id": "routes_categoryroutes_express",
+      "community": 1,
+      "norm_label": "express"
+    },
+    {
+      "label": "router",
+      "file_type": "code",
+      "source_file": "server/src/routes/categoryRoutes.js",
+      "source_location": "L2",
+      "id": "routes_categoryroutes_router",
+      "community": 1,
+      "norm_label": "router"
+    },
+    {
+      "label": "{ getCategories, createCategory }",
+      "file_type": "code",
+      "source_file": "server/src/routes/categoryRoutes.js",
+      "source_location": "L3",
+      "id": "routes_categoryroutes_getcategories_createcategory",
+      "community": 1,
+      "norm_label": "{ getcategories, createcategory }"
+    },
+    {
+      "label": "{ protect }",
+      "file_type": "code",
+      "source_file": "server/src/routes/categoryRoutes.js",
+      "source_location": "L4",
+      "id": "routes_categoryroutes_protect",
+      "community": 1,
+      "norm_label": "{ protect }"
+    },
+    {
+      "label": "expenseRoutes.js",
+      "file_type": "code",
+      "source_file": "server/src/routes/expenseRoutes.js",
+      "source_location": "L1",
+      "id": "server_src_routes_expenseroutes_js",
+      "community": 8,
+      "norm_label": "expenseroutes.js"
+    },
+    {
+      "label": "express",
+      "file_type": "code",
+      "source_file": "server/src/routes/expenseRoutes.js",
+      "source_location": "L1",
+      "id": "routes_expenseroutes_express",
+      "community": 8,
+      "norm_label": "express"
+    },
+    {
+      "label": "router",
+      "file_type": "code",
+      "source_file": "server/src/routes/expenseRoutes.js",
+      "source_location": "L2",
+      "id": "routes_expenseroutes_router",
+      "community": 8,
+      "norm_label": "router"
+    },
+    {
+      "label": "{\n  getExpenses,\n  getExpenseById,\n  createExpense,\n  updateExpense,\n  deleteExpense,\n  getExpenseSummary,\n}",
+      "file_type": "code",
+      "source_file": "server/src/routes/expenseRoutes.js",
+      "source_location": "L3",
+      "id": "routes_expenseroutes_getexpenses_getexpensebyid_createexpense_updateexpense_deleteexpense_getexpensesummary",
+      "community": 8,
+      "norm_label": "{\n  getexpenses,\n  getexpensebyid,\n  createexpense,\n  updateexpense,\n  deleteexpense,\n  getexpensesummary,\n}"
+    },
+    {
+      "label": "{ protect }",
+      "file_type": "code",
+      "source_file": "server/src/routes/expenseRoutes.js",
+      "source_location": "L11",
+      "id": "routes_expenseroutes_protect",
+      "community": 8,
+      "norm_label": "{ protect }"
+    },
+    {
+      "label": "goalRoutes.js",
+      "file_type": "code",
+      "source_file": "server/src/routes/goalRoutes.js",
+      "source_location": "L1",
+      "id": "server_src_routes_goalroutes_js",
+      "community": 7,
+      "norm_label": "goalroutes.js"
+    },
+    {
+      "label": "express",
+      "file_type": "code",
+      "source_file": "server/src/routes/goalRoutes.js",
+      "source_location": "L1",
+      "id": "routes_goalroutes_express",
+      "community": 7,
+      "norm_label": "express"
+    },
+    {
+      "label": "router",
+      "file_type": "code",
+      "source_file": "server/src/routes/goalRoutes.js",
+      "source_location": "L2",
+      "id": "routes_goalroutes_router",
+      "community": 7,
+      "norm_label": "router"
+    },
+    {
+      "label": "{ getGoals, createGoal, updateGoal, deleteGoal }",
+      "file_type": "code",
+      "source_file": "server/src/routes/goalRoutes.js",
+      "source_location": "L3",
+      "id": "routes_goalroutes_getgoals_creategoal_updategoal_deletegoal",
+      "community": 7,
+      "norm_label": "{ getgoals, creategoal, updategoal, deletegoal }"
+    },
+    {
+      "label": "{ protect }",
+      "file_type": "code",
+      "source_file": "server/src/routes/goalRoutes.js",
+      "source_location": "L4",
+      "id": "routes_goalroutes_protect",
+      "community": 7,
+      "norm_label": "{ protect }"
+    },
+    {
+      "label": "recurringRoutes.js",
+      "file_type": "code",
+      "source_file": "server/src/routes/recurringRoutes.js",
+      "source_location": "L1",
+      "id": "server_src_routes_recurringroutes_js",
+      "community": 1,
+      "norm_label": "recurringroutes.js"
+    },
+    {
+      "label": "express",
+      "file_type": "code",
+      "source_file": "server/src/routes/recurringRoutes.js",
+      "source_location": "L1",
+      "id": "routes_recurringroutes_express",
+      "community": 1,
+      "norm_label": "express"
+    },
+    {
+      "label": "router",
+      "file_type": "code",
+      "source_file": "server/src/routes/recurringRoutes.js",
+      "source_location": "L2",
+      "id": "routes_recurringroutes_router",
+      "community": 1,
+      "norm_label": "router"
+    },
+    {
+      "label": "{\n  getRecurringExpenses,\n  createRecurringExpense,\n  updateRecurringExpense,\n  deleteRecurringExpense,\n  getRecurringHistory,\n  recordRecurringPayment,\n}",
+      "file_type": "code",
+      "source_file": "server/src/routes/recurringRoutes.js",
+      "source_location": "L3",
+      "id": "routes_recurringroutes_getrecurringexpenses_createrecurringexpense_updaterecurringexpense_deleterecurringexpense_getrecurringhistory_recordrecurringpayment",
+      "community": 1,
+      "norm_label": "{\n  getrecurringexpenses,\n  createrecurringexpense,\n  updaterecurringexpense,\n  deleterecurringexpense,\n  getrecurringhistory,\n  recordrecurringpayment,\n}"
+    },
+    {
+      "label": "{ protect }",
+      "file_type": "code",
+      "source_file": "server/src/routes/recurringRoutes.js",
+      "source_location": "L11",
+      "id": "routes_recurringroutes_protect",
+      "community": 1,
+      "norm_label": "{ protect }"
+    },
+    {
+      "label": "aiService.js",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L1",
+      "id": "server_src_services_ai_aiservice_js",
+      "community": 2,
+      "norm_label": "aiservice.js"
+    },
+    {
+      "label": "{ getGeminiModel, isAvailable }",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L1",
+      "id": "ai_aiservice_getgeminimodel_isavailable",
+      "community": 2,
+      "norm_label": "{ getgeminimodel, isavailable }"
+    },
+    {
+      "label": "ContextBuilder",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L2",
+      "id": "ai_aiservice_contextbuilder",
+      "community": 2,
+      "norm_label": "contextbuilder"
+    },
+    {
+      "label": "IntentRouter",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L3",
+      "id": "ai_aiservice_intentrouter",
+      "community": 2,
+      "norm_label": "intentrouter"
+    },
+    {
+      "label": "ToolRegistry",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L4",
+      "id": "ai_aiservice_toolregistry",
+      "community": 2,
+      "norm_label": "toolregistry"
+    },
+    {
+      "label": "AnalyticsService",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L5",
+      "id": "ai_aiservice_analyticsservice",
+      "community": 2,
+      "norm_label": "analyticsservice"
+    },
+    {
+      "label": "Category",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L6",
+      "id": "ai_aiservice_category",
+      "community": 2,
+      "norm_label": "category"
+    },
+    {
+      "label": "sanitizeUserText()",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L9",
+      "id": "ai_aiservice_sanitizeusertext",
+      "community": 2,
+      "norm_label": "sanitizeusertext()"
+    },
+    {
+      "label": "AIService",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L18",
+      "id": "ai_aiservice_aiservice",
+      "community": 2,
+      "norm_label": "aiservice"
+    },
+    {
+      "label": ".suggestCategory()",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L22",
+      "id": "ai_aiservice_aiservice_suggestcategory",
+      "community": 2,
+      "norm_label": ".suggestcategory()"
+    },
+    {
+      "label": ".getMonthlySummaryAI()",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L78",
+      "id": "ai_aiservice_aiservice_getmonthlysummaryai",
+      "community": 2,
+      "norm_label": ".getmonthlysummaryai()"
+    },
+    {
+      "label": ".getSpendingExplanation()",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L119",
+      "id": "ai_aiservice_aiservice_getspendingexplanation",
+      "community": 2,
+      "norm_label": ".getspendingexplanation()"
+    },
+    {
+      "label": ".copilotChat()",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L150",
+      "id": "ai_aiservice_aiservice_copilotchat",
+      "community": 2,
+      "norm_label": ".copilotchat()"
+    },
+    {
+      "label": ".getInsights()",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L214",
+      "id": "ai_aiservice_aiservice_getinsights",
+      "community": 2,
+      "norm_label": ".getinsights()"
+    },
+    {
+      "label": "contextBuilder.js",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/contextBuilder.js",
+      "source_location": "L1",
+      "id": "server_src_services_ai_contextbuilder_js",
+      "community": 2,
+      "norm_label": "contextbuilder.js"
+    },
+    {
+      "label": "AnalyticsService",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/contextBuilder.js",
+      "source_location": "L1",
+      "id": "ai_contextbuilder_analyticsservice",
+      "community": 2,
+      "norm_label": "analyticsservice"
+    },
+    {
+      "label": "ContextBuilder",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/contextBuilder.js",
+      "source_location": "L3",
+      "id": "ai_contextbuilder_contextbuilder",
+      "community": 2,
+      "norm_label": "contextbuilder"
+    },
+    {
+      "label": ".buildFinancialContext()",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/contextBuilder.js",
+      "source_location": "L7",
+      "id": "ai_contextbuilder_contextbuilder_buildfinancialcontext",
+      "community": 2,
+      "norm_label": ".buildfinancialcontext()"
+    },
+    {
+      "label": "geminiClient.js",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/geminiClient.js",
+      "source_location": "L1",
+      "id": "server_src_services_ai_geminiclient_js",
+      "community": 2,
+      "norm_label": "geminiclient.js"
+    },
+    {
+      "label": "{ GoogleGenerativeAI }",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/geminiClient.js",
+      "source_location": "L1",
+      "id": "ai_geminiclient_googlegenerativeai",
+      "community": 2,
+      "norm_label": "{ googlegenerativeai }"
+    },
+    {
+      "label": "getGeminiModel()",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/geminiClient.js",
+      "source_location": "L17",
+      "id": "ai_geminiclient_getgeminimodel",
+      "community": 2,
+      "norm_label": "getgeminimodel()"
+    },
+    {
+      "label": "intentRouter.js",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/intentRouter.js",
+      "source_location": "L1",
+      "id": "server_src_services_ai_intentrouter_js",
+      "community": 2,
+      "norm_label": "intentrouter.js"
+    },
+    {
+      "label": "IntentRouter",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/intentRouter.js",
+      "source_location": "L4",
+      "id": "ai_intentrouter_intentrouter",
+      "community": 2,
+      "norm_label": "intentrouter"
+    },
+    {
+      "label": ".classifyIntent()",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/intentRouter.js",
+      "source_location": "L5",
+      "id": "ai_intentrouter_intentrouter_classifyintent",
+      "community": 2,
+      "norm_label": ".classifyintent()"
+    },
+    {
+      "label": "toolRegistry.js",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/toolRegistry.js",
+      "source_location": "L1",
+      "id": "server_src_services_ai_toolregistry_js",
+      "community": 3,
+      "norm_label": "toolregistry.js"
+    },
+    {
+      "label": "AnalyticsService",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/toolRegistry.js",
+      "source_location": "L1",
+      "id": "ai_toolregistry_analyticsservice",
+      "community": 3,
+      "norm_label": "analyticsservice"
+    },
+    {
+      "label": "Expense",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/toolRegistry.js",
+      "source_location": "L2",
+      "id": "ai_toolregistry_expense",
+      "community": 3,
+      "norm_label": "expense"
+    },
+    {
+      "label": "ToolRegistry",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/toolRegistry.js",
+      "source_location": "L8",
+      "id": "ai_toolregistry_toolregistry",
+      "community": 3,
+      "norm_label": "toolregistry"
+    },
+    {
+      "label": ".executeTool()",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/toolRegistry.js",
+      "source_location": "L9",
+      "id": "ai_toolregistry_toolregistry_executetool",
+      "community": 3,
+      "norm_label": ".executetool()"
+    },
+    {
+      "label": "analyticsService.js",
+      "file_type": "code",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L1",
+      "id": "server_src_services_analytics_analyticsservice_js",
+      "community": 3,
+      "norm_label": "analyticsservice.js"
+    },
+    {
+      "label": "Expense",
+      "file_type": "code",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L1",
+      "id": "analytics_analyticsservice_expense",
+      "community": 3,
+      "norm_label": "expense"
+    },
+    {
+      "label": "Budget",
+      "file_type": "code",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L2",
+      "id": "analytics_analyticsservice_budget",
+      "community": 3,
+      "norm_label": "budget"
+    },
+    {
+      "label": "Goal",
+      "file_type": "code",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L3",
+      "id": "analytics_analyticsservice_goal",
+      "community": 3,
+      "norm_label": "goal"
+    },
+    {
+      "label": "RecurringExpense",
+      "file_type": "code",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L4",
+      "id": "analytics_analyticsservice_recurringexpense",
+      "community": 3,
+      "norm_label": "recurringexpense"
+    },
+    {
+      "label": "AnalyticsService",
+      "file_type": "code",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L6",
+      "id": "analytics_analyticsservice_analyticsservice",
+      "community": 9,
+      "norm_label": "analyticsservice"
+    },
+    {
+      "label": ".getMonthlySummary()",
+      "file_type": "code",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L10",
+      "id": "analytics_analyticsservice_analyticsservice_getmonthlysummary",
+      "community": 9,
+      "norm_label": ".getmonthlysummary()"
+    },
+    {
+      "label": ".getCategoryBreakdown()",
+      "file_type": "code",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L43",
+      "id": "analytics_analyticsservice_analyticsservice_getcategorybreakdown",
+      "community": 9,
+      "norm_label": ".getcategorybreakdown()"
+    },
+    {
+      "label": ".getMonthlyComparison()",
+      "file_type": "code",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L78",
+      "id": "analytics_analyticsservice_analyticsservice_getmonthlycomparison",
+      "community": 9,
+      "norm_label": ".getmonthlycomparison()"
+    },
+    {
+      "label": ".getBudgetUtilization()",
+      "file_type": "code",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L129",
+      "id": "analytics_analyticsservice_analyticsservice_getbudgetutilization",
+      "community": 9,
+      "norm_label": ".getbudgetutilization()"
+    },
+    {
+      "label": ".getSpendingVelocity()",
+      "file_type": "code",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L176",
+      "id": "analytics_analyticsservice_analyticsservice_getspendingvelocity",
+      "community": 9,
+      "norm_label": ".getspendingvelocity()"
+    },
+    {
+      "label": ".getRecurringExpenseSummary()",
+      "file_type": "code",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L193",
+      "id": "analytics_analyticsservice_analyticsservice_getrecurringexpensesummary",
+      "community": 9,
+      "norm_label": ".getrecurringexpensesummary()"
+    },
+    {
+      "label": ".getGoalProgress()",
+      "file_type": "code",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L213",
+      "id": "analytics_analyticsservice_analyticsservice_getgoalprogress",
+      "community": 9,
+      "norm_label": ".getgoalprogress()"
+    },
+    {
+      "label": ".getMerchantSummary()",
+      "file_type": "code",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L247",
+      "id": "analytics_analyticsservice_analyticsservice_getmerchantsummary",
+      "community": 9,
+      "norm_label": ".getmerchantsummary()"
+    },
+    {
+      "label": ".getAnomalies()",
+      "file_type": "code",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L268",
+      "id": "analytics_analyticsservice_analyticsservice_getanomalies",
+      "community": 9,
+      "norm_label": ".getanomalies()"
+    },
+    {
+      "label": "analytics.test.js",
+      "file_type": "code",
+      "source_file": "server/tests/analytics.test.js",
+      "source_location": "L1",
+      "id": "server_tests_analytics_test_js",
+      "community": 6,
+      "norm_label": "analytics.test.js"
+    },
+    {
+      "label": "request",
+      "file_type": "code",
+      "source_file": "server/tests/analytics.test.js",
+      "source_location": "L1",
+      "id": "tests_analytics_test_request",
+      "community": 6,
+      "norm_label": "request"
+    },
+    {
+      "label": "mongoose",
+      "file_type": "code",
+      "source_file": "server/tests/analytics.test.js",
+      "source_location": "L2",
+      "id": "tests_analytics_test_mongoose",
+      "community": 6,
+      "norm_label": "mongoose"
+    },
+    {
+      "label": "{ MongoMemoryServer }",
+      "file_type": "code",
+      "source_file": "server/tests/analytics.test.js",
+      "source_location": "L3",
+      "id": "tests_analytics_test_mongomemoryserver",
+      "community": 6,
+      "norm_label": "{ mongomemoryserver }"
+    },
+    {
+      "label": "app",
+      "file_type": "code",
+      "source_file": "server/tests/analytics.test.js",
+      "source_location": "L4",
+      "id": "tests_analytics_test_app",
+      "community": 6,
+      "norm_label": "app"
+    },
+    {
+      "label": "User",
+      "file_type": "code",
+      "source_file": "server/tests/analytics.test.js",
+      "source_location": "L5",
+      "id": "tests_analytics_test_user",
+      "community": 6,
+      "norm_label": "user"
+    },
+    {
+      "label": "Expense",
+      "file_type": "code",
+      "source_file": "server/tests/analytics.test.js",
+      "source_location": "L6",
+      "id": "tests_analytics_test_expense",
+      "community": 6,
+      "norm_label": "expense"
+    },
+    {
+      "label": "Budget",
+      "file_type": "code",
+      "source_file": "server/tests/analytics.test.js",
+      "source_location": "L7",
+      "id": "tests_analytics_test_budget",
+      "community": 6,
+      "norm_label": "budget"
+    },
+    {
+      "label": "mongoUri",
+      "file_type": "code",
+      "source_file": "server/tests/analytics.test.js",
+      "source_location": "L15",
+      "id": "tests_analytics_test_mongouri",
+      "community": 6,
+      "norm_label": "mongouri"
+    },
+    {
+      "label": "newExpense",
+      "file_type": "code",
+      "source_file": "server/tests/analytics.test.js",
+      "source_location": "L39",
+      "id": "tests_analytics_test_newexpense",
+      "community": 6,
+      "norm_label": "newexpense"
+    }
+  ],
+  "links": [
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/App.jsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "client_src_app_jsx",
+      "target": "client_src_context_authcontext_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/App.jsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "client_src_app_jsx",
+      "target": "context_authcontext_authprovider",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/App.jsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "client_src_app_jsx",
+      "target": "context_authcontext_useauth",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/App.jsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "client_src_app_jsx",
+      "target": "client_src_components_shell_sidebar_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/App.jsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "client_src_app_jsx",
+      "target": "shell_sidebar_sidebar",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/App.jsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "client_src_app_jsx",
+      "target": "client_src_components_shell_header_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/App.jsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "client_src_app_jsx",
+      "target": "shell_header_header",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/App.jsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "client_src_app_jsx",
+      "target": "client_src_components_copilot_copilotdrawer_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/App.jsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "client_src_app_jsx",
+      "target": "copilot_copilotdrawer_copilotdrawer",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/App.jsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "client_src_app_jsx",
+      "target": "client_src_components_expenses_expenseformmodal_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/App.jsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "client_src_app_jsx",
+      "target": "expenses_expenseformmodal_expenseformmodal",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/App.jsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "client_src_app_jsx",
+      "target": "client_src_pages_dashboardpage_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/App.jsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "client_src_app_jsx",
+      "target": "pages_dashboardpage_dashboardpage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/App.jsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "client_src_app_jsx",
+      "target": "client_src_pages_expensespage_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/App.jsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "client_src_app_jsx",
+      "target": "pages_expensespage_expensespage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/App.jsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "client_src_app_jsx",
+      "target": "client_src_pages_budgetspage_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/App.jsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "client_src_app_jsx",
+      "target": "pages_budgetspage_budgetspage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/App.jsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "client_src_app_jsx",
+      "target": "client_src_pages_goalspage_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/App.jsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "client_src_app_jsx",
+      "target": "pages_goalspage_goalspage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/App.jsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "client_src_app_jsx",
+      "target": "client_src_pages_recurringpage_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/App.jsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "client_src_app_jsx",
+      "target": "pages_recurringpage_recurringpage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/App.jsx",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "client_src_app_jsx",
+      "target": "client_src_pages_analyticspage_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/App.jsx",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "client_src_app_jsx",
+      "target": "pages_analyticspage_analyticspage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/App.jsx",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "client_src_app_jsx",
+      "target": "client_src_pages_authpage_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/App.jsx",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "client_src_app_jsx",
+      "target": "pages_authpage_authpage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/App.jsx",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "client_src_app_jsx",
+      "target": "client_src_api_client_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/App.jsx",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "client_src_app_jsx",
+      "target": "api_client_apifetch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/App.jsx",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "client_src_app_jsx",
+      "target": "src_app_mainapp",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/App.jsx",
+      "source_location": "L91",
+      "weight": 1.0,
+      "source": "client_src_app_jsx",
+      "target": "src_app_app",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/main.jsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "client_src_main_jsx",
+      "target": "client_src_app_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "client/src/App.jsx",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "src_app_mainapp",
+      "target": "context_authcontext_useauth"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/api/client.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "client_src_api_client_js",
+      "target": "api_client_apifetch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/components/Copilot/CopilotDrawer.jsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "client_src_components_copilot_copilotdrawer_jsx",
+      "target": "client_src_api_client_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/components/Expenses/ExpenseFormModal.jsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "client_src_components_expenses_expenseformmodal_jsx",
+      "target": "client_src_api_client_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/context/AuthContext.jsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "client_src_context_authcontext_jsx",
+      "target": "client_src_api_client_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/pages/AnalyticsPage.jsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "client_src_pages_analyticspage_jsx",
+      "target": "client_src_api_client_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/pages/BudgetsPage.jsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "client_src_pages_budgetspage_jsx",
+      "target": "client_src_api_client_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/pages/DashboardPage.jsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "client_src_pages_dashboardpage_jsx",
+      "target": "client_src_api_client_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/pages/ExpensesPage.jsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "client_src_pages_expensespage_jsx",
+      "target": "client_src_api_client_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/pages/GoalsPage.jsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "client_src_pages_goalspage_jsx",
+      "target": "client_src_api_client_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/pages/RecurringPage.jsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "client_src_pages_recurringpage_jsx",
+      "target": "client_src_api_client_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/components/Copilot/CopilotDrawer.jsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "client_src_components_copilot_copilotdrawer_jsx",
+      "target": "api_client_apifetch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/components/Expenses/ExpenseFormModal.jsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "client_src_components_expenses_expenseformmodal_jsx",
+      "target": "api_client_apifetch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/context/AuthContext.jsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "client_src_context_authcontext_jsx",
+      "target": "api_client_apifetch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/pages/AnalyticsPage.jsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "client_src_pages_analyticspage_jsx",
+      "target": "api_client_apifetch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/pages/BudgetsPage.jsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "client_src_pages_budgetspage_jsx",
+      "target": "api_client_apifetch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/pages/DashboardPage.jsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "client_src_pages_dashboardpage_jsx",
+      "target": "api_client_apifetch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/pages/ExpensesPage.jsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "client_src_pages_expensespage_jsx",
+      "target": "api_client_apifetch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/pages/GoalsPage.jsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "client_src_pages_goalspage_jsx",
+      "target": "api_client_apifetch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/pages/RecurringPage.jsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "client_src_pages_recurringpage_jsx",
+      "target": "api_client_apifetch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/components/Copilot/CopilotDrawer.jsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "client_src_components_copilot_copilotdrawer_jsx",
+      "target": "copilot_copilotdrawer_copilotdrawer",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/components/Expenses/ExpenseFormModal.jsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "client_src_components_expenses_expenseformmodal_jsx",
+      "target": "expenses_expenseformmodal_expenseformmodal",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/components/Shell/Header.jsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "client_src_components_shell_header_jsx",
+      "target": "client_src_context_authcontext_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/components/Shell/Header.jsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "client_src_components_shell_header_jsx",
+      "target": "context_authcontext_useauth",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/components/Shell/Header.jsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "client_src_components_shell_header_jsx",
+      "target": "shell_header_header",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "client/src/components/Shell/Header.jsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "shell_header_header",
+      "target": "context_authcontext_useauth"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/components/Shell/Sidebar.jsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "client_src_components_shell_sidebar_jsx",
+      "target": "client_src_context_authcontext_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/components/Shell/Sidebar.jsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "client_src_components_shell_sidebar_jsx",
+      "target": "context_authcontext_useauth",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/components/Shell/Sidebar.jsx",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "client_src_components_shell_sidebar_jsx",
+      "target": "shell_sidebar_sidebar",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "client/src/components/Shell/Sidebar.jsx",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "shell_sidebar_sidebar",
+      "target": "context_authcontext_useauth"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/components/UI/PinCard.jsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "client_src_components_ui_pincard_jsx",
+      "target": "ui_pincard_pincard",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/pages/BudgetsPage.jsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "client_src_pages_budgetspage_jsx",
+      "target": "client_src_components_ui_pincard_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/pages/DashboardPage.jsx",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "client_src_pages_dashboardpage_jsx",
+      "target": "client_src_components_ui_pincard_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/pages/GoalsPage.jsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "client_src_pages_goalspage_jsx",
+      "target": "client_src_components_ui_pincard_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/pages/RecurringPage.jsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "client_src_pages_recurringpage_jsx",
+      "target": "client_src_components_ui_pincard_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/pages/BudgetsPage.jsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "client_src_pages_budgetspage_jsx",
+      "target": "ui_pincard_pincard",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/pages/DashboardPage.jsx",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "client_src_pages_dashboardpage_jsx",
+      "target": "ui_pincard_pincard",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/pages/GoalsPage.jsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "client_src_pages_goalspage_jsx",
+      "target": "ui_pincard_pincard",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/pages/RecurringPage.jsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "client_src_pages_recurringpage_jsx",
+      "target": "ui_pincard_pincard",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/context/AuthContext.jsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "client_src_context_authcontext_jsx",
+      "target": "context_authcontext_authcontext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/context/AuthContext.jsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "client_src_context_authcontext_jsx",
+      "target": "context_authcontext_authprovider",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/context/AuthContext.jsx",
+      "source_location": "L73",
+      "weight": 1.0,
+      "source": "client_src_context_authcontext_jsx",
+      "target": "context_authcontext_useauth",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/pages/AuthPage.jsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "client_src_pages_authpage_jsx",
+      "target": "client_src_context_authcontext_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/pages/AuthPage.jsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "client_src_pages_authpage_jsx",
+      "target": "context_authcontext_useauth",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "client/src/pages/AuthPage.jsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "pages_authpage_authpage",
+      "target": "context_authcontext_useauth"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/pages/AnalyticsPage.jsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "client_src_pages_analyticspage_jsx",
+      "target": "pages_analyticspage_analyticspage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/pages/AuthPage.jsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "client_src_pages_authpage_jsx",
+      "target": "pages_authpage_authpage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/pages/BudgetsPage.jsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "client_src_pages_budgetspage_jsx",
+      "target": "pages_budgetspage_budgetspage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/pages/DashboardPage.jsx",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "client_src_pages_dashboardpage_jsx",
+      "target": "pages_dashboardpage_pinterest_colors",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/pages/DashboardPage.jsx",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "client_src_pages_dashboardpage_jsx",
+      "target": "pages_dashboardpage_dashboardpage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/pages/ExpensesPage.jsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "client_src_pages_expensespage_jsx",
+      "target": "pages_expensespage_expensespage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/pages/GoalsPage.jsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "client_src_pages_goalspage_jsx",
+      "target": "pages_goalspage_goalspage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/pages/RecurringPage.jsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "client_src_pages_recurringpage_jsx",
+      "target": "pages_recurringpage_recurringpage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/server.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "server_src_server_js",
+      "target": "src_server_express",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/server.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "server_src_server_js",
+      "target": "src_server_cors",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/server.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "server_src_server_js",
+      "target": "src_server_dotenv",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/server.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "server_src_server_js",
+      "target": "src_server_path",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/server.js",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "server_src_server_js",
+      "target": "server_src_config_db_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/server.js",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "server_src_server_js",
+      "target": "src_server_connectdb",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/server.js",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "server_src_server_js",
+      "target": "server_src_middleware_sanitize_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/server.js",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "server_src_server_js",
+      "target": "src_server_sanitizeinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/server.js",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "server_src_server_js",
+      "target": "server_src_routes_authroutes_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/server.js",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "server_src_server_js",
+      "target": "src_server_authroutes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/server.js",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "server_src_server_js",
+      "target": "server_src_routes_expenseroutes_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/server.js",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "server_src_server_js",
+      "target": "src_server_expenseroutes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/server.js",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "server_src_server_js",
+      "target": "server_src_routes_budgetroutes_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/server.js",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "server_src_server_js",
+      "target": "src_server_budgetroutes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/server.js",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "server_src_server_js",
+      "target": "server_src_routes_goalroutes_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/server.js",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "server_src_server_js",
+      "target": "src_server_goalroutes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/server.js",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "server_src_server_js",
+      "target": "server_src_routes_recurringroutes_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/server.js",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "server_src_server_js",
+      "target": "src_server_recurringroutes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/server.js",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "server_src_server_js",
+      "target": "server_src_routes_categoryroutes_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/server.js",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "server_src_server_js",
+      "target": "src_server_categoryroutes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/server.js",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "server_src_server_js",
+      "target": "server_src_routes_analyticsroutes_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/server.js",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "server_src_server_js",
+      "target": "src_server_analyticsroutes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/server.js",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "server_src_server_js",
+      "target": "server_src_routes_airoutes_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/server.js",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "server_src_server_js",
+      "target": "src_server_airoutes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/server.js",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "server_src_server_js",
+      "target": "src_server_app",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/tests/analytics.test.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "server_tests_analytics_test_js",
+      "target": "server_src_server_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/config/db.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "server_src_config_db_js",
+      "target": "config_db_mongoose",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/config/db.js",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "server_src_config_db_js",
+      "target": "config_db_connectdb",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/aiController.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "server_src_controllers_aicontroller_js",
+      "target": "server_src_services_ai_aiservice_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/aiController.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "server_src_controllers_aicontroller_js",
+      "target": "controllers_aicontroller_aiservice",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/aiRoutes.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "server_src_routes_airoutes_js",
+      "target": "server_src_controllers_aicontroller_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/analyticsController.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "server_src_controllers_analyticscontroller_js",
+      "target": "server_src_services_analytics_analyticsservice_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/analyticsController.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "server_src_controllers_analyticscontroller_js",
+      "target": "controllers_analyticscontroller_analyticsservice",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/analyticsRoutes.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "server_src_routes_analyticsroutes_js",
+      "target": "server_src_controllers_analyticscontroller_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/authController.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "server_src_controllers_authcontroller_js",
+      "target": "controllers_authcontroller_bcrypt",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/authController.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "server_src_controllers_authcontroller_js",
+      "target": "controllers_authcontroller_jwt",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/authController.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "server_src_controllers_authcontroller_js",
+      "target": "server_src_models_user_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/authController.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "server_src_controllers_authcontroller_js",
+      "target": "controllers_authcontroller_user",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/authController.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "server_src_controllers_authcontroller_js",
+      "target": "server_src_models_expense_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/authController.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "server_src_controllers_authcontroller_js",
+      "target": "controllers_authcontroller_expense",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/authController.js",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "server_src_controllers_authcontroller_js",
+      "target": "server_src_models_budget_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/authController.js",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "server_src_controllers_authcontroller_js",
+      "target": "controllers_authcontroller_budget",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/authController.js",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "server_src_controllers_authcontroller_js",
+      "target": "server_src_models_goal_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/authController.js",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "server_src_controllers_authcontroller_js",
+      "target": "controllers_authcontroller_goal",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/authController.js",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "server_src_controllers_authcontroller_js",
+      "target": "server_src_models_recurringexpense_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/authController.js",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "server_src_controllers_authcontroller_js",
+      "target": "controllers_authcontroller_recurringexpense",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/authController.js",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "server_src_controllers_authcontroller_js",
+      "target": "server_src_models_category_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/authController.js",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "server_src_controllers_authcontroller_js",
+      "target": "controllers_authcontroller_category",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/authController.js",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "server_src_controllers_authcontroller_js",
+      "target": "controllers_authcontroller_generatetoken",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/authController.js",
+      "source_location": "L41",
+      "weight": 1.0,
+      "source": "server_src_controllers_authcontroller_js",
+      "target": "controllers_authcontroller_defaultcategories",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/authController.js",
+      "source_location": "L135",
+      "weight": 1.0,
+      "source": "server_src_controllers_authcontroller_js",
+      "target": "controllers_authcontroller_now",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/authController.js",
+      "source_location": "L136",
+      "weight": 1.0,
+      "source": "server_src_controllers_authcontroller_js",
+      "target": "controllers_authcontroller_currentyear",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/authController.js",
+      "source_location": "L137",
+      "weight": 1.0,
+      "source": "server_src_controllers_authcontroller_js",
+      "target": "controllers_authcontroller_currentmonth",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/authController.js",
+      "source_location": "L140",
+      "weight": 1.0,
+      "source": "server_src_controllers_authcontroller_js",
+      "target": "controllers_authcontroller_sampleexpenses",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/authRoutes.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "server_src_routes_authroutes_js",
+      "target": "server_src_controllers_authcontroller_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/budgetController.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "server_src_controllers_budgetcontroller_js",
+      "target": "server_src_models_budget_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/budgetController.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "server_src_controllers_budgetcontroller_js",
+      "target": "controllers_budgetcontroller_budget",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/budgetRoutes.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "server_src_routes_budgetroutes_js",
+      "target": "server_src_controllers_budgetcontroller_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/categoryController.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "server_src_controllers_categorycontroller_js",
+      "target": "server_src_models_category_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/categoryController.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "server_src_controllers_categorycontroller_js",
+      "target": "controllers_categorycontroller_category",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/categoryRoutes.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "server_src_routes_categoryroutes_js",
+      "target": "server_src_controllers_categorycontroller_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/expenseController.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "server_src_controllers_expensecontroller_js",
+      "target": "server_src_models_expense_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/expenseController.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "server_src_controllers_expensecontroller_js",
+      "target": "controllers_expensecontroller_expense",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/expenseController.js",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "server_src_controllers_expensecontroller_js",
+      "target": "controllers_expensecontroller_query",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/expenseController.js",
+      "source_location": "L57",
+      "weight": 1.0,
+      "source": "server_src_controllers_expensecontroller_js",
+      "target": "controllers_expensecontroller_sortoptions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/expenseController.js",
+      "source_location": "L174",
+      "weight": 1.0,
+      "source": "server_src_controllers_expensecontroller_js",
+      "target": "controllers_expensecontroller_totalamount",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/expenseRoutes.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "server_src_routes_expenseroutes_js",
+      "target": "server_src_controllers_expensecontroller_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/goalController.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "server_src_controllers_goalcontroller_js",
+      "target": "server_src_models_goal_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/goalController.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "server_src_controllers_goalcontroller_js",
+      "target": "controllers_goalcontroller_goal",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/goalRoutes.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "server_src_routes_goalroutes_js",
+      "target": "server_src_controllers_goalcontroller_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/recurringController.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "server_src_controllers_recurringcontroller_js",
+      "target": "server_src_models_recurringexpense_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/recurringController.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "server_src_controllers_recurringcontroller_js",
+      "target": "controllers_recurringcontroller_recurringexpense",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/recurringController.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "server_src_controllers_recurringcontroller_js",
+      "target": "server_src_models_expense_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/recurringController.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "server_src_controllers_recurringcontroller_js",
+      "target": "controllers_recurringcontroller_expense",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/recurringController.js",
+      "source_location": "L91",
+      "weight": 1.0,
+      "source": "server_src_controllers_recurringcontroller_js",
+      "target": "controllers_recurringcontroller_totalspentalltime",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/recurringController.js",
+      "source_location": "L96",
+      "weight": 1.0,
+      "source": "server_src_controllers_recurringcontroller_js",
+      "target": "controllers_recurringcontroller_now",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/recurringController.js",
+      "source_location": "L97",
+      "weight": 1.0,
+      "source": "server_src_controllers_recurringcontroller_js",
+      "target": "controllers_recurringcontroller_nextdate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/recurringController.js",
+      "source_location": "L98",
+      "weight": 1.0,
+      "source": "server_src_controllers_recurringcontroller_js",
+      "target": "controllers_recurringcontroller_diffdays",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/recurringController.js",
+      "source_location": "L143",
+      "weight": 1.0,
+      "source": "server_src_controllers_recurringcontroller_js",
+      "target": "controllers_recurringcontroller_currentnext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/recurringRoutes.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "server_src_routes_recurringroutes_js",
+      "target": "server_src_controllers_recurringcontroller_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/middleware/auth.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "server_src_middleware_auth_js",
+      "target": "middleware_auth_jwt",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/middleware/auth.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "server_src_middleware_auth_js",
+      "target": "server_src_models_user_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/middleware/auth.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "server_src_middleware_auth_js",
+      "target": "middleware_auth_user",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/middleware/auth.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "server_src_middleware_auth_js",
+      "target": "middleware_auth_protect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/aiRoutes.js",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "server_src_routes_airoutes_js",
+      "target": "server_src_middleware_auth_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/analyticsRoutes.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "server_src_routes_analyticsroutes_js",
+      "target": "server_src_middleware_auth_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/authRoutes.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "server_src_routes_authroutes_js",
+      "target": "server_src_middleware_auth_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/budgetRoutes.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "server_src_routes_budgetroutes_js",
+      "target": "server_src_middleware_auth_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/categoryRoutes.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "server_src_routes_categoryroutes_js",
+      "target": "server_src_middleware_auth_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/expenseRoutes.js",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "server_src_routes_expenseroutes_js",
+      "target": "server_src_middleware_auth_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/goalRoutes.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "server_src_routes_goalroutes_js",
+      "target": "server_src_middleware_auth_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/recurringRoutes.js",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "server_src_routes_recurringroutes_js",
+      "target": "server_src_middleware_auth_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/aiRoutes.js",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "server_src_routes_airoutes_js",
+      "target": "middleware_auth_protect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/analyticsRoutes.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "server_src_routes_analyticsroutes_js",
+      "target": "middleware_auth_protect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/authRoutes.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "server_src_routes_authroutes_js",
+      "target": "middleware_auth_protect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/budgetRoutes.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "server_src_routes_budgetroutes_js",
+      "target": "middleware_auth_protect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/categoryRoutes.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "server_src_routes_categoryroutes_js",
+      "target": "middleware_auth_protect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/expenseRoutes.js",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "server_src_routes_expenseroutes_js",
+      "target": "middleware_auth_protect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/goalRoutes.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "server_src_routes_goalroutes_js",
+      "target": "middleware_auth_protect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/recurringRoutes.js",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "server_src_routes_recurringroutes_js",
+      "target": "middleware_auth_protect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/middleware/sanitize.js",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "server_src_middleware_sanitize_js",
+      "target": "middleware_sanitize_sanitizevalue",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/middleware/sanitize.js",
+      "source_location": "L30",
+      "weight": 1.0,
+      "source": "server_src_middleware_sanitize_js",
+      "target": "middleware_sanitize_sanitizeinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/middleware/sanitize.js",
+      "source_location": "L31",
+      "weight": 1.0,
+      "source": "middleware_sanitize_sanitizeinput",
+      "target": "middleware_sanitize_sanitizevalue",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/models/Budget.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "server_src_models_budget_js",
+      "target": "models_budget_mongoose",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/models/Budget.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "server_src_models_budget_js",
+      "target": "models_budget_budgetschema",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "server_src_services_analytics_analyticsservice_js",
+      "target": "server_src_models_budget_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/tests/analytics.test.js",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "server_tests_analytics_test_js",
+      "target": "server_src_models_budget_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/models/Category.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "server_src_models_category_js",
+      "target": "models_category_mongoose",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/models/Category.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "server_src_models_category_js",
+      "target": "models_category_categoryschema",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "server_src_services_ai_aiservice_js",
+      "target": "server_src_models_category_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/models/Expense.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "server_src_models_expense_js",
+      "target": "models_expense_mongoose",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/models/Expense.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "server_src_models_expense_js",
+      "target": "models_expense_expenseschema",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/toolRegistry.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "server_src_services_ai_toolregistry_js",
+      "target": "server_src_models_expense_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "server_src_services_analytics_analyticsservice_js",
+      "target": "server_src_models_expense_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/tests/analytics.test.js",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "server_tests_analytics_test_js",
+      "target": "server_src_models_expense_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/models/Goal.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "server_src_models_goal_js",
+      "target": "models_goal_mongoose",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/models/Goal.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "server_src_models_goal_js",
+      "target": "models_goal_goalschema",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "server_src_services_analytics_analyticsservice_js",
+      "target": "server_src_models_goal_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/models/RecurringExpense.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "server_src_models_recurringexpense_js",
+      "target": "models_recurringexpense_mongoose",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/models/RecurringExpense.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "server_src_models_recurringexpense_js",
+      "target": "models_recurringexpense_recurringexpenseschema",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "server_src_services_analytics_analyticsservice_js",
+      "target": "server_src_models_recurringexpense_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/models/User.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "server_src_models_user_js",
+      "target": "models_user_mongoose",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/models/User.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "server_src_models_user_js",
+      "target": "models_user_userschema",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/tests/analytics.test.js",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "server_tests_analytics_test_js",
+      "target": "server_src_models_user_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/aiRoutes.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "server_src_routes_airoutes_js",
+      "target": "routes_airoutes_express",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/aiRoutes.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "server_src_routes_airoutes_js",
+      "target": "routes_airoutes_router",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/aiRoutes.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "server_src_routes_airoutes_js",
+      "target": "routes_airoutes_suggestcategory_getmonthlysummaryai_getspendingexplanation_copilotchat_getinsights",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/aiRoutes.js",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "server_src_routes_airoutes_js",
+      "target": "routes_airoutes_protect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/analyticsRoutes.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "server_src_routes_analyticsroutes_js",
+      "target": "routes_analyticsroutes_express",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/analyticsRoutes.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "server_src_routes_analyticsroutes_js",
+      "target": "routes_analyticsroutes_router",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/analyticsRoutes.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "server_src_routes_analyticsroutes_js",
+      "target": "routes_analyticsroutes_getanalyticsoverview",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/analyticsRoutes.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "server_src_routes_analyticsroutes_js",
+      "target": "routes_analyticsroutes_protect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/authRoutes.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "server_src_routes_authroutes_js",
+      "target": "routes_authroutes_express",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/authRoutes.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "server_src_routes_authroutes_js",
+      "target": "routes_authroutes_router",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/authRoutes.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "server_src_routes_authroutes_js",
+      "target": "routes_authroutes_registeruser_loginuser_getme_seeddemoaccount",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/authRoutes.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "server_src_routes_authroutes_js",
+      "target": "routes_authroutes_protect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/budgetRoutes.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "server_src_routes_budgetroutes_js",
+      "target": "routes_budgetroutes_express",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/budgetRoutes.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "server_src_routes_budgetroutes_js",
+      "target": "routes_budgetroutes_router",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/budgetRoutes.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "server_src_routes_budgetroutes_js",
+      "target": "routes_budgetroutes_getbudgets_createbudget_updatebudget_deletebudget",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/budgetRoutes.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "server_src_routes_budgetroutes_js",
+      "target": "routes_budgetroutes_protect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/categoryRoutes.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "server_src_routes_categoryroutes_js",
+      "target": "routes_categoryroutes_express",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/categoryRoutes.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "server_src_routes_categoryroutes_js",
+      "target": "routes_categoryroutes_router",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/categoryRoutes.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "server_src_routes_categoryroutes_js",
+      "target": "routes_categoryroutes_getcategories_createcategory",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/categoryRoutes.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "server_src_routes_categoryroutes_js",
+      "target": "routes_categoryroutes_protect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/expenseRoutes.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "server_src_routes_expenseroutes_js",
+      "target": "routes_expenseroutes_express",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/expenseRoutes.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "server_src_routes_expenseroutes_js",
+      "target": "routes_expenseroutes_router",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/expenseRoutes.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "server_src_routes_expenseroutes_js",
+      "target": "routes_expenseroutes_getexpenses_getexpensebyid_createexpense_updateexpense_deleteexpense_getexpensesummary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/expenseRoutes.js",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "server_src_routes_expenseroutes_js",
+      "target": "routes_expenseroutes_protect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/goalRoutes.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "server_src_routes_goalroutes_js",
+      "target": "routes_goalroutes_express",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/goalRoutes.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "server_src_routes_goalroutes_js",
+      "target": "routes_goalroutes_router",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/goalRoutes.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "server_src_routes_goalroutes_js",
+      "target": "routes_goalroutes_getgoals_creategoal_updategoal_deletegoal",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/goalRoutes.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "server_src_routes_goalroutes_js",
+      "target": "routes_goalroutes_protect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/recurringRoutes.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "server_src_routes_recurringroutes_js",
+      "target": "routes_recurringroutes_express",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/recurringRoutes.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "server_src_routes_recurringroutes_js",
+      "target": "routes_recurringroutes_router",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/recurringRoutes.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "server_src_routes_recurringroutes_js",
+      "target": "routes_recurringroutes_getrecurringexpenses_createrecurringexpense_updaterecurringexpense_deleterecurringexpense_getrecurringhistory_recordrecurringpayment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/routes/recurringRoutes.js",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "server_src_routes_recurringroutes_js",
+      "target": "routes_recurringroutes_protect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "server_src_services_ai_aiservice_js",
+      "target": "server_src_services_ai_geminiclient_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "server_src_services_ai_aiservice_js",
+      "target": "ai_geminiclient_getgeminimodel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "server_src_services_ai_aiservice_js",
+      "target": "ai_aiservice_getgeminimodel_isavailable",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "server_src_services_ai_aiservice_js",
+      "target": "server_src_services_ai_contextbuilder_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "server_src_services_ai_aiservice_js",
+      "target": "ai_aiservice_contextbuilder",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "server_src_services_ai_aiservice_js",
+      "target": "server_src_services_ai_intentrouter_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "server_src_services_ai_aiservice_js",
+      "target": "ai_aiservice_intentrouter",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "server_src_services_ai_aiservice_js",
+      "target": "server_src_services_ai_toolregistry_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "server_src_services_ai_aiservice_js",
+      "target": "ai_aiservice_toolregistry",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "server_src_services_ai_aiservice_js",
+      "target": "server_src_services_analytics_analyticsservice_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "server_src_services_ai_aiservice_js",
+      "target": "ai_aiservice_analyticsservice",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "server_src_services_ai_aiservice_js",
+      "target": "ai_aiservice_category",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "server_src_services_ai_aiservice_js",
+      "target": "ai_aiservice_sanitizeusertext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "server_src_services_ai_aiservice_js",
+      "target": "ai_aiservice_aiservice",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L23",
+      "weight": 1.0,
+      "source": "ai_aiservice_aiservice_suggestcategory",
+      "target": "ai_aiservice_sanitizeusertext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L151",
+      "weight": 1.0,
+      "source": "ai_aiservice_aiservice_copilotchat",
+      "target": "ai_aiservice_sanitizeusertext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "ai_aiservice_aiservice",
+      "target": "ai_aiservice_aiservice_suggestcategory",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L78",
+      "weight": 1.0,
+      "source": "ai_aiservice_aiservice",
+      "target": "ai_aiservice_aiservice_getmonthlysummaryai",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L119",
+      "weight": 1.0,
+      "source": "ai_aiservice_aiservice",
+      "target": "ai_aiservice_aiservice_getspendingexplanation",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L150",
+      "weight": 1.0,
+      "source": "ai_aiservice_aiservice",
+      "target": "ai_aiservice_aiservice_copilotchat",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L214",
+      "weight": 1.0,
+      "source": "ai_aiservice_aiservice",
+      "target": "ai_aiservice_aiservice_getinsights",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L52",
+      "weight": 1.0,
+      "source": "ai_aiservice_aiservice_suggestcategory",
+      "target": "ai_geminiclient_getgeminimodel"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L92",
+      "weight": 1.0,
+      "source": "ai_aiservice_aiservice_getmonthlysummaryai",
+      "target": "ai_geminiclient_getgeminimodel"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L130",
+      "weight": 1.0,
+      "source": "ai_aiservice_aiservice_getspendingexplanation",
+      "target": "ai_geminiclient_getgeminimodel"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L186",
+      "weight": 1.0,
+      "source": "ai_aiservice_aiservice_copilotchat",
+      "target": "ai_geminiclient_getgeminimodel"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/contextBuilder.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "server_src_services_ai_contextbuilder_js",
+      "target": "server_src_services_analytics_analyticsservice_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/contextBuilder.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "server_src_services_ai_contextbuilder_js",
+      "target": "ai_contextbuilder_analyticsservice",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/contextBuilder.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "server_src_services_ai_contextbuilder_js",
+      "target": "ai_contextbuilder_contextbuilder",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/contextBuilder.js",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "ai_contextbuilder_contextbuilder",
+      "target": "ai_contextbuilder_contextbuilder_buildfinancialcontext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/geminiClient.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "server_src_services_ai_geminiclient_js",
+      "target": "ai_geminiclient_googlegenerativeai",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/geminiClient.js",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "server_src_services_ai_geminiclient_js",
+      "target": "ai_geminiclient_getgeminimodel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/intentRouter.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "server_src_services_ai_intentrouter_js",
+      "target": "ai_intentrouter_intentrouter",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/intentRouter.js",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "ai_intentrouter_intentrouter",
+      "target": "ai_intentrouter_intentrouter_classifyintent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/toolRegistry.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "server_src_services_ai_toolregistry_js",
+      "target": "server_src_services_analytics_analyticsservice_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/toolRegistry.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "server_src_services_ai_toolregistry_js",
+      "target": "ai_toolregistry_analyticsservice",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/toolRegistry.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "server_src_services_ai_toolregistry_js",
+      "target": "ai_toolregistry_expense",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/toolRegistry.js",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "server_src_services_ai_toolregistry_js",
+      "target": "ai_toolregistry_toolregistry",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/toolRegistry.js",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "ai_toolregistry_toolregistry",
+      "target": "ai_toolregistry_toolregistry_executetool",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "server_src_services_analytics_analyticsservice_js",
+      "target": "analytics_analyticsservice_expense",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "server_src_services_analytics_analyticsservice_js",
+      "target": "analytics_analyticsservice_budget",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "server_src_services_analytics_analyticsservice_js",
+      "target": "analytics_analyticsservice_goal",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "server_src_services_analytics_analyticsservice_js",
+      "target": "analytics_analyticsservice_recurringexpense",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "server_src_services_analytics_analyticsservice_js",
+      "target": "analytics_analyticsservice_analyticsservice",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "analytics_analyticsservice_analyticsservice",
+      "target": "analytics_analyticsservice_analyticsservice_getmonthlysummary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L43",
+      "weight": 1.0,
+      "source": "analytics_analyticsservice_analyticsservice",
+      "target": "analytics_analyticsservice_analyticsservice_getcategorybreakdown",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L78",
+      "weight": 1.0,
+      "source": "analytics_analyticsservice_analyticsservice",
+      "target": "analytics_analyticsservice_analyticsservice_getmonthlycomparison",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L129",
+      "weight": 1.0,
+      "source": "analytics_analyticsservice_analyticsservice",
+      "target": "analytics_analyticsservice_analyticsservice_getbudgetutilization",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L176",
+      "weight": 1.0,
+      "source": "analytics_analyticsservice_analyticsservice",
+      "target": "analytics_analyticsservice_analyticsservice_getspendingvelocity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L193",
+      "weight": 1.0,
+      "source": "analytics_analyticsservice_analyticsservice",
+      "target": "analytics_analyticsservice_analyticsservice_getrecurringexpensesummary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L213",
+      "weight": 1.0,
+      "source": "analytics_analyticsservice_analyticsservice",
+      "target": "analytics_analyticsservice_analyticsservice_getgoalprogress",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L247",
+      "weight": 1.0,
+      "source": "analytics_analyticsservice_analyticsservice",
+      "target": "analytics_analyticsservice_analyticsservice_getmerchantsummary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L268",
+      "weight": 1.0,
+      "source": "analytics_analyticsservice_analyticsservice",
+      "target": "analytics_analyticsservice_analyticsservice_getanomalies",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L177",
+      "weight": 1.0,
+      "source": "analytics_analyticsservice_analyticsservice_getspendingvelocity",
+      "target": "analytics_analyticsservice_analyticsservice_getmonthlysummary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/tests/analytics.test.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "server_tests_analytics_test_js",
+      "target": "tests_analytics_test_request",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/tests/analytics.test.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "server_tests_analytics_test_js",
+      "target": "tests_analytics_test_mongoose",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/tests/analytics.test.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "server_tests_analytics_test_js",
+      "target": "tests_analytics_test_mongomemoryserver",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/tests/analytics.test.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "server_tests_analytics_test_js",
+      "target": "tests_analytics_test_app",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/tests/analytics.test.js",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "server_tests_analytics_test_js",
+      "target": "tests_analytics_test_user",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/tests/analytics.test.js",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "server_tests_analytics_test_js",
+      "target": "tests_analytics_test_expense",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/tests/analytics.test.js",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "server_tests_analytics_test_js",
+      "target": "tests_analytics_test_budget",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/tests/analytics.test.js",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "server_tests_analytics_test_js",
+      "target": "tests_analytics_test_mongouri",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/tests/analytics.test.js",
+      "source_location": "L39",
+      "weight": 1.0,
+      "source": "server_tests_analytics_test_js",
+      "target": "tests_analytics_test_newexpense",
+      "confidence_score": 1.0
+    }
+  ],
+  "hyperedges": []
+}

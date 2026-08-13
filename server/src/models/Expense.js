@@ -1,0 +1,71 @@
+const mongoose = require('mongoose');
+
+const expenseSchema = new mongoose.Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: [true, 'User ID is required'],
+    index: true,
+  },
+  title: {
+    type: String,
+    required: [true, 'Expense title is required'],
+    trim: true,
+  },
+  amount: {
+    type: Number,
+    required: [true, 'Amount is required'],
+    min: [0, 'Amount must be non-negative'],
+  },
+  category: {
+    type: String,
+    required: [true, 'Category is required'],
+    trim: true,
+    index: true,
+  },
+  date: {
+    type: Date,
+    default: Date.now,
+    index: true,
+  },
+  note: {
+    type: String,
+    default: '',
+    trim: true,
+  },
+  currency: {
+    type: String,
+    default: '₹',
+  },
+  merchant: {
+    type: String,
+    default: '',
+    trim: true,
+  },
+  paymentMethod: {
+    type: String,
+    enum: ['Card', 'Cash', 'UPI', 'Bank Transfer', 'Other'],
+    default: 'Card',
+  },
+  tags: [{
+    type: String,
+    trim: true,
+  }],
+  recurringExpenseId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'RecurringExpense',
+    default: null,
+  },
+  source: {
+    type: String,
+    enum: ['manual', 'recurring', 'ai_suggested', 'import'],
+    default: 'manual',
+  },
+}, {
+  timestamps: true,
+});
+
+expenseSchema.index({ userId: 1, date: -1 });
+expenseSchema.index({ userId: 1, category: 1 });
+
+module.exports = mongoose.model('Expense', expenseSchema);
