@@ -68,8 +68,10 @@ export const ExpenseFormModal = ({ isOpen, onClose, onSave, categories = [] }) =
     }
   };
 
+  if (!isOpen) return null;
+
   return (
-    <div className="modal-overlay">
+    <div className="modal-overlay" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
       <div className="modal-card">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
           <h2 className="heading-lg">Record Expense</h2>
