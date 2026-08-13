@@ -1,6 +1,10 @@
 const RecurringExpense = require('../models/RecurringExpense');
 const Expense = require('../models/Expense');
 
+const escapeRegex = (text = '') => {
+  return String(text).replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+};
+
 // @desc    Get all recurring expenses for logged in user
 // @route   GET /api/recurring
 exports.getRecurringExpenses = async (req, res) => {
@@ -78,13 +82,14 @@ exports.getRecurringHistory = async (req, res) => {
     const item = await RecurringExpense.findOne({ _id: req.params.id, userId: req.user._id });
     if (!item) return res.status(404).json({ message: 'Subscription not found' });
 
-    // Find all linked expenses
+    // Find all linked expenses with safe regex escaping
+    const safeTitle = escapeRegex(item.title);
     const historyExpenses = await Expense.find({
       userId: req.user._id,
       $or: [
         { recurringExpenseId: item._id },
-        { title: { $regex: item.title, $options: 'i' } },
-        { merchant: { $regex: item.title, $options: 'i' } },
+        { title: { $regex: safeTitle, $options: 'i' } },
+        { merchant: { $regex: safeTitle, $options: 'i' } },
       ],
     }).sort({ date: -1 });
 

@@ -61,7 +61,7 @@ export const Header = ({ onAddExpense, onOpenCopilot, searchQuery, setSearchQuer
                 background: 'none',
                 border: 'none',
                 cursor: 'pointer',
-                color: 'var(--mute)',
+                color: 'var(--color-muted-text)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',

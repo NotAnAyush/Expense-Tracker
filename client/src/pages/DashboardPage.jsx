@@ -96,22 +96,22 @@ export const DashboardPage = ({ onOpenCopilot, onAddExpense }) => {
 
       {/* Selected Category Spotlight (when a category chip is active) */}
       {selectedCategoryInfo && (
-        <div className="pin-card-large" style={{ backgroundColor: 'var(--canvas)', border: '1px solid var(--hairline)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
+        <div className="pin-card-large" style={{ backgroundColor: 'var(--color-primary)', border: '1px solid var(--color-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-              <span className="pin-overlay-pill" style={{ backgroundColor: 'var(--ink)', color: '#ffffff' }}>Category Focus</span>
-              <h3 className="heading-lg">{selectedCategoryInfo.category}</h3>
+              <span className="pin-overlay-pill" style={{ backgroundColor: 'var(--color-secondary)', color: 'var(--color-accent)' }}>Category Focus</span>
+              <h3 className="heading-lg" style={{ color: 'var(--color-foreground)' }}>{selectedCategoryInfo.category}</h3>
             </div>
-            <p className="body-sm">
+            <p className="body-sm" style={{ color: 'var(--color-muted-text)' }}>
               Accounting for {selectedCategoryInfo.percentage}% of your total spending this month.
               {selectedCategoryBudget ? ` Allocated Limit: ₹${selectedCategoryBudget.allocated.toLocaleString()} (${selectedCategoryBudget.percentage}% used).` : ' No budget limit set.'}
             </p>
           </div>
           <div style={{ textAlign: 'right' }}>
-            <div style={{ fontSize: '28px', fontWeight: 700, color: 'var(--primary)' }}>
+            <div style={{ fontSize: '28px', fontWeight: 700, fontFamily: 'var(--font-heading)', color: 'var(--color-accent)' }}>
               ₹{selectedCategoryInfo.amount.toLocaleString()}
             </div>
-            <button onClick={() => setActiveChip('All')} className="body-sm" style={{ color: 'var(--mute)', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>
+            <button onClick={() => setActiveChip('All')} className="body-sm" style={{ color: 'var(--color-muted-text)', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>
               Reset to All
             </button>
           </div>

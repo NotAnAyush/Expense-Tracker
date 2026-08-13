@@ -1,5 +1,10 @@
 const Expense = require('../models/Expense');
 
+// Escape special characters to prevent regex injection and syntax errors
+const escapeRegex = (text = '') => {
+  return String(text).replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+};
+
 // @desc    Get all expenses for logged in user with filtering & pagination
 // @route   GET /api/expenses
 exports.getExpenses = async (req, res) => {
@@ -26,7 +31,8 @@ exports.getExpenses = async (req, res) => {
     }
 
     if (merchant) {
-      query.merchant = { $regex: merchant, $options: 'i' };
+      const cleanMerchant = escapeRegex(merchant);
+      query.merchant = { $regex: cleanMerchant, $options: 'i' };
     }
 
     if (paymentMethod) {
@@ -34,11 +40,12 @@ exports.getExpenses = async (req, res) => {
     }
 
     if (search) {
+      const cleanSearch = escapeRegex(search);
       query.$or = [
-        { title: { $regex: search, $options: 'i' } },
-        { note: { $regex: search, $options: 'i' } },
-        { merchant: { $regex: search, $options: 'i' } },
-        { category: { $regex: search, $options: 'i' } },
+        { title: { $regex: cleanSearch, $options: 'i' } },
+        { note: { $regex: cleanSearch, $options: 'i' } },
+        { merchant: { $regex: cleanSearch, $options: 'i' } },
+        { category: { $regex: cleanSearch, $options: 'i' } },
       ];
     }
 

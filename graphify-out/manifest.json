@@ -1,0 +1,230 @@
+{
+  "D:\\Project\\Expense Tracker\\V2\\client\\src\\App.jsx": {
+    "mtime": 1786605112.2326224,
+    "hash": "40ef56c59aaa68f3dae0ba0a5f86834e"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\client\\src\\main.jsx": {
+    "mtime": 1786527056.004842,
+    "hash": "ec05c83d9bfed70d888b2da13f269eef"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\client\\src\\api\\client.js": {
+    "mtime": 1786605112.2341554,
+    "hash": "9575d99186a0534c63ee7d2689edc750"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\client\\src\\components\\Copilot\\CopilotDrawer.jsx": {
+    "mtime": 1786605771.7317011,
+    "hash": "16b1c0ee0fcb23638bc9f620a74ba53a"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\client\\src\\components\\Expenses\\ExpenseFormModal.jsx": {
+    "mtime": 1786605771.732225,
+    "hash": "b1b91d3213570e7be74704fab56dcff9"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\client\\src\\components\\Shell\\Header.jsx": {
+    "mtime": 1786607598.3968003,
+    "hash": "ec4ccdeceff6301dfd3f25fa94395034"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\client\\src\\components\\Shell\\Sidebar.jsx": {
+    "mtime": 1786605771.7332492,
+    "hash": "85cd31efa1543198f129836e3583d6e2"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\client\\src\\components\\UI\\PinCard.jsx": {
+    "mtime": 1786605771.7347457,
+    "hash": "f7e33ee6aff449a141c9519e77e9d6f5"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\client\\src\\context\\AuthContext.jsx": {
+    "mtime": 1786605112.238168,
+    "hash": "f090a679f64ff3a8aead8132a8dbd171"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\client\\src\\pages\\AnalyticsPage.jsx": {
+    "mtime": 1786605771.7367556,
+    "hash": "9534be96aa0c5e837ee32b26d08b7fd5"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\client\\src\\pages\\AuthPage.jsx": {
+    "mtime": 1786605771.7367556,
+    "hash": "bed2fd2628a6c515196016bdaa75c162"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\client\\src\\pages\\BudgetsPage.jsx": {
+    "mtime": 1786605771.7377534,
+    "hash": "677f413af275119fbbb59077da59fb83"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\client\\src\\pages\\DashboardPage.jsx": {
+    "mtime": 1786607581.402679,
+    "hash": "93eb775b8d3825e9019760b5d604dd97"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\client\\src\\pages\\ExpensesPage.jsx": {
+    "mtime": 1786605112.2411604,
+    "hash": "2eaa13fab6307a1826b245ba4e4f3bcb"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\client\\src\\pages\\GoalsPage.jsx": {
+    "mtime": 1786607572.889037,
+    "hash": "28d94a0303eb611185807576dd194631"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\client\\src\\pages\\RecurringPage.jsx": {
+    "mtime": 1786607554.1189547,
+    "hash": "8446fc04f4251c7a8b04cda0bae51997"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\server\\src\\server.js": {
+    "mtime": 1786538727.9287765,
+    "hash": "ea58e0b78ce49387ce9b51ad2a828148"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\server\\src\\config\\db.js": {
+    "mtime": 1786529571.8925014,
+    "hash": "1e47b1c49fb8f6c15e569d12e63c26f7"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\server\\src\\controllers\\aiController.js": {
+    "mtime": 1786526967.7609775,
+    "hash": "83b5b4b71b2d9e6834ece457cb4fdd18"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\server\\src\\controllers\\analyticsController.js": {
+    "mtime": 1786526945.9358087,
+    "hash": "9a283bbe0eae087f5710cdc9a06ad84a"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\server\\src\\controllers\\authController.js": {
+    "mtime": 1786526907.5411098,
+    "hash": "beee603f71849c2e223ffe65222ce547"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\server\\src\\controllers\\budgetController.js": {
+    "mtime": 1786605112.2462013,
+    "hash": "fcc1078cd10e941d4f572c35c02572cb"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\server\\src\\controllers\\categoryController.js": {
+    "mtime": 1786526935.6043365,
+    "hash": "c98cf51923b2ecfb108cd5b35c36c844"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\server\\src\\controllers\\expenseController.js": {
+    "mtime": 1786607519.8003874,
+    "hash": "cc73ebf24b7877cef66f594b4db307c4"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\server\\src\\controllers\\goalController.js": {
+    "mtime": 1786605112.2472057,
+    "hash": "a6d4f615d4b5368e6f45af373f46da36"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\server\\src\\controllers\\recurringController.js": {
+    "mtime": 1786607530.380345,
+    "hash": "21b3d0871482ab7bf808b3cbe83bcba7"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\server\\src\\middleware\\auth.js": {
+    "mtime": 1786526902.6043777,
+    "hash": "983bbc8936eb0b048a3d9e250b42902d"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\server\\src\\middleware\\sanitize.js": {
+    "mtime": 1786538723.9163868,
+    "hash": "ac197389fc86f96bba972d8b82931370"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\server\\src\\models\\Budget.js": {
+    "mtime": 1786526891.8008547,
+    "hash": "a820164752ea90de71f8b0fe7d961e77"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\server\\src\\models\\Category.js": {
+    "mtime": 1786605112.248201,
+    "hash": "9893864be93a3f35561284e228db81ce"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\server\\src\\models\\Expense.js": {
+    "mtime": 1786526887.3687396,
+    "hash": "d45b72ff07bb7150fa201b1e73ec240f"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\server\\src\\models\\Goal.js": {
+    "mtime": 1786526897.4243596,
+    "hash": "87f0d516d350567389af232dc250645e"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\server\\src\\models\\RecurringExpense.js": {
+    "mtime": 1786526894.3760967,
+    "hash": "dc512e0480064d8e4e1b818bff702c51"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\server\\src\\models\\User.js": {
+    "mtime": 1786526883.415367,
+    "hash": "ec6d240709762ca480c06da22dbad90b"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\server\\src\\routes\\aiRoutes.js": {
+    "mtime": 1786526970.0321372,
+    "hash": "71d833cea48aeaa5cdd2315963c192ab"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\server\\src\\routes\\analyticsRoutes.js": {
+    "mtime": 1786526947.747989,
+    "hash": "167f1e1ab5fdff6cbc3bb06cf2ae95e4"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\server\\src\\routes\\authRoutes.js": {
+    "mtime": 1786526911.0697849,
+    "hash": "12806010aa1d6ac2f3be5f5ef0016a61"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\server\\src\\routes\\budgetRoutes.js": {
+    "mtime": 1786526923.8597834,
+    "hash": "90d1fe112401aa06bdec53855a111d2d"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\server\\src\\routes\\categoryRoutes.js": {
+    "mtime": 1786526937.6074328,
+    "hash": "2b6ef767fcddd44d5a3baf7dc5b89fe8"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\server\\src\\routes\\expenseRoutes.js": {
+    "mtime": 1786526918.5956304,
+    "hash": "c44db42cf57a4eea437d4490809c07a2"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\server\\src\\routes\\goalRoutes.js": {
+    "mtime": 1786526928.9948034,
+    "hash": "d31157341845c704df850111b2f85a42"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\server\\src\\routes\\recurringRoutes.js": {
+    "mtime": 1786538736.3894854,
+    "hash": "7511a4e6cdce46827f0a1ed3480e8dee"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\server\\src\\services\\ai\\aiService.js": {
+    "mtime": 1786538742.6166384,
+    "hash": "c8ebff44efba44021372bb9ef64040c4"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\server\\src\\services\\ai\\contextBuilder.js": {
+    "mtime": 1786526953.9975412,
+    "hash": "0efaae01329a323d1a78fa77f1500708"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\server\\src\\services\\ai\\geminiClient.js": {
+    "mtime": 1786526951.015681,
+    "hash": "60af97a7da8d5d25e246dcc71e5cda97"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\server\\src\\services\\ai\\intentRouter.js": {
+    "mtime": 1786526959.2401502,
+    "hash": "06dd8f0250cbcbea08172f6e76d709b6"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\server\\src\\services\\ai\\toolRegistry.js": {
+    "mtime": 1786526956.3961575,
+    "hash": "e78aad7c116b19c6a9f3cd001bea319a"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\server\\src\\services\\analytics\\analyticsService.js": {
+    "mtime": 1786605112.248201,
+    "hash": "8b3c274c64b6309e5cc4061ddc351893"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\server\\tests\\analytics.test.js": {
+    "mtime": 1786526976.0700154,
+    "hash": "114bb440471eb8397ba27da5cd8f7214"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\README.md": {
+    "mtime": 1786526833.3803084,
+    "hash": "6f77059d1b34b7d4ddfae321a858761c"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\skill_output.txt": {
+    "mtime": 1786539622.8764615,
+    "hash": "72a231ac330d5212f0b35fd72ea26be6"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\client\\index.html": {
+    "mtime": 1786605771.7270937,
+    "hash": "622329ac2900044b368efb8d26c8a126"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\Design\\pinterest\\DESIGN.md": {
+    "mtime": 1778506381.0,
+    "hash": "e71b564144b90083e381fdabbbecc2f8"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\Design\\pinterest\\README.md": {
+    "mtime": 1778506381.0,
+    "hash": "784ea5ee77f18a7e146124dbe500ee00"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\design-system\\expense-tracker\\MASTER.md": {
+    "mtime": 1786605771.7398663,
+    "hash": "b4d5418194c8db5d0554a4141909c245"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\Plan\\Revised Master Antigravity Prompt \u2014 AI-First Personal Finance Intelligence Platform.md": {
+    "mtime": 1786526377.556042,
+    "hash": "f0217432422740588781e3b1014daf20"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\client\\public\\logo.jpg": {
+    "mtime": 1786605771.7296057,
+    "hash": "700feb95bc1697f7eeda76a8d5176e10"
+  }
+}
