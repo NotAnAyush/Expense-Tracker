@@ -1,11 +1,9 @@
 import React from 'react';
-import { Search, Plus, Bot, Wallet } from 'lucide-react';
+import { Search, Plus, Bot, Wallet, X } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
-export const Header = ({ onAddExpense, onOpenCopilot, searchQuery, setSearchQuery, activeFilter, setActiveFilter }) => {
+export const Header = ({ onAddExpense, onOpenCopilot, searchQuery, setSearchQuery }) => {
   const { user } = useAuth();
-
-  const filterChips = ['All', 'Food & Dining', 'Transportation', 'Housing & Utilities', 'Shopping', 'Subscriptions', 'Budgets', 'Anomalies'];
 
   return (
     <header style={{
@@ -19,6 +17,7 @@ export const Header = ({ onAddExpense, onOpenCopilot, searchQuery, setSearchQuer
       position: 'sticky',
       top: 0,
       zIndex: 30,
+      width: '100%',
     }}>
       {/* Brand Wordmark */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
@@ -34,14 +33,14 @@ export const Header = ({ onAddExpense, onOpenCopilot, searchQuery, setSearchQuer
         }}>
           <Wallet size={20} />
         </div>
-        <span style={{ fontFamily: 'Pin Sans, Inter, sans-serif', fontSize: '20px', fontWeight: 700, letterSpacing: '-0.8px', color: 'var(--ink)' }}>
+        <span style={{ fontFamily: 'var(--font-family)', fontSize: '20px', fontWeight: 700, letterSpacing: '-0.8px', color: 'var(--ink)' }}>
           Antigravity
         </span>
       </div>
 
       {/* Centered Pill Search Bar */}
       <div style={{ flex: 1, maxWidth: '600px', margin: '0 auto' }}>
-        <div className="search-bar-container">
+        <div className="search-bar-container" style={{ position: 'relative' }}>
           <Search size={18} color="var(--mute)" style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)' }} />
           <input
             type="text"
@@ -49,7 +48,29 @@ export const Header = ({ onAddExpense, onOpenCopilot, searchQuery, setSearchQuer
             placeholder="Search ideas, transactions, merchants, categories..."
             value={searchQuery || ''}
             onChange={(e) => setSearchQuery && setSearchQuery(e.target.value)}
+            style={{ paddingRight: searchQuery ? '40px' : '16px' }}
           />
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery && setSearchQuery('')}
+              style={{
+                position: 'absolute',
+                right: '14px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                color: 'var(--mute)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+              title="Clear Search"
+            >
+              <X size={16} />
+            </button>
+          )}
         </div>
       </div>
 

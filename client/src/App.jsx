@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { Sidebar } from './components/Shell/Sidebar';
 import { Header } from './components/Shell/Header';
@@ -20,10 +20,20 @@ const MainApp = () => {
   const [copilotOpen, setCopilotOpen] = useState(false);
   const [expenseModalOpen, setExpenseModalOpen] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    if (user) {
+      apiFetch('/categories')
+        .then((res) => setCategories(res || []))
+        .catch(() => {});
+    }
+  }, [user, refreshKey]);
 
   if (loading) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0b0f19', color: 'var(--text-muted)' }}>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--surface-soft)', color: 'var(--mute)' }}>
         Initializing Personal Finance Intelligence Platform...
       </div>
     );
@@ -32,6 +42,13 @@ const MainApp = () => {
   if (!user) {
     return <AuthPage />;
   }
+
+  const handleSearchChange = (val) => {
+    setSearchQuery(val);
+    if (val && activeTab !== 'expenses') {
+      setActiveTab('expenses');
+    }
+  };
 
   const handleSaveExpense = async (expenseData) => {
     await apiFetch('/expenses', {
@@ -49,30 +66,37 @@ const MainApp = () => {
         onOpenCopilot={() => setCopilotOpen(true)}
       />
 
-      <main className="main-content">
+      <div className="main-wrapper">
         <Header
           onAddExpense={() => setExpenseModalOpen(true)}
           onOpenCopilot={() => setCopilotOpen(true)}
+          searchQuery={searchQuery}
+          setSearchQuery={handleSearchChange}
         />
 
-        {activeTab === 'dashboard' && (
-          <DashboardPage
-            key={refreshKey}
-            onOpenCopilot={() => setCopilotOpen(true)}
-            onAddExpense={() => setExpenseModalOpen(true)}
-          />
-        )}
-        {activeTab === 'expenses' && (
-          <ExpensesPage
-            key={refreshKey}
-            onAddExpense={() => setExpenseModalOpen(true)}
-          />
-        )}
-        {activeTab === 'budgets' && <BudgetsPage key={refreshKey} />}
-        {activeTab === 'goals' && <GoalsPage key={refreshKey} />}
-        {activeTab === 'recurring' && <RecurringPage key={refreshKey} />}
-        {activeTab === 'analytics' && <AnalyticsPage key={refreshKey} />}
-      </main>
+        <main className="main-content">
+          {activeTab === 'dashboard' && (
+            <DashboardPage
+              key={refreshKey}
+              onOpenCopilot={() => setCopilotOpen(true)}
+              onAddExpense={() => setExpenseModalOpen(true)}
+            />
+          )}
+          {activeTab === 'expenses' && (
+            <ExpensesPage
+              key={refreshKey}
+              onAddExpense={() => setExpenseModalOpen(true)}
+              externalSearch={searchQuery}
+              onClearExternalSearch={() => setSearchQuery('')}
+              categories={categories}
+            />
+          )}
+          {activeTab === 'budgets' && <BudgetsPage key={refreshKey} categories={categories} />}
+          {activeTab === 'goals' && <GoalsPage key={refreshKey} />}
+          {activeTab === 'recurring' && <RecurringPage key={refreshKey} categories={categories} />}
+          {activeTab === 'analytics' && <AnalyticsPage key={refreshKey} />}
+        </main>
+      </div>
 
       <CopilotDrawer
         isOpen={copilotOpen}
@@ -83,6 +107,7 @@ const MainApp = () => {
         isOpen={expenseModalOpen}
         onClose={() => setExpenseModalOpen(false)}
         onSave={handleSaveExpense}
+        categories={categories}
       />
     </div>
   );
