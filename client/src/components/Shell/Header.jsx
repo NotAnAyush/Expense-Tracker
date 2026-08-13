@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, Plus, Bot } from 'lucide-react';
+import { Search, Plus, Bot, X } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 export const Header = ({ onAddExpense, onOpenCopilot, searchQuery, setSearchQuery }) => {
@@ -17,6 +17,7 @@ export const Header = ({ onAddExpense, onOpenCopilot, searchQuery, setSearchQuer
       position: 'sticky',
       top: 0,
       zIndex: 30,
+      width: '100%',
     }}>
       {/* Brand Wordmark & Logo */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
@@ -39,7 +40,7 @@ export const Header = ({ onAddExpense, onOpenCopilot, searchQuery, setSearchQuer
 
       {/* Centered Pill Search Bar */}
       <div style={{ flex: 1, maxWidth: '600px', margin: '0 auto' }}>
-        <div className="search-bar-container">
+        <div className="search-bar-container" style={{ position: 'relative' }}>
           <Search size={18} color="var(--color-muted-text)" style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)' }} />
           <input
             type="text"
@@ -47,7 +48,29 @@ export const Header = ({ onAddExpense, onOpenCopilot, searchQuery, setSearchQuer
             placeholder="Search transactions, merchants, categories..."
             value={searchQuery || ''}
             onChange={(e) => setSearchQuery && setSearchQuery(e.target.value)}
+            style={{ paddingRight: searchQuery ? '40px' : '16px' }}
           />
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery && setSearchQuery('')}
+              style={{
+                position: 'absolute',
+                right: '14px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                color: 'var(--mute)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+              title="Clear Search"
+            >
+              <X size={16} />
+            </button>
+          )}
         </div>
       </div>
 

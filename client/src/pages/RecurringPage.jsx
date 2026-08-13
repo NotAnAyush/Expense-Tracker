@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Edit2, Trash2, CheckCircle2, History, X } from 'lucide-react';
-import { apiFetch } from '../api/client';
+import { apiFetch, getLocalDateString } from '../api/client';
 import { PinCard } from '../components/UI/PinCard';
 
 export const RecurringPage = () => {
@@ -44,7 +44,7 @@ export const RecurringPage = () => {
     setAmount('');
     setCategory('Subscriptions');
     setFrequency('monthly');
-    setNextOccurrence(new Date().toISOString().split('T')[0]);
+    setNextOccurrence(getLocalDateString(new Date()));
     setActive(true);
     setShowModal(true);
   };
@@ -55,7 +55,7 @@ export const RecurringPage = () => {
     setAmount(item.amount);
     setCategory(item.category);
     setFrequency(item.frequency || 'monthly');
-    setNextOccurrence(new Date(item.nextOccurrence).toISOString().split('T')[0]);
+    setNextOccurrence(getLocalDateString(item.nextOccurrence));
     setActive(item.active !== false);
     setShowModal(true);
   };
@@ -130,7 +130,12 @@ export const RecurringPage = () => {
 
   const totalMonthlyBurden = recurring
     .filter(r => r.active !== false)
-    .reduce((sum, item) => sum + item.amount, 0);
+    .reduce((sum, item) => {
+      if (item.frequency === 'yearly') return sum + Math.round(item.amount / 12);
+      if (item.frequency === 'weekly') return sum + Math.round(item.amount * 4.33);
+      if (item.frequency === 'daily') return sum + Math.round(item.amount * 30);
+      return sum + item.amount;
+    }, 0);
 
   if (loading) return <div style={{ padding: '64px', textAlign: 'center', color: 'var(--color-muted-text)' }} className="body-md">Loading Subscriptions Engine...</div>;
 

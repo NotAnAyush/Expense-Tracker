@@ -3,11 +3,17 @@ import { Plus } from 'lucide-react';
 import { apiFetch } from '../api/client';
 import { PinCard } from '../components/UI/PinCard';
 
-export const BudgetsPage = () => {
+export const BudgetsPage = ({ categories = [] }) => {
   const [budgetData, setBudgetData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const [category, setCategory] = useState('Food & Dining');
+
+  const defaultCategoryList = ['Food & Dining', 'Transportation', 'Housing & Utilities', 'Entertainment', 'Shopping', 'Subscriptions', 'Health & Medical'];
+  const availableCategories = categories.length > 0
+    ? categories.filter(c => c.type !== 'income').map(c => c.name || c)
+    : defaultCategoryList;
+
+  const [category, setCategory] = useState(availableCategories[0] || 'Food & Dining');
   const [amount, setAmount] = useState('');
 
   const fetchBudgets = async () => {
@@ -109,12 +115,9 @@ export const BudgetsPage = () => {
               <div style={{ marginBottom: '16px' }}>
                 <label className="body-sm-strong" style={{ display: 'block', marginBottom: '6px' }}>Category</label>
                 <select className="text-input" value={category} onChange={(e) => setCategory(e.target.value)} style={{ backgroundColor: 'var(--color-secondary)', color: 'var(--color-foreground)' }}>
-                  <option value="Food & Dining">Food & Dining</option>
-                  <option value="Transportation">Transportation</option>
-                  <option value="Housing & Utilities">Housing & Utilities</option>
-                  <option value="Entertainment">Entertainment</option>
-                  <option value="Shopping">Shopping</option>
-                  <option value="Subscriptions">Subscriptions</option>
+                  {availableCategories.map((cat, idx) => (
+                    <option key={idx} value={cat}>{cat}</option>
+                  ))}
                 </select>
               </div>
 

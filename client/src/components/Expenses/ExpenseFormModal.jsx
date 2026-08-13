@@ -1,24 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, Sparkles } from 'lucide-react';
-import { apiFetch } from '../../api/client';
+import { apiFetch, getLocalDateString } from '../../api/client';
 
 export const ExpenseFormModal = ({ isOpen, onClose, onSave, categories = [] }) => {
+  const defaultCategoryList = ['Food & Dining', 'Transportation', 'Housing & Utilities', 'Entertainment', 'Shopping', 'Health & Medical', 'Subscriptions'];
+  const availableCategories = categories.length > 0 ? categories.map(c => c.name || c) : defaultCategoryList;
+
   const [title, setTitle] = useState('');
   const [amount, setAmount] = useState('');
-  const [category, setCategory] = useState(categories[0]?.name || 'Food & Dining');
+  const [category, setCategory] = useState(availableCategories[0] || 'Food & Dining');
   const [merchant, setMerchant] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('Card');
   const [note, setNote] = useState('');
-  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+  const [date, setDate] = useState(getLocalDateString(new Date()));
 
   const [aiSuggestion, setAiSuggestion] = useState(null);
   const [loadingAi, setLoadingAi] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
-  if (!isOpen) return null;
-
-  const defaultCategoryList = ['Food & Dining', 'Transportation', 'Housing & Utilities', 'Entertainment', 'Shopping', 'Health & Medical', 'Subscriptions'];
-  const availableCategories = categories.length > 0 ? categories.map(c => c.name) : defaultCategoryList;
+  useEffect(() => {
+    if (isOpen) {
+      setDate(getLocalDateString(new Date()));
+      if (availableCategories.length > 0 && !availableCategories.includes(category)) {
+        setCategory(availableCategories[0]);
+      }
+    }
+  }, [isOpen, categories]);
 
   const handleSmartCategorize = async () => {
     if (!title.trim() || !amount) return;

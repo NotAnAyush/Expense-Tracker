@@ -16,7 +16,9 @@ exports.createBudget = async (req, res) => {
       return res.status(400).json({ message: 'Please provide category and amount' });
     }
 
-    const existing = await Budget.findOne({ userId: req.user._id, categoryId, period });
+    const cleanCat = String(categoryId).trim();
+
+    const existing = await Budget.findOne({ userId: req.user._id, categoryId: cleanCat, period });
     if (existing) {
       existing.amount = Number(amount);
       existing.alertThreshold = Number(alertThreshold);
@@ -26,7 +28,7 @@ exports.createBudget = async (req, res) => {
 
     const budget = await Budget.create({
       userId: req.user._id,
-      categoryId,
+      categoryId: cleanCat,
       amount: Number(amount),
       currency: req.user.preferredCurrency || '₹',
       period,
