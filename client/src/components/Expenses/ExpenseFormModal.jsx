@@ -62,19 +62,7 @@ export const ExpenseFormModal = ({ isOpen, onClose, onSave, categories = [] }) =
   };
 
   return (
-    <div style={{
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      background: 'rgba(0, 0, 0, 0.5)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      zIndex: 110,
-      padding: '16px'
-    }}>
+    <div className="modal-overlay">
       <div className="modal-card">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
           <h2 className="heading-lg">Record Expense</h2>
@@ -129,9 +117,9 @@ export const ExpenseFormModal = ({ isOpen, onClose, onSave, categories = [] }) =
                 onClick={handleSmartCategorize}
                 disabled={loadingAi}
                 className="filter-chip"
-                style={{ cursor: 'pointer', backgroundColor: 'var(--surface-card)', color: 'var(--ink)' }}
+                style={{ cursor: 'pointer', backgroundColor: 'var(--color-secondary)', color: 'var(--color-foreground)', borderColor: 'var(--color-accent)' }}
               >
-                <Sparkles size={14} color="var(--primary)" />
+                <Sparkles size={14} color="var(--color-accent)" />
                 {loadingAi ? 'AI Analyzing...' : 'Suggest Category via AI'}
               </button>
 
@@ -139,17 +127,17 @@ export const ExpenseFormModal = ({ isOpen, onClose, onSave, categories = [] }) =
                 <div style={{
                   marginTop: '8px',
                   padding: '12px',
-                  borderRadius: 'var(--radius-md)',
-                  backgroundColor: 'var(--surface-card)',
-                  border: '1px solid var(--hairline)',
+                  borderRadius: 'var(--radius-sm)',
+                  backgroundColor: 'var(--color-secondary)',
+                  border: '1px solid var(--color-border)',
                   fontSize: '14px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between'
                 }}>
                   <div>
-                    Suggested: <strong>{aiSuggestion.category}</strong> ({Math.round(aiSuggestion.confidence * 100)}% confidence)
-                    <div style={{ fontSize: '12px', color: 'var(--mute)' }}>{aiSuggestion.reason}</div>
+                    Suggested: <strong style={{ color: 'var(--color-accent)' }}>{aiSuggestion.category}</strong> ({Math.round(aiSuggestion.confidence * 100)}% confidence)
+                    <div style={{ fontSize: '12px', color: 'var(--color-muted-text)' }}>{aiSuggestion.reason}</div>
                   </div>
                   <button
                     type="button"
@@ -171,6 +159,7 @@ export const ExpenseFormModal = ({ isOpen, onClose, onSave, categories = [] }) =
                 className="text-input"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
+                style={{ backgroundColor: 'var(--color-secondary)', color: 'var(--color-foreground)' }}
               >
                 {availableCategories.map((c, i) => (
                   <option key={i} value={c}>{c}</option>
@@ -184,6 +173,7 @@ export const ExpenseFormModal = ({ isOpen, onClose, onSave, categories = [] }) =
                 className="text-input"
                 value={paymentMethod}
                 onChange={(e) => setPaymentMethod(e.target.value)}
+                style={{ backgroundColor: 'var(--color-secondary)', color: 'var(--color-foreground)' }}
               >
                 <option value="Card">Card</option>
                 <option value="UPI">UPI</option>

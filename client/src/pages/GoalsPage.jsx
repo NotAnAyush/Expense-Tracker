@@ -47,14 +47,14 @@ export const GoalsPage = () => {
     }
   };
 
-  if (loading) return <div style={{ padding: '64px', textAlign: 'center', color: 'var(--mute)' }} className="body-md">Loading Goals Engine...</div>;
+  if (loading) return <div style={{ padding: '64px', textAlign: 'center', color: 'var(--color-muted-text)' }} className="body-md">Loading Goals Engine...</div>;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
           <h1 className="heading-xl">Savings Goals Trajectory</h1>
-          <p className="body-sm">Track target dates, progress percentages, and required monthly contributions.</p>
+          <p className="body-sm" style={{ color: 'var(--color-muted-text)' }}>Track target dates, progress percentages, and required monthly contributions.</p>
         </div>
         <button onClick={() => setShowModal(true)} className="button-primary">
           <Plus size={18} /> Add Goal
@@ -65,27 +65,29 @@ export const GoalsPage = () => {
         {goals.map((g) => {
           const pct = Math.min(100, Math.round((g.currentAmount / g.targetAmount) * 100));
           return (
-            <div key={g._id} className="pin-card" style={{ backgroundColor: 'var(--canvas)', border: '1px solid var(--hairline)' }}>
+            <div key={g._id} className="pin-card">
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <Target size={20} color="var(--primary)" />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <Target size={22} color="var(--color-accent)" />
                   <h3 className="heading-md">{g.name}</h3>
                 </div>
-                <span className="pin-overlay-pill">{pct}% Achieved</span>
+                <span className="pin-overlay-pill" style={{ backgroundColor: 'var(--color-secondary)', color: 'var(--color-accent)', borderColor: 'var(--color-border)' }}>
+                  {pct}% Achieved
+                </span>
               </div>
 
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }} className="body-sm">
-                <span>Saved: ₹{g.currentAmount.toLocaleString()}</span>
-                <span>Target: ₹{g.targetAmount.toLocaleString()}</span>
+                <span style={{ color: 'var(--color-muted-text)' }}>Saved: ₹{g.currentAmount.toLocaleString()}</span>
+                <span style={{ color: 'var(--color-muted-text)' }}>Target: ₹{g.targetAmount.toLocaleString()}</span>
               </div>
 
-              <div style={{ width: '100%', height: '8px', backgroundColor: 'var(--surface-card)', borderRadius: '4px', overflow: 'hidden' }}>
-                <div style={{ height: '100%', width: `${pct}%`, backgroundColor: 'var(--primary)', borderRadius: '4px' }} />
+              <div style={{ width: '100%', height: '8px', backgroundColor: 'var(--color-secondary)', borderRadius: '4px', overflow: 'hidden' }}>
+                <div style={{ height: '100%', width: `${pct}%`, backgroundColor: 'var(--color-accent)', borderRadius: '4px' }} />
               </div>
 
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '12px', paddingTop: '8px', borderTop: '1px solid var(--hairline-soft)' }} className="body-sm">
-                <span>Target: {new Date(g.targetDate).toLocaleDateString()}</span>
-                <span>Remaining: ₹{(g.targetAmount - g.currentAmount).toLocaleString()}</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '12px', paddingTop: '8px', borderTop: '1px solid var(--color-border)' }} className="body-sm">
+                <span style={{ color: 'var(--color-muted-text)' }}>Target: {new Date(g.targetDate).toLocaleDateString()}</span>
+                <span style={{ color: 'var(--color-muted-text)' }}>Remaining: ₹{(g.targetAmount - g.currentAmount).toLocaleString()}</span>
               </div>
             </div>
           );
@@ -93,7 +95,7 @@ export const GoalsPage = () => {
       </div>
 
       {showModal && (
-        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 110 }}>
+        <div className="modal-overlay">
           <div className="modal-card">
             <h3 className="heading-lg" style={{ marginBottom: '16px' }}>Create Savings Goal</h3>
             <form onSubmit={handleCreateGoal}>

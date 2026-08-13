@@ -74,7 +74,7 @@ export const ExpensesPage = ({ onAddExpense }) => {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
         <div>
           <h1 className="heading-xl">Transaction Records</h1>
-          <p className="body-sm">All recorded transactions filtered deterministically.</p>
+          <p className="body-sm" style={{ color: 'var(--color-muted-text)' }}>All recorded transactions filtered deterministically.</p>
         </div>
 
         <div style={{ display: 'flex', gap: '12px' }}>
@@ -103,17 +103,17 @@ export const ExpensesPage = ({ onAddExpense }) => {
       </div>
 
       {/* Transactions List Card Container */}
-      <div className="pin-card" style={{ backgroundColor: 'var(--canvas)', border: '1px solid var(--hairline)', padding: '24px', overflowX: 'auto' }}>
+      <div className="pin-card" style={{ padding: '24px', overflowX: 'auto' }}>
         {loading ? (
-          <div style={{ padding: '32px', textAlign: 'center', color: 'var(--mute)' }} className="body-md">Fetching transaction records...</div>
+          <div style={{ padding: '32px', textAlign: 'center', color: 'var(--color-muted-text)' }} className="body-md">Fetching transaction records...</div>
         ) : expenses.length === 0 ? (
-          <div style={{ padding: '48px', textAlign: 'center', color: 'var(--mute)' }} className="body-md">
+          <div style={{ padding: '48px', textAlign: 'center', color: 'var(--color-muted-text)' }} className="body-md">
             No expenses found matching filter criteria.
           </div>
         ) : (
           <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '15px' }}>
             <thead>
-              <tr style={{ borderBottom: '1px solid var(--hairline)', color: 'var(--mute)', fontSize: '14px' }}>
+              <tr style={{ borderBottom: '1px solid var(--color-border)', color: 'var(--color-muted-text)', fontSize: '14px' }}>
                 <th style={{ padding: '12px 8px' }}>Transaction</th>
                 <th style={{ padding: '12px 8px' }}>Category</th>
                 <th style={{ padding: '12px 8px' }}>Date</th>
@@ -124,27 +124,27 @@ export const ExpensesPage = ({ onAddExpense }) => {
             </thead>
             <tbody>
               {expenses.map((e) => (
-                <tr key={e._id} style={{ borderBottom: '1px solid var(--hairline-soft)' }}>
+                <tr key={e._id} style={{ borderBottom: '1px solid var(--color-border)' }}>
                   <td style={{ padding: '14px 8px' }}>
-                    <div className="body-strong">{e.title}</div>
-                    {e.merchant && <div className="body-sm">{e.merchant}</div>}
+                    <div className="body-strong" style={{ color: 'var(--color-foreground)' }}>{e.title}</div>
+                    {e.merchant && <div className="body-sm" style={{ color: 'var(--color-muted-text)' }}>{e.merchant}</div>}
                   </td>
                   <td style={{ padding: '14px 8px' }}>
-                    <span className="pin-overlay-pill" style={{ backgroundColor: 'var(--surface-card)', fontSize: '12px' }}>
+                    <span className="pin-overlay-pill" style={{ backgroundColor: 'var(--color-secondary)', color: 'var(--color-foreground)', borderColor: 'var(--color-border)', fontSize: '12px' }}>
                       {e.category}
                     </span>
                   </td>
-                  <td style={{ padding: '14px 8px', color: 'var(--mute)' }} className="body-sm">
+                  <td style={{ padding: '14px 8px', color: 'var(--color-muted-text)' }} className="body-sm">
                     {new Date(e.date).toLocaleDateString()}
                   </td>
-                  <td style={{ padding: '14px 8px', color: 'var(--mute)' }} className="body-sm">
+                  <td style={{ padding: '14px 8px', color: 'var(--color-muted-text)' }} className="body-sm">
                     {e.paymentMethod}
                   </td>
-                  <td style={{ padding: '14px 8px', textAlign: 'right', fontWeight: 700, color: 'var(--ink)' }}>
+                  <td style={{ padding: '14px 8px', textAlign: 'right', fontWeight: 700, fontFamily: 'var(--font-heading)', color: 'var(--color-foreground)' }}>
                     ₹{e.amount.toLocaleString()}
                   </td>
                   <td style={{ padding: '14px 8px', textAlign: 'right' }}>
-                    <button onClick={() => handleDelete(e._id)} style={{ color: 'var(--error)', cursor: 'pointer', border: 'none', background: 'none' }}>
+                    <button onClick={() => handleDelete(e._id)} style={{ color: 'var(--color-destructive)', cursor: 'pointer', border: 'none', background: 'none' }}>
                       <Trash2 size={16} />
                     </button>
                   </td>

@@ -1,16 +1,14 @@
 import React from 'react';
-import { Search, Plus, Bot, Wallet } from 'lucide-react';
+import { Search, Plus, Bot } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
-export const Header = ({ onAddExpense, onOpenCopilot, searchQuery, setSearchQuery, activeFilter, setActiveFilter }) => {
+export const Header = ({ onAddExpense, onOpenCopilot, searchQuery, setSearchQuery }) => {
   const { user } = useAuth();
-
-  const filterChips = ['All', 'Food & Dining', 'Transportation', 'Housing & Utilities', 'Shopping', 'Subscriptions', 'Budgets', 'Anomalies'];
 
   return (
     <header style={{
-      background: 'var(--canvas)',
-      borderBottom: '1px solid var(--hairline)',
+      background: 'var(--color-primary)',
+      borderBottom: '1px solid var(--color-border)',
       padding: '0 24px',
       height: '72px',
       display: 'flex',
@@ -20,33 +18,33 @@ export const Header = ({ onAddExpense, onOpenCopilot, searchQuery, setSearchQuer
       top: 0,
       zIndex: 30,
     }}>
-      {/* Brand Wordmark */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
-        <div style={{
-          width: '40px',
-          height: '40px',
-          borderRadius: 'var(--radius-full)',
-          backgroundColor: 'var(--primary)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: '#ffffff',
-        }}>
-          <Wallet size={20} />
-        </div>
-        <span style={{ fontFamily: 'Pin Sans, Inter, sans-serif', fontSize: '20px', fontWeight: 700, letterSpacing: '-0.8px', color: 'var(--ink)' }}>
-          Antigravity
+      {/* Brand Wordmark & Logo */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
+        <img
+          src="/logo.jpg"
+          alt="Richy Rich Logo"
+          style={{
+            width: '42px',
+            height: '42px',
+            borderRadius: 'var(--radius-sm)',
+            objectFit: 'cover',
+            border: '1px solid var(--color-accent)',
+            boxShadow: 'var(--glow-accent)'
+          }}
+        />
+        <span style={{ fontFamily: 'var(--font-heading)', fontSize: '20px', fontWeight: 700, letterSpacing: '-0.5px', color: 'var(--color-foreground)' }}>
+          Richy Rich
         </span>
       </div>
 
       {/* Centered Pill Search Bar */}
       <div style={{ flex: 1, maxWidth: '600px', margin: '0 auto' }}>
         <div className="search-bar-container">
-          <Search size={18} color="var(--mute)" style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)' }} />
+          <Search size={18} color="var(--color-muted-text)" style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)' }} />
           <input
             type="text"
             className="search-bar"
-            placeholder="Search ideas, transactions, merchants, categories..."
+            placeholder="Search transactions, merchants, categories..."
             value={searchQuery || ''}
             onChange={(e) => setSearchQuery && setSearchQuery(e.target.value)}
           />
@@ -60,7 +58,7 @@ export const Header = ({ onAddExpense, onOpenCopilot, searchQuery, setSearchQuer
           className="button-icon-circular"
           title="Finance Copilot"
         >
-          <Bot size={20} color="var(--ink)" />
+          <Bot size={20} color="var(--color-foreground)" />
         </button>
 
         <button
