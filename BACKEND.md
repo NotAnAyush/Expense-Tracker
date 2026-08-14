@@ -1,4 +1,4 @@
-# 🛠️ Richy Rich — Backend Architecture & Intelligence System Documentation (v2.1.0)
+# 🛠️ Richy Rich — Backend Architecture & Intelligence System Documentation (v2.2.0)
 
 Welcome to the comprehensive technical documentation for the **Richy Rich** personal finance backend service. This system is designed as a **Production-Grade, AI-First Personal Finance Intelligence Platform**, combining deterministic mathematical calculations with hybrid AI reasoning via Google Gemini API and fintech-standard security hardening.
 
@@ -33,6 +33,7 @@ graph TD
         Auth --> AICtrl[AI Controller]
         Auth --> ExportCtrl[Data Export Controller]
         Auth --> AuditCtrl[Audit Trail Controller]
+        Auth --> RefreshCtrl[JWT Refresh & Logout Controller]
     end
 
     subgraph Core Engines
@@ -46,6 +47,7 @@ graph TD
     subgraph Persistence Layer
         AnalyticsEngine --> MongoDB[(MongoDB / Mongoose ODM)]
         Audit --> AuditLogModel[(AuditLog Collection - TTL 90d)]
+        RefreshCtrl --> RefreshTokenModel[(RefreshToken Collection - TTL 30d)]
     end
 ```
 
@@ -71,13 +73,14 @@ server/
 │   ├── utils/
 │   │   └── AppError.js        # Structured application error class with factory helpers
 │   ├── validators/
-│   │   ├── authValidator.js   # Auth registration & login schemas
+│   │   ├── authValidator.js   # Auth registration, login & refresh schemas
 │   │   ├── expenseValidator.js# Expense create & update schemas
 │   │   ├── budgetValidator.js # Budget create & update schemas
 │   │   ├── goalValidator.js   # Goal create & update schemas
 │   │   └── recurringValidator.js # Subscription schemas
 │   ├── models/
 │   │   ├── User.js            # User authentication schema
+│   │   ├── RefreshToken.js    # JWT refresh token rotation schema (TTL 30d)
 │   │   ├── Expense.js         # Transaction / expense schema
 │   │   ├── Budget.js          # Category budget limit schema
 │   │   ├── Goal.js            # Savings goal schema
@@ -85,7 +88,7 @@ server/
 │   │   ├── Category.js        # Spending categories schema
 │   │   └── AuditLog.js        # Audit trail schema with 90-day TTL index
 │   ├── routes/
-│   │   ├── authRoutes.js      # Register, Login, Me, Demo endpoints
+│   │   ├── authRoutes.js      # Register, Login, Refresh, Logout, Me, Demo endpoints
 │   │   ├── expenseRoutes.js   # CRUD endpoints for expenses
 │   │   ├── budgetRoutes.js    # Budget management endpoints
 │   │   ├── goalRoutes.js      # Goal tracking endpoints
@@ -96,7 +99,7 @@ server/
 │   │   ├── auditRoutes.js     # Audit trail querying
 │   │   └── exportRoutes.js    # CSV & JSON streaming data export
 │   ├── controllers/
-│   │   ├── authController.js
+│   │   ├── authController.js  # Auth handlers + JWT rotation lifecycle
 │   │   ├── expenseController.js
 │   │   ├── budgetController.js
 │   │   ├── goalController.js
@@ -116,8 +119,8 @@ server/
 │           ├── contextBuilder.js    # Financial ground truth context assembler
 │           ├── intentRouter.js      # Query intent classifier for Copilot
 │           └── toolRegistry.js      # Tool executor mapping intents to analytics calls
-└── tests/                           # Jest Automated Integration Test Suite (63 tests)
-    ├── auth.test.js
+└── tests/                           # Jest Automated Integration Test Suite (67 tests)
+    ├── auth.test.js                 # Auth lifecycle + JWT refresh & token rotation tests
     ├── expenses.test.js
     ├── budgets.test.js
     ├── goals.test.js
@@ -145,7 +148,17 @@ Stores user authentication details and encrypted password hashes.
 }
 ```
 
-### 2. Expense Model (`Expense.js`)
+### 2. RefreshToken Model (`RefreshToken.js`)
+Stores cryptographically secure refresh tokens with automatic 30-day TTL expiry and token rotation.
+```javascript
+{
+  userId: { type: Schema.Types.ObjectId, ref: 'User', required: true, index: true },
+  token: { type: String, required: true, unique: true, index: true },
+  expiresAt: { type: Date, required: true } // TTL index (30 days)
+}
+```
+
+### 3. Expense Model (`Expense.js`)
 Represents financial outflow transactions with compound indexes on `(userId, date)` and `(userId, category)`.
 ```javascript
 {
@@ -160,18 +173,6 @@ Represents financial outflow transactions with compound indexes on `(userId, dat
   tags: [{ type: String }],
   recurringExpenseId: { type: Schema.Types.ObjectId, ref: 'RecurringExpense', default: null },
   source: { type: String, enum: ['manual', 'recurring', 'ai_suggested', 'import'], default: 'manual' }
-}
-```
-
-### 3. Budget Model (`Budget.js`)
-Defines spending caps per category for a given user.
-```javascript
-{
-  userId: { type: Schema.Types.ObjectId, ref: 'User', required: true, index: true },
-  categoryId: { type: String, required: true },
-  amount: { type: Number, required: true, min: 0 },
-  period: { type: String, enum: ['monthly', 'weekly', 'yearly'], default: 'monthly' },
-  alertThreshold: { type: Number, default: 0.8, min: 0, max: 1 }
 }
 ```
 
@@ -190,6 +191,33 @@ Immutable audit trail recording all user mutations with automatic 90-day TTL exp
   statusCode: { type: Number },
   createdAt: { type: Date, default: Date.now } // TTL index (90 days)
 }
+```
+
+---
+
+## 🔄 JWT Refresh Token Architecture
+
+The authentication pipeline follows modern fintech standards (**Revolut / Cash App**):
+
+1. **Short-Lived Access Tokens**: Signed JWT with 15-minute validity (`JWT_EXPIRES_IN=15m`).
+2. **Long-Lived Refresh Tokens**: 40-byte cryptographically secure random hex string with 30-day validity stored in MongoDB.
+3. **Token Rotation**: Every time `/api/auth/refresh` is called, the old refresh token is deleted and a brand new refresh token + access token pair is issued.
+4. **Client Interceptor**: The frontend API client (`apiFetch`) intercepts `401 Unauthorized` responses, refreshes the token transparently via `/api/auth/refresh`, and seamlessly replays the original request without user disruption.
+
+```mermaid
+sequenceDiagram
+    participant Client as React Client
+    participant API as Express API
+    participant DB as MongoDB
+
+    Client->>API: GET /api/expenses (with Access Token)
+    API-->>Client: 401 Unauthorized (Access Token Expired)
+    Client->>API: POST /api/auth/refresh (with Refresh Token)
+    API->>DB: Find & Invalidate Old Refresh Token
+    API->>DB: Create New Rotated Refresh Token
+    API-->>Client: 200 OK (New Access Token + New Refresh Token)
+    Client->>API: Replay GET /api/expenses (with New Access Token)
+    API-->>Client: 200 OK (Data Delivered Seamlessly)
 ```
 
 ---
@@ -233,7 +261,9 @@ All financial metrics are calculated **deterministically** via high-efficiency *
 | Method | Endpoint | Description | Auth Required |
 | :--- | :--- | :--- | :--- |
 | `POST` | `/api/auth/register` | Register new user (Joi validated) | No (Rate limited) |
-| `POST` | `/api/auth/login` | Login user & get JWT token | No (Rate limited) |
+| `POST` | `/api/auth/login` | Login user & get access + refresh tokens | No (Rate limited) |
+| `POST` | `/api/auth/refresh` | Rotate & refresh access token | No (Rate limited) |
+| `POST` | `/api/auth/logout` | Invalidate refresh token | No |
 | `GET` | `/api/auth/me` | Fetch authenticated profile | Yes (JWT) |
 | `POST` | `/api/auth/demo` | Seed / load demo user data | No |
 
@@ -301,7 +331,7 @@ All financial metrics are calculated **deterministically** via high-efficiency *
 
 ## ⚡ Automated Test Suite
 
-The backend includes a comprehensive Jest integration test suite containing **63 automated tests** across 8 test suites:
+The backend includes a comprehensive Jest integration test suite containing **67 automated tests** across 8 test suites:
 
 ```bash
 cd server
@@ -309,7 +339,7 @@ npm test
 ```
 
 ### Test Coverage Breakdown:
-- **`auth.test.js`** — User registration, password complexity validation, login credentials, JWT validation.
+- **`auth.test.js`** — User registration, password complexity validation, login credentials, JWT validation, refresh token rotation lifecycle, and logout invalidation.
 - **`expenses.test.js`** — CRUD operations, filters, pagination, search, cross-user security isolation.
 - **`budgets.test.js`** — Budget creation, upserting, utilization calculations, threshold limits.
 - **`goals.test.js`** — Savings goal milestones, auto-status transitions (`active` → `achieved`).

@@ -136,4 +136,60 @@ describe('Auth Endpoints', () => {
       expect(res.statusCode).toBe(401);
     });
   });
+
+  describe('JWT Refresh Token & Logout Lifecycle', () => {
+    let authUser;
+
+    beforeEach(async () => {
+      const reg = await request(app)
+        .post('/api/auth/register')
+        .send({ name: 'Refresh User', email: 'refresh@example.com', password: 'SecurePass1' });
+      authUser = reg.body;
+    });
+
+    it('should issue both access token and refresh token on registration/login', () => {
+      expect(authUser.token).toBeDefined();
+      expect(authUser.refreshToken).toBeDefined();
+    });
+
+    it('should refresh access token with valid refresh token and rotate refresh token', async () => {
+      const res = await request(app)
+        .post('/api/auth/refresh')
+        .send({ refreshToken: authUser.refreshToken });
+
+      expect(res.statusCode).toBe(200);
+      expect(res.body.token).toBeDefined();
+      expect(res.body.refreshToken).toBeDefined();
+      expect(res.body.refreshToken).not.toBe(authUser.refreshToken); // Token rotated
+    });
+
+    it('should reject refresh with invalid or reused refresh token', async () => {
+      // First refresh succeeds
+      await request(app)
+        .post('/api/auth/refresh')
+        .send({ refreshToken: authUser.refreshToken });
+
+      // Reusing old rotated refresh token should fail with 401
+      const res = await request(app)
+        .post('/api/auth/refresh')
+        .send({ refreshToken: authUser.refreshToken });
+
+      expect(res.statusCode).toBe(401);
+    });
+
+    it('should invalidate refresh token on logout', async () => {
+      const logoutRes = await request(app)
+        .post('/api/auth/logout')
+        .send({ refreshToken: authUser.refreshToken });
+
+      expect(logoutRes.statusCode).toBe(200);
+
+      // Attempting to refresh after logout should fail
+      const refreshRes = await request(app)
+        .post('/api/auth/refresh')
+        .send({ refreshToken: authUser.refreshToken });
+
+      expect(refreshRes.statusCode).toBe(401);
+    });
+  });
 });

@@ -1,3 +1,4 @@
+const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
@@ -6,10 +7,26 @@ const Budget = require('../models/Budget');
 const Goal = require('../models/Goal');
 const RecurringExpense = require('../models/RecurringExpense');
 const Category = require('../models/Category');
+const RefreshToken = require('../models/RefreshToken');
 
-const generateToken = (id) => {
+const generateAccessToken = (id) => {
   const secret = process.env.JWT_SECRET || 'super_secret_jwt_key_personal_finance_v2_2026';
-  return jwt.sign({ id }, secret, { expiresIn: '30d' });
+  const expiresIn = process.env.JWT_EXPIRES_IN || '15m';
+  return jwt.sign({ id }, secret, { expiresIn });
+};
+
+const createRefreshToken = async (userId) => {
+  const token = crypto.randomBytes(40).toString('hex');
+  const expiresAt = new Date();
+  expiresAt.setDate(expiresAt.getDate() + 30); // 30 days validity
+
+  await RefreshToken.create({
+    userId,
+    token,
+    expiresAt,
+  });
+
+  return token;
 };
 
 // @desc    Register a new user
@@ -51,12 +68,16 @@ exports.registerUser = async (req, res) => {
 
     await Category.insertMany(defaultCategories.map(c => ({ ...c, userId: user._id })));
 
+    const token = generateAccessToken(user._id);
+    const refreshToken = await createRefreshToken(user._id);
+
     res.status(201).json({
       _id: user._id,
       name: user.name,
       email: user.email,
       preferredCurrency: user.preferredCurrency,
-      token: generateToken(user._id),
+      token,
+      refreshToken,
     });
   } catch (error) {
     console.error('[Register Error]', error);
@@ -64,7 +85,7 @@ exports.registerUser = async (req, res) => {
   }
 };
 
-// @desc    Authenticate user & get token
+// @desc    Authenticate user & get tokens
 // @route   POST /api/auth/login
 exports.loginUser = async (req, res) => {
   try {
@@ -80,17 +101,77 @@ exports.loginUser = async (req, res) => {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
 
+    const token = generateAccessToken(user._id);
+    const refreshToken = await createRefreshToken(user._id);
+
     res.json({
       _id: user._id,
       name: user.name,
       email: user.email,
       preferredCurrency: user.preferredCurrency,
       themePreference: user.themePreference,
-      token: generateToken(user._id),
+      token,
+      refreshToken,
     });
   } catch (error) {
     console.error('[Login Error]', error);
     res.status(500).json({ message: 'Server error during login' });
+  }
+};
+
+// @desc    Refresh access token using refresh token
+// @route   POST /api/auth/refresh
+exports.refreshToken = async (req, res) => {
+  try {
+    const { refreshToken } = req.body;
+    if (!refreshToken) {
+      return res.status(400).json({ message: 'Refresh token is required' });
+    }
+
+    const storedToken = await RefreshToken.findOne({ token: refreshToken });
+    if (!storedToken) {
+      return res.status(401).json({ message: 'Invalid or expired refresh token' });
+    }
+
+    if (new Date() > storedToken.expiresAt) {
+      await RefreshToken.deleteOne({ _id: storedToken._id });
+      return res.status(401).json({ message: 'Refresh token has expired' });
+    }
+
+    const user = await User.findById(storedToken.userId);
+    if (!user) {
+      await RefreshToken.deleteOne({ _id: storedToken._id });
+      return res.status(401).json({ message: 'User no longer exists' });
+    }
+
+    // Token rotation: delete old refresh token and create new one
+    await RefreshToken.deleteOne({ _id: storedToken._id });
+    const newAccessToken = generateAccessToken(user._id);
+    const newRefreshToken = await createRefreshToken(user._id);
+
+    res.json({
+      token: newAccessToken,
+      refreshToken: newRefreshToken,
+    });
+  } catch (error) {
+    console.error('[Refresh Token Error]', error);
+    res.status(500).json({ message: 'Server error refreshing token' });
+  }
+};
+
+// @desc    Logout user & invalidate refresh token
+// @route   POST /api/auth/logout
+exports.logoutUser = async (req, res) => {
+  try {
+    const { refreshToken } = req.body;
+    if (refreshToken) {
+      await RefreshToken.deleteOne({ token: refreshToken });
+    } else if (req.user) {
+      await RefreshToken.deleteMany({ userId: req.user._id });
+    }
+    res.json({ message: 'Logged out successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error during logout' });
   }
 };
 
@@ -181,13 +262,17 @@ exports.seedDemoAccount = async (req, res) => {
       ]);
     }
 
+    const token = generateAccessToken(user._id);
+    const refreshToken = await createRefreshToken(user._id);
+
     res.json({
       _id: user._id,
       name: user.name,
       email: user.email,
       preferredCurrency: user.preferredCurrency,
       themePreference: user.themePreference,
-      token: generateToken(user._id),
+      token,
+      refreshToken,
       isDemo: true,
     });
   } catch (error) {
