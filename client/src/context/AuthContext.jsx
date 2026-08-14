@@ -33,14 +33,23 @@ export const AuthProvider = ({ children }) => {
     loadUser();
   }, [token]);
 
+  const saveAuthTokens = (data) => {
+    if (data.token) {
+      localStorage.setItem('token', data.token);
+      setToken(data.token);
+    }
+    if (data.refreshToken) {
+      localStorage.setItem('refreshToken', data.refreshToken);
+    }
+    setUser(data);
+  };
+
   const login = async (email, password) => {
     const data = await apiFetch('/auth/login', {
       method: 'POST',
       body: JSON.stringify({ email, password }),
     });
-    localStorage.setItem('token', data.token);
-    setToken(data.token);
-    setUser(data);
+    saveAuthTokens(data);
     return data;
   };
 
@@ -49,9 +58,7 @@ export const AuthProvider = ({ children }) => {
       method: 'POST',
       body: JSON.stringify({ name, email, password, preferredCurrency }),
     });
-    localStorage.setItem('token', data.token);
-    setToken(data.token);
-    setUser(data);
+    saveAuthTokens(data);
     return data;
   };
 
@@ -60,14 +67,24 @@ export const AuthProvider = ({ children }) => {
       method: 'POST',
       body: JSON.stringify({ forceRefresh: false }),
     });
-    localStorage.setItem('token', data.token);
-    setToken(data.token);
-    setUser(data);
+    saveAuthTokens(data);
     return data;
   };
 
-  const logout = () => {
+  const logout = async () => {
+    const refreshToken = localStorage.getItem('refreshToken');
+    if (refreshToken) {
+      try {
+        await apiFetch('/auth/logout', {
+          method: 'POST',
+          body: JSON.stringify({ refreshToken }),
+        });
+      } catch (e) {
+        // Ignore network errors on logout
+      }
+    }
     localStorage.removeItem('token');
+    localStorage.removeItem('refreshToken');
     setToken(null);
     setUser(null);
   };

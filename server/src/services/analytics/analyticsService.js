@@ -1,11 +1,18 @@
+const mongoose = require('mongoose');
 const Expense = require('../../models/Expense');
 const Budget = require('../../models/Budget');
 const Goal = require('../../models/Goal');
 const RecurringExpense = require('../../models/RecurringExpense');
 
+/**
+ * AnalyticsService — Deterministic Financial Calculations Engine
+ * All methods use MongoDB Aggregation Pipelines for performance.
+ * No LLM dependencies — 0% hallucination guarantee.
+ */
 class AnalyticsService {
   /**
    * Deterministic Monthly Summary for user
+   * Uses $match + $group aggregation instead of .find() + JS reduce
    */
   static async getMonthlySummary(userId, targetYear, targetMonth) {
     const now = new Date();
@@ -15,12 +22,23 @@ class AnalyticsService {
     const startDate = new Date(year, month, 1);
     const endDate = new Date(year, month + 1, 0, 23, 59, 59, 999);
 
-    const expenses = await Expense.find({
-      userId,
-      date: { $gte: startDate, $lte: endDate },
-    });
+    const userObjId = typeof userId === 'string' ? new mongoose.Types.ObjectId(userId) : userId;
 
-    const totalSpend = expenses.reduce((sum, e) => sum + e.amount, 0);
+    const pipeline = [
+      { $match: { userId: userObjId, date: { $gte: startDate, $lte: endDate } } },
+      {
+        $group: {
+          _id: null,
+          totalSpend: { $sum: '$amount' },
+          transactionCount: { $sum: 1 },
+        },
+      },
+    ];
+
+    const result = await Expense.aggregate(pipeline);
+    const totalSpend = result.length > 0 ? result[0].totalSpend : 0;
+    const transactionCount = result.length > 0 ? result[0].transactionCount : 0;
+
     const daysInMonth = endDate.getDate();
     const currentDay = (now.getFullYear() === year && now.getMonth() === month) ? now.getDate() : daysInMonth;
     const averageDailySpend = Math.round(totalSpend / Math.max(1, currentDay));
@@ -29,7 +47,7 @@ class AnalyticsService {
       year,
       month: month + 1, // 1-indexed for display
       totalSpend,
-      transactionCount: expenses.length,
+      transactionCount,
       averageDailySpend,
       daysInMonth,
       currentDay,
@@ -39,30 +57,36 @@ class AnalyticsService {
 
   /**
    * Deterministic Category Breakdown
+   * Uses $group + $sort aggregation pipeline
    */
   static async getCategoryBreakdown(userId, periodMonths = 1) {
     const now = new Date();
     const startDate = new Date(now.getFullYear(), now.getMonth() - (periodMonths - 1), 1);
 
-    const expenses = await Expense.find({
-      userId,
-      date: { $gte: startDate },
-    });
+    const userObjId = typeof userId === 'string' ? new mongoose.Types.ObjectId(userId) : userId;
 
-    const categoryTotals = {};
-    let grandTotal = 0;
+    const pipeline = [
+      { $match: { userId: userObjId, date: { $gte: startDate } } },
+      {
+        $group: {
+          _id: { $ifNull: ['$category', 'Uncategorized'] },
+          amount: { $sum: '$amount' },
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { amount: -1 } },
+    ];
 
-    expenses.forEach(e => {
-      const cat = e.category || 'Uncategorized';
-      categoryTotals[cat] = (categoryTotals[cat] || 0) + e.amount;
-      grandTotal += e.amount;
-    });
+    const categoryResults = await Expense.aggregate(pipeline);
 
-    const breakdown = Object.keys(categoryTotals).map(category => ({
-      category,
-      amount: categoryTotals[category],
-      percentage: grandTotal > 0 ? parseFloat(((categoryTotals[category] / grandTotal) * 100).toFixed(1)) : 0,
-    })).sort((a, b) => b.amount - a.amount);
+    const grandTotal = categoryResults.reduce((sum, c) => sum + c.amount, 0);
+
+    const breakdown = categoryResults.map(c => ({
+      category: c._id,
+      amount: c.amount,
+      count: c.count,
+      percentage: grandTotal > 0 ? parseFloat(((c.amount / grandTotal) * 100).toFixed(1)) : 0,
+    }));
 
     return {
       grandTotal,
@@ -74,6 +98,7 @@ class AnalyticsService {
 
   /**
    * Month-Over-Month Comparison
+   * Uses $facet for parallel current/previous month aggregation in single query
    */
   static async getMonthlyComparison(userId) {
     const now = new Date();
@@ -82,29 +107,51 @@ class AnalyticsService {
 
     const currStart = new Date(currentYear, currentMonth, 1);
     const currEnd = new Date(currentYear, currentMonth + 1, 0, 23, 59, 59, 999);
-
     const prevStart = new Date(currentYear, currentMonth - 1, 1);
     const prevEnd = new Date(currentYear, currentMonth, 0, 23, 59, 59, 999);
 
-    const currentExpenses = await Expense.find({ userId, date: { $gte: currStart, $lte: currEnd } });
-    const previousExpenses = await Expense.find({ userId, date: { $gte: prevStart, $lte: prevEnd } });
+    const userObjId = typeof userId === 'string' ? new mongoose.Types.ObjectId(userId) : userId;
 
-    const currentMonthSpend = currentExpenses.reduce((s, e) => s + e.amount, 0);
-    const previousMonthSpend = previousExpenses.reduce((s, e) => s + e.amount, 0);
+    // Use $facet for parallel aggregation of both months in a single DB round-trip
+    const pipeline = [
+      { $match: { userId: userObjId, date: { $gte: prevStart, $lte: currEnd } } },
+      {
+        $facet: {
+          currentMonth: [
+            { $match: { date: { $gte: currStart, $lte: currEnd } } },
+            { $group: { _id: '$category', total: { $sum: '$amount' } } },
+          ],
+          previousMonth: [
+            { $match: { date: { $gte: prevStart, $lte: prevEnd } } },
+            { $group: { _id: '$category', total: { $sum: '$amount' } } },
+          ],
+        },
+      },
+    ];
+
+    const [facetResult] = await Expense.aggregate(pipeline);
+
+    const currentCatMap = {};
+    let currentMonthSpend = 0;
+    (facetResult.currentMonth || []).forEach(c => {
+      currentCatMap[c._id] = c.total;
+      currentMonthSpend += c.total;
+    });
+
+    const prevCatMap = {};
+    let previousMonthSpend = 0;
+    (facetResult.previousMonth || []).forEach(c => {
+      prevCatMap[c._id] = c.total;
+      previousMonthSpend += c.total;
+    });
 
     const diff = currentMonthSpend - previousMonthSpend;
     const changePercent = previousMonthSpend > 0
       ? parseFloat(((diff / previousMonthSpend) * 100).toFixed(1))
       : (currentMonthSpend > 0 ? 100 : 0);
 
-    // Category breakdown delta
-    const currentCatMap = {};
-    currentExpenses.forEach(e => { currentCatMap[e.category] = (currentCatMap[e.category] || 0) + e.amount; });
-
-    const prevCatMap = {};
-    previousExpenses.forEach(e => { prevCatMap[e.category] = (prevCatMap[e.category] || 0) + e.amount; });
-
-    const categoryDeltas = Object.keys({ ...currentCatMap, ...prevCatMap }).map(cat => {
+    const allCategories = new Set([...Object.keys(currentCatMap), ...Object.keys(prevCatMap)]);
+    const categoryDeltas = Array.from(allCategories).map(cat => {
       const cAmt = currentCatMap[cat] || 0;
       const pAmt = prevCatMap[cat] || 0;
       const catDiff = cAmt - pAmt;
@@ -125,18 +172,26 @@ class AnalyticsService {
 
   /**
    * Budget Utilization
+   * Uses aggregation pipeline for category spend calculation
    */
   static async getBudgetUtilization(userId) {
     const now = new Date();
     const startDate = new Date(now.getFullYear(), now.getMonth(), 1);
     const endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
 
-    const budgets = await Budget.find({ userId });
-    const currentExpenses = await Expense.find({ userId, date: { $gte: startDate, $lte: endDate } });
+    const userObjId = typeof userId === 'string' ? new mongoose.Types.ObjectId(userId) : userId;
+
+    const [budgets, spendByCategory] = await Promise.all([
+      Budget.find({ userId }),
+      Expense.aggregate([
+        { $match: { userId: userObjId, date: { $gte: startDate, $lte: endDate } } },
+        { $group: { _id: '$category', spent: { $sum: '$amount' } } },
+      ]),
+    ]);
 
     const categorySpendMap = {};
-    currentExpenses.forEach(e => {
-      categorySpendMap[e.category] = (categorySpendMap[e.category] || 0) + e.amount;
+    spendByCategory.forEach(c => {
+      categorySpendMap[c._id] = c.spent;
     });
 
     const budgetStatusList = budgets.map(b => {
@@ -217,7 +272,7 @@ class AnalyticsService {
     const goalStatusList = goals.map(g => {
       const remainingAmount = Math.max(0, g.targetAmount - g.currentAmount);
       const percentage = g.targetAmount > 0 ? parseFloat(((g.currentAmount / g.targetAmount) * 100).toFixed(1)) : 0;
-      
+
       const targetDate = new Date(g.targetDate);
       const monthsRemaining = Math.max(1, (targetDate.getFullYear() - now.getFullYear()) * 12 + (targetDate.getMonth() - now.getMonth()));
       const requiredMonthlyContribution = Math.round(remainingAmount / monthsRemaining);
@@ -242,55 +297,88 @@ class AnalyticsService {
   }
 
   /**
-   * Merchant Summary
+   * Merchant Summary — uses aggregation pipeline
    */
   static async getMerchantSummary(userId) {
-    const expenses = await Expense.find({ userId });
-    const merchantMap = {};
+    const userObjId = typeof userId === 'string' ? new mongoose.Types.ObjectId(userId) : userId;
 
-    expenses.forEach(e => {
-      if (e.merchant) {
-        merchantMap[e.merchant] = (merchantMap[e.merchant] || 0) + e.amount;
-      }
-    });
-
-    const topMerchants = Object.keys(merchantMap).map(m => ({
-      merchant: m,
-      totalSpend: merchantMap[m],
-    })).sort((a, b) => b.totalSpend - a.totalSpend).slice(0, 5);
+    const topMerchants = await Expense.aggregate([
+      { $match: { userId: userObjId, merchant: { $exists: true, $ne: '' } } },
+      {
+        $group: {
+          _id: '$merchant',
+          totalSpend: { $sum: '$amount' },
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { totalSpend: -1 } },
+      { $limit: 5 },
+      {
+        $project: {
+          _id: 0,
+          merchant: '$_id',
+          totalSpend: { $round: ['$totalSpend', 0] },
+          count: 1,
+        },
+      },
+    ]);
 
     return { topMerchants };
   }
 
   /**
-   * Anomaly Detection (Statistical Z-Score or Category Spikes)
+   * Anomaly Detection (Statistical Z-Score)
+   * Uses two-pass aggregation: first computes mean/stdDev, then filters outliers
    */
   static async getAnomalies(userId) {
-    const allExpenses = await Expense.find({ userId }).sort({ date: -1 });
-    if (allExpenses.length < 3) return { anomalies: [] };
+    const userObjId = typeof userId === 'string' ? new mongoose.Types.ObjectId(userId) : userId;
 
-    const amounts = allExpenses.map(e => e.amount);
-    const mean = amounts.reduce((a, b) => a + b, 0) / amounts.length;
+    // Pass 1: Compute statistical baseline
+    const statsResult = await Expense.aggregate([
+      { $match: { userId: userObjId } },
+      {
+        $group: {
+          _id: null,
+          mean: { $avg: '$amount' },
+          count: { $sum: 1 },
+          amounts: { $push: '$amount' },
+        },
+      },
+    ]);
+
+    if (!statsResult.length || statsResult[0].count < 3) {
+      return { anomalies: [] };
+    }
+
+    const { mean, amounts } = statsResult[0];
     const variance = amounts.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / amounts.length;
     const stdDev = Math.sqrt(variance);
 
-    const anomalies = [];
-    allExpenses.forEach(e => {
-      // Flag if transaction is > 2.0 standard deviations above mean AND at least 1.5x mean
-      if (stdDev > 0 && mean > 0 && ((e.amount - mean) / stdDev) > 2.0 && e.amount >= (mean * 1.5)) {
-        anomalies.push({
-          expenseId: e._id,
-          title: e.title,
-          amount: e.amount,
-          category: e.category,
-          date: e.date,
-          merchant: e.merchant,
-          typicalAverage: Math.round(mean),
-          deviationFactor: parseFloat(((e.amount - mean) / stdDev).toFixed(1)),
-          reason: `Transaction amount (${e.amount}) is significantly higher than user average (${Math.round(mean)}).`,
-        });
-      }
-    });
+    if (stdDev === 0 || mean === 0) {
+      return { anomalies: [] };
+    }
+
+    // Pass 2: Find outliers (Z > 2.0 AND amount >= 1.5 * mean)
+    const threshold = mean + (2.0 * stdDev);
+    const minAmount = mean * 1.5;
+    const anomalyThreshold = Math.max(threshold, minAmount);
+
+    const anomalyExpenses = await Expense.find({
+      userId,
+      amount: { $gte: anomalyThreshold },
+    }).sort({ date: -1 }).limit(10);
+
+    const anomalies = anomalyExpenses.map(e => ({
+      expenseId: e._id,
+      title: e.title,
+      amount: e.amount,
+      category: e.category,
+      date: e.date,
+      merchant: e.merchant,
+      typicalAverage: Math.round(mean),
+      deviationFactor: parseFloat(((e.amount - mean) / stdDev).toFixed(1)),
+      reason: `Transaction amount (${e.amount}) is significantly higher than user average (${Math.round(mean)}).`,
+    }));
 
     return { anomalies };
   }

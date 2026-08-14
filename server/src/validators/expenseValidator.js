@@ -1,0 +1,46 @@
+const Joi = require('joi');
+
+const VALID_PAYMENT_METHODS = ['Card', 'Cash', 'UPI', 'Bank Transfer', 'Other'];
+const VALID_SOURCES = ['manual', 'recurring', 'ai_suggested', 'import'];
+
+const createExpenseSchema = Joi.object({
+  title: Joi.string().trim().min(1).max(200).required()
+    .messages({
+      'string.min': 'Title must not be empty',
+      'string.max': 'Title must not exceed 200 characters',
+      'any.required': 'Expense title is required',
+    }),
+  amount: Joi.number().positive().required()
+    .messages({
+      'number.positive': 'Amount must be a positive number',
+      'any.required': 'Amount is required',
+    }),
+  category: Joi.string().trim().min(1).max(100).required()
+    .messages({
+      'any.required': 'Category is required',
+    }),
+  date: Joi.date().iso().max('now').allow(null).optional()
+    .messages({
+      'date.max': 'Date cannot be in the future',
+    }),
+  note: Joi.string().trim().max(1000).allow('').optional(),
+  merchant: Joi.string().trim().max(200).allow('').optional(),
+  paymentMethod: Joi.string().valid(...VALID_PAYMENT_METHODS).optional(),
+  tags: Joi.array().items(Joi.string().trim().max(50)).max(10).optional(),
+  source: Joi.string().valid(...VALID_SOURCES).optional(),
+});
+
+const updateExpenseSchema = Joi.object({
+  title: Joi.string().trim().min(1).max(200).optional(),
+  amount: Joi.number().positive().optional(),
+  category: Joi.string().trim().min(1).max(100).optional(),
+  date: Joi.date().iso().max('now').allow(null).optional(),
+  note: Joi.string().trim().max(1000).allow('').optional(),
+  merchant: Joi.string().trim().max(200).allow('').optional(),
+  paymentMethod: Joi.string().valid(...VALID_PAYMENT_METHODS).optional(),
+  tags: Joi.array().items(Joi.string().trim().max(50)).max(10).optional(),
+}).min(1).messages({
+  'object.min': 'At least one field must be provided for update',
+});
+
+module.exports = { createExpenseSchema, updateExpenseSchema };
