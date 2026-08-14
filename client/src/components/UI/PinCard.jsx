@@ -19,8 +19,7 @@ export const PinCard = ({
   onAction,
   children,
 }) => {
-  const rawId = useId();
-  const gradientId = 'spark_' + rawId.replace(/[^a-zA-Z0-9]/g, '');
+  const cardId = useId().replace(/:/g, '_');
 
   // Determine badge styling based on pillColor token
   const getBadgeStyle = () => {
@@ -42,39 +41,11 @@ export const PinCard = ({
   };
 
   const badgeStyle = getBadgeStyle();
-
-  // Helper to generate seamless repeating wave paths for smooth 60fps horizontal motion
-  const generateWavePaths = (data) => {
-    if (!data || !Array.isArray(data) || data.length < 2) return null;
-    
-    // Duplicate data array for seamless repeating waveform
-    const dataRepeated = [...data, ...data];
-    const totalPoints = dataRepeated.length;
-    const maxIdx = Math.max(totalPoints - 1, 1);
-    
-    const p = dataRepeated.map((val, i) => {
-      const x = (i / maxIdx) * 400;
-      const safeVal = typeof val === 'number' && !isNaN(val) ? val : 20;
-      const y = 40 - Math.min(Math.max(safeVal, 4), 36);
-      return [x, y];
-    });
-
-    const strokeD = `M 0 ${p[0][1]} ${p.map(pt => `L ${pt[0].toFixed(1)} ${pt[1].toFixed(1)}`).join(' ')}`;
-    const fillD = `M 0 40 ${p.map(pt => `L ${pt[0].toFixed(1)} ${pt[1].toFixed(1)}`).join(' ')} L 400 40 Z`;
-
-    return { strokeD, fillD };
-  };
-
-  const wavePaths = generateWavePaths(sparklineData);
-
-  // Validate radial progress percentage to avoid NaN
-  const validRadialProgress = (radialProgress === undefined || radialProgress === null || isNaN(radialProgress))
-    ? null
-    : Math.min(Math.max(Math.round(radialProgress), 0), 100);
+  const validProgress = typeof radialProgress === 'number' && !isNaN(radialProgress) ? radialProgress : null;
 
   return (
     <motion.div
-      whileHover={{ y: -4, boxShadow: '0 14px 36px rgba(0,0,0,0.6)' }}
+      whileHover={{ y: -4, boxShadow: '0 12px 32px rgba(0,0,0,0.5)' }}
       className="glass-card"
       style={{
         padding: '22px',
@@ -108,7 +79,7 @@ export const PinCard = ({
         )}
 
         {/* Dynamic Trend Indicator if available */}
-        {trendPercent !== undefined && !isNaN(trendPercent) && (
+        {trendPercent !== undefined && (
           <div
             style={{
               display: 'flex',
@@ -136,7 +107,7 @@ export const PinCard = ({
           </span>
         )}
 
-        {amount !== undefined && amount !== null && (
+        {amount !== undefined && (
           <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
             <span
               className="font-display"
@@ -148,72 +119,89 @@ export const PinCard = ({
                 lineHeight: 1.1,
               }}
             >
-              {currency}{typeof amount === 'number' && !isNaN(amount) ? amount.toLocaleString() : amount}
+              {currency}{typeof amount === 'number' ? amount.toLocaleString() : amount}
             </span>
           </div>
         )}
       </div>
 
-      {/* Continuously Animated Sparkline Line Chart (Seamless GPU Wave Motion) */}
-      {wavePaths && (
-        <div style={{ width: '100%', height: '42px', margin: '6px 0', overflow: 'hidden', position: 'relative' }}>
-          <svg width="100%" height="100%" viewBox="0 0 200 40" preserveAspectRatio="none" style={{ overflow: 'visible' }}>
+      {/* Continuously Animated Moving Sparkline Chart */}
+      {sparklineData && Array.isArray(sparklineData) && sparklineData.length > 1 && (
+        <div style={{ width: '100%', height: '42px', margin: '6px 0', position: 'relative', overflow: 'hidden' }}>
+          <svg width="100%" height="100%" viewBox="0 0 200 40" preserveAspectRatio="none">
             <defs>
-              <linearGradient id={`sparkGrad-${gradientId}`} x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor={badgeStyle.text} stopOpacity={0.45} />
-                <stop offset="100%" stopColor={badgeStyle.text} stopOpacity={0.02} />
+              <linearGradient id={`sparkGrad-${cardId}`} x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor={badgeStyle.text} stopOpacity={0.35} />
+                <stop offset="100%" stopColor={badgeStyle.text} stopOpacity={0} />
+              </linearGradient>
+              <linearGradient id={`lineGlow-${cardId}`} x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor={badgeStyle.text} stopOpacity={0.4} />
+                <stop offset="50%" stopColor="#FFFFFF" stopOpacity={1} />
+                <stop offset="100%" stopColor={badgeStyle.text} stopOpacity={0.4} />
               </linearGradient>
             </defs>
-
-            {/* Seamless 60fps Horizontal Wave Motion */}
-            <motion.g
-              animate={{ x: [0, -100] }}
-              transition={{ repeat: Infinity, duration: 4, ease: 'linear' }}
-            >
-              <path d={wavePaths.fillD} fill={`url(#sparkGrad-${gradientId})`} />
-              <path
-                d={wavePaths.strokeD}
-                fill="none"
-                stroke={badgeStyle.text}
-                strokeWidth="2.8"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                style={{
-                  filter: `drop-shadow(0 0 6px ${badgeStyle.text})`,
-                }}
-              />
-            </motion.g>
+            {/* Area path */}
+            <path
+              d={`M 0 40 ${sparklineData.map((d, i) => `L ${(i / (sparklineData.length - 1)) * 200} ${40 - d}`).join(' ')} L 200 40 Z`}
+              fill={`url(#sparkGrad-${cardId})`}
+            />
+            {/* Base stroke line */}
+            <path
+              d={`M 0 ${40 - sparklineData[0]} ${sparklineData.map((d, i) => `L ${(i / (sparklineData.length - 1)) * 200} ${40 - d}`).join(' ')}`}
+              fill="none"
+              stroke={badgeStyle.text}
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              opacity="0.4"
+            />
+            {/* Constantly Moving Light Pulse Line */}
+            <motion.path
+              d={`M 0 ${40 - sparklineData[0]} ${sparklineData.map((d, i) => `L ${(i / (sparklineData.length - 1)) * 200} ${40 - d}`).join(' ')}`}
+              fill="none"
+              stroke={`url(#lineGlow-${cardId})`}
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeDasharray="60 140"
+              animate={{ strokeDashoffset: [200, -200] }}
+              transition={{ duration: 2.8, repeat: Infinity, ease: 'linear' }}
+            />
           </svg>
         </div>
       )}
 
-      {/* Radial Progress Ring / Animated Meter Bar if requested */}
-      {validRadialProgress !== null && (
-        <div style={{ margin: '8px 0' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', fontWeight: 700, color: '#94A3B8', marginBottom: '5px' }}>
+      {/* Animated Radial / Meter Progress Bar */}
+      {validProgress !== null && (
+        <div style={{ margin: '10px 0' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', fontWeight: 700, color: '#94A3B8', marginBottom: '4px' }}>
             <span>Utilization Rate</span>
-            <span style={{ color: badgeStyle.text }}>{validRadialProgress}%</span>
+            <span style={{ color: badgeStyle.text }}>{validProgress}%</span>
           </div>
-          <div style={{ width: '100%', height: '8px', background: 'rgba(255, 255, 255, 0.08)', borderRadius: '999px', overflow: 'hidden' }}>
+          <div style={{ width: '100%', height: '8px', background: 'rgba(255, 255, 255, 0.08)', borderRadius: '999px', overflow: 'hidden', position: 'relative' }}>
             <motion.div
               initial={{ width: 0 }}
-              animate={{
-                width: `${validRadialProgress}%`,
-                opacity: [0.85, 1, 0.85],
-              }}
-              transition={{
-                width: { duration: 1, ease: 'easeOut' },
-                opacity: { repeat: Infinity, duration: 2, ease: 'easeInOut' },
-              }}
+              animate={{ width: `${Math.min(validProgress, 100)}%` }}
+              transition={{ duration: 1, ease: 'easeOut' }}
               style={{
                 height: '100%',
-                background: validRadialProgress > 85
-                  ? 'linear-gradient(90deg, #FF9900, #F43F5E)'
-                  : `linear-gradient(90deg, ${badgeStyle.text}, #00FF87)`,
+                background: validProgress > 85 ? 'linear-gradient(90deg, #FF9900, #F43F5E)' : `linear-gradient(90deg, ${badgeStyle.text}, #00FF87)`,
                 borderRadius: '999px',
                 boxShadow: `0 0 10px ${badgeStyle.text}`,
+                position: 'relative',
+                overflow: 'hidden',
               }}
-            />
+            >
+              {/* Continuous Light Shimmer Animation across line */}
+              <motion.div
+                animate={{ x: ['-100%', '200%'] }}
+                transition={{ duration: 1.8, repeat: Infinity, ease: 'linear' }}
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  width: '50%',
+                  background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent)',
+                }}
+              />
+            </motion.div>
           </div>
         </div>
       )}

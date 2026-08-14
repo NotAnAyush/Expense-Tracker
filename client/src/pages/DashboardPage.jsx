@@ -122,16 +122,18 @@ export const DashboardPage = ({ onOpenCopilot, onAddExpense }) => {
     };
   });
 
-  // Calculate safe progress metrics
-  const totalDaysInCycle = ((monthlySummary?.daysElapsed || 0) + (monthlySummary?.daysRemaining || 0));
-  const safeDaysProgress = totalDaysInCycle > 0 ? Math.round(((monthlySummary?.daysElapsed || 1) / totalDaysInCycle) * 100) : 45;
-  const safeUtilizationPercent = isNaN(utilizationPercent) || utilizationPercent === null ? 0 : Math.min(Math.max(utilizationPercent, 0), 100);
+  // Calculate velocity health badge & cycle progress
+  const velocityWarning = spendingVelocity.velocityRatio > 1.1;
+  const utilizationPercent = Math.round((budgetUtilization.totalSpent / (budgetUtilization.totalAllocated || 1)) * 100);
+  const daysElapsed = Number(monthlySummary.daysElapsed) || 12;
+  const daysRemaining = Number(monthlySummary.daysRemaining) || 18;
+  const cyclePaceProgress = Math.round((daysElapsed / (daysElapsed + daysRemaining)) * 100);
 
-  // Sparkline wave datasets for continuous motion
+  // Sparkline motion datasets for all 4 KPI cards
   const sparklineSpend = [12, 18, 14, 22, 19, 28, 25, 34, 30, 38];
-  const sparklinePace = [20, 24, 21, 28, 26, 32, 29, 35, 31, 36];
-  const sparklineBudget = [15, 19, 23, 20, 27, 31, 33, 36, 34, 39];
-  const sparklineForecast = [25, 28, 32, 36, 40, 44, 48, 52, 50, 56];
+  const sparklinePace = [18, 22, 20, 26, 24, 30, 28, 32];
+  const sparklineBudget = [10, 20, 30, 45, 60, 75, 85, utilizationPercent || 94];
+  const sparklineForecast = [25, 28, 32, 36, 40, 44, 48, 52];
 
   // Custom 3D Segmented Ring Hover Tooltip Component
   const CustomTooltip = ({ active, payload }) => {
@@ -263,17 +265,17 @@ export const DashboardPage = ({ onOpenCopilot, onAddExpense }) => {
           overlayPill={velocityWarning ? "High Velocity ⚡" : "Budget Safety 🛡️"}
           pillColor={velocityWarning ? "amber" : "emerald"}
           sparklineData={sparklinePace}
-          radialProgress={safeDaysProgress}
-          subtitle={`${monthlySummary.daysRemaining} days remaining in cycle • Daily pace ₹${monthlySummary.averageDailySpend}`}
+          radialProgress={cyclePaceProgress}
+          subtitle={`${daysRemaining} days remaining in cycle • Daily pace ₹${monthlySummary.averageDailySpend}`}
         />
 
         <PinCard
           title="Budget Utilization"
           amount={budgetUtilization.totalSpent}
-          overlayPill={`${safeUtilizationPercent}% Used`}
-          pillColor={safeUtilizationPercent > 85 ? "amber" : "emerald"}
+          overlayPill={`${utilizationPercent}% Used`}
+          pillColor={utilizationPercent > 90 ? "amber" : "emerald"}
           sparklineData={sparklineBudget}
-          radialProgress={safeUtilizationPercent}
+          radialProgress={utilizationPercent}
           subtitle={`₹${budgetUtilization.totalAllocated.toLocaleString()} Total Allocated Cap`}
         />
 
