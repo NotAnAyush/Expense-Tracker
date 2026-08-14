@@ -9,17 +9,19 @@ const {
   getExpenseSummary,
 } = require('../controllers/expenseController');
 const { protect } = require('../middleware/auth');
+const validate = require('../middleware/validate');
+const { createExpenseSchema, updateExpenseSchema } = require('../validators/expenseValidator');
 
 router.use(protect);
 
 router.get('/summary', getExpenseSummary);
 router.route('/')
   .get(getExpenses)
-  .post(createExpense);
+  .post(validate(createExpenseSchema), createExpense);
 
 router.route('/:id')
   .get(getExpenseById)
-  .put(updateExpense)
+  .put(validate(updateExpenseSchema), updateExpense)
   .delete(deleteExpense);
 
 module.exports = router;
