@@ -1,18 +1,20 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const path = require('path');
 const helmet = require('helmet');
 const compression = require('compression');
+const mongoose = require('mongoose');
 
 dotenv.config();
 
-const connectDB = require('./config/db');
+const { connectDB, closeDatabase } = require('./config/db');
+const requestLogger = require('./middleware/requestLogger');
 const sanitizeInput = require('./middleware/sanitize');
 const auditLogger = require('./middleware/auditLogger');
 const idempotency = require('./middleware/idempotency');
-const { globalLimiter, authLimiter, aiLimiter } = require('./middleware/rateLimiter');
-const AppError = require('./utils/AppError');
+const { globalLimiter, aiLimiter } = require('./middleware/rateLimiter');
+const errorHandler = require('./middleware/errorHandler');
+const { NotFoundError } = require('./utils/errors');
 
 // Route imports
 const authRoutes = require('./routes/authRoutes');
@@ -34,38 +36,36 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 // ========================
-// Security Middleware Stack
+// Security & Core Middleware Stack
 // ========================
 
-// 1. Helmet — Sets comprehensive security headers (replaces manual headers)
-//    Includes: CSP, HSTS, X-Frame-Options, X-Content-Type-Options, etc.
+// 1. Structured HTTP Request Logger
+app.use(requestLogger);
+
+// 2. Helmet — Sets comprehensive security headers
 app.use(helmet({
   contentSecurityPolicy: process.env.NODE_ENV === 'production' ? undefined : false,
-  crossOriginEmbedderPolicy: false, // Allow frontend to load cross-origin resources
+  crossOriginEmbedderPolicy: false,
 }));
 
-// 2. CORS — Environment-based and development dynamic origin whitelist
+// 3. CORS — Origin whitelist
 const configuredOrigins = (process.env.FRONTEND_URL || 'http://localhost:5173')
   .split(',')
   .map(url => url.trim());
 
 app.use(cors({
   origin: (origin, callback) => {
-    // Allow requests with no origin (like mobile apps, curl, server-to-server)
     if (!origin) return callback(null, true);
 
-    // In development or test, allow all localhost and 127.0.0.1 origins on any port
     if (process.env.NODE_ENV !== 'production') {
       const isLocalhost = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin);
       if (isLocalhost) return callback(null, true);
     }
 
-    // Check if origin is explicitly in configured list
     if (configuredOrigins.includes(origin) || configuredOrigins.includes('*')) {
       return callback(null, true);
     }
 
-    // Fallback: allow in non-production, reject in production
     if (process.env.NODE_ENV !== 'production') {
       return callback(null, true);
     }
@@ -77,145 +77,86 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Idempotency-Key'],
 }));
 
-// 3. Compression — Gzip all JSON responses
+// 4. Compression — Gzip responses
 app.use(compression());
 
-// 4. Body Parsing — With payload size limits
+// 5. Body Parsing — With payload limits
 app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: true, limit: '1mb' }));
 
-// 5. NoSQL Injection Sanitizer
+// 6. NoSQL Injection Sanitizer
 app.use(sanitizeInput);
 
-// 6. Global Rate Limiter — 100 req / 15 min / IP
+// 7. Global Rate Limiter — 100 req / 15 min / IP
 app.use(globalLimiter);
 
-// 7. Idempotency — Prevents duplicate POST operations
+// 8. Idempotency — Prevents duplicate POST operations
 app.use(idempotency);
 
-// 8. Audit Logger — Logs all mutations (POST/PUT/DELETE)
+// 9. Audit Logger — Logs all mutations
 app.use(auditLogger);
 
 // ========================
-// API Routes
+// Health Checks & Monitoring
 // ========================
+const getHealthStatus = (req, res) => {
+  const dbStates = {
+    0: 'disconnected',
+    1: 'connected',
+    2: 'connecting',
+    3: 'disconnecting',
+  };
 
-// Auth routes (route-specific rate limiting applied inside authRoutes)
-app.use('/api/auth', authRoutes);
+  const readyState = mongoose.connection ? mongoose.connection.readyState : 0;
+  const dbStatus = dbStates[readyState] || 'unknown';
 
-
-// Core CRUD routes
-app.use('/api/expenses', expenseRoutes);
-app.use('/api/budgets', budgetRoutes);
-app.use('/api/goals', goalRoutes);
-app.use('/api/recurring', recurringRoutes);
-app.use('/api/categories', categoryRoutes);
-
-// Analytics & AI routes
-app.use('/api/analytics', analyticsRoutes);
-app.use('/api/ai', aiLimiter, aiRoutes);
-
-// New routes — Audit trail & Data export
-app.use('/api/audit', auditRoutes);
-app.use('/api/export', exportRoutes);
-
-// Health check endpoint
-app.get('/api/health', (req, res) => {
   res.json({
-    status: 'online',
+    status: dbStatus === 'connected' ? 'online' : (readyState === 0 && process.env.NODE_ENV === 'test' ? 'online' : 'degraded'),
+    database: dbStatus,
     system: 'AI-First Personal Finance Intelligence Platform',
-    version: '2.1.0',
+    version: '2.2.0',
     timestamp: new Date().toISOString(),
+    uptimeSeconds: Math.floor(process.uptime()),
+    memoryUsage: {
+      heapUsedMb: Math.round((process.memoryUsage().heapUsed / 1024 / 1024) * 100) / 100,
+      rssMb: Math.round((process.memoryUsage().rss / 1024 / 1024) * 100) / 100,
+    },
     features: {
       rateLimiting: true,
       auditLogging: true,
       inputValidation: true,
       dataExport: true,
       idempotency: true,
+      requestLogging: true,
+      structuredErrors: true,
     },
   });
-});
+};
 
-// Global 404 handler
+app.get('/health', getHealthStatus);
+app.get('/api/health', getHealthStatus);
+
+// ========================
+// API Routes
+// ========================
+app.use('/api/auth', authRoutes);
+app.use('/api/expenses', expenseRoutes);
+app.use('/api/budgets', budgetRoutes);
+app.use('/api/goals', goalRoutes);
+app.use('/api/recurring', recurringRoutes);
+app.use('/api/categories', categoryRoutes);
+app.use('/api/analytics', analyticsRoutes);
+app.use('/api/ai', aiLimiter, aiRoutes);
+app.use('/api/audit', auditRoutes);
+app.use('/api/export', exportRoutes);
+
+// Global 404 handler for undefined routes
 app.use((req, res, next) => {
-  next(AppError.notFound(`Endpoint: ${req.originalUrl}`));
+  next(new NotFoundError(`Endpoint: ${req.originalUrl}`));
 });
 
-// ========================
-// Global Error Handler
-// ========================
-app.use((err, req, res, next) => {
-  // Handle AppError (operational errors)
-  if (err.isOperational) {
-    return res.status(err.statusCode).json(err.toJSON());
-  }
-
-  // Handle Mongoose ValidationError
-  if (err.name === 'ValidationError') {
-    const details = Object.keys(err.errors).map((field) => ({
-      field,
-      message: err.errors[field].message,
-    }));
-    return res.status(400).json({
-      error: {
-        code: 'VALIDATION_FAILED',
-        message: 'Database validation failed',
-        details,
-      },
-    });
-  }
-
-  // Handle Mongoose CastError (invalid ObjectId)
-  if (err.name === 'CastError') {
-    return res.status(400).json({
-      error: {
-        code: 'INVALID_ID',
-        message: `Invalid ID format: ${err.value}`,
-      },
-    });
-  }
-
-  // Handle JWT errors
-  if (err.name === 'JsonWebTokenError') {
-    return res.status(401).json({
-      error: {
-        code: 'AUTH_TOKEN_INVALID',
-        message: 'Invalid authentication token',
-      },
-    });
-  }
-
-  if (err.name === 'TokenExpiredError') {
-    return res.status(401).json({
-      error: {
-        code: 'AUTH_TOKEN_EXPIRED',
-        message: 'Authentication token has expired',
-      },
-    });
-  }
-
-  // Handle duplicate key (MongoDB E11000)
-  if (err.code === 11000) {
-    const field = Object.keys(err.keyValue || {})[0] || 'field';
-    return res.status(409).json({
-      error: {
-        code: 'RESOURCE_CONFLICT',
-        message: `Duplicate value for ${field}`,
-      },
-    });
-  }
-
-  // Unhandled errors — log full stack, return generic message
-  console.error('[Unhandled Error]', err.stack);
-  res.status(500).json({
-    error: {
-      code: 'INTERNAL_ERROR',
-      message: process.env.NODE_ENV === 'development'
-        ? err.message
-        : 'An unexpected error occurred',
-    },
-  });
-});
+// Centralized Global Error Handler
+app.use(errorHandler);
 
 // ========================
 // Server Startup & Graceful Shutdown
@@ -226,24 +167,24 @@ let server;
 if (process.env.NODE_ENV !== 'test') {
   server = app.listen(PORT, () => {
     console.log(`=======================================================`);
-    console.log(`🚀 Richy Rich Backend v2.1.0 running on port ${PORT}`);
+    console.log(`🚀 Richy Rich Backend v2.2.0 running on port ${PORT}`);
     console.log(`🛡️  Security: helmet, rate-limit, compression, audit-log`);
     console.log(`=======================================================`);
   });
 
-  // Graceful shutdown — drain connections before exiting
-  const gracefulShutdown = (signal) => {
+  const gracefulShutdown = async (signal) => {
     console.log(`\n[${signal}] Graceful shutdown initiated...`);
-    server.close(() => {
-      console.log('[Server] HTTP connections drained.');
-      const mongoose = require('mongoose');
-      mongoose.connection.close(false).then(() => {
-        console.log('[Database] MongoDB connection closed.');
+    if (server) {
+      server.close(async () => {
+        console.log('[Server] HTTP connections drained.');
+        await closeDatabase();
         process.exit(0);
       });
-    });
+    } else {
+      await closeDatabase();
+      process.exit(0);
+    }
 
-    // Force kill if graceful shutdown takes too long
     setTimeout(() => {
       console.error('[Server] Forced shutdown — timeout exceeded.');
       process.exit(1);

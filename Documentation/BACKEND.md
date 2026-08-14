@@ -62,16 +62,21 @@ server/
 ├── src/
 │   ├── server.js              # Express app entrypoint, security stack, graceful shutdown
 │   ├── config/
-│   │   └── db.js              # MongoDB connection handler with in-memory fallback
+│   │   └── db.js              # MongoDB connection handler with pool options, events & graceful teardown
 │   ├── middleware/
 │   │   ├── auth.js            # JWT verification & req.user attachment
+│   │   ├── errorHandler.js    # Centralized global error handling middleware
+│   │   ├── requestLogger.js   # Structured HTTP request logger middleware
 │   │   ├── sanitize.js        # NoSQL injection sanitizer ($ and . stripping)
 │   │   ├── rateLimiter.js     # Tiered rate limiting (global, auth, AI)
 │   │   ├── auditLogger.js     # Mutating request auditor with PII redaction
 │   │   ├── idempotency.js     # 24h idempotent POST cache
 │   │   └── validate.js        # Joi schema validation middleware factory
 │   ├── utils/
-│   │   └── AppError.js        # Structured application error class with factory helpers
+│   │   ├── AppError.js        # Structured application error class with factory helpers
+│   │   ├── errors.js          # Comprehensive error hierarchy (ValidationError, NotFoundError, etc.)
+│   │   ├── asyncHandler.js    # Async route controller error forwarding wrapper
+│   │   └── response.js        # Standardized ApiResponse helper (success, error, paginated)
 │   ├── validators/
 │   │   ├── authValidator.js   # Auth registration, login & refresh schemas
 │   │   ├── expenseValidator.js# Expense create & update schemas
@@ -119,7 +124,8 @@ server/
 │           ├── contextBuilder.js    # Financial ground truth context assembler
 │           ├── intentRouter.js      # Query intent classifier for Copilot
 │           └── toolRegistry.js      # Tool executor mapping intents to analytics calls
-└── tests/                           # Jest Automated Integration Test Suite (67 tests)
+└── tests/                           # Jest Automated Integration Test Suite (79 tests)
+    ├── patterns.test.js             # Node.js backend patterns, error classes & ApiResponse tests
     ├── auth.test.js                 # Auth lifecycle + JWT refresh & token rotation tests
     ├── expenses.test.js
     ├── budgets.test.js
@@ -331,7 +337,7 @@ All financial metrics are calculated **deterministically** via high-efficiency *
 
 ## ⚡ Automated Test Suite
 
-The backend includes a comprehensive Jest integration test suite containing **67 automated tests** across 8 test suites:
+The backend includes a comprehensive Jest integration test suite containing **79 automated tests** across 9 test suites:
 
 ```bash
 cd server
@@ -339,6 +345,7 @@ npm test
 ```
 
 ### Test Coverage Breakdown:
+- **`patterns.test.js`** — Node.js backend patterns, custom error class hierarchy (`ValidationError`, `NotFoundError`, `UnauthorizedError`, `ForbiddenError`, `ConflictError`, `TooManyRequestsError`), `ApiResponse` standard formatting, `asyncHandler` error propagation, and `/health` system diagnostics.
 - **`auth.test.js`** — User registration, password complexity validation, login credentials, JWT validation, refresh token rotation lifecycle, and logout invalidation.
 - **`expenses.test.js`** — CRUD operations, filters, pagination, search, cross-user security isolation.
 - **`budgets.test.js`** — Budget creation, upserting, utilization calculations, threshold limits.
