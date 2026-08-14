@@ -1,4 +1,6 @@
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = (typeof window !== 'undefined' && window.location.hostname === 'localhost' && window.location.port === '5173')
+  ? '/api'
+  : (import.meta.env?.VITE_API_URL || 'http://localhost:5000/api');
 
 export const getLocalDateString = (date = new Date()) => {
   const d = new Date(date);
@@ -67,7 +69,20 @@ export const apiFetch = async (endpoint, options = {}) => {
     }
 
     if (!response.ok) {
-      const error = new Error(data.message || data.error?.message || 'API request failed');
+      let errorMessage = 'API request failed';
+      if (data.error?.details && Array.isArray(data.error.details) && data.error.details.length > 0) {
+        errorMessage = data.error.details.map((d) => d.message).join(' • ');
+      } else if (data.message) {
+        errorMessage = data.message;
+      } else if (data.error?.message) {
+        errorMessage = data.error.message;
+      } else if (response.status === 429) {
+        errorMessage = 'Too many requests. Please wait a moment before trying again.';
+      } else if (response.status === 500) {
+        errorMessage = 'Internal server error. Please try again.';
+      }
+
+      const error = new Error(errorMessage);
       error.status = response.status;
       error.data = data;
       throw error;
@@ -75,6 +90,10 @@ export const apiFetch = async (endpoint, options = {}) => {
 
     return data;
   } catch (error) {
+    if (error.name === 'TypeError' && String(error.message).toLowerCase().includes('fetch')) {
+      error.message = 'Unable to connect to backend server. Please verify the server is running on port 5000.';
+    }
     throw error;
   }
 };
+

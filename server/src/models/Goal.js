@@ -32,7 +32,7 @@ const goalSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['active', 'achieved', 'cancelled'],
+    enum: ['active', 'achieved', 'completed', 'paused', 'cancelled'],
     default: 'active',
   },
 }, {

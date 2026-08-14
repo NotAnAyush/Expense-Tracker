@@ -44,15 +44,37 @@ app.use(helmet({
   crossOriginEmbedderPolicy: false, // Allow frontend to load cross-origin resources
 }));
 
-// 2. CORS — Environment-based origin whitelist
-const allowedOrigins = (process.env.FRONTEND_URL || 'http://localhost:5173')
+// 2. CORS — Environment-based and development dynamic origin whitelist
+const configuredOrigins = (process.env.FRONTEND_URL || 'http://localhost:5173')
   .split(',')
   .map(url => url.trim());
 
 app.use(cors({
-  origin: allowedOrigins,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps, curl, server-to-server)
+    if (!origin) return callback(null, true);
+
+    // In development or test, allow all localhost and 127.0.0.1 origins on any port
+    if (process.env.NODE_ENV !== 'production') {
+      const isLocalhost = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin);
+      if (isLocalhost) return callback(null, true);
+    }
+
+    // Check if origin is explicitly in configured list
+    if (configuredOrigins.includes(origin) || configuredOrigins.includes('*')) {
+      return callback(null, true);
+    }
+
+    // Fallback: allow in non-production, reject in production
+    if (process.env.NODE_ENV !== 'production') {
+      return callback(null, true);
+    }
+
+    return callback(new Error(`Origin ${origin} not allowed by CORS`));
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
   credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Idempotency-Key'],
 }));
 
 // 3. Compression — Gzip all JSON responses
@@ -78,8 +100,9 @@ app.use(auditLogger);
 // API Routes
 // ========================
 
-// Auth routes with stricter rate limiter
-app.use('/api/auth', authLimiter, authRoutes);
+// Auth routes (route-specific rate limiting applied inside authRoutes)
+app.use('/api/auth', authRoutes);
+
 
 // Core CRUD routes
 app.use('/api/expenses', expenseRoutes);

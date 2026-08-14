@@ -19,10 +19,7 @@ const createExpenseSchema = Joi.object({
     .messages({
       'any.required': 'Category is required',
     }),
-  date: Joi.date().iso().max('now').allow(null).optional()
-    .messages({
-      'date.max': 'Date cannot be in the future',
-    }),
+  date: Joi.date().iso().allow(null).optional(),
   note: Joi.string().trim().max(1000).allow('').optional(),
   merchant: Joi.string().trim().max(200).allow('').optional(),
   paymentMethod: Joi.string().valid(...VALID_PAYMENT_METHODS).optional(),
@@ -34,7 +31,7 @@ const updateExpenseSchema = Joi.object({
   title: Joi.string().trim().min(1).max(200).optional(),
   amount: Joi.number().positive().optional(),
   category: Joi.string().trim().min(1).max(100).optional(),
-  date: Joi.date().iso().max('now').allow(null).optional(),
+  date: Joi.date().iso().allow(null).optional(),
   note: Joi.string().trim().max(1000).allow('').optional(),
   merchant: Joi.string().trim().max(200).allow('').optional(),
   paymentMethod: Joi.string().valid(...VALID_PAYMENT_METHODS).optional(),

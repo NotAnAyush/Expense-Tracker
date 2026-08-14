@@ -15,13 +15,26 @@ exports.getCategories = async (req, res) => {
 exports.createCategory = async (req, res) => {
   try {
     const { name, icon = 'tag', color = '#3b82f6', type = 'expense' } = req.body;
-    if (!name) {
+    if (!name || !name.trim()) {
       return res.status(400).json({ message: 'Category name is required' });
+    }
+
+    const cleanName = name.trim();
+
+    // Check if category already exists for this user (case-insensitive)
+    const existing = await Category.findOne({
+      userId: req.user._id,
+      name: { $regex: new RegExp(`^${cleanName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'i') },
+      isArchived: false,
+    });
+
+    if (existing) {
+      return res.status(409).json({ message: `Category '${cleanName}' already exists` });
     }
 
     const category = await Category.create({
       userId: req.user._id,
-      name,
+      name: cleanName,
       icon,
       color,
       type,
@@ -29,6 +42,10 @@ exports.createCategory = async (req, res) => {
 
     res.status(201).json(category);
   } catch (error) {
+    if (error.code === 11000) {
+      return res.status(409).json({ message: 'A category with this name already exists' });
+    }
     res.status(500).json({ message: 'Server error creating category' });
   }
 };
+

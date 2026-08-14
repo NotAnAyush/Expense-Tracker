@@ -140,19 +140,32 @@ exports.recordRecurringPayment = async (req, res) => {
     });
 
     // 2. Auto-advance next occurrence date
-    const currentNext = new Date(item.nextOccurrence);
-    if (item.frequency === 'monthly') {
-      currentNext.setMonth(currentNext.getMonth() + 1);
-    } else if (item.frequency === 'weekly') {
-      currentNext.setDate(currentNext.getDate() + 7);
-    } else if (item.frequency === 'yearly') {
-      currentNext.setFullYear(currentNext.getFullYear() + 1);
-    } else if (item.frequency === 'daily') {
-      currentNext.setDate(currentNext.getDate() + 1);
+    const now = new Date();
+    let nextDate = new Date(item.nextOccurrence);
+
+    const advance = (d) => {
+      if (item.frequency === 'monthly') {
+        d.setMonth(d.getMonth() + 1);
+      } else if (item.frequency === 'weekly') {
+        d.setDate(d.getDate() + 7);
+      } else if (item.frequency === 'yearly') {
+        d.setFullYear(d.getFullYear() + 1);
+      } else if (item.frequency === 'daily') {
+        d.setDate(d.getDate() + 1);
+      }
+      return d;
+    };
+
+    nextDate = advance(nextDate);
+    let safetyCounter = 0;
+    while (nextDate < now && safetyCounter < 60) {
+      nextDate = advance(nextDate);
+      safetyCounter++;
     }
 
-    item.nextOccurrence = currentNext;
+    item.nextOccurrence = nextDate;
     await item.save();
+
 
     res.status(201).json({
       message: 'Subscription payment recorded successfully',
