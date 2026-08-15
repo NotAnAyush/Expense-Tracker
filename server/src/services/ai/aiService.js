@@ -1,9 +1,10 @@
-const { getGeminiModel, isAvailable } = require('./geminiClient');
+const UnifiedAIClient = require('./unifiedAIClient');
+const LocalRagEngine = require('./localRagEngine');
 const ContextBuilder = require('./contextBuilder');
 const IntentRouter = require('./intentRouter');
 const ToolRegistry = require('./toolRegistry');
 const AnalyticsService = require('../analytics/analyticsService');
-const Category = require('../../models/Category');
+const User = require('../../models/User');
 
 // Prompt Injection Defense Sanitizer
 const sanitizeUserText = (text = '') => {
@@ -15,60 +16,64 @@ const sanitizeUserText = (text = '') => {
     .trim();
 };
 
+const extractJson = (text = '') => {
+  const match = text.match(/\{[\s\S]*\}/);
+  if (match) return JSON.parse(match[0]);
+  const cleaned = text.replace(/```(?:json)?|```/g, '').trim();
+  return JSON.parse(cleaned);
+};
+
+const getUserAiConfig = async (userId) => {
+  if (!userId) return {};
+  try {
+    const user = await User.findById(userId).select('aiConfig');
+    return user?.aiConfig || {};
+  } catch {
+    return {};
+  }
+};
+
 class AIService {
   /**
    * INTELLIGENCE 1 — Smart Categorization
    */
-  static async suggestCategory(title, amount, merchant, userCategories = []) {
+  static async suggestCategory(title, amount, merchant, userCategories = [], userId = null) {
     const cleanTitle = sanitizeUserText(title);
     const cleanMerchant = sanitizeUserText(merchant);
     const defaultCategories = ['Food & Dining', 'Transportation', 'Housing & Utilities', 'Entertainment', 'Shopping', 'Health & Medical', 'Subscriptions'];
     const validCategories = userCategories.length > 0 ? userCategories : defaultCategories;
 
-    if (!isAvailable()) {
-      // Deterministic rule-based fallback
-      const text = `${cleanTitle} ${cleanMerchant}`.toLowerCase();
-      let matchedCategory = 'Shopping';
-
-      if (text.includes('uber') || text.includes('ola') || text.includes('taxi') || text.includes('flight') || text.includes('fuel')) {
-        matchedCategory = 'Transportation';
-      } else if (text.includes('food') || text.includes('starbucks') || text.includes('zomato') || text.includes('swiggy') || text.includes('restaurant') || text.includes('grocer')) {
-        matchedCategory = 'Food & Dining';
-      } else if (text.includes('netflix') || text.includes('spotify') || text.includes('sub')) {
-        matchedCategory = 'Subscriptions';
-      } else if (text.includes('rent') || text.includes('bill') || text.includes('power') || text.includes('electric')) {
-        matchedCategory = 'Housing & Utilities';
-      }
-
-      return {
-        category: matchedCategory,
-        confidence: 0.85,
-        reason: `Matched transaction keywords deterministically.`,
-        isAiGenerated: false,
-      };
-    }
+    const userConfig = await getUserAiConfig(userId);
 
     try {
-      const model = getGeminiModel();
       const prompt = `You are a financial AI categorizer. Categorize the transaction below into EXACTLY ONE of the allowed categories: [${validCategories.join(', ')}].
 Transaction: "${cleanTitle}", Merchant: "${cleanMerchant || 'N/A'}", Amount: ${amount}.
 Return JSON only:
 {"category": "ChosenCategory", "confidence": 0.95, "reason": "Short explanation"}`;
 
-      const result = await model.generateContent(prompt);
-      const text = result.response.text();
-      const cleanedJson = text.replace(/```json|```/g, '').trim();
-      const parsed = JSON.parse(cleanedJson);
+      const rawResponse = await UnifiedAIClient.generateCompletion({
+        prompt,
+        systemPrompt: 'You are a precise financial assistant. Always respond with valid JSON.',
+        jsonMode: true,
+        userConfig,
+      });
+
+      if (!rawResponse) {
+        return LocalRagEngine.categorize(cleanTitle, amount, cleanMerchant, validCategories);
+      }
+
+      const parsed = extractJson(rawResponse);
 
       return {
         category: validCategories.includes(parsed.category) ? parsed.category : 'Shopping',
         confidence: parsed.confidence || 0.9,
         reason: parsed.reason || 'AI categorical classification',
         isAiGenerated: true,
+        source: userConfig.provider || 'gemini',
       };
     } catch (err) {
-      console.error('[AI Smart Categorization Error]', err.message);
-      return { category: 'Shopping', confidence: 0.7, reason: 'Fallback default category', isAiGenerated: false };
+      console.warn('[AI Categorization Fallback]', err.message);
+      return LocalRagEngine.categorize(cleanTitle, amount, cleanMerchant, validCategories);
     }
   }
 
@@ -77,19 +82,9 @@ Return JSON only:
    */
   static async getMonthlySummaryAI(userId) {
     const ctx = await ContextBuilder.buildFinancialContext(userId);
-
-    const fallbackSummary = `You spent ₹${ctx.totalSpend.toLocaleString()} this month (avg ₹${ctx.averageDailySpend}/day). ${ctx.topCategory !== 'None' ? `${ctx.topCategory} was your top expense category at ₹${ctx.topCategorySpend.toLocaleString()}.` : ''}`;
-
-    if (!isAvailable()) {
-      return {
-        summaryText: fallbackSummary,
-        facts: ctx,
-        isAiGenerated: false,
-      };
-    }
+    const userConfig = await getUserAiConfig(userId);
 
     try {
-      const model = getGeminiModel();
       const prompt = `You are a supportive, concise personal financial assistant. 
 Based ONLY on these backend financial facts:
 - Monthly Total Spend: ₹${ctx.totalSpend}
@@ -101,15 +96,25 @@ Based ONLY on these backend financial facts:
 
 Write a natural, encouraging 2-sentence summary of the user's current month. DO NOT invent numbers outside the provided facts.`;
 
-      const result = await model.generateContent(prompt);
+      const rawResponse = await UnifiedAIClient.generateCompletion({
+        prompt,
+        systemPrompt: 'You are a financial AI advisor.',
+        userConfig,
+      });
+
+      if (!rawResponse) {
+        return LocalRagEngine.generateMonthlySummary(ctx);
+      }
+
       return {
-        summaryText: result.response.text().trim(),
+        summaryText: rawResponse,
         facts: ctx,
         isAiGenerated: true,
+        source: userConfig.provider || 'gemini',
       };
     } catch (err) {
-      console.error('[AI Summary Error]', err.message);
-      return { summaryText: fallbackSummary, facts: ctx, isAiGenerated: false };
+      console.warn('[AI Summary Fallback]', err.message);
+      return LocalRagEngine.generateMonthlySummary(ctx);
     }
   }
 
@@ -118,16 +123,9 @@ Write a natural, encouraging 2-sentence summary of the user's current month. DO 
    */
   static async getSpendingExplanation(userId) {
     const comparison = await AnalyticsService.getMonthlyComparison(userId);
-    const fallbackText = comparison.isIncrease
-      ? `Your spending increased by ₹${comparison.diff.toLocaleString()} (${comparison.changePercent}%) compared to last month${comparison.biggestCategoryIncrease ? `, primarily driven by ${comparison.biggestCategoryIncrease.category} (+₹${comparison.biggestCategoryIncrease.diff.toLocaleString()})` : ''}.`
-      : `Your spending decreased by ₹${Math.abs(comparison.diff).toLocaleString()} (${Math.abs(comparison.changePercent)}%) compared to last month. Great job managing your cash flow!`;
-
-    if (!isAvailable()) {
-      return { explanation: fallbackText, data: comparison, isAiGenerated: false };
-    }
+    const userConfig = await getUserAiConfig(userId);
 
     try {
-      const model = getGeminiModel();
       const prompt = `You are a personal finance assistant explaining spending changes.
 Facts:
 - Current Month: ₹${comparison.currentMonthSpend}
@@ -137,10 +135,25 @@ Facts:
 
 Provide a clear, supportive 2-sentence explanation of why the user's spending changed. Never judge or lecture. Ground every statement strictly in the numbers above.`;
 
-      const result = await model.generateContent(prompt);
-      return { explanation: result.response.text().trim(), data: comparison, isAiGenerated: true };
+      const rawResponse = await UnifiedAIClient.generateCompletion({
+        prompt,
+        systemPrompt: 'You are a financial analyst explaining cash flow variance.',
+        userConfig,
+      });
+
+      if (!rawResponse) {
+        return LocalRagEngine.generateSpendingExplanation(comparison);
+      }
+
+      return {
+        explanation: rawResponse,
+        data: comparison,
+        isAiGenerated: true,
+        source: userConfig.provider || 'gemini',
+      };
     } catch (err) {
-      return { explanation: fallbackText, data: comparison, isAiGenerated: false };
+      console.warn('[AI Spending Explanation Fallback]', err.message);
+      return LocalRagEngine.generateSpendingExplanation(comparison);
     }
   }
 
@@ -151,39 +164,9 @@ Provide a clear, supportive 2-sentence explanation of why the user's spending ch
     const cleanQuery = sanitizeUserText(userQuery);
     const routing = IntentRouter.classifyIntent(cleanQuery);
     const toolData = await ToolRegistry.executeTool(routing.tool, userId);
-
-    const fallbackAnswer = `Based on your data: ${JSON.stringify(toolData)}`;
-
-    if (!isAvailable()) {
-      let friendlyText = `Here is your financial data for your request:\n`;
-      if (routing.intent === 'EXPENSE_QUERY') {
-        friendlyText = `You have spent ₹${toolData.totalSpend?.toLocaleString()} so far this month across ${toolData.transactionCount} transactions (averaging ₹${toolData.averageDailySpend}/day).`;
-      } else if (routing.intent === 'CATEGORY_ANALYSIS') {
-        friendlyText = `Your top spending category is ${toolData.topCategory?.category || 'N/A'} at ₹${toolData.topCategory?.amount?.toLocaleString()} (${toolData.topCategory?.percentage}% of total).`;
-      } else if (routing.intent === 'BUDGET_QUERY') {
-        friendlyText = `You have spent ₹${toolData.totalSpent?.toLocaleString()} out of ₹${toolData.totalAllocated?.toLocaleString()} total budgeted across your categories (${toolData.totalRemaining?.toLocaleString()} remaining).`;
-      } else if (routing.intent === 'GOAL_QUERY') {
-        friendlyText = `You currently have ${toolData.activeGoalsCount} active financial goals.`;
-      } else if (routing.intent === 'RECURRING_QUERY') {
-        friendlyText = `Your recurring monthly expenses total approximately ₹${toolData.monthlyBurden?.toLocaleString()} per month.`;
-      } else if (routing.intent === 'ANOMALY_QUERY') {
-        friendlyText = toolData.anomalies?.length > 0
-          ? `Found ${toolData.anomalies.length} unusual transactions: ${toolData.anomalies.map(a => `${a.title} (₹${a.amount})`).join(', ')}.`
-          : `No unusual transaction spikes detected in your recent spending.`;
-      } else if (routing.intent === 'TREND_ANALYSIS') {
-        friendlyText = `Your spending is ${toolData.isIncrease ? 'up' : 'down'} by ${toolData.changePercent}% compared to last month (Current: ₹${toolData.currentMonthSpend}, Previous: ₹${toolData.previousMonthSpend}).`;
-      }
-
-      return {
-        answer: friendlyText,
-        intent: routing.intent,
-        evidence: toolData,
-        isAiGenerated: false,
-      };
-    }
+    const userConfig = await getUserAiConfig(userId);
 
     try {
-      const model = getGeminiModel();
       const prompt = `You are the Finance Copilot.
 User Query: "${cleanQuery}"
 Backend Retrieved Grounding Facts: ${JSON.stringify(toolData)}
@@ -195,16 +178,26 @@ Formulate a concise, helpful response using standard response structure:
 
 NEVER hallucinate numbers not present in Grounding Facts.`;
 
-      const result = await model.generateContent(prompt);
+      const rawResponse = await UnifiedAIClient.generateCompletion({
+        prompt,
+        systemPrompt: 'You are an autonomous Finance OS Copilot with real-time financial mathematical grounding.',
+        userConfig,
+      });
+
+      if (!rawResponse) {
+        return LocalRagEngine.generateCopilotAnswer(routing.intent, toolData, cleanQuery);
+      }
+
       return {
-        answer: result.response.text().trim(),
+        answer: rawResponse,
         intent: routing.intent,
         evidence: toolData,
         isAiGenerated: true,
+        source: userConfig.provider || 'gemini',
       };
     } catch (err) {
-      console.error('[Copilot Chat Error]', err.message);
-      return { answer: fallbackAnswer, intent: routing.intent, evidence: toolData, isAiGenerated: false };
+      console.warn('[AI Copilot Fallback]', err.message);
+      return LocalRagEngine.generateCopilotAnswer(routing.intent, toolData, cleanQuery);
     }
   }
 
@@ -271,7 +264,6 @@ NEVER hallucinate numbers not present in Grounding Facts.`;
       });
     }
 
-    // Sort by priority score and return top 4 cards
     return insights.sort((a, b) => b.score - a.score).slice(0, 4);
   }
 }
