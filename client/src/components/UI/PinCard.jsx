@@ -1,6 +1,6 @@
 import React, { useId } from 'react';
 import { motion } from 'framer-motion';
-import { TrendingUp, TrendingDown, Zap, ArrowUpRight } from 'lucide-react';
+import { TrendingUp, TrendingDown, ArrowUpRight } from 'lucide-react';
 
 export const PinCard = ({
   title,
@@ -10,7 +10,7 @@ export const PinCard = ({
   category,
   date,
   overlayPill,
-  pillColor = 'mint', // 'mint' | 'gold' | 'amber' | 'violet' | 'emerald' | 'cyan'
+  pillColor = 'mint', // 'mint' | 'gold' | 'amber' | 'violet' | 'emerald' | 'cyan' | 'rose'
   sparklineData,
   radialProgress,
   trendDirection,
@@ -21,22 +21,59 @@ export const PinCard = ({
 }) => {
   const cardId = useId().replace(/:/g, '_');
 
-  // Determine badge styling based on pillColor token
+  // Determine badge styling based on dark theme tokens
   const getBadgeStyle = () => {
     switch (pillColor) {
       case 'gold':
-        return { bg: 'rgba(255, 215, 0, 0.15)', border: 'rgba(255, 215, 0, 0.4)', text: '#FFD700' };
       case 'amber':
-        return { bg: 'rgba(255, 153, 0, 0.15)', border: 'rgba(255, 153, 0, 0.4)', text: '#FF9900' };
+        return { 
+          bg: 'rgba(245, 158, 11, 0.15)', 
+          border: 'rgba(245, 158, 11, 0.35)', 
+          text: '#FBBF24',
+          sparkLine: '#F59E0B',
+          sparkFill: '#F59E0B'
+        };
       case 'violet':
-        return { bg: 'rgba(121, 40, 202, 0.2)', border: 'rgba(121, 40, 202, 0.4)', text: '#9D4EDD' };
+        return { 
+          bg: 'rgba(139, 92, 246, 0.15)', 
+          border: 'rgba(139, 92, 246, 0.35)', 
+          text: '#A78BFA',
+          sparkLine: '#8B5CF6',
+          sparkFill: '#8B5CF6'
+        };
       case 'emerald':
-        return { bg: 'rgba(16, 185, 129, 0.15)', border: 'rgba(16, 185, 129, 0.4)', text: '#10B981' };
+        return { 
+          bg: 'rgba(16, 185, 129, 0.15)', 
+          border: 'rgba(16, 185, 129, 0.35)', 
+          text: '#34D399',
+          sparkLine: '#10B981',
+          sparkFill: '#10B981'
+        };
       case 'cyan':
-        return { bg: 'rgba(0, 240, 255, 0.15)', border: 'rgba(0, 240, 255, 0.4)', text: '#00F0FF' };
+        return { 
+          bg: 'rgba(6, 182, 212, 0.15)', 
+          border: 'rgba(6, 182, 212, 0.35)', 
+          text: '#22D3EE',
+          sparkLine: '#06B6D4',
+          sparkFill: '#06B6D4'
+        };
+      case 'rose':
+        return { 
+          bg: 'rgba(244, 63, 94, 0.15)', 
+          border: 'rgba(244, 63, 94, 0.35)', 
+          text: '#FB7185',
+          sparkLine: '#F43F5E',
+          sparkFill: '#F43F5E'
+        };
       case 'mint':
       default:
-        return { bg: 'rgba(0, 255, 135, 0.15)', border: 'rgba(0, 255, 135, 0.4)', text: '#00FF87' };
+        return { 
+          bg: 'rgba(0, 255, 135, 0.12)', 
+          border: 'rgba(0, 255, 135, 0.3)', 
+          text: '#00FF87',
+          sparkLine: '#00FF87',
+          sparkFill: '#00FF87'
+        };
     }
   };
 
@@ -45,14 +82,16 @@ export const PinCard = ({
 
   return (
     <motion.div
-      whileHover={{ y: -4, boxShadow: '0 12px 32px rgba(0,0,0,0.5)' }}
+      whileHover={{ y: -3, boxShadow: '0 12px 32px rgba(0,0,0,0.5)' }}
       className="glass-card"
       style={{
-        padding: '22px',
+        padding: '24px',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
         position: 'relative',
+        background: 'var(--bg-card)',
+        borderColor: 'var(--border-subtle)',
       }}
     >
       {/* Top Header Row with Badge & Amount */}
@@ -66,14 +105,14 @@ export const PinCard = ({
               border: `1px solid ${badgeStyle.border}`,
               color: badgeStyle.text,
               fontSize: '12px',
-              fontWeight: 800,
+              fontWeight: 700,
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '5px',
+              gap: '6px',
               fontFamily: 'var(--font-heading)',
             }}
           >
-            <Zap size={12} />
+            <span style={{ width: 6, height: 6, borderRadius: '50%', background: badgeStyle.sparkLine, boxShadow: `0 0 8px ${badgeStyle.sparkLine}` }} />
             {overlayPill || category}
           </div>
         )}
@@ -87,13 +126,14 @@ export const PinCard = ({
               gap: '4px',
               fontSize: '12px',
               fontWeight: 700,
-              color: trendDirection === 'down' ? '#10B981' : '#FF9900',
-              background: 'rgba(255, 255, 255, 0.04)',
+              color: trendDirection === 'down' ? '#34D399' : '#FBBF24',
+              background: trendDirection === 'down' ? 'rgba(16, 185, 129, 0.12)' : 'rgba(245, 158, 11, 0.12)',
+              border: `1px solid ${trendDirection === 'down' ? 'rgba(16, 185, 129, 0.3)' : 'rgba(245, 158, 11, 0.3)'}`,
               padding: '3px 8px',
               borderRadius: '8px',
             }}
           >
-            {trendDirection === 'down' ? <TrendingDown size={14} /> : <TrendingUp size={14} />}
+            {trendDirection === 'down' ? <TrendingDown size={13} /> : <TrendingUp size={13} />}
             {trendPercent}%
           </div>
         )}
@@ -102,7 +142,7 @@ export const PinCard = ({
       {/* Main Title & Numeric Value */}
       <div style={{ marginBottom: '10px' }}>
         {title && (
-          <span style={{ fontSize: '13px', fontWeight: 600, color: '#94A3B8', display: 'block', marginBottom: '4px' }}>
+          <span style={{ fontSize: '13.5px', fontWeight: 600, color: 'var(--color-text-muted)', display: 'block', marginBottom: '4px' }}>
             {title}
           </span>
         )}
@@ -114,9 +154,9 @@ export const PinCard = ({
               style={{
                 fontSize: '32px',
                 fontWeight: 800,
-                color: '#F1F5F9',
-                letterSpacing: '-1px',
-                lineHeight: 1.1,
+                color: 'var(--color-text-main)',
+                letterSpacing: '-0.5px',
+                lineHeight: 1.15,
               }}
             >
               {currency}{typeof amount === 'number' ? amount.toLocaleString() : amount}
@@ -125,19 +165,14 @@ export const PinCard = ({
         )}
       </div>
 
-      {/* Continuously Animated Moving Sparkline Chart */}
+      {/* Sleek Glowing Sparkline Chart */}
       {sparklineData && Array.isArray(sparklineData) && sparklineData.length > 1 && (
-        <div style={{ width: '100%', height: '42px', margin: '6px 0', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ width: '100%', height: '40px', margin: '8px 0', position: 'relative', overflow: 'hidden' }}>
           <svg width="100%" height="100%" viewBox="0 0 200 40" preserveAspectRatio="none">
             <defs>
               <linearGradient id={`sparkGrad-${cardId}`} x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor={badgeStyle.text} stopOpacity={0.35} />
-                <stop offset="100%" stopColor={badgeStyle.text} stopOpacity={0} />
-              </linearGradient>
-              <linearGradient id={`lineGlow-${cardId}`} x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor={badgeStyle.text} stopOpacity={0.4} />
-                <stop offset="50%" stopColor="#FFFFFF" stopOpacity={1} />
-                <stop offset="100%" stopColor={badgeStyle.text} stopOpacity={0.4} />
+                <stop offset="0%" stopColor={badgeStyle.sparkLine} stopOpacity={0.3} />
+                <stop offset="100%" stopColor={badgeStyle.sparkLine} stopOpacity={0.0} />
               </linearGradient>
             </defs>
             {/* Area path */}
@@ -149,66 +184,41 @@ export const PinCard = ({
             <path
               d={`M 0 ${40 - sparklineData[0]} ${sparklineData.map((d, i) => `L ${(i / (sparklineData.length - 1)) * 200} ${40 - d}`).join(' ')}`}
               fill="none"
-              stroke={badgeStyle.text}
-              strokeWidth="2.5"
+              stroke={badgeStyle.sparkLine}
+              strokeWidth="2.4"
               strokeLinecap="round"
-              opacity="0.4"
-            />
-            {/* Constantly Moving Light Pulse Line */}
-            <motion.path
-              d={`M 0 ${40 - sparklineData[0]} ${sparklineData.map((d, i) => `L ${(i / (sparklineData.length - 1)) * 200} ${40 - d}`).join(' ')}`}
-              fill="none"
-              stroke={`url(#lineGlow-${cardId})`}
-              strokeWidth="3"
-              strokeLinecap="round"
-              strokeDasharray="60 140"
-              animate={{ strokeDashoffset: [200, -200] }}
-              transition={{ duration: 2.8, repeat: Infinity, ease: 'linear' }}
+              strokeLinejoin="round"
             />
           </svg>
         </div>
       )}
 
-      {/* Animated Radial / Meter Progress Bar */}
+      {/* Rounded Progress Bar */}
       {validProgress !== null && (
         <div style={{ margin: '10px 0' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', fontWeight: 700, color: '#94A3B8', marginBottom: '4px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11.5px', fontWeight: 600, color: 'var(--color-text-muted)', marginBottom: '5px' }}>
             <span>Utilization Rate</span>
-            <span style={{ color: badgeStyle.text }}>{validProgress}%</span>
+            <span style={{ color: badgeStyle.text, fontWeight: 700 }}>{validProgress}%</span>
           </div>
-          <div style={{ width: '100%', height: '8px', background: 'rgba(255, 255, 255, 0.08)', borderRadius: '999px', overflow: 'hidden', position: 'relative' }}>
+          <div style={{ width: '100%', height: '7px', background: 'rgba(255, 255, 255, 0.08)', borderRadius: '999px', overflow: 'hidden', position: 'relative' }}>
             <motion.div
               initial={{ width: 0 }}
               animate={{ width: `${Math.min(validProgress, 100)}%` }}
-              transition={{ duration: 1, ease: 'easeOut' }}
+              transition={{ duration: 0.8, ease: 'easeOut' }}
               style={{
                 height: '100%',
-                background: validProgress > 85 ? 'linear-gradient(90deg, #FF9900, #F43F5E)' : `linear-gradient(90deg, ${badgeStyle.text}, #00FF87)`,
+                background: validProgress > 90 ? 'linear-gradient(90deg, #F59E0B, #F43F5E)' : `linear-gradient(90deg, ${badgeStyle.sparkLine}, #06B6D4)`,
                 borderRadius: '999px',
-                boxShadow: `0 0 10px ${badgeStyle.text}`,
-                position: 'relative',
-                overflow: 'hidden',
+                boxShadow: `0 0 8px ${badgeStyle.sparkLine}`,
               }}
-            >
-              {/* Continuous Light Shimmer Animation across line */}
-              <motion.div
-                animate={{ x: ['-100%', '200%'] }}
-                transition={{ duration: 1.8, repeat: Infinity, ease: 'linear' }}
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  width: '50%',
-                  background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent)',
-                }}
-              />
-            </motion.div>
+            />
           </div>
         </div>
       )}
 
       {/* Subtitle / Footer Description */}
       {subtitle && (
-        <p style={{ fontSize: '13px', color: '#94A3B8', marginTop: '4px', lineHeight: 1.4 }}>
+        <p style={{ fontSize: '13px', color: 'var(--color-text-muted)', marginTop: '4px', lineHeight: 1.45 }}>
           {subtitle}
         </p>
       )}
@@ -220,14 +230,14 @@ export const PinCard = ({
         <div
           style={{
             display: 'flex',
-            justify: 'space-between',
+            justifyContent: 'space-between',
             alignItems: 'center',
             marginTop: '16px',
             paddingTop: '12px',
-            borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+            borderTop: '1px solid var(--border-subtle)',
           }}
         >
-          <span style={{ fontSize: '12px', color: '#64748B' }}>{new Date(date).toLocaleDateString()}</span>
+          <span style={{ fontSize: '12px', color: 'var(--color-text-subtle)' }}>{new Date(date).toLocaleDateString()}</span>
           {actionLabel && (
             <button
               onClick={onAction}

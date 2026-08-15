@@ -60,7 +60,6 @@ export const AuthPage = () => {
     }
   };
 
-
   const switchMode = (regState) => {
     setIsRegister(regState);
     setError('');
@@ -68,48 +67,43 @@ export const AuthPage = () => {
 
   return (
     <div className="auth-page-wrapper">
-      {/* Background Ambient Glows & Grid */}
-      <div className="auth-ambient-glow-1" />
-      <div className="auth-ambient-glow-2" />
-      <div className="auth-grid-overlay" />
-
       {/* Main Login Board Container */}
       <div className="auth-board">
         
         {/* Left Side: Product Showcase & Intelligence Board */}
         <motion.div 
-          initial={{ opacity: 0, x: -24 }}
+          initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, ease: 'easeOut' }}
+          transition={{ duration: 0.4, ease: 'easeOut' }}
           className="auth-showcase-panel"
         >
           {/* Status Badge */}
           <div className="auth-brand-badge">
             <span style={{ 
-              width: 8, 
-              height: 8, 
+              width: 7, 
+              height: 7, 
               borderRadius: '50%', 
-              background: 'var(--color-mint)', 
-              boxShadow: '0 0 10px var(--color-mint)' 
+              background: '#00FF87', 
+              boxShadow: '0 0 8px #00FF87'
             }} />
-            FINTECH INTELLIGENCE ENGINE v2.2
+            AUTONOMOUS WEALTH ENGINE v2.5
           </div>
 
           {/* Logo & Main Hero Heading */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-            <motion.div
-              whileHover={{ rotate: 8, scale: 1.05 }}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+            <div
               style={{
-                width: '62px',
-                height: '62px',
-                borderRadius: '16px',
-                padding: '3px',
-                background: 'linear-gradient(135deg, #00FF87, #FFD700)',
-                boxShadow: '0 0 25px rgba(0, 255, 135, 0.35)',
+                width: '52px',
+                height: '52px',
+                borderRadius: '14px',
+                padding: '2px',
+                background: 'rgba(15, 22, 36, 0.9)',
+                border: '1.5px solid rgba(16, 185, 129, 0.5)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                flexShrink: 0
+                flexShrink: 0,
+                boxShadow: '0 0 16px rgba(16, 185, 129, 0.3)'
               }}
             >
               <img
@@ -118,69 +112,69 @@ export const AuthPage = () => {
                 style={{
                   width: '100%',
                   height: '100%',
-                  borderRadius: '13px',
+                  borderRadius: '12px',
                   objectFit: 'cover'
                 }}
               />
-            </motion.div>
+            </div>
             <div>
-              <h1 className="heading-xl" style={{ fontSize: '30px', margin: 0, lineHeight: 1.1 }}>
+              <h1 className="heading-xl" style={{ fontSize: '28px', margin: 0, lineHeight: 1.1, color: 'var(--color-text-main)' }}>
                 Richy Rich
               </h1>
-              <p style={{ color: 'var(--color-mint)', fontSize: '13px', fontWeight: 700, letterSpacing: '0.4px', marginTop: '2px' }}>
-                Autonomous Financial OS
+              <p style={{ color: '#00FF87', fontSize: '13px', fontWeight: 700, letterSpacing: '0.3px', marginTop: '2px' }}>
+                Pro Intelligence
               </p>
             </div>
           </div>
 
           <h2 className="auth-hero-title">
-            Where Wealth Meets <span className="text-gradient-mint">Precision Intelligence.</span>
+            Where Wealth Meets <span style={{ color: '#00FF87' }}>Predictive Intelligence.</span>
           </h2>
 
           <p className="body-md" style={{ color: 'var(--color-text-muted)', lineHeight: '1.6' }}>
-            Combine 100% deterministic mathematical accounting with AI financial copilot reasoning. Experience real-time budget pacing, velocity tracking, and wealth goal accelerators.
+            Deterministic financial mathematics combined with an autonomous AI copilot. Track real-time spending velocity, manage category caps, and reach savings goals faster.
           </p>
 
           {/* Feature Highlights Grid */}
           <div className="auth-feature-list">
             <div className="auth-feature-item">
-              <div className="auth-feature-icon-box" style={{ background: 'rgba(0, 255, 135, 0.12)', color: 'var(--color-mint)' }}>
-                <Zap size={20} />
+              <div className="auth-feature-icon-box" style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#00FF87', border: '1px solid rgba(16, 185, 129, 0.35)' }}>
+                <Zap size={19} />
               </div>
               <div>
                 <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--color-text-main)', marginBottom: '2px' }}>
-                  Autonomous Budget Pacing
+                  Spending Velocity Radar
                 </div>
                 <div style={{ fontSize: '12.5px', color: 'var(--color-text-muted)', lineHeight: '1.4' }}>
-                  Real-time burn-rate trajectory, runway alarms, and safe-to-spend daily calculations.
+                  Real-time burn-rate trajectory, boundary alerts, and daily safe-to-spend calculations.
                 </div>
               </div>
             </div>
 
             <div className="auth-feature-item">
-              <div className="auth-feature-icon-box" style={{ background: 'rgba(121, 40, 202, 0.18)', color: 'var(--color-violet-bright)' }}>
-                <Bot size={20} />
+              <div className="auth-feature-icon-box" style={{ background: 'rgba(139, 92, 246, 0.15)', color: '#A78BFA', border: '1px solid rgba(139, 92, 246, 0.35)' }}>
+                <Bot size={19} />
               </div>
               <div>
                 <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--color-text-main)', marginBottom: '2px' }}>
-                  Gemini Financial Copilot
+                  Grounded AI Copilot
                 </div>
                 <div style={{ fontSize: '12.5px', color: 'var(--color-text-muted)', lineHeight: '1.4' }}>
-                  Instant conversational queries, automatic categorization, and actionable wealth insights.
+                  Instant natural-language queries, automated category classification, and anomaly detection.
                 </div>
               </div>
             </div>
 
             <div className="auth-feature-item">
-              <div className="auth-feature-icon-box" style={{ background: 'rgba(255, 215, 0, 0.14)', color: 'var(--color-gold)' }}>
-                <Target size={20} />
+              <div className="auth-feature-icon-box" style={{ background: 'rgba(245, 158, 11, 0.15)', color: '#FBBF24', border: '1px solid rgba(245, 158, 11, 0.35)' }}>
+                <Target size={19} />
               </div>
               <div>
                 <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--color-text-main)', marginBottom: '2px' }}>
-                  Gamified Wealth Milestones
+                  Dynamic Savings Milestones
                 </div>
                 <div style={{ fontSize: '12.5px', color: 'var(--color-text-muted)', lineHeight: '1.4' }}>
-                  Dynamic savings buckets, milestone unlocks, and net worth projection engines.
+                  Target timelines, milestone tracking, and autonomous reserve allocation.
                 </div>
               </div>
             </div>
@@ -188,8 +182,8 @@ export const AuthPage = () => {
 
           {/* Live Snapshot Widget */}
           <div className="auth-snapshot-card">
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
-              <span style={{ fontSize: '11px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.8px', color: '#64748B' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+              <span style={{ fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--color-text-muted)' }}>
                 Live Sandbox Snapshot
               </span>
               <span style={{ 
@@ -198,8 +192,9 @@ export const AuthPage = () => {
                 gap: '4px', 
                 fontSize: '11.5px', 
                 fontWeight: 700, 
-                color: 'var(--color-mint)',
-                background: 'rgba(0, 255, 135, 0.1)',
+                color: '#00FF87',
+                background: 'rgba(0, 255, 135, 0.12)',
+                border: '1px solid rgba(0, 255, 135, 0.3)',
                 padding: '2px 8px',
                 borderRadius: '999px'
               }}>
@@ -207,15 +202,15 @@ export const AuthPage = () => {
               </span>
             </div>
             <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-              <span style={{ fontSize: '20px', fontWeight: 800, fontFamily: 'var(--font-display)', color: '#F1F5F9' }}>
+              <span style={{ fontSize: '22px', fontWeight: 800, fontFamily: 'var(--font-display)', color: '#00FF87' }}>
                 ₹4,850/day
               </span>
-              <span style={{ fontSize: '12px', color: 'var(--color-text-muted)' }}>
-                discretionary safe-to-spend runway
+              <span style={{ fontSize: '12.5px', color: 'var(--color-text-muted)' }}>
+                safe-to-spend daily pace
               </span>
             </div>
-            <div style={{ marginTop: '8px', fontSize: '11.5px', color: '#94A3B8', display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <Sparkles size={13} color="var(--color-gold)" />
+            <div style={{ marginTop: '8px', fontSize: '12px', color: 'var(--color-text-muted)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <Sparkles size={13} color="#00FF87" />
               <span>AI Tip: <em>"Dining down 18% this week. ₹3,200 auto-allocated to Japan Vacation fund."</em></span>
             </div>
           </div>
@@ -223,15 +218,15 @@ export const AuthPage = () => {
           {/* Trust Row */}
           <div className="auth-trust-row">
             <div className="auth-trust-chip">
-              <ShieldCheck size={15} color="var(--color-mint)" />
+              <ShieldCheck size={15} color="#00FF87" />
               <span>AES-256 Encrypted</span>
             </div>
             <div className="auth-trust-chip">
-              <Lock size={15} color="var(--color-gold)" />
+              <Lock size={15} color="#FBBF24" />
               <span>Zero-Knowledge Storage</span>
             </div>
             <div className="auth-trust-chip">
-              <CheckCircle2 size={15} color="var(--color-cyan)" />
+              <CheckCircle2 size={15} color="#22D3EE" />
               <span>100% Deterministic Math</span>
             </div>
           </div>
@@ -239,9 +234,9 @@ export const AuthPage = () => {
 
         {/* Right Side: Interactive Authentication Card */}
         <motion.div 
-          initial={{ opacity: 0, x: 24 }}
+          initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }}
+          transition={{ duration: 0.4, ease: 'easeOut', delay: 0.1 }}
           className="auth-card-panel"
         >
           {/* Tab Switcher */}
@@ -272,9 +267,9 @@ export const AuthPage = () => {
                 style={{
                   padding: '12px 14px',
                   borderRadius: 'var(--radius-sm)',
-                  backgroundColor: 'rgba(244, 63, 94, 0.12)',
-                  border: '1px solid rgba(244, 63, 94, 0.4)',
-                  color: '#FFA2B0',
+                  backgroundColor: 'rgba(244, 63, 94, 0.15)',
+                  border: '1px solid rgba(244, 63, 94, 0.35)',
+                  color: '#FB7185',
                   fontSize: '13px',
                   marginBottom: '18px',
                   display: 'flex',
@@ -303,12 +298,12 @@ export const AuthPage = () => {
                   <div className="auth-input-group">
                     <label className="auth-input-label">Full Name</label>
                     <div className="auth-input-wrapper">
-                      <User size={18} className="auth-input-icon" />
+                      <User size={17} className="auth-input-icon" />
                       <input
                         type="text"
                         required
                         className="auth-input-field"
-                        placeholder="e.g. Ayush Kaushik"
+                        placeholder="e.g. Anvitha Rao"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         autoComplete="name"
@@ -320,20 +315,20 @@ export const AuthPage = () => {
                   <div className="auth-input-group">
                     <label className="auth-input-label">Preferred Currency</label>
                     <div className="auth-input-wrapper">
-                      <Coins size={18} className="auth-input-icon" />
+                      <Coins size={17} className="auth-input-icon" />
                       <select
                         className="auth-input-field"
                         value={preferredCurrency}
                         onChange={(e) => setPreferredCurrency(e.target.value)}
-                        style={{ cursor: 'pointer', appearance: 'none', WebkitAppearance: 'none' }}
+                        style={{ cursor: 'pointer', appearance: 'none', WebkitAppearance: 'none', background: 'rgba(14, 20, 32, 0.95)', color: '#F8FAFC' }}
                       >
-                        <option value="₹" style={{ background: '#0F1420', color: '#F1F5F9' }}>₹ INR — Indian Rupee</option>
-                        <option value="$" style={{ background: '#0F1420', color: '#F1F5F9' }}>$ USD — US Dollar</option>
-                        <option value="€" style={{ background: '#0F1420', color: '#F1F5F9' }}>€ EUR — Euro</option>
-                        <option value="£" style={{ background: '#0F1420', color: '#F1F5F9' }}>£ GBP — British Pound</option>
-                        <option value="¥" style={{ background: '#0F1420', color: '#F1F5F9' }}>¥ JPY — Japanese Yen</option>
-                        <option value="C$" style={{ background: '#0F1420', color: '#F1F5F9' }}>C$ CAD — Canadian Dollar</option>
-                        <option value="A$" style={{ background: '#0F1420', color: '#F1F5F9' }}>A$ AUD — Australian Dollar</option>
+                        <option value="₹" style={{ background: '#0F172A', color: '#F8FAFC' }}>₹ INR — Indian Rupee</option>
+                        <option value="$" style={{ background: '#0F172A', color: '#F8FAFC' }}>$ USD — US Dollar</option>
+                        <option value="€" style={{ background: '#0F172A', color: '#F8FAFC' }}>€ EUR — Euro</option>
+                        <option value="£" style={{ background: '#0F172A', color: '#F8FAFC' }}>£ GBP — British Pound</option>
+                        <option value="¥" style={{ background: '#0F172A', color: '#F8FAFC' }}>¥ JPY — Japanese Yen</option>
+                        <option value="C$" style={{ background: '#0F172A', color: '#F8FAFC' }}>C$ CAD — Canadian Dollar</option>
+                        <option value="A$" style={{ background: '#0F172A', color: '#F8FAFC' }}>A$ AUD — Australian Dollar</option>
                       </select>
                       <ChevronRight 
                         size={16} 
@@ -355,7 +350,7 @@ export const AuthPage = () => {
             <div className="auth-input-group">
               <label className="auth-input-label">Email Address</label>
               <div className="auth-input-wrapper">
-                <Mail size={18} className="auth-input-icon" />
+                <Mail size={17} className="auth-input-icon" />
                 <input
                   type="email"
                   required
@@ -379,7 +374,7 @@ export const AuthPage = () => {
                 )}
               </div>
               <div className="auth-input-wrapper">
-                <Lock size={18} className="auth-input-icon" />
+                <Lock size={17} className="auth-input-icon" />
                 <input
                   type={showPassword ? 'text' : 'password'}
                   required
@@ -396,7 +391,7 @@ export const AuthPage = () => {
                   title={showPassword ? 'Hide password' : 'Show password'}
                   aria-label={showPassword ? 'Hide password' : 'Show password'}
                 >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  {showPassword ? <EyeOff size={17} /> : <Eye size={17} />}
                 </button>
               </div>
             </div>
@@ -410,9 +405,9 @@ export const AuthPage = () => {
               className="btn-primary-mint"
               style={{
                 width: '100%',
-                height: '48px',
-                fontSize: '15px',
-                gap: '10px'
+                height: '46px',
+                fontSize: '14.5px',
+                gap: '8px'
               }}
             >
               {loading ? (
@@ -420,18 +415,18 @@ export const AuthPage = () => {
                   <span style={{ 
                     width: '16px', 
                     height: '16px', 
-                    border: '2px solid #050810', 
+                    border: '2px solid #050811', 
                     borderTopColor: 'transparent', 
                     borderRadius: '50%', 
                     animation: 'spin 0.8s linear infinite',
                     display: 'inline-block' 
                   }} />
-                  {isRegister ? 'Setting Up Intelligent Vault...' : 'Authenticating Securely...'}
+                  {isRegister ? 'Setting Up...' : 'Authenticating...'}
                 </div>
               ) : (
                 <>
-                  <span>{isRegister ? 'Create Intelligence Account' : 'Sign In to Dashboard'}</span>
-                  <ArrowRight size={18} />
+                  <span>{isRegister ? 'Create Pro Account' : 'Sign In to Dashboard'}</span>
+                  <ArrowRight size={17} />
                 </>
               )}
             </motion.button>
@@ -443,18 +438,18 @@ export const AuthPage = () => {
             alignItems: 'center', 
             margin: '22px 0', 
             color: 'var(--color-text-subtle)', 
-            fontSize: '11.5px',
+            fontSize: '11px',
             fontWeight: 700,
-            letterSpacing: '0.5px'
+            letterSpacing: '0.4px'
           }}>
-            <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--border-glass)' }} />
+            <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--border-subtle)' }} />
             <span style={{ padding: '0 12px' }}>OR EXPLORE INSTANTLY</span>
-            <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--border-glass)' }} />
+            <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--border-subtle)' }} />
           </div>
 
           {/* Instant Demo Sandbox Launcher */}
           <motion.div
-            whileHover={{ y: -2 }}
+            whileHover={{ y: -1 }}
             whileTap={{ scale: 0.98 }}
             className="auth-demo-launcher"
             onClick={handleDemo}
@@ -468,18 +463,18 @@ export const AuthPage = () => {
                   width: '36px', 
                   height: '36px', 
                   borderRadius: '10px', 
-                  background: 'linear-gradient(135deg, rgba(0, 255, 135, 0.2), rgba(255, 215, 0, 0.2))',
-                  border: '1px solid rgba(0, 255, 135, 0.35)',
+                  background: 'rgba(16, 185, 129, 0.15)',
+                  border: '1px solid rgba(16, 185, 129, 0.4)',
                   display: 'flex', 
                   alignItems: 'center', 
-                  justifyContent: 'center',
+                  justifyContent: 'center', 
                   flexShrink: 0
                 }}
               >
-                <Sparkles size={18} color="var(--color-mint)" />
+                <Sparkles size={18} color="#00FF87" />
               </div>
               <div>
-                <div style={{ fontSize: '13.5px', fontWeight: 800, color: 'var(--color-text-main)' }}>
+                <div style={{ fontSize: '13.5px', fontWeight: 700, color: 'var(--color-text-main)' }}>
                   Launch Instant Sandbox Demo
                 </div>
                 <div style={{ fontSize: '12px', color: 'var(--color-text-muted)' }}>
@@ -487,17 +482,17 @@ export const AuthPage = () => {
                 </div>
               </div>
             </div>
-            <ChevronRight size={18} color="var(--color-mint)" />
+            <ChevronRight size={17} color="#00FF87" />
           </motion.div>
 
           {/* Footer toggle prompt */}
-          <div style={{ marginTop: '22px', textAlign: 'center', fontSize: '13px', color: 'var(--color-text-muted)' }}>
+          <div style={{ marginTop: '20px', textAlign: 'center', fontSize: '13px', color: 'var(--color-text-muted)' }}>
             {isRegister ? 'Already have an account?' : "Don't have an account yet?"}{' '}
             <button
               type="button"
               onClick={() => switchMode(!isRegister)}
               style={{
-                color: 'var(--color-mint)',
+                color: '#00FF87',
                 fontWeight: 700,
                 border: 'none',
                 background: 'none',
@@ -510,8 +505,8 @@ export const AuthPage = () => {
             </button>
           </div>
 
-          <div style={{ marginTop: '14px', textAlign: 'center', fontSize: '11px', color: 'var(--color-text-subtle)' }}>
-            Protected by bank-grade security protocols & AI-audited encryption.
+          <div style={{ marginTop: '12px', textAlign: 'center', fontSize: '11px', color: 'var(--color-text-subtle)' }}>
+            Protected by bank-grade encryption & deterministic calculation engines.
           </div>
         </motion.div>
       </div>

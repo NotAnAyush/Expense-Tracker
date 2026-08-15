@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { X, Send, Bot, Sparkles, Zap, MessageSquare } from 'lucide-react';
+import { X, Send, Bot, Sparkles, MessageSquare } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { apiFetch } from '../../api/client';
 
@@ -64,7 +64,7 @@ export const CopilotDrawer = ({ isOpen, onClose }) => {
         ...prev,
         {
           sender: 'bot',
-          text: 'Operating with deterministic fallback intelligence. Check backend connectivity.',
+          text: 'Operating with deterministic fallback calculations. Please check your connectivity.',
           intent: 'ERROR',
         },
       ]);
@@ -79,8 +79,9 @@ export const CopilotDrawer = ({ isOpen, onClose }) => {
         style={{
           position: 'fixed',
           inset: 0,
-          backgroundColor: 'rgba(5, 8, 16, 0.7)',
+          backgroundColor: 'rgba(4, 7, 14, 0.75)',
           backdropFilter: 'blur(8px)',
+          WebkitBackdropFilter: 'blur(8px)',
           zIndex: 99,
         }}
         onClick={onClose}
@@ -90,7 +91,7 @@ export const CopilotDrawer = ({ isOpen, onClose }) => {
         initial={{ x: '100%' }}
         animate={{ x: 0 }}
         exit={{ x: '100%' }}
-        transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+        transition={{ type: 'spring', damping: 28, stiffness: 220 }}
         style={{
           position: 'fixed',
           top: 0,
@@ -98,10 +99,9 @@ export const CopilotDrawer = ({ isOpen, onClose }) => {
           bottom: 0,
           width: '460px',
           maxWidth: '100vw',
-          background: 'rgba(10, 13, 20, 0.95)',
+          background: 'rgba(11, 15, 25, 0.98)',
           backdropFilter: 'blur(25px)',
-          WebkitBackdropFilter: 'blur(25px)',
-          borderLeft: '1px solid rgba(255, 255, 255, 0.1)',
+          borderLeft: '1px solid var(--border-subtle)',
           boxShadow: '-10px 0 40px rgba(0, 0, 0, 0.8)',
           zIndex: 100,
           display: 'flex',
@@ -112,58 +112,57 @@ export const CopilotDrawer = ({ isOpen, onClose }) => {
         <div
           style={{
             padding: '20px 24px',
-            borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+            borderBottom: '1px solid var(--border-subtle)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            background: 'rgba(15, 20, 32, 0.5)',
+            background: 'rgba(15, 22, 36, 0.7)',
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <motion.div
-              animate={{ rotate: [0, 5, -5, 0] }}
-              transition={{ repeat: Infinity, duration: 4 }}
+            <div
               style={{
-                width: '42px',
-                height: '42px',
-                borderRadius: '14px',
-                background: 'linear-gradient(135deg, #7928CA 0%, #00FF87 100%)',
+                width: '40px',
+                height: '40px',
+                borderRadius: '12px',
+                background: 'rgba(16, 185, 129, 0.15)',
+                border: '1px solid rgba(16, 185, 129, 0.35)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                boxShadow: '0 0 20px rgba(0, 255, 135, 0.4)',
+                boxShadow: '0 0 12px rgba(16, 185, 129, 0.25)',
               }}
             >
-              <Bot size={22} color="#050810" />
-            </motion.div>
+              <Bot size={22} color="#00FF87" />
+            </div>
             <div>
-              <h3 className="heading-md" style={{ color: '#F1F5F9', fontSize: '18px' }}>
+              <h3 className="heading-md" style={{ color: 'var(--color-text-main)', fontSize: '17px' }}>
                 Finance Copilot
               </h3>
-              <span className="glass-pill" style={{ fontSize: '11px', color: '#00FF87', borderColor: 'rgba(0, 255, 135, 0.3)', padding: '2px 8px' }}>
-                <Zap size={10} /> Grounded AI Intelligence
+              <span style={{ fontSize: '11.5px', color: '#00FF87', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                ⚡ Grounded AI Intelligence
               </span>
             </div>
           </div>
 
           <motion.button
-            whileHover={{ scale: 1.1, rotate: 90 }}
-            whileTap={{ scale: 0.9 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={onClose}
             style={{
               background: 'rgba(255, 255, 255, 0.06)',
-              border: '1px solid rgba(255, 255, 255, 0.12)',
+              border: '1px solid var(--border-subtle)',
               borderRadius: '999px',
-              width: '36px',
-              height: '36px',
+              width: '34px',
+              height: '34px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#F1F5F9',
+              color: 'var(--color-text-muted)',
               cursor: 'pointer',
             }}
           >
-            <X size={18} />
+            <X size={17} />
           </motion.button>
         </div>
 
@@ -171,11 +170,11 @@ export const CopilotDrawer = ({ isOpen, onClose }) => {
         <div
           style={{
             padding: '12px 16px',
-            borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+            borderBottom: '1px solid var(--border-subtle)',
             overflowX: 'auto',
             display: 'flex',
             gap: '8px',
-            background: 'rgba(20, 28, 44, 0.4)',
+            background: 'rgba(15, 22, 36, 0.5)',
           }}
         >
           {quickQuestions.map((q, idx) => (
@@ -183,7 +182,7 @@ export const CopilotDrawer = ({ isOpen, onClose }) => {
               key={idx}
               onClick={() => handleSend(q)}
               className="filter-chip"
-              style={{ fontSize: '12px', padding: '6px 14px' }}
+              style={{ fontSize: '12px', padding: '6px 12px' }}
             >
               {q}
             </button>
@@ -198,17 +197,18 @@ export const CopilotDrawer = ({ isOpen, onClose }) => {
             overflowY: 'auto',
             display: 'flex',
             flexDirection: 'column',
-            gap: '18px',
+            gap: '16px',
+            background: 'rgba(8, 11, 17, 0.6)',
           }}
         >
           {messages.map((m, idx) => (
             <motion.div
               key={idx}
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               style={{
                 display: 'flex',
-                gap: '12px',
+                gap: '10px',
                 alignSelf: m.sender === 'user' ? 'flex-end' : 'flex-start',
                 maxWidth: '88%',
               }}
@@ -216,41 +216,42 @@ export const CopilotDrawer = ({ isOpen, onClose }) => {
               {m.sender === 'bot' && (
                 <div
                   style={{
-                    width: '32px',
-                    height: '32px',
+                    width: '30px',
+                    height: '30px',
                     borderRadius: '10px',
-                    background: 'linear-gradient(135deg, #7928CA, #00FF87)',
+                    background: 'rgba(16, 185, 129, 0.15)',
+                    border: '1px solid rgba(16, 185, 129, 0.35)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    color: '#050810',
+                    color: '#00FF87',
                     flexShrink: 0,
-                    boxShadow: '0 0 10px rgba(0, 255, 135, 0.3)',
+                    marginTop: '2px',
                   }}
                 >
-                  <Bot size={16} />
+                  <Bot size={15} />
                 </div>
               )}
 
               <div>
                 <div
                   style={{
-                    padding: '14px 18px',
-                    borderRadius: '18px',
-                    background: m.sender === 'user' ? 'var(--grad-mint-gold)' : 'rgba(22, 30, 48, 0.85)',
-                    color: m.sender === 'user' ? '#050810' : '#F1F5F9',
-                    border: m.sender === 'bot' ? '1px solid rgba(255, 255, 255, 0.1)' : 'none',
+                    padding: '12px 16px',
+                    borderRadius: '16px',
+                    background: m.sender === 'user' ? 'var(--grad-mint-emerald)' : 'rgba(18, 26, 44, 0.9)',
+                    color: m.sender === 'user' ? '#050811' : '#F8FAFC',
+                    border: m.sender === 'bot' ? '1px solid var(--border-light)' : 'none',
                     fontSize: '14px',
                     lineHeight: 1.5,
-                    fontWeight: m.sender === 'user' ? 700 : 500,
-                    boxShadow: m.sender === 'user' ? '0 4px 16px rgba(0, 255, 135, 0.3)' : '0 4px 16px rgba(0, 0, 0, 0.3)',
+                    fontWeight: m.sender === 'user' ? 800 : 500,
+                    boxShadow: 'var(--shadow-sm)',
                   }}
                 >
                   {m.text}
 
                   {m.intent && m.intent !== 'GREETING' && (
                     <div style={{ marginTop: '8px' }}>
-                      <span className="glass-pill" style={{ fontSize: '10px', color: '#00FF87', borderColor: 'rgba(0, 255, 135, 0.3)' }}>
+                      <span style={{ fontSize: '10px', color: '#00FF87', background: 'rgba(0, 255, 135, 0.1)', border: '1px solid rgba(0, 255, 135, 0.3)', padding: '2px 6px', borderRadius: '4px', fontWeight: 700 }}>
                         INTENT: {m.intent}
                       </span>
                     </div>
@@ -266,8 +267,8 @@ export const CopilotDrawer = ({ isOpen, onClose }) => {
               transition={{ repeat: Infinity, duration: 1.2 }}
               style={{ display: 'flex', gap: '8px', alignItems: 'center', color: '#00FF87', fontSize: '13px', fontWeight: 600 }}
             >
-              <Bot size={16} />
-              Analyzing financial calculations & velocity...
+              <Bot size={15} />
+              Reviewing spending velocity and calculations...
             </motion.div>
           )}
           <div ref={messagesEndRef} />
@@ -281,10 +282,10 @@ export const CopilotDrawer = ({ isOpen, onClose }) => {
           }}
           style={{
             padding: '16px 20px',
-            borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+            borderTop: '1px solid var(--border-subtle)',
             display: 'flex',
             gap: '10px',
-            background: 'rgba(15, 20, 32, 0.6)',
+            background: 'rgba(15, 22, 36, 0.9)',
           }}
         >
           <input
@@ -293,17 +294,17 @@ export const CopilotDrawer = ({ isOpen, onClose }) => {
             onChange={(e) => setInput(e.target.value)}
             placeholder="Ask Copilot anything..."
             className="glass-input"
-            style={{ flex: 1, paddingLeft: '20px', paddingRight: '20px', height: '46px' }}
+            style={{ flex: 1, paddingLeft: '18px', paddingRight: '18px', height: '44px' }}
           />
           <motion.button
-            whileHover={{ scale: 1.06 }}
-            whileTap={{ scale: 0.94 }}
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.96 }}
             type="submit"
             className="btn-primary-mint"
             disabled={loading}
-            style={{ width: '46px', height: '46px', padding: 0 }}
+            style={{ width: '44px', height: '44px', padding: 0 }}
           >
-            <Send size={18} />
+            <Send size={16} />
           </motion.button>
         </form>
       </motion.div>

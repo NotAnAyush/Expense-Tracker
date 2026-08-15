@@ -1,18 +1,30 @@
 const rateLimit = require('express-rate-limit');
 
 const isTestEnv = () => process.env.NODE_ENV === 'test';
-const shouldSkip = (req) => isTestEnv() && !req.headers['x-test-rate-limit'];
+const isDevEnv = () => !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
+
+const shouldSkip = (req) => {
+  // Always skip in test environment unless explicitly testing rate limits
+  if (isTestEnv() && !req.headers['x-test-rate-limit']) {
+    return true;
+  }
+  // In development, skip rate limiting for local traffic unless test flag provided
+  if (isDevEnv() && !req.headers['x-test-rate-limit']) {
+    return true;
+  }
+  return false;
+};
 
 /**
  * Global API Rate Limiter
- * 100 requests per 15 minutes per IP
+ * Generous limits to prevent DDoS while permitting high-frequency multi-widget dashboard refreshes
  */
 const globalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100,
+  max: process.env.NODE_ENV === 'production' ? 2000 : 10000,
   skip: shouldSkip,
-  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-  legacyHeaders: false,  // Disable the `X-RateLimit-*` headers
+  standardHeaders: true,
+  legacyHeaders: false,
   message: {
     error: {
       code: 'RATE_LIMIT_EXCEEDED',
@@ -23,11 +35,11 @@ const globalLimiter = rateLimit({
 
 /**
  * Auth-Specific Rate Limiter (Login / Register)
- * 50 requests per 15 minutes per IP — prevents brute-force while allowing active dev & testing
+ * Prevents brute-force attacks while allowing seamless user and development workflows
  */
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: process.env.NODE_ENV === 'production' ? 30 : 100,
+  max: process.env.NODE_ENV === 'production' ? 60 : 1000,
   skip: shouldSkip,
   standardHeaders: true,
   legacyHeaders: false,
@@ -45,7 +57,7 @@ const authLimiter = rateLimit({
  */
 const demoLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 60,
+  max: process.env.NODE_ENV === 'production' ? 120 : 1000,
   skip: shouldSkip,
   standardHeaders: true,
   legacyHeaders: false,
@@ -59,11 +71,11 @@ const demoLimiter = rateLimit({
 
 /**
  * AI Endpoint Rate Limiter
- * 60 requests per 15 minutes per IP — protects Gemini API quota
+ * Protects Gemini API quota
  */
 const aiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 60,
+  max: process.env.NODE_ENV === 'production' ? 100 : 1000,
   skip: shouldSkip,
   standardHeaders: true,
   legacyHeaders: false,
@@ -76,4 +88,3 @@ const aiLimiter = rateLimit({
 });
 
 module.exports = { globalLimiter, authLimiter, demoLimiter, aiLimiter };
-

@@ -93,18 +93,18 @@ export const ExpensesPage = ({ onAddExpense, externalSearch = '', onClearExterna
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
         <div>
           <h1 className="heading-xl">Transaction Records</h1>
-          <p className="body-sm">
-            {total > 0 ? `Showing ${total} total recorded transactions filtered deterministically.` : 'All recorded transactions.'}
+          <p className="body-sm" style={{ color: 'var(--color-text-muted)', marginTop: '2px' }}>
+            {total > 0 ? `Showing ${total} total recorded transactions.` : 'All recorded transactions.'}
           </p>
         </div>
 
         <div style={{ display: 'flex', gap: '12px' }}>
-          <button onClick={exportCSV} className="button-secondary">
-            <Download size={16} />
+          <button onClick={exportCSV} className="btn-glass-secondary" style={{ height: '40px' }}>
+            <Download size={15} />
             Export CSV
           </button>
-          <button onClick={onAddExpense} className="button-primary">
-            <Plus size={18} />
+          <button onClick={onAddExpense} className="btn-primary-mint" style={{ height: '40px' }}>
+            <Plus size={16} />
             Add Expense
           </button>
         </div>
@@ -125,14 +125,14 @@ export const ExpensesPage = ({ onAddExpense, externalSearch = '', onClearExterna
 
       {/* Search status indicator */}
       {search && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', color: 'var(--mute)' }}>
-          <span>Filtered by search: <strong>"{search}"</strong></span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13.5px', color: 'var(--color-text-muted)' }}>
+          <span>Filtered by search: <strong style={{ color: '#00FF87' }}>"{search}"</strong></span>
           <button
             onClick={() => {
               setSearch('');
               if (onClearExternalSearch) onClearExternalSearch();
             }}
-            style={{ color: 'var(--primary)', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 600 }}
+            style={{ color: '#00FF87', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 700 }}
           >
             Clear Search
           </button>
@@ -140,49 +140,65 @@ export const ExpensesPage = ({ onAddExpense, externalSearch = '', onClearExterna
       )}
 
       {/* Transactions List Card Container */}
-      <div className="pin-card" style={{ backgroundColor: 'var(--canvas)', border: '1px solid var(--hairline)', padding: '24px', overflowX: 'auto' }}>
+      <div className="glass-card" style={{ padding: '24px', overflowX: 'auto' }}>
         {loading ? (
-          <div style={{ padding: '32px', textAlign: 'center', color: 'var(--mute)' }} className="body-md">Fetching transaction records...</div>
+          <div style={{ padding: '40px', textAlign: 'center', color: 'var(--color-text-muted)' }} className="body-md">
+            Fetching transaction records...
+          </div>
         ) : expenses.length === 0 ? (
-          <div style={{ padding: '48px', textAlign: 'center', color: 'var(--mute)' }} className="body-md">
+          <div style={{ padding: '48px', textAlign: 'center', color: 'var(--color-text-muted)' }} className="body-md">
             No expenses found matching filter criteria.
           </div>
         ) : (
           <>
-            <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '15px' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '14.5px' }}>
               <thead>
-                <tr style={{ borderBottom: '1px solid var(--hairline)', color: 'var(--mute)', fontSize: '14px' }}>
-                  <th style={{ padding: '12px 8px' }}>Transaction</th>
-                  <th style={{ padding: '12px 8px' }}>Category</th>
-                  <th style={{ padding: '12px 8px' }}>Date</th>
-                  <th style={{ padding: '12px 8px' }}>Payment Method</th>
-                  <th style={{ padding: '12px 8px', textAlign: 'right' }}>Amount</th>
-                  <th style={{ padding: '12px 8px', textAlign: 'right' }}>Action</th>
+                <tr style={{ borderBottom: '1px solid var(--border-subtle)', color: 'var(--color-text-muted)', fontSize: '13px' }}>
+                  <th style={{ padding: '12px 10px', fontWeight: 600 }}>Transaction</th>
+                  <th style={{ padding: '12px 10px', fontWeight: 600 }}>Category</th>
+                  <th style={{ padding: '12px 10px', fontWeight: 600 }}>Date</th>
+                  <th style={{ padding: '12px 10px', fontWeight: 600 }}>Payment Method</th>
+                  <th style={{ padding: '12px 10px', textAlign: 'right', fontWeight: 600 }}>Amount</th>
+                  <th style={{ padding: '12px 10px', textAlign: 'right', fontWeight: 600 }}>Action</th>
                 </tr>
               </thead>
               <tbody>
                 {expenses.map((e) => (
-                  <tr key={e._id} style={{ borderBottom: '1px solid var(--hairline-soft)' }}>
-                    <td style={{ padding: '14px 8px' }}>
-                      <div className="body-strong">{e.title}</div>
-                      {e.merchant && <div className="body-sm">{e.merchant}</div>}
+                  <tr key={e._id} style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.05)' }}>
+                    <td style={{ padding: '14px 10px' }}>
+                      <div style={{ fontWeight: 700, color: 'var(--color-text-main)' }}>{e.title}</div>
+                      {e.merchant && <div style={{ fontSize: '12.5px', color: 'var(--color-text-muted)' }}>{e.merchant}</div>}
                     </td>
-                    <td style={{ padding: '14px 8px' }}>
-                      <span className="pin-overlay-pill" style={{ backgroundColor: 'var(--surface-card)', fontSize: '12px' }}>
+                    <td style={{ padding: '14px 10px' }}>
+                      <span
+                        style={{
+                          background: 'rgba(16, 185, 129, 0.15)',
+                          color: '#00FF87',
+                          border: '1px solid rgba(16, 185, 129, 0.35)',
+                          padding: '3px 9px',
+                          borderRadius: '999px',
+                          fontSize: '12px',
+                          fontWeight: 700,
+                        }}
+                      >
                         {e.category}
                       </span>
                     </td>
-                    <td style={{ padding: '14px 8px', color: 'var(--mute)' }} className="body-sm">
+                    <td style={{ padding: '14px 10px', color: 'var(--color-text-muted)', fontSize: '13.5px' }}>
                       {new Date(e.date).toLocaleDateString()}
                     </td>
-                    <td style={{ padding: '14px 8px', color: 'var(--mute)' }} className="body-sm">
+                    <td style={{ padding: '14px 10px', color: 'var(--color-text-muted)', fontSize: '13.5px' }}>
                       {e.paymentMethod}
                     </td>
-                    <td style={{ padding: '14px 8px', textAlign: 'right', fontWeight: 700, color: 'var(--ink)' }}>
+                    <td style={{ padding: '14px 10px', textAlign: 'right', fontWeight: 800, color: '#F8FAFC', fontFamily: 'var(--font-display)' }}>
                       ₹{e.amount.toLocaleString()}
                     </td>
-                    <td style={{ padding: '14px 8px', textAlign: 'right' }}>
-                      <button onClick={() => handleDelete(e._id)} style={{ color: 'var(--error)', cursor: 'pointer', border: 'none', background: 'none' }} title="Delete transaction">
+                    <td style={{ padding: '14px 10px', textAlign: 'right' }}>
+                      <button
+                        onClick={() => handleDelete(e._id)}
+                        style={{ color: '#F43F5E', cursor: 'pointer', border: 'none', background: 'none', padding: '4px' }}
+                        title="Delete transaction"
+                      >
                         <Trash2 size={16} />
                       </button>
                     </td>
@@ -199,11 +215,11 @@ export const ExpensesPage = ({ onAddExpense, externalSearch = '', onClearExterna
                 alignItems: 'center',
                 marginTop: '20px',
                 paddingTop: '16px',
-                borderTop: '1px solid var(--hairline)',
+                borderTop: '1px solid var(--border-subtle)',
                 flexWrap: 'wrap',
                 gap: '12px',
               }}>
-                <span className="body-sm">
+                <span style={{ fontSize: '13px', color: 'var(--color-text-muted)' }}>
                   Showing {(page - 1) * limit + 1} - {Math.min(page * limit, total)} of {total} transactions
                 </span>
 
@@ -211,23 +227,23 @@ export const ExpensesPage = ({ onAddExpense, externalSearch = '', onClearExterna
                   <button
                     onClick={() => handlePageChange(page - 1)}
                     disabled={page <= 1}
-                    className="button-secondary"
-                    style={{ height: '36px', padding: '0 12px', opacity: page <= 1 ? 0.5 : 1, cursor: page <= 1 ? 'not-allowed' : 'pointer' }}
+                    className="btn-glass-secondary"
+                    style={{ height: '34px', padding: '0 12px', fontSize: '12.5px', opacity: page <= 1 ? 0.5 : 1, cursor: page <= 1 ? 'not-allowed' : 'pointer' }}
                   >
-                    <ChevronLeft size={16} /> Previous
+                    <ChevronLeft size={15} /> Previous
                   </button>
 
-                  <span className="body-sm-strong" style={{ padding: '0 8px' }}>
+                  <span style={{ fontSize: '13px', fontWeight: 700, color: 'var(--color-text-main)', padding: '0 6px' }}>
                     Page {page} of {pages}
                   </span>
 
                   <button
                     onClick={() => handlePageChange(page + 1)}
                     disabled={page >= pages}
-                    className="button-secondary"
-                    style={{ height: '36px', padding: '0 12px', opacity: page >= pages ? 0.5 : 1, cursor: page >= pages ? 'not-allowed' : 'pointer' }}
+                    className="btn-glass-secondary"
+                    style={{ height: '34px', padding: '0 12px', fontSize: '12.5px', opacity: page >= pages ? 0.5 : 1, cursor: page >= pages ? 'not-allowed' : 'pointer' }}
                   >
-                    Next <ChevronRight size={16} />
+                    Next <ChevronRight size={15} />
                   </button>
                 </div>
               </div>
@@ -238,4 +254,3 @@ export const ExpensesPage = ({ onAddExpense, externalSearch = '', onClearExterna
     </div>
   );
 };
-
