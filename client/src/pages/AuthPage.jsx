@@ -54,11 +54,12 @@ export const AuthPage = () => {
     try {
       await loginDemo();
     } catch (err) {
-      setError('Demo account initialization failed. Please try again.');
+      setError(err.message || 'Demo account initialization failed. Please try again.');
     } finally {
       setLoading(false);
     }
   };
+
 
   const switchMode = (regState) => {
     setIsRegister(regState);

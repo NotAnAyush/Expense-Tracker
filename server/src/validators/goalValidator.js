@@ -1,5 +1,7 @@
 const Joi = require('joi');
 
+const VALID_GOAL_STATUSES = ['active', 'achieved', 'completed', 'paused', 'cancelled'];
+
 const createGoalSchema = Joi.object({
   name: Joi.string().trim().min(1).max(200).required()
     .messages({
@@ -11,11 +13,11 @@ const createGoalSchema = Joi.object({
       'any.required': 'Target amount is required',
     }),
   currentAmount: Joi.number().min(0).default(0),
-  targetDate: Joi.date().iso().greater('now').required()
+  targetDate: Joi.date().iso().required()
     .messages({
-      'date.greater': 'Target date must be in the future',
       'any.required': 'Target date is required',
     }),
+  status: Joi.string().valid(...VALID_GOAL_STATUSES).default('active'),
 });
 
 const updateGoalSchema = Joi.object({
@@ -23,9 +25,10 @@ const updateGoalSchema = Joi.object({
   targetAmount: Joi.number().positive().optional(),
   currentAmount: Joi.number().min(0).optional(),
   targetDate: Joi.date().iso().optional(),
-  status: Joi.string().valid('active', 'completed', 'paused', 'achieved').optional(),
+  status: Joi.string().valid(...VALID_GOAL_STATUSES).optional(),
 }).min(1).messages({
   'object.min': 'At least one field must be provided for update',
 });
 
-module.exports = { createGoalSchema, updateGoalSchema };
+module.exports = { createGoalSchema, updateGoalSchema, VALID_GOAL_STATUSES };
+

@@ -23,11 +23,11 @@ const globalLimiter = rateLimit({
 
 /**
  * Auth-Specific Rate Limiter (Login / Register)
- * 10 requests per 15 minutes per IP — prevents brute-force
+ * 50 requests per 15 minutes per IP — prevents brute-force while allowing active dev & testing
  */
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 10,
+  max: process.env.NODE_ENV === 'production' ? 30 : 100,
   skip: shouldSkip,
   standardHeaders: true,
   legacyHeaders: false,
@@ -40,12 +40,30 @@ const authLimiter = rateLimit({
 });
 
 /**
+ * Demo Sandbox Rate Limiter
+ * Generous limits to allow exploring the application seamlessly
+ */
+const demoLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 60,
+  skip: shouldSkip,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    error: {
+      code: 'DEMO_RATE_LIMIT_EXCEEDED',
+      message: 'Demo rate limit reached. Please wait a moment before trying again.',
+    },
+  },
+});
+
+/**
  * AI Endpoint Rate Limiter
- * 30 requests per 15 minutes per IP — protects Gemini API quota
+ * 60 requests per 15 minutes per IP — protects Gemini API quota
  */
 const aiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 30,
+  max: 60,
   skip: shouldSkip,
   standardHeaders: true,
   legacyHeaders: false,
@@ -57,4 +75,5 @@ const aiLimiter = rateLimit({
   },
 });
 
-module.exports = { globalLimiter, authLimiter, aiLimiter };
+module.exports = { globalLimiter, authLimiter, demoLimiter, aiLimiter };
+
