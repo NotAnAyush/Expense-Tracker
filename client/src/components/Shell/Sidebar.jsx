@@ -12,7 +12,8 @@ import {
   ChevronRight,
   ShieldCheck,
   Activity,
-  Flame
+  Flame,
+  Sliders
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useAuth } from '../../context/AuthContext';
@@ -53,6 +54,12 @@ export const Sidebar = ({ activeTab, setActiveTab, onOpenCopilot }) => {
       label: 'Analytics Engine', 
       icon: Sparkles, 
       badge: { text: 'AI', type: 'ai' } 
+    },
+    { 
+      id: 'settings', 
+      label: 'AI & Settings', 
+      icon: Sliders,
+      badge: { text: 'v2.2', type: 'ai' }
     },
   ];
 

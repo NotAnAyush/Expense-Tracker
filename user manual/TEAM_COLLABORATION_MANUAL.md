@@ -424,11 +424,39 @@ Antigravity automatically discovers and loads customizations stored in the repos
 
 ---
 
+### 8.3. Multi-AI Provider Framework & Local RAG Architecture
+
+Richy Rich v2.2 features a provider-agnostic AI layer. Users and team members can configure any AI model from the **AI & Settings** tab (`/settings`):
+
+#### Supported Providers:
+1. **Google Gemini**: Native SDK integration (`gemini-2.0-flash`, `gemini-1.5-flash`, `gemini-1.5-pro`).
+2. **OpenAI**: Direct integration (`gpt-4o-mini`, `gpt-4o`, `o3-mini`).
+3. **Anthropic Claude**: Messages API (`claude-3-5-haiku`, `claude-3-5-sonnet`).
+4. **Groq**: Ultra-fast inference engine (~500+ tokens/s) for `llama-3.3-70b-versatile` and `deepseek-r1-distill-llama-70b`.
+5. **DeepSeek**: Direct high-efficiency reasoning (`deepseek-chat`, `deepseek-reasoner`).
+6. **Mistral AI**: EU-compliant open models (`mistral-small-latest`, `mistral-large-latest`).
+7. **OpenRouter**: Unified gateway for 100+ AI models via a single API key.
+8. **Ollama (100% Local / Offline)**: Connects to local daemon at `http://localhost:11434/v1` for zero-cost private execution.
+9. **Custom Endpoints**: Any OpenAI-compatible REST endpoint (vLLM, LM Studio, Together, or internal enterprise AI proxy) with customizable base URL and request headers.
+10. **Native Local RAG Engine**: Zero external network dependency. Uses database factual retrieval and domain-engineered financial templates to provide 100% reliable copilot and categorization offline.
+
+#### Cascade Fallback System:
+```
+[User AI Request] ──► [Selected Cloud AI Provider]
+                              │
+                    (On Timeout / Error / Rate-limit)
+                              │
+                              ▼
+               [Deterministic Local RAG Engine] ──► [Zero-Downtime Response]
+```
+
+---
+
 ## 9. Testing, Quality Assurance & Production Builds
 
 ### Running Automated Test Suites
 
-The backend includes a comprehensive Jest test suite with 9 suites and 79+ tests:
+The backend includes a comprehensive Jest test suite with 10 suites and 87+ tests:
 
 ```bash
 # Run all test suites

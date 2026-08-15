@@ -43,6 +43,40 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  aiConfig: {
+    provider: {
+      type: String,
+      enum: ['gemini', 'openai', 'claude', 'groq', 'deepseek', 'mistral', 'openrouter', 'ollama', 'custom', 'local_rag'],
+      default: 'gemini',
+    },
+    model: {
+      type: String,
+      default: 'gemini-1.5-flash',
+    },
+    apiKey: {
+      type: String,
+      default: '',
+    },
+    customBaseUrl: {
+      type: String,
+      default: '',
+    },
+    customHeaders: {
+      type: Map,
+      of: String,
+      default: {},
+    },
+    temperature: {
+      type: Number,
+      default: 0.2,
+      min: 0,
+      max: 2,
+    },
+    useLocalRagFallback: {
+      type: Boolean,
+      default: true,
+    },
+  },
 }, {
   timestamps: true,
 });

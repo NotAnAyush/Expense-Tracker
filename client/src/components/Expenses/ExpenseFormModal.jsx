@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { X, Sparkles, Check, DollarSign } from 'lucide-react';
+import { X, Sparkles, Check, DollarSign, Save } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { apiFetch, getLocalDateString } from '../../api/client';
+
+const DRAFT_KEY = 'richy_draft_expense';
 
 export const ExpenseFormModal = ({ isOpen, onClose, onSave, categories = [] }) => {
   const defaultCategoryList = ['Food & Dining', 'Transportation', 'Housing & Utilities', 'Entertainment', 'Shopping', 'Health & Medical', 'Subscriptions'];
@@ -18,15 +20,51 @@ export const ExpenseFormModal = ({ isOpen, onClose, onSave, categories = [] }) =
   const [aiSuggestion, setAiSuggestion] = useState(null);
   const [loadingAi, setLoadingAi] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [hasDraftRestored, setHasDraftRestored] = useState(false);
 
+  // Restore draft on open
   useEffect(() => {
     if (isOpen) {
-      setDate(getLocalDateString(new Date()));
-      if (availableCategories.length > 0 && !availableCategories.includes(category)) {
-        setCategory(availableCategories[0]);
+      try {
+        const savedDraft = localStorage.getItem(DRAFT_KEY);
+        if (savedDraft) {
+          const parsed = JSON.parse(savedDraft);
+          if (parsed.title) setTitle(parsed.title);
+          if (parsed.amount) setAmount(parsed.amount);
+          if (parsed.category) setCategory(parsed.category);
+          if (parsed.merchant) setMerchant(parsed.merchant);
+          if (parsed.paymentMethod) setPaymentMethod(parsed.paymentMethod);
+          if (parsed.note) setNote(parsed.note);
+          if (parsed.date) setDate(parsed.date);
+          setHasDraftRestored(true);
+        } else {
+          setDate(getLocalDateString(new Date()));
+        }
+      } catch {
+        setDate(getLocalDateString(new Date()));
       }
     }
-  }, [isOpen, categories]);
+  }, [isOpen]);
+
+  // Autosave draft on any input change
+  useEffect(() => {
+    if (isOpen && (title || amount || merchant || note)) {
+      const draft = { title, amount, category, merchant, paymentMethod, note, date };
+      localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+    }
+  }, [isOpen, title, amount, category, merchant, paymentMethod, note, date]);
+
+  const clearDraft = () => {
+    localStorage.removeItem(DRAFT_KEY);
+    setTitle('');
+    setAmount('');
+    setMerchant('');
+    setNote('');
+    setCategory(availableCategories[0] || 'Food & Dining');
+    setPaymentMethod('Card');
+    setDate(getLocalDateString(new Date()));
+    setHasDraftRestored(false);
+  };
 
   const handleSmartCategorize = async () => {
     if (!title.trim() || !amount) return;
@@ -61,6 +99,7 @@ export const ExpenseFormModal = ({ isOpen, onClose, onSave, categories = [] }) =
         note,
         date,
       });
+      clearDraft();
       onClose();
     } catch (err) {
       console.error('Save expense failed:', err);
@@ -121,7 +160,14 @@ export const ExpenseFormModal = ({ isOpen, onClose, onSave, categories = [] }) =
               >
                 <DollarSign size={20} color="#050810" />
               </div>
-              <h2 className="heading-lg" style={{ color: '#F1F5F9' }}>Record New Expense</h2>
+              <div>
+                <h2 className="heading-lg" style={{ color: '#F1F5F9' }}>Record New Expense</h2>
+                {hasDraftRestored && (
+                  <div style={{ fontSize: '11px', color: '#00FF87', display: 'flex', alignItems: 'center', gap: '4px', marginTop: '2px' }}>
+                    <Save size={11} /> Restored from auto-saved draft
+                  </div>
+                )}
+              </div>
             </div>
 
             <motion.button
@@ -307,13 +353,32 @@ export const ExpenseFormModal = ({ isOpen, onClose, onSave, categories = [] }) =
               />
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
-              <button type="button" onClick={onClose} className="btn-glass-secondary">
-                Cancel
-              </button>
-              <button type="submit" disabled={submitting} className="btn-primary-mint">
-                {submitting ? 'Saving...' : 'Save Expense'}
-              </button>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              {(title || amount || merchant || note) ? (
+                <button
+                  type="button"
+                  onClick={clearDraft}
+                  style={{
+                    background: 'transparent',
+                    border: 'none',
+                    color: '#94A3B8',
+                    fontSize: '12px',
+                    cursor: 'pointer',
+                    textDecoration: 'underline',
+                  }}
+                >
+                  Discard Draft
+                </button>
+              ) : <div />}
+
+              <div style={{ display: 'flex', gap: '12px' }}>
+                <button type="button" onClick={onClose} className="btn-glass-secondary">
+                  Cancel
+                </button>
+                <button type="submit" disabled={submitting} className="btn-primary-mint">
+                  {submitting ? 'Saving...' : 'Save Expense'}
+                </button>
+              </div>
             </div>
           </form>
         </motion.div>
