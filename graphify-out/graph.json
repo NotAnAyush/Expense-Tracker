@@ -33,6 +33,32 @@
       "norm_label": "badrequesterror"
     },
     {
+      "label": "NotFoundError",
+      "file_type": "code",
+      "source_file": "server/src/utils/errors.js",
+      "source_location": "L76",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "server_src_utils_errors_notfounderror",
+      "community": 0,
+      "community_name": "asyncHandler.js",
+      "norm_label": "notfounderror"
+    },
+    {
+      "label": "TrendService",
+      "file_type": "code",
+      "source_file": "server/src/services/analytics/trendService.js",
+      "source_location": "L7",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "server_src_services_analytics_trendservice_trendservice",
+      "community": 12,
+      "community_name": "Expense.js",
+      "norm_label": "trendservice"
+    },
+    {
       "label": "AppError",
       "file_type": "code",
       "source_file": "server/src/utils/errors.js",
@@ -44,19 +70,6 @@
       "community": 13,
       "community_name": "AppError",
       "norm_label": "apperror"
-    },
-    {
-      "label": "AnalyticsService",
-      "file_type": "code",
-      "source_file": "server/src/services/analytics/analyticsService.js",
-      "source_location": "L12",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "id": "server_src_services_analytics_analyticsservice_analyticsservice",
-      "community": 18,
-      "community_name": "AnalyticsService",
-      "norm_label": "analyticsservice"
     },
     {
       "label": "AIService",
@@ -96,6 +109,19 @@
       "community": 3,
       "community_name": "aiService.js",
       "norm_label": "intentrouter"
+    },
+    {
+      "label": "ToolRegistry",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/toolRegistry.js",
+      "source_location": "L8",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "server_src_services_ai_toolregistry_toolregistry",
+      "community": 3,
+      "community_name": "aiService.js",
+      "norm_label": "toolregistry"
     },
     {
       "label": "ForbiddenError",
@@ -150,19 +176,6 @@
       "norm_label": "validationerror"
     },
     {
-      "label": "NotFoundError",
-      "file_type": "code",
-      "source_file": "server/src/utils/errors.js",
-      "source_location": "L76",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "id": "server_src_utils_errors_notfounderror",
-      "community": 37,
-      "community_name": "budgetController.js",
-      "norm_label": "notfounderror"
-    },
-    {
       "label": "ConflictError",
       "file_type": "code",
       "source_file": "server/src/utils/errors.js",
@@ -189,30 +202,17 @@
       "norm_label": "apiresponse"
     },
     {
-      "label": "ToolRegistry",
+      "label": "AnalyticsService",
       "file_type": "code",
-      "source_file": "server/src/services/ai/toolRegistry.js",
-      "source_location": "L8",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L12",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "id": "server_src_services_ai_toolregistry_toolregistry",
+      "id": "server_src_services_analytics_analyticsservice_analyticsservice",
       "community": 5,
       "community_name": "analyticsService.js",
-      "norm_label": "toolregistry"
-    },
-    {
-      "label": "TrendService",
-      "file_type": "code",
-      "source_file": "server/src/services/analytics/trendService.js",
-      "source_location": "L7",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "id": "server_src_services_analytics_trendservice_trendservice",
-      "community": 5,
-      "community_name": "analyticsService.js",
-      "norm_label": "trendservice"
+      "norm_label": "analyticsservice"
     },
     {
       "label": "asyncHandler()",
@@ -234,6 +234,18 @@
       "_callable": true,
       "_origin": "ast",
       "id": "server_src_utils_errors_badrequesterror_constructor",
+      "community": 0,
+      "community_name": "asyncHandler.js",
+      "norm_label": ".constructor()"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "server/src/utils/errors.js",
+      "source_location": "L77",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_utils_errors_notfounderror_constructor",
       "community": 0,
       "community_name": "asyncHandler.js",
       "norm_label": ".constructor()"
@@ -371,6 +383,18 @@
       "norm_label": "shouldskip()"
     },
     {
+      "label": "escapeCsvField()",
+      "file_type": "code",
+      "source_file": "server/src/controllers/exportController.js",
+      "source_location": "L7",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_controllers_exportcontroller_escapecsvfield",
+      "community": 12,
+      "community_name": "Expense.js",
+      "norm_label": "escapecsvfield()"
+    },
+    {
       "label": "auditLogger()",
       "file_type": "code",
       "source_file": "server/src/middleware/auditLogger.js",
@@ -379,7 +403,7 @@
       "_origin": "ast",
       "id": "server_src_middleware_auditlogger_auditlogger",
       "community": 12,
-      "community_name": "exportAndAudit.test.js",
+      "community_name": "Expense.js",
       "norm_label": "auditlogger()"
     },
     {
@@ -391,7 +415,7 @@
       "_origin": "ast",
       "id": "server_src_middleware_auditlogger_redactbody",
       "community": 12,
-      "community_name": "exportAndAudit.test.js",
+      "community_name": "Expense.js",
       "norm_label": "redactbody()"
     },
     {
@@ -403,8 +427,56 @@
       "_origin": "ast",
       "id": "server_src_middleware_auditlogger_resolveaction",
       "community": 12,
-      "community_name": "exportAndAudit.test.js",
+      "community_name": "Expense.js",
       "norm_label": "resolveaction()"
+    },
+    {
+      "label": ".getCategoryHeatmap()",
+      "file_type": "code",
+      "source_file": "server/src/services/analytics/trendService.js",
+      "source_location": "L46",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_services_analytics_trendservice_trendservice_getcategoryheatmap",
+      "community": 12,
+      "community_name": "Expense.js",
+      "norm_label": ".getcategoryheatmap()"
+    },
+    {
+      "label": ".getDailyPattern()",
+      "file_type": "code",
+      "source_file": "server/src/services/analytics/trendService.js",
+      "source_location": "L114",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_services_analytics_trendservice_trendservice_getdailypattern",
+      "community": 12,
+      "community_name": "Expense.js",
+      "norm_label": ".getdailypattern()"
+    },
+    {
+      "label": ".getMerchantFrequency()",
+      "file_type": "code",
+      "source_file": "server/src/services/analytics/trendService.js",
+      "source_location": "L81",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_services_analytics_trendservice_trendservice_getmerchantfrequency",
+      "community": 12,
+      "community_name": "Expense.js",
+      "norm_label": ".getmerchantfrequency()"
+    },
+    {
+      "label": ".getWeeklyTrend()",
+      "file_type": "code",
+      "source_file": "server/src/services/analytics/trendService.js",
+      "source_location": "L12",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_services_analytics_trendservice_trendservice_getweeklytrend",
+      "community": 12,
+      "community_name": "Expense.js",
+      "norm_label": ".getweeklytrend()"
     },
     {
       "label": "errorHandler()",
@@ -525,126 +597,6 @@
       "community": 13,
       "community_name": "AppError",
       "norm_label": ".unauthorized()"
-    },
-    {
-      "label": ".getAnomalies()",
-      "file_type": "code",
-      "source_file": "server/src/services/analytics/analyticsService.js",
-      "source_location": "L333",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "server_src_services_analytics_analyticsservice_analyticsservice_getanomalies",
-      "community": 18,
-      "community_name": "AnalyticsService",
-      "norm_label": ".getanomalies()"
-    },
-    {
-      "label": ".getBudgetUtilization()",
-      "file_type": "code",
-      "source_file": "server/src/services/analytics/analyticsService.js",
-      "source_location": "L177",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "server_src_services_analytics_analyticsservice_analyticsservice_getbudgetutilization",
-      "community": 18,
-      "community_name": "AnalyticsService",
-      "norm_label": ".getbudgetutilization()"
-    },
-    {
-      "label": ".getCategoryBreakdown()",
-      "file_type": "code",
-      "source_file": "server/src/services/analytics/analyticsService.js",
-      "source_location": "L62",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "server_src_services_analytics_analyticsservice_analyticsservice_getcategorybreakdown",
-      "community": 18,
-      "community_name": "AnalyticsService",
-      "norm_label": ".getcategorybreakdown()"
-    },
-    {
-      "label": ".getGoalProgress()",
-      "file_type": "code",
-      "source_file": "server/src/services/analytics/analyticsService.js",
-      "source_location": "L268",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "server_src_services_analytics_analyticsservice_analyticsservice_getgoalprogress",
-      "community": 18,
-      "community_name": "AnalyticsService",
-      "norm_label": ".getgoalprogress()"
-    },
-    {
-      "label": ".getMerchantSummary()",
-      "file_type": "code",
-      "source_file": "server/src/services/analytics/analyticsService.js",
-      "source_location": "L302",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "server_src_services_analytics_analyticsservice_analyticsservice_getmerchantsummary",
-      "community": 18,
-      "community_name": "AnalyticsService",
-      "norm_label": ".getmerchantsummary()"
-    },
-    {
-      "label": ".getMonthlyComparison()",
-      "file_type": "code",
-      "source_file": "server/src/services/analytics/analyticsService.js",
-      "source_location": "L103",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "server_src_services_analytics_analyticsservice_analyticsservice_getmonthlycomparison",
-      "community": 18,
-      "community_name": "AnalyticsService",
-      "norm_label": ".getmonthlycomparison()"
-    },
-    {
-      "label": ".getMonthlySummary()",
-      "file_type": "code",
-      "source_file": "server/src/services/analytics/analyticsService.js",
-      "source_location": "L17",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "server_src_services_analytics_analyticsservice_analyticsservice_getmonthlysummary",
-      "community": 18,
-      "community_name": "AnalyticsService",
-      "norm_label": ".getmonthlysummary()"
-    },
-    {
-      "label": ".getRecurringExpenseSummary()",
-      "file_type": "code",
-      "source_file": "server/src/services/analytics/analyticsService.js",
-      "source_location": "L248",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "server_src_services_analytics_analyticsservice_analyticsservice_getrecurringexpensesummary",
-      "community": 18,
-      "community_name": "AnalyticsService",
-      "norm_label": ".getrecurringexpensesummary()"
-    },
-    {
-      "label": ".getSpendingVelocity()",
-      "file_type": "code",
-      "source_file": "server/src/services/analytics/analyticsService.js",
-      "source_location": "L231",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "server_src_services_analytics_analyticsservice_analyticsservice_getspendingvelocity",
-      "community": 18,
-      "community_name": "AnalyticsService",
-      "norm_label": ".getspendingvelocity()"
-    },
-    {
-      "label": "protect()",
-      "file_type": "code",
-      "source_file": "server/src/middleware/auth.js",
-      "source_location": "L4",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "server_src_middleware_auth_protect",
-      "community": 19,
-      "community_name": "auth.js",
-      "norm_label": "protect()"
     },
     {
       "label": "apiFetch()",
@@ -863,6 +815,18 @@
       "norm_label": "recurringpage()"
     },
     {
+      "label": "protect()",
+      "file_type": "code",
+      "source_file": "server/src/middleware/auth.js",
+      "source_location": "L4",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_middleware_auth_protect",
+      "community": 22,
+      "community_name": "auth.js",
+      "norm_label": "protect()"
+    },
+    {
       "label": "validate()",
       "file_type": "code",
       "source_file": "server/src/middleware/validate.js",
@@ -983,6 +947,18 @@
       "norm_label": ".classifyintent()"
     },
     {
+      "label": ".executeTool()",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/toolRegistry.js",
+      "source_location": "L9",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_services_ai_toolregistry_toolregistry_executetool",
+      "community": 3,
+      "community_name": "aiService.js",
+      "norm_label": ".executetool()"
+    },
+    {
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "server/src/utils/errors.js",
@@ -1058,18 +1034,6 @@
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "server/src/utils/errors.js",
-      "source_location": "L77",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "server_src_utils_errors_notfounderror_constructor",
-      "community": 37,
-      "community_name": "budgetController.js",
-      "norm_label": ".constructor()"
-    },
-    {
-      "label": ".constructor()",
-      "file_type": "code",
-      "source_file": "server/src/utils/errors.js",
       "source_location": "L95",
       "_callable": true,
       "_origin": "ast",
@@ -1115,120 +1079,156 @@
       "norm_label": ".success()"
     },
     {
-      "label": "escapeCsvField()",
+      "label": ".getAnomalies()",
       "file_type": "code",
-      "source_file": "server/src/controllers/exportController.js",
-      "source_location": "L7",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L333",
       "_callable": true,
       "_origin": "ast",
-      "id": "server_src_controllers_exportcontroller_escapecsvfield",
+      "id": "server_src_services_analytics_analyticsservice_analyticsservice_getanomalies",
       "community": 5,
       "community_name": "analyticsService.js",
-      "norm_label": "escapecsvfield()"
+      "norm_label": ".getanomalies()"
     },
     {
-      "label": ".executeTool()",
+      "label": ".getBudgetUtilization()",
       "file_type": "code",
-      "source_file": "server/src/services/ai/toolRegistry.js",
-      "source_location": "L9",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L177",
       "_callable": true,
       "_origin": "ast",
-      "id": "server_src_services_ai_toolregistry_toolregistry_executetool",
+      "id": "server_src_services_analytics_analyticsservice_analyticsservice_getbudgetutilization",
       "community": 5,
       "community_name": "analyticsService.js",
-      "norm_label": ".executetool()"
+      "norm_label": ".getbudgetutilization()"
     },
     {
-      "label": ".getCategoryHeatmap()",
+      "label": ".getCategoryBreakdown()",
       "file_type": "code",
-      "source_file": "server/src/services/analytics/trendService.js",
-      "source_location": "L46",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L62",
       "_callable": true,
       "_origin": "ast",
-      "id": "server_src_services_analytics_trendservice_trendservice_getcategoryheatmap",
+      "id": "server_src_services_analytics_analyticsservice_analyticsservice_getcategorybreakdown",
       "community": 5,
       "community_name": "analyticsService.js",
-      "norm_label": ".getcategoryheatmap()"
+      "norm_label": ".getcategorybreakdown()"
     },
     {
-      "label": ".getDailyPattern()",
+      "label": ".getGoalProgress()",
       "file_type": "code",
-      "source_file": "server/src/services/analytics/trendService.js",
-      "source_location": "L114",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L268",
       "_callable": true,
       "_origin": "ast",
-      "id": "server_src_services_analytics_trendservice_trendservice_getdailypattern",
+      "id": "server_src_services_analytics_analyticsservice_analyticsservice_getgoalprogress",
       "community": 5,
       "community_name": "analyticsService.js",
-      "norm_label": ".getdailypattern()"
+      "norm_label": ".getgoalprogress()"
     },
     {
-      "label": ".getMerchantFrequency()",
+      "label": ".getMerchantSummary()",
       "file_type": "code",
-      "source_file": "server/src/services/analytics/trendService.js",
-      "source_location": "L81",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L302",
       "_callable": true,
       "_origin": "ast",
-      "id": "server_src_services_analytics_trendservice_trendservice_getmerchantfrequency",
+      "id": "server_src_services_analytics_analyticsservice_analyticsservice_getmerchantsummary",
       "community": 5,
       "community_name": "analyticsService.js",
-      "norm_label": ".getmerchantfrequency()"
+      "norm_label": ".getmerchantsummary()"
     },
     {
-      "label": ".getWeeklyTrend()",
+      "label": ".getMonthlyComparison()",
       "file_type": "code",
-      "source_file": "server/src/services/analytics/trendService.js",
-      "source_location": "L12",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L103",
       "_callable": true,
       "_origin": "ast",
-      "id": "server_src_services_analytics_trendservice_trendservice_getweeklytrend",
+      "id": "server_src_services_analytics_analyticsservice_analyticsservice_getmonthlycomparison",
       "community": 5,
       "community_name": "analyticsService.js",
-      "norm_label": ".getweeklytrend()"
+      "norm_label": ".getmonthlycomparison()"
     },
     {
-      "label": "aiController.js",
+      "label": ".getMonthlySummary()",
       "file_type": "code",
-      "source_file": "server/src/controllers/aiController.js",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L17",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_services_analytics_analyticsservice_analyticsservice_getmonthlysummary",
+      "community": 5,
+      "community_name": "analyticsService.js",
+      "norm_label": ".getmonthlysummary()"
+    },
+    {
+      "label": ".getRecurringExpenseSummary()",
+      "file_type": "code",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L248",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_services_analytics_analyticsservice_analyticsservice_getrecurringexpensesummary",
+      "community": 5,
+      "community_name": "analyticsService.js",
+      "norm_label": ".getrecurringexpensesummary()"
+    },
+    {
+      "label": ".getSpendingVelocity()",
+      "file_type": "code",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L231",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_services_analytics_analyticsservice_analyticsservice_getspendingvelocity",
+      "community": 5,
+      "community_name": "analyticsService.js",
+      "norm_label": ".getspendingvelocity()"
+    },
+    {
+      "label": "budgetController.js",
+      "file_type": "code",
+      "source_file": "server/src/controllers/budgetController.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "server_src_controllers_aicontroller",
+      "id": "server_src_controllers_budgetcontroller",
       "community": 0,
       "community_name": "asyncHandler.js",
-      "norm_label": "aicontroller.js"
-    },
-    {
-      "label": "AIService",
-      "file_type": "code",
-      "source_file": "server/src/controllers/aiController.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "server_src_controllers_aicontroller_aiservice",
-      "community": 0,
-      "community_name": "asyncHandler.js",
-      "norm_label": "aiservice"
+      "norm_label": "budgetcontroller.js"
     },
     {
       "label": "asyncHandler",
       "file_type": "code",
-      "source_file": "server/src/controllers/aiController.js",
+      "source_file": "server/src/controllers/budgetController.js",
       "source_location": "L2",
       "_origin": "ast",
-      "id": "server_src_controllers_aicontroller_asynchandler",
+      "id": "server_src_controllers_budgetcontroller_asynchandler",
       "community": 0,
       "community_name": "asyncHandler.js",
       "norm_label": "asynchandler"
     },
     {
-      "label": "{ BadRequestError }",
+      "label": "Budget",
       "file_type": "code",
-      "source_file": "server/src/controllers/aiController.js",
-      "source_location": "L3",
+      "source_file": "server/src/controllers/budgetController.js",
+      "source_location": "L1",
       "_origin": "ast",
-      "id": "server_src_controllers_aicontroller_badrequesterror",
+      "id": "server_src_controllers_budgetcontroller_budget",
       "community": 0,
       "community_name": "asyncHandler.js",
-      "norm_label": "{ badrequesterror }"
+      "norm_label": "budget"
+    },
+    {
+      "label": "{ NotFoundError, BadRequestError }",
+      "file_type": "code",
+      "source_file": "server/src/controllers/budgetController.js",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "server_src_controllers_budgetcontroller_notfounderror_badrequesterror",
+      "community": 0,
+      "community_name": "asyncHandler.js",
+      "norm_label": "{ notfounderror, badrequesterror }"
     },
     {
       "label": "expenseController.js",
@@ -2349,7 +2349,7 @@
       "_origin": "ast",
       "id": "server_src_controllers_auditcontroller",
       "community": 12,
-      "community_name": "exportAndAudit.test.js",
+      "community_name": "Expense.js",
       "norm_label": "auditcontroller.js"
     },
     {
@@ -2360,7 +2360,7 @@
       "_origin": "ast",
       "id": "server_src_controllers_auditcontroller_asynchandler",
       "community": 12,
-      "community_name": "exportAndAudit.test.js",
+      "community_name": "Expense.js",
       "norm_label": "asynchandler"
     },
     {
@@ -2371,8 +2371,41 @@
       "_origin": "ast",
       "id": "server_src_controllers_auditcontroller_auditlog",
       "community": 12,
-      "community_name": "exportAndAudit.test.js",
+      "community_name": "Expense.js",
       "norm_label": "auditlog"
+    },
+    {
+      "label": "exportController.js",
+      "file_type": "code",
+      "source_file": "server/src/controllers/exportController.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "server_src_controllers_exportcontroller",
+      "community": 12,
+      "community_name": "Expense.js",
+      "norm_label": "exportcontroller.js"
+    },
+    {
+      "label": "asyncHandler",
+      "file_type": "code",
+      "source_file": "server/src/controllers/exportController.js",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "server_src_controllers_exportcontroller_asynchandler",
+      "community": 12,
+      "community_name": "Expense.js",
+      "norm_label": "asynchandler"
+    },
+    {
+      "label": "Expense",
+      "file_type": "code",
+      "source_file": "server/src/controllers/exportController.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "server_src_controllers_exportcontroller_expense",
+      "community": 12,
+      "community_name": "Expense.js",
+      "norm_label": "expense"
     },
     {
       "label": "auditLogger.js",
@@ -2382,7 +2415,7 @@
       "_origin": "ast",
       "id": "server_src_middleware_auditlogger",
       "community": 12,
-      "community_name": "exportAndAudit.test.js",
+      "community_name": "Expense.js",
       "norm_label": "auditlogger.js"
     },
     {
@@ -2393,7 +2426,7 @@
       "_origin": "ast",
       "id": "server_src_middleware_auditlogger_auditlog",
       "community": 12,
-      "community_name": "exportAndAudit.test.js",
+      "community_name": "Expense.js",
       "norm_label": "auditlog"
     },
     {
@@ -2404,7 +2437,7 @@
       "_origin": "ast",
       "id": "server_src_middleware_auditlogger_redacted_fields",
       "community": 12,
-      "community_name": "exportAndAudit.test.js",
+      "community_name": "Expense.js",
       "norm_label": "redacted_fields"
     },
     {
@@ -2415,7 +2448,7 @@
       "_origin": "ast",
       "id": "server_src_models_auditlog",
       "community": 12,
-      "community_name": "exportAndAudit.test.js",
+      "community_name": "Expense.js",
       "norm_label": "auditlog.js"
     },
     {
@@ -2426,7 +2459,7 @@
       "_origin": "ast",
       "id": "server_src_models_auditlog_audit_ttl_days",
       "community": 12,
-      "community_name": "exportAndAudit.test.js",
+      "community_name": "Expense.js",
       "norm_label": "audit_ttl_days"
     },
     {
@@ -2437,7 +2470,7 @@
       "_origin": "ast",
       "id": "server_src_models_auditlog_auditlogschema",
       "community": 12,
-      "community_name": "exportAndAudit.test.js",
+      "community_name": "Expense.js",
       "norm_label": "auditlogschema"
     },
     {
@@ -2448,8 +2481,63 @@
       "_origin": "ast",
       "id": "server_src_models_auditlog_mongoose",
       "community": 12,
-      "community_name": "exportAndAudit.test.js",
+      "community_name": "Expense.js",
       "norm_label": "mongoose"
+    },
+    {
+      "label": "Expense.js",
+      "file_type": "code",
+      "source_file": "server/src/models/Expense.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "server_src_models_expense",
+      "community": 12,
+      "community_name": "Expense.js",
+      "norm_label": "expense.js"
+    },
+    {
+      "label": "expenseSchema",
+      "file_type": "code",
+      "source_file": "server/src/models/Expense.js",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "server_src_models_expense_expenseschema",
+      "community": 12,
+      "community_name": "Expense.js",
+      "norm_label": "expenseschema"
+    },
+    {
+      "label": "mongoose",
+      "file_type": "code",
+      "source_file": "server/src/models/Expense.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "server_src_models_expense_mongoose",
+      "community": 12,
+      "community_name": "Expense.js",
+      "norm_label": "mongoose"
+    },
+    {
+      "label": "trendService.js",
+      "file_type": "code",
+      "source_file": "server/src/services/analytics/trendService.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "server_src_services_analytics_trendservice",
+      "community": 12,
+      "community_name": "Expense.js",
+      "norm_label": "trendservice.js"
+    },
+    {
+      "label": "Expense",
+      "file_type": "code",
+      "source_file": "server/src/services/analytics/trendService.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "server_src_services_analytics_trendservice_expense",
+      "community": 12,
+      "community_name": "Expense.js",
+      "norm_label": "expense"
     },
     {
       "label": "exportAndAudit.test.js",
@@ -2459,7 +2547,7 @@
       "_origin": "ast",
       "id": "server_tests_exportandaudit_test",
       "community": 12,
-      "community_name": "exportAndAudit.test.js",
+      "community_name": "Expense.js",
       "norm_label": "exportandaudit.test.js"
     },
     {
@@ -2470,7 +2558,7 @@
       "_origin": "ast",
       "id": "server_tests_exportandaudit_test_app",
       "community": 12,
-      "community_name": "exportAndAudit.test.js",
+      "community_name": "Expense.js",
       "norm_label": "app"
     },
     {
@@ -2481,7 +2569,7 @@
       "_origin": "ast",
       "id": "server_tests_exportandaudit_test_auditlog",
       "community": 12,
-      "community_name": "exportAndAudit.test.js",
+      "community_name": "Expense.js",
       "norm_label": "auditlog"
     },
     {
@@ -2492,7 +2580,7 @@
       "_origin": "ast",
       "id": "server_tests_exportandaudit_test_expense",
       "community": 12,
-      "community_name": "exportAndAudit.test.js",
+      "community_name": "Expense.js",
       "norm_label": "expense"
     },
     {
@@ -2503,7 +2591,7 @@
       "_origin": "ast",
       "id": "server_tests_exportandaudit_test_mongomemoryserver",
       "community": 12,
-      "community_name": "exportAndAudit.test.js",
+      "community_name": "Expense.js",
       "norm_label": "{ mongomemoryserver }"
     },
     {
@@ -2514,7 +2602,7 @@
       "_origin": "ast",
       "id": "server_tests_exportandaudit_test_mongoose",
       "community": 12,
-      "community_name": "exportAndAudit.test.js",
+      "community_name": "Expense.js",
       "norm_label": "mongoose"
     },
     {
@@ -2525,7 +2613,7 @@
       "_origin": "ast",
       "id": "server_tests_exportandaudit_test_request",
       "community": 12,
-      "community_name": "exportAndAudit.test.js",
+      "community_name": "Expense.js",
       "norm_label": "request"
     },
     {
@@ -3068,37 +3156,334 @@
       "norm_label": "updaterecurringschema"
     },
     {
-      "label": "auth.js",
-      "file_type": "code",
-      "source_file": "server/src/middleware/auth.js",
+      "label": "AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "file_type": "document",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "server_src_middleware_auth",
-      "community": 19,
-      "community_name": "auth.js",
-      "norm_label": "auth.js"
+      "id": "documentation_ai_production_improvement_blueprint",
+      "community": 18,
+      "community_name": "\u26a1 Enterprise AI/ML Production Improvement Blueprint",
+      "norm_label": "ai_production_improvement_blueprint.md"
     },
     {
-      "label": "jwt",
-      "file_type": "code",
-      "source_file": "server/src/middleware/auth.js",
+      "label": "1.1 Architectural Flow",
+      "file_type": "document",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L55",
+      "_origin": "ast",
+      "id": "documentation_ai_production_improvement_blueprint_1_1_architectural_flow",
+      "community": 18,
+      "community_name": "\u26a1 Enterprise AI/ML Production Improvement Blueprint",
+      "norm_label": "1.1 architectural flow"
+    },
+    {
+      "label": "1.2 Drop-In Implementation Blueprint",
+      "file_type": "document",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L75",
+      "_origin": "ast",
+      "id": "documentation_ai_production_improvement_blueprint_1_2_drop_in_implementation_blueprint",
+      "community": 18,
+      "community_name": "\u26a1 Enterprise AI/ML Production Improvement Blueprint",
+      "norm_label": "1.2 drop-in implementation blueprint"
+    },
+    {
+      "label": "2.1 Why Native Tool Calling Replaces Naive Substring Routing",
+      "file_type": "document",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L208",
+      "_origin": "ast",
+      "id": "documentation_ai_production_improvement_blueprint_2_1_why_native_tool_calling_replaces_naive_substring_routing",
+      "community": 18,
+      "community_name": "\u26a1 Enterprise AI/ML Production Improvement Blueprint",
+      "norm_label": "2.1 why native tool calling replaces naive substring routing"
+    },
+    {
+      "label": "2.2 Drop-In Implementation: Function Calling Declarations",
+      "file_type": "document",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L231",
+      "_origin": "ast",
+      "id": "documentation_ai_production_improvement_blueprint_2_2_drop_in_implementation_function_calling_declarations",
+      "community": 18,
+      "community_name": "\u26a1 Enterprise AI/ML Production Improvement Blueprint",
+      "norm_label": "2.2 drop-in implementation: function calling declarations"
+    },
+    {
+      "label": "2.3 Conversational Multi-Turn Copilot Service with Streaming",
+      "file_type": "document",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L296",
+      "_origin": "ast",
+      "id": "documentation_ai_production_improvement_blueprint_2_3_conversational_multi_turn_copilot_service_with_streaming",
+      "community": 18,
+      "community_name": "\u26a1 Enterprise AI/ML Production Improvement Blueprint",
+      "norm_label": "2.3 conversational multi-turn copilot service with streaming"
+    },
+    {
+      "label": "3.1 Category-Scoped Median Absolute Deviation (MAD) Outlier Detection",
+      "file_type": "document",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L393",
+      "_origin": "ast",
+      "id": "documentation_ai_production_improvement_blueprint_3_1_category_scoped_median_absolute_deviation_mad_outlier_detection",
+      "community": 18,
+      "community_name": "\u26a1 Enterprise AI/ML Production Improvement Blueprint",
+      "norm_label": "3.1 category-scoped median absolute deviation (mad) outlier detection"
+    },
+    {
+      "label": "3.2 Bill-Aware & Seasonality Run-Rate Forecaster",
+      "file_type": "document",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L464",
+      "_origin": "ast",
+      "id": "documentation_ai_production_improvement_blueprint_3_2_bill_aware_seasonality_run_rate_forecaster",
+      "community": 18,
+      "community_name": "\u26a1 Enterprise AI/ML Production Improvement Blueprint",
+      "norm_label": "3.2 bill-aware & seasonality run-rate forecaster"
+    },
+    {
+      "label": "4.1 Specification",
+      "file_type": "document",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L508",
+      "_origin": "ast",
+      "id": "documentation_ai_production_improvement_blueprint_4_1_specification",
+      "community": 18,
+      "community_name": "\u26a1 Enterprise AI/ML Production Improvement Blueprint",
+      "norm_label": "4.1 specification"
+    },
+    {
+      "label": "4.2 Drop-In Implementation Blueprint",
+      "file_type": "document",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L530",
+      "_origin": "ast",
+      "id": "documentation_ai_production_improvement_blueprint_4_2_drop_in_implementation_blueprint",
+      "community": 18,
+      "community_name": "\u26a1 Enterprise AI/ML Production Improvement Blueprint",
+      "norm_label": "4.2 drop-in implementation blueprint"
+    },
+    {
+      "label": "5.1 Caching Philosophy",
+      "file_type": "document",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L592",
+      "_origin": "ast",
+      "id": "documentation_ai_production_improvement_blueprint_5_1_caching_philosophy",
+      "community": 18,
+      "community_name": "\u26a1 Enterprise AI/ML Production Improvement Blueprint",
+      "norm_label": "5.1 caching philosophy"
+    },
+    {
+      "label": "\ud83c\udfaf Architecture Target State & Performance SLAs",
+      "file_type": "document",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L10",
+      "_origin": "ast",
+      "id": "documentation_ai_production_improvement_blueprint_architecture_target_state_performance_slas",
+      "community": 18,
+      "community_name": "\u26a1 Enterprise AI/ML Production Improvement Blueprint",
+      "norm_label": "\ud83c\udfaf architecture target state & performance slas"
+    },
+    {
+      "label": "\u26a1 Enterprise AI/ML Production Improvement Blueprint",
+      "file_type": "document",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "server_src_middleware_auth_jwt",
-      "community": 19,
-      "community_name": "auth.js",
-      "norm_label": "jwt"
+      "id": "documentation_ai_production_improvement_blueprint_enterprise_ai_ml_production_improvement_blueprint",
+      "community": 18,
+      "community_name": "\u26a1 Enterprise AI/ML Production Improvement Blueprint",
+      "norm_label": "\u26a1 enterprise ai/ml production improvement blueprint"
     },
     {
-      "label": "User",
-      "file_type": "code",
-      "source_file": "server/src/middleware/auth.js",
+      "label": "Enterprise Bill-Aware Forecasting Model:",
+      "file_type": "document",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L470",
+      "_origin": "ast",
+      "id": "documentation_ai_production_improvement_blueprint_enterprise_bill_aware_forecasting_model",
+      "community": 18,
+      "community_name": "\u26a1 Enterprise AI/ML Production Improvement Blueprint",
+      "norm_label": "enterprise bill-aware forecasting model:"
+    },
+    {
+      "label": "Enterprise Solution: Category-Scoped Modified Z-Score (MAD)",
+      "file_type": "document",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L400",
+      "_origin": "ast",
+      "id": "documentation_ai_production_improvement_blueprint_enterprise_solution_category_scoped_modified_z_score_mad",
+      "community": 18,
+      "community_name": "\u26a1 Enterprise AI/ML Production Improvement Blueprint",
+      "norm_label": "enterprise solution: category-scoped modified z-score (mad)"
+    },
+    {
+      "label": "File: `server/src/services/ai/aiService.js` (Copilot Upgrade)",
+      "file_type": "document",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L298",
+      "_origin": "ast",
+      "id": "documentation_ai_production_improvement_blueprint_file_server_src_services_ai_aiservice_js_copilot_upgrade",
+      "community": 18,
+      "community_name": "\u26a1 Enterprise AI/ML Production Improvement Blueprint",
+      "norm_label": "file: `server/src/services/ai/aiservice.js` (copilot upgrade)"
+    },
+    {
+      "label": "File: `server/src/services/ai/aiService.js` (Smart Categorization Upgrade)",
+      "file_type": "document",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L77",
+      "_origin": "ast",
+      "id": "documentation_ai_production_improvement_blueprint_file_server_src_services_ai_aiservice_js_smart_categorization_upgrade",
+      "community": 18,
+      "community_name": "\u26a1 Enterprise AI/ML Production Improvement Blueprint",
+      "norm_label": "file: `server/src/services/ai/aiservice.js` (smart categorization upgrade)"
+    },
+    {
+      "label": "File: `server/src/services/ai/geminiTools.js`",
+      "file_type": "document",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L233",
+      "_origin": "ast",
+      "id": "documentation_ai_production_improvement_blueprint_file_server_src_services_ai_geminitools_js",
+      "community": 18,
+      "community_name": "\u26a1 Enterprise AI/ML Production Improvement Blueprint",
+      "norm_label": "file: `server/src/services/ai/geminitools.js`"
+    },
+    {
+      "label": "Industry-Standard, High-Performance & Zero-Breakage Implementation Specification",
+      "file_type": "document",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
       "source_location": "L2",
       "_origin": "ast",
-      "id": "server_src_middleware_auth_user",
-      "community": 19,
-      "community_name": "auth.js",
-      "norm_label": "user"
+      "id": "documentation_ai_production_improvement_blueprint_industry_standard_high_performance_zero_breakage_implementation_specification",
+      "community": 18,
+      "community_name": "\u26a1 Enterprise AI/ML Production Improvement Blueprint",
+      "norm_label": "industry-standard, high-performance & zero-breakage implementation specification"
+    },
+    {
+      "label": "\ud83d\udce6 Module 1: High-Performance Multi-Tier Categorization Engine",
+      "file_type": "document",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L53",
+      "_origin": "ast",
+      "id": "documentation_ai_production_improvement_blueprint_module_1_high_performance_multi_tier_categorization_engine",
+      "community": 18,
+      "community_name": "\u26a1 Enterprise AI/ML Production Improvement Blueprint",
+      "norm_label": "\ud83d\udce6 module 1: high-performance multi-tier categorization engine"
+    },
+    {
+      "label": "\ud83e\udd16 Module 2: Enterprise Copilot with Native Tool Calling & Streaming",
+      "file_type": "document",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L206",
+      "_origin": "ast",
+      "id": "documentation_ai_production_improvement_blueprint_module_2_enterprise_copilot_with_native_tool_calling_streaming",
+      "community": 18,
+      "community_name": "\u26a1 Enterprise AI/ML Production Improvement Blueprint",
+      "norm_label": "\ud83e\udd16 module 2: enterprise copilot with native tool calling & streaming"
+    },
+    {
+      "label": "\ud83d\udcc8 Module 3: Advanced Mathematical & Statistical ML Layer",
+      "file_type": "document",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L391",
+      "_origin": "ast",
+      "id": "documentation_ai_production_improvement_blueprint_module_3_advanced_mathematical_statistical_ml_layer",
+      "community": 18,
+      "community_name": "\u26a1 Enterprise AI/ML Production Improvement Blueprint",
+      "norm_label": "\ud83d\udcc8 module 3: advanced mathematical & statistical ml layer"
+    },
+    {
+      "label": "\ud83d\udcf7 Module 4: Multimodal Receipt & Invoice Vision OCR",
+      "file_type": "document",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L506",
+      "_origin": "ast",
+      "id": "documentation_ai_production_improvement_blueprint_module_4_multimodal_receipt_invoice_vision_ocr",
+      "community": 18,
+      "community_name": "\u26a1 Enterprise AI/ML Production Improvement Blueprint",
+      "norm_label": "\ud83d\udcf7 module 4: multimodal receipt & invoice vision ocr"
+    },
+    {
+      "label": "\ud83c\udfce\ufe0f Module 5: Enterprise State-Hash Invalidation Caching",
+      "file_type": "document",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L590",
+      "_origin": "ast",
+      "id": "documentation_ai_production_improvement_blueprint_module_5_enterprise_state_hash_invalidation_caching",
+      "community": 18,
+      "community_name": "\u26a1 Enterprise AI/ML Production Improvement Blueprint",
+      "norm_label": "\ud83c\udfce\ufe0f module 5: enterprise state-hash invalidation caching"
+    },
+    {
+      "label": "\ud83e\uddea Module 6: Automated AI Grounding & Eval Test Harness",
+      "file_type": "document",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L626",
+      "_origin": "ast",
+      "id": "documentation_ai_production_improvement_blueprint_module_6_automated_ai_grounding_eval_test_harness",
+      "community": 18,
+      "community_name": "\u26a1 Enterprise AI/ML Production Improvement Blueprint",
+      "norm_label": "\ud83e\uddea module 6: automated ai grounding & eval test harness"
+    },
+    {
+      "label": "Problem with Global Z-Score:",
+      "file_type": "document",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L395",
+      "_origin": "ast",
+      "id": "documentation_ai_production_improvement_blueprint_problem_with_global_z_score",
+      "community": 18,
+      "community_name": "\u26a1 Enterprise AI/ML Production Improvement Blueprint",
+      "norm_label": "problem with global z-score:"
+    },
+    {
+      "label": "Problem with Naive Velocity:",
+      "file_type": "document",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L466",
+      "_origin": "ast",
+      "id": "documentation_ai_production_improvement_blueprint_problem_with_naive_velocity",
+      "community": 18,
+      "community_name": "\u26a1 Enterprise AI/ML Production Improvement Blueprint",
+      "norm_label": "problem with naive velocity:"
+    },
+    {
+      "label": "Production Service Level Agreements (SLAs)",
+      "file_type": "document",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L41",
+      "_origin": "ast",
+      "id": "documentation_ai_production_improvement_blueprint_production_service_level_agreements_slas",
+      "community": 18,
+      "community_name": "\u26a1 Enterprise AI/ML Production Improvement Blueprint",
+      "norm_label": "production service level agreements (slas)"
+    },
+    {
+      "label": "\ud83d\ude80 Progressive Rollout Plan (Zero Downtime / Zero Breakage)",
+      "file_type": "document",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L667",
+      "_origin": "ast",
+      "id": "documentation_ai_production_improvement_blueprint_progressive_rollout_plan_zero_downtime_zero_breakage",
+      "community": 18,
+      "community_name": "\u26a1 Enterprise AI/ML Production Improvement Blueprint",
+      "norm_label": "\ud83d\ude80 progressive rollout plan (zero downtime / zero breakage)"
+    },
+    {
+      "label": "\ud83d\udccc Summary Reference",
+      "file_type": "document",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L690",
+      "_origin": "ast",
+      "id": "documentation_ai_production_improvement_blueprint_summary_reference",
+      "community": 18,
+      "community_name": "\u26a1 Enterprise AI/ML Production Improvement Blueprint",
+      "norm_label": "\ud83d\udccc summary reference"
     },
     {
       "label": "analyticsRoutes.js",
@@ -3108,7 +3493,7 @@
       "_origin": "ast",
       "id": "server_src_routes_analyticsroutes",
       "community": 19,
-      "community_name": "auth.js",
+      "community_name": "express",
       "norm_label": "analyticsroutes.js"
     },
     {
@@ -3119,7 +3504,7 @@
       "_origin": "ast",
       "id": "server_src_routes_analyticsroutes_express",
       "community": 19,
-      "community_name": "auth.js",
+      "community_name": "express",
       "norm_label": "express"
     },
     {
@@ -3130,7 +3515,7 @@
       "_origin": "ast",
       "id": "server_src_routes_analyticsroutes_getanalyticsoverview",
       "community": 19,
-      "community_name": "auth.js",
+      "community_name": "express",
       "norm_label": "{ getanalyticsoverview }"
     },
     {
@@ -3141,7 +3526,7 @@
       "_origin": "ast",
       "id": "server_src_routes_analyticsroutes_protect",
       "community": 19,
-      "community_name": "auth.js",
+      "community_name": "express",
       "norm_label": "{ protect }"
     },
     {
@@ -3152,8 +3537,19 @@
       "_origin": "ast",
       "id": "server_src_routes_analyticsroutes_router",
       "community": 19,
-      "community_name": "auth.js",
+      "community_name": "express",
       "norm_label": "router"
+    },
+    {
+      "label": "express",
+      "file_type": "concept",
+      "source_file": "package.json",
+      "source_location": "L18",
+      "_origin": "ast",
+      "id": "ref_express",
+      "community": 19,
+      "community_name": "express",
+      "norm_label": "express"
     },
     {
       "label": "client.js",
@@ -3460,7 +3856,7 @@
       "_origin": "ast",
       "id": "server_src_routes_categoryroutes",
       "community": 21,
-      "community_name": "express",
+      "community_name": "categoryRoutes.js",
       "norm_label": "categoryroutes.js"
     },
     {
@@ -3471,7 +3867,7 @@
       "_origin": "ast",
       "id": "server_src_routes_categoryroutes_express",
       "community": 21,
-      "community_name": "express",
+      "community_name": "categoryRoutes.js",
       "norm_label": "express"
     },
     {
@@ -3482,7 +3878,7 @@
       "_origin": "ast",
       "id": "server_src_routes_categoryroutes_getcategories_createcategory",
       "community": 21,
-      "community_name": "express",
+      "community_name": "categoryRoutes.js",
       "norm_label": "{ getcategories, createcategory }"
     },
     {
@@ -3493,7 +3889,7 @@
       "_origin": "ast",
       "id": "server_src_routes_categoryroutes_protect",
       "community": 21,
-      "community_name": "express",
+      "community_name": "categoryRoutes.js",
       "norm_label": "{ protect }"
     },
     {
@@ -3504,19 +3900,41 @@
       "_origin": "ast",
       "id": "server_src_routes_categoryroutes_router",
       "community": 21,
-      "community_name": "express",
+      "community_name": "categoryRoutes.js",
       "norm_label": "router"
     },
     {
-      "label": "express",
-      "file_type": "concept",
-      "source_file": "package.json",
-      "source_location": "L18",
+      "label": "auth.js",
+      "file_type": "code",
+      "source_file": "server/src/middleware/auth.js",
+      "source_location": "L1",
       "_origin": "ast",
-      "id": "ref_express",
-      "community": 21,
-      "community_name": "express",
-      "norm_label": "express"
+      "id": "server_src_middleware_auth",
+      "community": 22,
+      "community_name": "auth.js",
+      "norm_label": "auth.js"
+    },
+    {
+      "label": "jwt",
+      "file_type": "code",
+      "source_file": "server/src/middleware/auth.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "server_src_middleware_auth_jwt",
+      "community": 22,
+      "community_name": "auth.js",
+      "norm_label": "jwt"
+    },
+    {
+      "label": "User",
+      "file_type": "code",
+      "source_file": "server/src/middleware/auth.js",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "server_src_middleware_auth_user",
+      "community": 22,
+      "community_name": "auth.js",
+      "norm_label": "user"
     },
     {
       "label": "aiRoutes.js",
@@ -3526,7 +3944,7 @@
       "_origin": "ast",
       "id": "server_src_routes_airoutes",
       "community": 22,
-      "community_name": "aiRoutes.js",
+      "community_name": "auth.js",
       "norm_label": "airoutes.js"
     },
     {
@@ -3537,7 +3955,7 @@
       "_origin": "ast",
       "id": "server_src_routes_airoutes_express",
       "community": 22,
-      "community_name": "aiRoutes.js",
+      "community_name": "auth.js",
       "norm_label": "express"
     },
     {
@@ -3548,7 +3966,7 @@
       "_origin": "ast",
       "id": "server_src_routes_airoutes_protect",
       "community": 22,
-      "community_name": "aiRoutes.js",
+      "community_name": "auth.js",
       "norm_label": "{ protect }"
     },
     {
@@ -3559,7 +3977,7 @@
       "_origin": "ast",
       "id": "server_src_routes_airoutes_router",
       "community": 22,
-      "community_name": "aiRoutes.js",
+      "community_name": "auth.js",
       "norm_label": "router"
     },
     {
@@ -3570,7 +3988,7 @@
       "_origin": "ast",
       "id": "server_src_routes_airoutes_suggestcategory_getmonthlysummaryai_getspendingexplanation_copilotchat_getinsights",
       "community": 22,
-      "community_name": "aiRoutes.js",
+      "community_name": "auth.js",
       "norm_label": "{\n  suggestcategory,\n  getmonthlysummaryai,\n  getspendingexplanation,\n  copilotchat,\n  getinsights,\n}"
     },
     {
@@ -3580,8 +3998,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "server_src_routes_auditroutes",
-      "community": 23,
-      "community_name": "auditRoutes.js",
+      "community": 22,
+      "community_name": "auth.js",
       "norm_label": "auditroutes.js"
     },
     {
@@ -3591,8 +4009,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "server_src_routes_auditroutes_express",
-      "community": 23,
-      "community_name": "auditRoutes.js",
+      "community": 22,
+      "community_name": "auth.js",
       "norm_label": "express"
     },
     {
@@ -3602,8 +4020,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "server_src_routes_auditroutes_getauditlogs",
-      "community": 23,
-      "community_name": "auditRoutes.js",
+      "community": 22,
+      "community_name": "auth.js",
       "norm_label": "{ getauditlogs }"
     },
     {
@@ -3613,8 +4031,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "server_src_routes_auditroutes_protect",
-      "community": 23,
-      "community_name": "auditRoutes.js",
+      "community": 22,
+      "community_name": "auth.js",
       "norm_label": "{ protect }"
     },
     {
@@ -3624,9 +4042,53 @@
       "source_location": "L2",
       "_origin": "ast",
       "id": "server_src_routes_auditroutes_router",
-      "community": 23,
-      "community_name": "auditRoutes.js",
+      "community": 22,
+      "community_name": "auth.js",
       "norm_label": "router"
+    },
+    {
+      "label": "aiController.js",
+      "file_type": "code",
+      "source_file": "server/src/controllers/aiController.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "server_src_controllers_aicontroller",
+      "community": 23,
+      "community_name": "aiController.js",
+      "norm_label": "aicontroller.js"
+    },
+    {
+      "label": "AIService",
+      "file_type": "code",
+      "source_file": "server/src/controllers/aiController.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "server_src_controllers_aicontroller_aiservice",
+      "community": 23,
+      "community_name": "aiController.js",
+      "norm_label": "aiservice"
+    },
+    {
+      "label": "asyncHandler",
+      "file_type": "code",
+      "source_file": "server/src/controllers/aiController.js",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "server_src_controllers_aicontroller_asynchandler",
+      "community": 23,
+      "community_name": "aiController.js",
+      "norm_label": "asynchandler"
+    },
+    {
+      "label": "{ BadRequestError }",
+      "file_type": "code",
+      "source_file": "server/src/controllers/aiController.js",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "server_src_controllers_aicontroller_badrequesterror",
+      "community": 23,
+      "community_name": "aiController.js",
+      "norm_label": "{ badrequesterror }"
     },
     {
       "label": "exportRoutes.js",
@@ -3880,6 +4342,39 @@
       "community": 3,
       "community_name": "aiService.js",
       "norm_label": "intentrouter.js"
+    },
+    {
+      "label": "toolRegistry.js",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/toolRegistry.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "server_src_services_ai_toolregistry",
+      "community": 3,
+      "community_name": "aiService.js",
+      "norm_label": "toolregistry.js"
+    },
+    {
+      "label": "AnalyticsService",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/toolRegistry.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "server_src_services_ai_toolregistry_analyticsservice",
+      "community": 3,
+      "community_name": "aiService.js",
+      "norm_label": "analyticsservice"
+    },
+    {
+      "label": "Expense",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/toolRegistry.js",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "server_src_services_ai_toolregistry_expense",
+      "community": 3,
+      "community_name": "aiService.js",
+      "norm_label": "expense"
     },
     {
       "label": "joi",
@@ -4476,50 +4971,6 @@
       "norm_label": "request"
     },
     {
-      "label": "budgetController.js",
-      "file_type": "code",
-      "source_file": "server/src/controllers/budgetController.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "server_src_controllers_budgetcontroller",
-      "community": 37,
-      "community_name": "budgetController.js",
-      "norm_label": "budgetcontroller.js"
-    },
-    {
-      "label": "asyncHandler",
-      "file_type": "code",
-      "source_file": "server/src/controllers/budgetController.js",
-      "source_location": "L2",
-      "_origin": "ast",
-      "id": "server_src_controllers_budgetcontroller_asynchandler",
-      "community": 37,
-      "community_name": "budgetController.js",
-      "norm_label": "asynchandler"
-    },
-    {
-      "label": "Budget",
-      "file_type": "code",
-      "source_file": "server/src/controllers/budgetController.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "server_src_controllers_budgetcontroller_budget",
-      "community": 37,
-      "community_name": "budgetController.js",
-      "norm_label": "budget"
-    },
-    {
-      "label": "{ NotFoundError, BadRequestError }",
-      "file_type": "code",
-      "source_file": "server/src/controllers/budgetController.js",
-      "source_location": "L3",
-      "_origin": "ast",
-      "id": "server_src_controllers_budgetcontroller_notfounderror_badrequesterror",
-      "community": 37,
-      "community_name": "budgetController.js",
-      "norm_label": "{ notfounderror, badrequesterror }"
-    },
-    {
       "label": "categoryController.js",
       "file_type": "code",
       "source_file": "server/src/controllers/categoryController.js",
@@ -5114,72 +5565,6 @@
       "norm_label": "asynchandler"
     },
     {
-      "label": "exportController.js",
-      "file_type": "code",
-      "source_file": "server/src/controllers/exportController.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "server_src_controllers_exportcontroller",
-      "community": 5,
-      "community_name": "analyticsService.js",
-      "norm_label": "exportcontroller.js"
-    },
-    {
-      "label": "asyncHandler",
-      "file_type": "code",
-      "source_file": "server/src/controllers/exportController.js",
-      "source_location": "L2",
-      "_origin": "ast",
-      "id": "server_src_controllers_exportcontroller_asynchandler",
-      "community": 5,
-      "community_name": "analyticsService.js",
-      "norm_label": "asynchandler"
-    },
-    {
-      "label": "Expense",
-      "file_type": "code",
-      "source_file": "server/src/controllers/exportController.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "server_src_controllers_exportcontroller_expense",
-      "community": 5,
-      "community_name": "analyticsService.js",
-      "norm_label": "expense"
-    },
-    {
-      "label": "Expense.js",
-      "file_type": "code",
-      "source_file": "server/src/models/Expense.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "server_src_models_expense",
-      "community": 5,
-      "community_name": "analyticsService.js",
-      "norm_label": "expense.js"
-    },
-    {
-      "label": "expenseSchema",
-      "file_type": "code",
-      "source_file": "server/src/models/Expense.js",
-      "source_location": "L3",
-      "_origin": "ast",
-      "id": "server_src_models_expense_expenseschema",
-      "community": 5,
-      "community_name": "analyticsService.js",
-      "norm_label": "expenseschema"
-    },
-    {
-      "label": "mongoose",
-      "file_type": "code",
-      "source_file": "server/src/models/Expense.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "server_src_models_expense_mongoose",
-      "community": 5,
-      "community_name": "analyticsService.js",
-      "norm_label": "mongoose"
-    },
-    {
       "label": "Goal.js",
       "file_type": "code",
       "source_file": "server/src/models/Goal.js",
@@ -5246,39 +5631,6 @@
       "norm_label": "recurringexpenseschema"
     },
     {
-      "label": "toolRegistry.js",
-      "file_type": "code",
-      "source_file": "server/src/services/ai/toolRegistry.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "server_src_services_ai_toolregistry",
-      "community": 5,
-      "community_name": "analyticsService.js",
-      "norm_label": "toolregistry.js"
-    },
-    {
-      "label": "AnalyticsService",
-      "file_type": "code",
-      "source_file": "server/src/services/ai/toolRegistry.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "server_src_services_ai_toolregistry_analyticsservice",
-      "community": 5,
-      "community_name": "analyticsService.js",
-      "norm_label": "analyticsservice"
-    },
-    {
-      "label": "Expense",
-      "file_type": "code",
-      "source_file": "server/src/services/ai/toolRegistry.js",
-      "source_location": "L2",
-      "_origin": "ast",
-      "id": "server_src_services_ai_toolregistry_expense",
-      "community": 5,
-      "community_name": "analyticsService.js",
-      "norm_label": "expense"
-    },
-    {
       "label": "analyticsService.js",
       "file_type": "code",
       "source_file": "server/src/services/analytics/analyticsService.js",
@@ -5343,28 +5695,6 @@
       "community": 5,
       "community_name": "analyticsService.js",
       "norm_label": "recurringexpense"
-    },
-    {
-      "label": "trendService.js",
-      "file_type": "code",
-      "source_file": "server/src/services/analytics/trendService.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "server_src_services_analytics_trendservice",
-      "community": 5,
-      "community_name": "analyticsService.js",
-      "norm_label": "trendservice.js"
-    },
-    {
-      "label": "Expense",
-      "file_type": "code",
-      "source_file": "server/src/services/analytics/trendService.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "server_src_services_analytics_trendservice_expense",
-      "community": 5,
-      "community_name": "analyticsService.js",
-      "norm_label": "expense"
     },
     {
       "label": "goals.test.js",
@@ -12047,6 +12377,325 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "documentation_ai_production_improvement_blueprint",
+      "target": "documentation_ai_production_improvement_blueprint_enterprise_ai_ml_production_improvement_blueprint",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L77",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "documentation_ai_production_improvement_blueprint_1_2_drop_in_implementation_blueprint",
+      "target": "documentation_ai_production_improvement_blueprint_file_server_src_services_ai_aiservice_js_smart_categorization_upgrade",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L233",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "documentation_ai_production_improvement_blueprint_2_2_drop_in_implementation_function_calling_declarations",
+      "target": "documentation_ai_production_improvement_blueprint_file_server_src_services_ai_geminitools_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L298",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "documentation_ai_production_improvement_blueprint_2_3_conversational_multi_turn_copilot_service_with_streaming",
+      "target": "documentation_ai_production_improvement_blueprint_file_server_src_services_ai_aiservice_js_copilot_upgrade",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L395",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "documentation_ai_production_improvement_blueprint_3_1_category_scoped_median_absolute_deviation_mad_outlier_detection",
+      "target": "documentation_ai_production_improvement_blueprint_problem_with_global_z_score",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L400",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "documentation_ai_production_improvement_blueprint_3_1_category_scoped_median_absolute_deviation_mad_outlier_detection",
+      "target": "documentation_ai_production_improvement_blueprint_enterprise_solution_category_scoped_modified_z_score_mad",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L466",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "documentation_ai_production_improvement_blueprint_3_2_bill_aware_seasonality_run_rate_forecaster",
+      "target": "documentation_ai_production_improvement_blueprint_problem_with_naive_velocity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L470",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "documentation_ai_production_improvement_blueprint_3_2_bill_aware_seasonality_run_rate_forecaster",
+      "target": "documentation_ai_production_improvement_blueprint_enterprise_bill_aware_forecasting_model",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L41",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "documentation_ai_production_improvement_blueprint_architecture_target_state_performance_slas",
+      "target": "documentation_ai_production_improvement_blueprint_production_service_level_agreements_slas",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "documentation_ai_production_improvement_blueprint_enterprise_ai_ml_production_improvement_blueprint",
+      "target": "documentation_ai_production_improvement_blueprint_architecture_target_state_performance_slas",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "documentation_ai_production_improvement_blueprint_enterprise_ai_ml_production_improvement_blueprint",
+      "target": "documentation_ai_production_improvement_blueprint_industry_standard_high_performance_zero_breakage_implementation_specification",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L206",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "documentation_ai_production_improvement_blueprint_enterprise_ai_ml_production_improvement_blueprint",
+      "target": "documentation_ai_production_improvement_blueprint_module_2_enterprise_copilot_with_native_tool_calling_streaming",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L391",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "documentation_ai_production_improvement_blueprint_enterprise_ai_ml_production_improvement_blueprint",
+      "target": "documentation_ai_production_improvement_blueprint_module_3_advanced_mathematical_statistical_ml_layer",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L506",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "documentation_ai_production_improvement_blueprint_enterprise_ai_ml_production_improvement_blueprint",
+      "target": "documentation_ai_production_improvement_blueprint_module_4_multimodal_receipt_invoice_vision_ocr",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L53",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "documentation_ai_production_improvement_blueprint_enterprise_ai_ml_production_improvement_blueprint",
+      "target": "documentation_ai_production_improvement_blueprint_module_1_high_performance_multi_tier_categorization_engine",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L590",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "documentation_ai_production_improvement_blueprint_enterprise_ai_ml_production_improvement_blueprint",
+      "target": "documentation_ai_production_improvement_blueprint_module_5_enterprise_state_hash_invalidation_caching",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L626",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "documentation_ai_production_improvement_blueprint_enterprise_ai_ml_production_improvement_blueprint",
+      "target": "documentation_ai_production_improvement_blueprint_module_6_automated_ai_grounding_eval_test_harness",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L667",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "documentation_ai_production_improvement_blueprint_enterprise_ai_ml_production_improvement_blueprint",
+      "target": "documentation_ai_production_improvement_blueprint_progressive_rollout_plan_zero_downtime_zero_breakage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L690",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "documentation_ai_production_improvement_blueprint_enterprise_ai_ml_production_improvement_blueprint",
+      "target": "documentation_ai_production_improvement_blueprint_summary_reference",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L55",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "documentation_ai_production_improvement_blueprint_module_1_high_performance_multi_tier_categorization_engine",
+      "target": "documentation_ai_production_improvement_blueprint_1_1_architectural_flow",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L75",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "documentation_ai_production_improvement_blueprint_module_1_high_performance_multi_tier_categorization_engine",
+      "target": "documentation_ai_production_improvement_blueprint_1_2_drop_in_implementation_blueprint",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L208",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "documentation_ai_production_improvement_blueprint_module_2_enterprise_copilot_with_native_tool_calling_streaming",
+      "target": "documentation_ai_production_improvement_blueprint_2_1_why_native_tool_calling_replaces_naive_substring_routing",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L231",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "documentation_ai_production_improvement_blueprint_module_2_enterprise_copilot_with_native_tool_calling_streaming",
+      "target": "documentation_ai_production_improvement_blueprint_2_2_drop_in_implementation_function_calling_declarations",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L296",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "documentation_ai_production_improvement_blueprint_module_2_enterprise_copilot_with_native_tool_calling_streaming",
+      "target": "documentation_ai_production_improvement_blueprint_2_3_conversational_multi_turn_copilot_service_with_streaming",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L393",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "documentation_ai_production_improvement_blueprint_module_3_advanced_mathematical_statistical_ml_layer",
+      "target": "documentation_ai_production_improvement_blueprint_3_1_category_scoped_median_absolute_deviation_mad_outlier_detection",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L464",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "documentation_ai_production_improvement_blueprint_module_3_advanced_mathematical_statistical_ml_layer",
+      "target": "documentation_ai_production_improvement_blueprint_3_2_bill_aware_seasonality_run_rate_forecaster",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L508",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "documentation_ai_production_improvement_blueprint_module_4_multimodal_receipt_invoice_vision_ocr",
+      "target": "documentation_ai_production_improvement_blueprint_4_1_specification",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L530",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "documentation_ai_production_improvement_blueprint_module_4_multimodal_receipt_invoice_vision_ocr",
+      "target": "documentation_ai_production_improvement_blueprint_4_2_drop_in_implementation_blueprint",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md",
+      "source_location": "L592",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "documentation_ai_production_improvement_blueprint_module_5_enterprise_state_hash_invalidation_caching",
+      "target": "documentation_ai_production_improvement_blueprint_5_1_caching_philosophy",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "Documentation/PROJECT_STATUS.md",
       "source_location": "L1",
       "weight": 1.0,
@@ -16277,5 +16926,5 @@
       "source_file": "Documentation/BACKEND.md"
     }
   ],
-  "built_at_commit": "8e8ed8f7244bf114c50b66f40348fa937cce0986"
+  "built_at_commit": "e3b4857ac930107a879c155dc9b5367460a98bae"
 }
