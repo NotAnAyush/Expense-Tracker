@@ -5,11 +5,14 @@ const shouldSkip = (req) => isTestEnv() && !req.headers['x-test-rate-limit'];
 
 /**
  * Global API Rate Limiter
- * 100 requests per 15 minutes per IP
+ * Generous limits (3,000 req / 15 min in dev, 1,000 in prod) to support modern SPA dashboards
+ * with real-time analytics, Copilot chat, and background refreshes without false-positive blocks.
  */
 const globalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100,
+  max: process.env.RATE_LIMIT_GLOBAL_MAX
+    ? parseInt(process.env.RATE_LIMIT_GLOBAL_MAX, 10)
+    : (process.env.NODE_ENV === 'production' ? 1000 : 3000),
   skip: shouldSkip,
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false,  // Disable the `X-RateLimit-*` headers
@@ -23,29 +26,31 @@ const globalLimiter = rateLimit({
 
 /**
  * Auth-Specific Rate Limiter (Login / Register)
- * 50 requests per 15 minutes per IP — prevents brute-force while allowing active dev & testing
+ * 500 req / 15 min in dev, 150 in prod — protects against brute-force while allowing continuous team testing
  */
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: process.env.NODE_ENV === 'production' ? 30 : 100,
+  max: process.env.RATE_LIMIT_AUTH_MAX
+    ? parseInt(process.env.RATE_LIMIT_AUTH_MAX, 10)
+    : (process.env.NODE_ENV === 'production' ? 150 : 500),
   skip: shouldSkip,
   standardHeaders: true,
   legacyHeaders: false,
   message: {
     error: {
       code: 'AUTH_RATE_LIMIT_EXCEEDED',
-      message: 'Too many authentication attempts. Please try again in 15 minutes.',
+      message: 'Too many authentication attempts. Please try again in a few minutes.',
     },
   },
 });
 
 /**
  * Demo Sandbox Rate Limiter
- * Generous limits to allow exploring the application seamlessly
+ * 500 requests per 15 minutes to allow uninterrupted sandbox exploration
  */
 const demoLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 60,
+  max: 500,
   skip: shouldSkip,
   standardHeaders: true,
   legacyHeaders: false,
@@ -59,11 +64,11 @@ const demoLimiter = rateLimit({
 
 /**
  * AI Endpoint Rate Limiter
- * 60 requests per 15 minutes per IP — protects Gemini API quota
+ * 500 requests per 15 minutes per IP — supports heavy Copilot dialogues and categorization
  */
 const aiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 60,
+  max: 500,
   skip: shouldSkip,
   standardHeaders: true,
   legacyHeaders: false,
@@ -76,4 +81,3 @@ const aiLimiter = rateLimit({
 });
 
 module.exports = { globalLimiter, authLimiter, demoLimiter, aiLimiter };
-
