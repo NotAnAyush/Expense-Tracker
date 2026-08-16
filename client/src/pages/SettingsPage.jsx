@@ -207,9 +207,29 @@ export const SettingsPage = () => {
   const [saving, setSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [saveError, setSaveError] = useState('');
+  const [resettingDemo, setResettingDemo] = useState(false);
+  const [resetSuccess, setResetSuccess] = useState(false);
 
   // Currency State
   const [preferredCurrency, setPreferredCurrency] = useState(user?.preferredCurrency || '₹');
+
+  const handleResetDemoData = async () => {
+    setResettingDemo(true);
+    try {
+      await apiFetch('/auth/demo', {
+        method: 'POST',
+        body: JSON.stringify({ forceRefresh: true }),
+      });
+      setResetSuccess(true);
+      setTimeout(() => {
+        window.location.reload();
+      }, 1200);
+    } catch (err) {
+      console.error('Failed to reset demo sandbox data', err);
+    } finally {
+      setResettingDemo(false);
+    }
+  };
 
   const providerIcons = {
     gemini: Sparkles,
@@ -1074,6 +1094,60 @@ export const SettingsPage = () => {
             ))}
           </div>
         </div>
+
+        {/* SECTION 4: Demo Sandbox Tools (Shown for Demo Account) */}
+        {(user?.isDemo || user?.email === 'demo@antigravity.finance') && (
+          <div
+            style={{
+              background: 'rgba(15, 20, 32, 0.7)',
+              backdropFilter: 'blur(20px)',
+              border: '1px solid rgba(0, 255, 135, 0.25)',
+              borderRadius: '20px',
+              padding: '24px',
+              boxShadow: '0 8px 32px rgba(0, 255, 135, 0.08)',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
+                  <Sparkles size={20} color="#00FF87" />
+                  <h2 style={{ fontSize: '17px', fontWeight: 800, color: '#F1F5F9', margin: 0 }}>
+                    4. Practical Sandbox Demo Management
+                  </h2>
+                </div>
+                <p style={{ fontSize: '12.5px', color: '#94A3B8', margin: 0, maxWidth: '600px', lineHeight: 1.5 }}>
+                  You are currently exploring the live Sandbox Demo. Restoring resets all 8 financial modules (multi-month Incomes, Expenses, Budgets, Subscriptions, Goals, Debt Payoff, Multi-Currency Trip Vaults, Group Splits) to their fresh, realistic state.
+                </p>
+              </div>
+
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                type="button"
+                onClick={handleResetDemoData}
+                disabled={resettingDemo}
+                style={{
+                  padding: '12px 22px',
+                  borderRadius: '12px',
+                  background: 'linear-gradient(135deg, rgba(0, 255, 135, 0.15), rgba(0, 240, 255, 0.15))',
+                  border: '1.5px solid #00FF87',
+                  color: '#00FF87',
+                  fontSize: '13.5px',
+                  fontWeight: 800,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  boxShadow: '0 4px 16px rgba(0, 255, 135, 0.2)',
+                  transition: 'all 0.2s ease',
+                }}
+              >
+                <RefreshCw size={16} className={resettingDemo ? 'animate-spin' : ''} />
+                <span>{resettingDemo ? 'Refreshing Sandbox...' : resetSuccess ? 'Sandbox Restored! Reloading...' : 'Restore Fresh Demo Data'}</span>
+              </motion.button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
