@@ -5,6 +5,10 @@ class IntentRouter {
   static classifyIntent(query) {
     const q = (query || '').toLowerCase();
 
+    if (q.includes('health') || q.includes('score') || q.includes('grade') || q.includes('financial status') || q.includes('how am i doing')) {
+      return { intent: 'HEALTH_SCORE_QUERY', tool: 'getFinancialHealthScore' };
+    }
+
     if (q.includes('food') || q.includes('dining') || q.includes('category') || q.includes('breakdown') || q.includes('where did my money go')) {
       return { intent: 'CATEGORY_ANALYSIS', tool: 'getCategoryBreakdown' };
     }
@@ -29,7 +33,7 @@ class IntentRouter {
       return { intent: 'ANOMALY_QUERY', tool: 'getAnomalies' };
     }
 
-    if (q.includes('forecast') || q.includes('project') || q.includes('end of month') || q.includes('per day')) {
+    if (q.includes('forecast') || q.includes('project') || q.includes('end of month') || q.includes('per day') || q.includes('velocity')) {
       return { intent: 'FORECAST_QUERY', tool: 'getSpendingVelocity' };
     }
 

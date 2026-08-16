@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { X, Send, Bot, Sparkles, Zap, MessageSquare, Trash2 } from 'lucide-react';
+import { X, Send, Bot, Sparkles, Zap, MessageSquare, Trash2, Activity } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { apiFetch } from '../../api/client';
 
@@ -32,11 +32,12 @@ export const CopilotDrawer = ({ isOpen, onClose }) => {
   const messagesEndRef = useRef(null);
 
   const quickQuestions = [
+    "What is my financial health score?",
     "Where did my money go this month?",
     "Why did I spend more than last month?",
     "Am I over budget in any category?",
     "How much do subscriptions cost me?",
-    "Show unusual transactions"
+    "Show unusual transactions",
   ];
 
   // Persist messages whenever updated
@@ -243,7 +244,7 @@ export const CopilotDrawer = ({ isOpen, onClose }) => {
               key={idx}
               onClick={() => handleSend(q)}
               className="filter-chip"
-              style={{ fontSize: '12px', padding: '6px 14px' }}
+              style={{ fontSize: '12px', padding: '6px 14px', whiteSpace: 'nowrap' }}
             >
               {q}
             </button>

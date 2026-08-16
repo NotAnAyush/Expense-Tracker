@@ -24,31 +24,31 @@ class LocalRagEngine {
     const rules = [
       {
         category: 'Food & Dining',
-        keywords: ['food', 'restaurant', 'starbucks', 'cafe', 'coffee', 'zomato', 'swiggy', 'mcdonalds', 'burger', 'pizza', 'diner', 'grocer', 'bigbasket', 'blinkit', 'zepto', 'supermarket', 'bakery', 'tea', 'dining', 'lunch', 'dinner'],
+        keywords: ['food', 'restaurant', 'starbucks', 'cafe', 'coffee', 'zomato', 'swiggy', 'mcdonalds', 'burger', 'pizza', 'diner', 'grocer', 'bigbasket', 'blinkit', 'zepto', 'supermarket', 'bakery', 'tea', 'dining', 'lunch', 'dinner', 'kfc', 'instamart', 'dmart'],
       },
       {
         category: 'Transportation',
-        keywords: ['uber', 'ola', 'lyft', 'taxi', 'cab', 'metro', 'bus', 'train', 'flight', 'airline', 'fuel', 'petrol', 'diesel', 'parking', 'toll', 'irctc', 'indigo'],
+        keywords: ['uber', 'ola', 'lyft', 'taxi', 'cab', 'metro', 'bus', 'train', 'flight', 'airline', 'fuel', 'petrol', 'diesel', 'parking', 'toll', 'irctc', 'indigo', 'rapido', 'air india'],
       },
       {
         category: 'Housing & Utilities',
-        keywords: ['rent', 'electricity', 'power', 'water', 'gas', 'wifi', 'broadband', 'internet', 'utility', 'maintenance', 'bill', 'bses', 'apartment', 'housing'],
+        keywords: ['rent', 'electricity', 'power', 'water', 'gas', 'wifi', 'broadband', 'internet', 'utility', 'maintenance', 'bill', 'bses', 'apartment', 'housing', 'airtel', 'jio', 'bescom', 'tneb'],
       },
       {
         category: 'Subscriptions',
-        keywords: ['netflix', 'spotify', 'prime', 'apple', 'youtube', 'github', 'openai', 'chatgpt', 'hotstar', 'sub', 'membership', 'cloud'],
+        keywords: ['netflix', 'spotify', 'prime', 'apple', 'youtube', 'github', 'openai', 'chatgpt', 'hotstar', 'sub', 'membership', 'cloud', 'aws', 'disney', 'hulu', 'patreon'],
       },
       {
         category: 'Entertainment',
-        keywords: ['movie', 'cinema', 'pvr', 'inox', 'theatre', 'concert', 'gaming', 'steam', 'playstation', 'game', 'club', 'party'],
+        keywords: ['movie', 'cinema', 'pvr', 'inox', 'theatre', 'concert', 'gaming', 'steam', 'playstation', 'game', 'club', 'party', 'bowling', 'xbox'],
       },
       {
         category: 'Health & Medical',
-        keywords: ['pharmacy', 'medicine', 'doctor', 'hospital', 'clinic', 'dentist', 'apollo', '1mg', 'gym', 'fitness', 'cult', 'pharma', 'health'],
+        keywords: ['pharmacy', 'medicine', 'doctor', 'hospital', 'clinic', 'dentist', 'apollo', '1mg', 'gym', 'fitness', 'cult', 'pharma', 'health', 'medplus', 'diagnostic'],
       },
       {
         category: 'Shopping',
-        keywords: ['amazon', 'flipkart', 'myntra', 'zara', 'nike', 'adidas', 'store', 'shop', 'cloth', 'electronics', 'croma', 'mall', 'apple store'],
+        keywords: ['amazon', 'flipkart', 'myntra', 'zara', 'nike', 'adidas', 'store', 'shop', 'cloth', 'electronics', 'croma', 'mall', 'apple store', 'uniqlo', 'h&m'],
       },
     ];
 
@@ -57,8 +57,8 @@ class LocalRagEngine {
         if (rule.keywords.some((k) => text.includes(k))) {
           return {
             category: rule.category,
-            confidence: 0.92,
-            reason: `Matched "${rule.category}" via transaction keyword analysis.`,
+            confidence: 0.95,
+            reason: `Matched "${rule.category}" via deterministic keyword taxonomy.`,
             isAiGenerated: false,
             source: 'local_rag',
           };
@@ -182,6 +182,10 @@ class LocalRagEngine {
         const delta = Math.abs(toolData.changePercent || 0);
         const direction = toolData.isIncrease ? 'increased' : 'decreased';
         answer = `Your overall spending has ${direction} by ${delta}% compared to last month (Current: ₹${Number(toolData.currentMonthSpend || 0).toLocaleString()}, Previous: ₹${Number(toolData.previousMonthSpend || 0).toLocaleString()}).`;
+        break;
+
+      case 'HEALTH_SCORE_QUERY':
+        answer = `Your Financial Health Score is **${toolData.score || 85}/100** (Grade: ${toolData.grade || 'A'} - ${toolData.status || 'Good'}).`;
         break;
 
       default:

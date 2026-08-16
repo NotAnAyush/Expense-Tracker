@@ -46,19 +46,6 @@
       "norm_label": "notfounderror"
     },
     {
-      "label": "TrendService",
-      "file_type": "code",
-      "source_file": "server/src/services/analytics/trendService.js",
-      "source_location": "L7",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "id": "server_src_services_analytics_trendservice_trendservice",
-      "community": 12,
-      "community_name": "Expense.js",
-      "norm_label": "trendservice"
-    },
-    {
       "label": "AppError",
       "file_type": "code",
       "source_file": "server/src/utils/errors.js",
@@ -72,10 +59,36 @@
       "norm_label": "apperror"
     },
     {
+      "label": "LocalRagEngine",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/localRagEngine.js",
+      "source_location": "L7",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "server_src_services_ai_localragengine_localragengine",
+      "community": 19,
+      "community_name": "aiProviders.test.js",
+      "norm_label": "localragengine"
+    },
+    {
+      "label": "AnalyticsService",
+      "file_type": "code",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L12",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "server_src_services_analytics_analyticsservice_analyticsservice",
+      "community": 23,
+      "community_name": "AnalyticsService",
+      "norm_label": "analyticsservice"
+    },
+    {
       "label": "AIService",
       "file_type": "code",
       "source_file": "server/src/services/ai/aiService.js",
-      "source_location": "L18",
+      "source_location": "L36",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
@@ -111,17 +124,17 @@
       "norm_label": "intentrouter"
     },
     {
-      "label": "ToolRegistry",
+      "label": "UnifiedAIClient",
       "file_type": "code",
-      "source_file": "server/src/services/ai/toolRegistry.js",
-      "source_location": "L8",
+      "source_file": "server/src/services/ai/unifiedAIClient.js",
+      "source_location": "L125",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "id": "server_src_services_ai_toolregistry_toolregistry",
+      "id": "server_src_services_ai_unifiedaiclient_unifiedaiclient",
       "community": 3,
       "community_name": "aiService.js",
-      "norm_label": "toolregistry"
+      "norm_label": "unifiedaiclient"
     },
     {
       "label": "ForbiddenError",
@@ -202,17 +215,30 @@
       "norm_label": "apiresponse"
     },
     {
-      "label": "AnalyticsService",
+      "label": "ToolRegistry",
       "file_type": "code",
-      "source_file": "server/src/services/analytics/analyticsService.js",
-      "source_location": "L12",
+      "source_file": "server/src/services/ai/toolRegistry.js",
+      "source_location": "L8",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "id": "server_src_services_analytics_analyticsservice_analyticsservice",
+      "id": "server_src_services_ai_toolregistry_toolregistry",
       "community": 5,
-      "community_name": "analyticsService.js",
-      "norm_label": "analyticsservice"
+      "community_name": "Expense.js",
+      "norm_label": "toolregistry"
+    },
+    {
+      "label": "TrendService",
+      "file_type": "code",
+      "source_file": "server/src/services/analytics/trendService.js",
+      "source_location": "L7",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "server_src_services_analytics_trendservice_trendservice",
+      "community": 5,
+      "community_name": "Expense.js",
+      "norm_label": "trendservice"
     },
     {
       "label": "asyncHandler()",
@@ -383,18 +409,6 @@
       "norm_label": "shouldskip()"
     },
     {
-      "label": "escapeCsvField()",
-      "file_type": "code",
-      "source_file": "server/src/controllers/exportController.js",
-      "source_location": "L7",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "server_src_controllers_exportcontroller_escapecsvfield",
-      "community": 12,
-      "community_name": "Expense.js",
-      "norm_label": "escapecsvfield()"
-    },
-    {
       "label": "auditLogger()",
       "file_type": "code",
       "source_file": "server/src/middleware/auditLogger.js",
@@ -403,7 +417,7 @@
       "_origin": "ast",
       "id": "server_src_middleware_auditlogger_auditlogger",
       "community": 12,
-      "community_name": "Expense.js",
+      "community_name": "exportAndAudit.test.js",
       "norm_label": "auditlogger()"
     },
     {
@@ -415,7 +429,7 @@
       "_origin": "ast",
       "id": "server_src_middleware_auditlogger_redactbody",
       "community": 12,
-      "community_name": "Expense.js",
+      "community_name": "exportAndAudit.test.js",
       "norm_label": "redactbody()"
     },
     {
@@ -427,56 +441,8 @@
       "_origin": "ast",
       "id": "server_src_middleware_auditlogger_resolveaction",
       "community": 12,
-      "community_name": "Expense.js",
+      "community_name": "exportAndAudit.test.js",
       "norm_label": "resolveaction()"
-    },
-    {
-      "label": ".getCategoryHeatmap()",
-      "file_type": "code",
-      "source_file": "server/src/services/analytics/trendService.js",
-      "source_location": "L46",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "server_src_services_analytics_trendservice_trendservice_getcategoryheatmap",
-      "community": 12,
-      "community_name": "Expense.js",
-      "norm_label": ".getcategoryheatmap()"
-    },
-    {
-      "label": ".getDailyPattern()",
-      "file_type": "code",
-      "source_file": "server/src/services/analytics/trendService.js",
-      "source_location": "L114",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "server_src_services_analytics_trendservice_trendservice_getdailypattern",
-      "community": 12,
-      "community_name": "Expense.js",
-      "norm_label": ".getdailypattern()"
-    },
-    {
-      "label": ".getMerchantFrequency()",
-      "file_type": "code",
-      "source_file": "server/src/services/analytics/trendService.js",
-      "source_location": "L81",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "server_src_services_analytics_trendservice_trendservice_getmerchantfrequency",
-      "community": 12,
-      "community_name": "Expense.js",
-      "norm_label": ".getmerchantfrequency()"
-    },
-    {
-      "label": ".getWeeklyTrend()",
-      "file_type": "code",
-      "source_file": "server/src/services/analytics/trendService.js",
-      "source_location": "L12",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "server_src_services_analytics_trendservice_trendservice_getweeklytrend",
-      "community": 12,
-      "community_name": "Expense.js",
-      "norm_label": ".getweeklytrend()"
     },
     {
       "label": "errorHandler()",
@@ -599,6 +565,54 @@
       "norm_label": ".unauthorized()"
     },
     {
+      "label": ".categorize()",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/localRagEngine.js",
+      "source_location": "L11",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_services_ai_localragengine_localragengine_categorize",
+      "community": 19,
+      "community_name": "aiProviders.test.js",
+      "norm_label": ".categorize()"
+    },
+    {
+      "label": ".generateCopilotAnswer()",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/localRagEngine.js",
+      "source_location": "L140",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_services_ai_localragengine_localragengine_generatecopilotanswer",
+      "community": 19,
+      "community_name": "aiProviders.test.js",
+      "norm_label": ".generatecopilotanswer()"
+    },
+    {
+      "label": ".generateMonthlySummary()",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/localRagEngine.js",
+      "source_location": "L82",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_services_ai_localragengine_localragengine_generatemonthlysummary",
+      "community": 19,
+      "community_name": "aiProviders.test.js",
+      "norm_label": ".generatemonthlysummary()"
+    },
+    {
+      "label": ".generateSpendingExplanation()",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/localRagEngine.js",
+      "source_location": "L115",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_services_ai_localragengine_localragengine_generatespendingexplanation",
+      "community": 19,
+      "community_name": "aiProviders.test.js",
+      "norm_label": ".generatespendingexplanation()"
+    },
+    {
       "label": "apiFetch()",
       "file_type": "code",
       "source_file": "client/src/api/client.js",
@@ -626,7 +640,7 @@
       "label": "App()",
       "file_type": "code",
       "source_file": "client/src/App.jsx",
-      "source_location": "L116",
+      "source_location": "L212",
       "_callable": true,
       "_origin": "ast",
       "id": "client_src_app_app",
@@ -635,10 +649,22 @@
       "norm_label": "app()"
     },
     {
+      "label": "getInitialTab()",
+      "file_type": "code",
+      "source_file": "client/src/App.jsx",
+      "source_location": "L21",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "client_src_app_getinitialtab",
+      "community": 2,
+      "community_name": "App.jsx",
+      "norm_label": "getinitialtab()"
+    },
+    {
       "label": "MainApp()",
       "file_type": "code",
       "source_file": "client/src/App.jsx",
-      "source_location": "L17",
+      "source_location": "L33",
       "_callable": true,
       "_origin": "ast",
       "id": "client_src_app_mainapp",
@@ -650,7 +676,7 @@
       "label": "CopilotDrawer()",
       "file_type": "code",
       "source_file": "client/src/components/Copilot/CopilotDrawer.jsx",
-      "source_location": "L6",
+      "source_location": "L15",
       "_callable": true,
       "_origin": "ast",
       "id": "client_src_components_copilot_copilotdrawer_copilotdrawer",
@@ -662,7 +688,7 @@
       "label": "ExpenseFormModal()",
       "file_type": "code",
       "source_file": "client/src/components/Expenses/ExpenseFormModal.jsx",
-      "source_location": "L6",
+      "source_location": "L8",
       "_callable": true,
       "_origin": "ast",
       "id": "client_src_components_expenses_expenseformmodal_expenseformmodal",
@@ -686,7 +712,7 @@
       "label": "Sidebar()",
       "file_type": "code",
       "source_file": "client/src/components/Shell/Sidebar.jsx",
-      "source_location": "L20",
+      "source_location": "L21",
       "_callable": true,
       "_origin": "ast",
       "id": "client_src_components_shell_sidebar_sidebar",
@@ -815,6 +841,18 @@
       "norm_label": "recurringpage()"
     },
     {
+      "label": "SettingsPage()",
+      "file_type": "code",
+      "source_file": "client/src/pages/SettingsPage.jsx",
+      "source_location": "L29",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "client_src_pages_settingspage_settingspage",
+      "community": 2,
+      "community_name": "App.jsx",
+      "norm_label": "settingspage()"
+    },
+    {
       "label": "protect()",
       "file_type": "code",
       "source_file": "server/src/middleware/auth.js",
@@ -825,6 +863,114 @@
       "community": 22,
       "community_name": "auth.js",
       "norm_label": "protect()"
+    },
+    {
+      "label": ".getAnomalies()",
+      "file_type": "code",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L333",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_services_analytics_analyticsservice_analyticsservice_getanomalies",
+      "community": 23,
+      "community_name": "AnalyticsService",
+      "norm_label": ".getanomalies()"
+    },
+    {
+      "label": ".getBudgetUtilization()",
+      "file_type": "code",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L177",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_services_analytics_analyticsservice_analyticsservice_getbudgetutilization",
+      "community": 23,
+      "community_name": "AnalyticsService",
+      "norm_label": ".getbudgetutilization()"
+    },
+    {
+      "label": ".getCategoryBreakdown()",
+      "file_type": "code",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L62",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_services_analytics_analyticsservice_analyticsservice_getcategorybreakdown",
+      "community": 23,
+      "community_name": "AnalyticsService",
+      "norm_label": ".getcategorybreakdown()"
+    },
+    {
+      "label": ".getGoalProgress()",
+      "file_type": "code",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L268",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_services_analytics_analyticsservice_analyticsservice_getgoalprogress",
+      "community": 23,
+      "community_name": "AnalyticsService",
+      "norm_label": ".getgoalprogress()"
+    },
+    {
+      "label": ".getMerchantSummary()",
+      "file_type": "code",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L302",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_services_analytics_analyticsservice_analyticsservice_getmerchantsummary",
+      "community": 23,
+      "community_name": "AnalyticsService",
+      "norm_label": ".getmerchantsummary()"
+    },
+    {
+      "label": ".getMonthlyComparison()",
+      "file_type": "code",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L103",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_services_analytics_analyticsservice_analyticsservice_getmonthlycomparison",
+      "community": 23,
+      "community_name": "AnalyticsService",
+      "norm_label": ".getmonthlycomparison()"
+    },
+    {
+      "label": ".getMonthlySummary()",
+      "file_type": "code",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L17",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_services_analytics_analyticsservice_analyticsservice_getmonthlysummary",
+      "community": 23,
+      "community_name": "AnalyticsService",
+      "norm_label": ".getmonthlysummary()"
+    },
+    {
+      "label": ".getRecurringExpenseSummary()",
+      "file_type": "code",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L248",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_services_analytics_analyticsservice_analyticsservice_getrecurringexpensesummary",
+      "community": 23,
+      "community_name": "AnalyticsService",
+      "norm_label": ".getrecurringexpensesummary()"
+    },
+    {
+      "label": ".getSpendingVelocity()",
+      "file_type": "code",
+      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_location": "L231",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_services_analytics_analyticsservice_analyticsservice_getspendingvelocity",
+      "community": 23,
+      "community_name": "AnalyticsService",
+      "norm_label": ".getspendingvelocity()"
     },
     {
       "label": "validate()",
@@ -839,10 +985,22 @@
       "norm_label": "validate()"
     },
     {
+      "label": "maskKey()",
+      "file_type": "code",
+      "source_file": "server/src/controllers/aiController.js",
+      "source_location": "L10",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_controllers_aicontroller_maskkey",
+      "community": 3,
+      "community_name": "aiService.js",
+      "norm_label": "maskkey()"
+    },
+    {
       "label": ".copilotChat()",
       "file_type": "code",
       "source_file": "server/src/services/ai/aiService.js",
-      "source_location": "L150",
+      "source_location": "L163",
       "_callable": true,
       "_origin": "ast",
       "id": "server_src_services_ai_aiservice_aiservice_copilotchat",
@@ -854,7 +1012,7 @@
       "label": ".getInsights()",
       "file_type": "code",
       "source_file": "server/src/services/ai/aiService.js",
-      "source_location": "L214",
+      "source_location": "L207",
       "_callable": true,
       "_origin": "ast",
       "id": "server_src_services_ai_aiservice_aiservice_getinsights",
@@ -866,7 +1024,7 @@
       "label": ".getMonthlySummaryAI()",
       "file_type": "code",
       "source_file": "server/src/services/ai/aiService.js",
-      "source_location": "L78",
+      "source_location": "L83",
       "_callable": true,
       "_origin": "ast",
       "id": "server_src_services_ai_aiservice_aiservice_getmonthlysummaryai",
@@ -878,7 +1036,7 @@
       "label": ".getSpendingExplanation()",
       "file_type": "code",
       "source_file": "server/src/services/ai/aiService.js",
-      "source_location": "L119",
+      "source_location": "L124",
       "_callable": true,
       "_origin": "ast",
       "id": "server_src_services_ai_aiservice_aiservice_getspendingexplanation",
@@ -890,7 +1048,7 @@
       "label": ".suggestCategory()",
       "file_type": "code",
       "source_file": "server/src/services/ai/aiService.js",
-      "source_location": "L22",
+      "source_location": "L40",
       "_callable": true,
       "_origin": "ast",
       "id": "server_src_services_ai_aiservice_aiservice_suggestcategory",
@@ -899,10 +1057,34 @@
       "norm_label": ".suggestcategory()"
     },
     {
+      "label": "extractJson()",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L19",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_services_ai_aiservice_extractjson",
+      "community": 3,
+      "community_name": "aiService.js",
+      "norm_label": "extractjson()"
+    },
+    {
+      "label": "getUserAiConfig()",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L26",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_services_ai_aiservice_getuseraiconfig",
+      "community": 3,
+      "community_name": "aiService.js",
+      "norm_label": "getuseraiconfig()"
+    },
+    {
       "label": "sanitizeUserText()",
       "file_type": "code",
       "source_file": "server/src/services/ai/aiService.js",
-      "source_location": "L9",
+      "source_location": "L10",
       "_callable": true,
       "_origin": "ast",
       "id": "server_src_services_ai_aiservice_sanitizeusertext",
@@ -923,18 +1105,6 @@
       "norm_label": ".buildfinancialcontext()"
     },
     {
-      "label": "getGeminiModel()",
-      "file_type": "code",
-      "source_file": "server/src/services/ai/geminiClient.js",
-      "source_location": "L17",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "server_src_services_ai_geminiclient_getgeminimodel",
-      "community": 3,
-      "community_name": "aiService.js",
-      "norm_label": "getgeminimodel()"
-    },
-    {
       "label": ".classifyIntent()",
       "file_type": "code",
       "source_file": "server/src/services/ai/intentRouter.js",
@@ -947,16 +1117,64 @@
       "norm_label": ".classifyintent()"
     },
     {
-      "label": ".executeTool()",
+      "label": "getOpenAIClient()",
       "file_type": "code",
-      "source_file": "server/src/services/ai/toolRegistry.js",
-      "source_location": "L9",
+      "source_file": "server/src/services/ai/unifiedAIClient.js",
+      "source_location": "L93",
       "_callable": true,
       "_origin": "ast",
-      "id": "server_src_services_ai_toolregistry_toolregistry_executetool",
+      "id": "server_src_services_ai_unifiedaiclient_getopenaiclient",
       "community": 3,
       "community_name": "aiService.js",
-      "norm_label": ".executetool()"
+      "norm_label": "getopenaiclient()"
+    },
+    {
+      "label": "resolveApiKey()",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/unifiedAIClient.js",
+      "source_location": "L114",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_services_ai_unifiedaiclient_resolveapikey",
+      "community": 3,
+      "community_name": "aiService.js",
+      "norm_label": "resolveapikey()"
+    },
+    {
+      "label": ".generateCompletion()",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/unifiedAIClient.js",
+      "source_location": "L129",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_services_ai_unifiedaiclient_unifiedaiclient_generatecompletion",
+      "community": 3,
+      "community_name": "aiService.js",
+      "norm_label": ".generatecompletion()"
+    },
+    {
+      "label": ".getProviderMetadata()",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/unifiedAIClient.js",
+      "source_location": "L280",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_services_ai_unifiedaiclient_unifiedaiclient_getprovidermetadata",
+      "community": 3,
+      "community_name": "aiService.js",
+      "norm_label": ".getprovidermetadata()"
+    },
+    {
+      "label": ".testConnection()",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/unifiedAIClient.js",
+      "source_location": "L232",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_services_ai_unifiedaiclient_unifiedaiclient_testconnection",
+      "community": 3,
+      "community_name": "aiService.js",
+      "norm_label": ".testconnection()"
     },
     {
       "label": ".constructor()",
@@ -1079,112 +1297,88 @@
       "norm_label": ".success()"
     },
     {
-      "label": ".getAnomalies()",
+      "label": "getGeminiModel()",
       "file_type": "code",
-      "source_file": "server/src/services/analytics/analyticsService.js",
-      "source_location": "L333",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "server_src_services_analytics_analyticsservice_analyticsservice_getanomalies",
-      "community": 5,
-      "community_name": "analyticsService.js",
-      "norm_label": ".getanomalies()"
-    },
-    {
-      "label": ".getBudgetUtilization()",
-      "file_type": "code",
-      "source_file": "server/src/services/analytics/analyticsService.js",
-      "source_location": "L177",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "server_src_services_analytics_analyticsservice_analyticsservice_getbudgetutilization",
-      "community": 5,
-      "community_name": "analyticsService.js",
-      "norm_label": ".getbudgetutilization()"
-    },
-    {
-      "label": ".getCategoryBreakdown()",
-      "file_type": "code",
-      "source_file": "server/src/services/analytics/analyticsService.js",
-      "source_location": "L62",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "server_src_services_analytics_analyticsservice_analyticsservice_getcategorybreakdown",
-      "community": 5,
-      "community_name": "analyticsService.js",
-      "norm_label": ".getcategorybreakdown()"
-    },
-    {
-      "label": ".getGoalProgress()",
-      "file_type": "code",
-      "source_file": "server/src/services/analytics/analyticsService.js",
-      "source_location": "L268",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "server_src_services_analytics_analyticsservice_analyticsservice_getgoalprogress",
-      "community": 5,
-      "community_name": "analyticsService.js",
-      "norm_label": ".getgoalprogress()"
-    },
-    {
-      "label": ".getMerchantSummary()",
-      "file_type": "code",
-      "source_file": "server/src/services/analytics/analyticsService.js",
-      "source_location": "L302",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "server_src_services_analytics_analyticsservice_analyticsservice_getmerchantsummary",
-      "community": 5,
-      "community_name": "analyticsService.js",
-      "norm_label": ".getmerchantsummary()"
-    },
-    {
-      "label": ".getMonthlyComparison()",
-      "file_type": "code",
-      "source_file": "server/src/services/analytics/analyticsService.js",
-      "source_location": "L103",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "server_src_services_analytics_analyticsservice_analyticsservice_getmonthlycomparison",
-      "community": 5,
-      "community_name": "analyticsService.js",
-      "norm_label": ".getmonthlycomparison()"
-    },
-    {
-      "label": ".getMonthlySummary()",
-      "file_type": "code",
-      "source_file": "server/src/services/analytics/analyticsService.js",
+      "source_file": "server/src/services/ai/geminiClient.js",
       "source_location": "L17",
       "_callable": true,
       "_origin": "ast",
-      "id": "server_src_services_analytics_analyticsservice_analyticsservice_getmonthlysummary",
-      "community": 5,
-      "community_name": "analyticsService.js",
-      "norm_label": ".getmonthlysummary()"
+      "id": "server_src_services_ai_geminiclient_getgeminimodel",
+      "community": 44,
+      "community_name": "geminiClient.js",
+      "norm_label": "getgeminimodel()"
     },
     {
-      "label": ".getRecurringExpenseSummary()",
+      "label": "escapeCsvField()",
       "file_type": "code",
-      "source_file": "server/src/services/analytics/analyticsService.js",
-      "source_location": "L248",
+      "source_file": "server/src/controllers/exportController.js",
+      "source_location": "L7",
       "_callable": true,
       "_origin": "ast",
-      "id": "server_src_services_analytics_analyticsservice_analyticsservice_getrecurringexpensesummary",
+      "id": "server_src_controllers_exportcontroller_escapecsvfield",
       "community": 5,
-      "community_name": "analyticsService.js",
-      "norm_label": ".getrecurringexpensesummary()"
+      "community_name": "Expense.js",
+      "norm_label": "escapecsvfield()"
     },
     {
-      "label": ".getSpendingVelocity()",
+      "label": ".executeTool()",
       "file_type": "code",
-      "source_file": "server/src/services/analytics/analyticsService.js",
-      "source_location": "L231",
+      "source_file": "server/src/services/ai/toolRegistry.js",
+      "source_location": "L9",
       "_callable": true,
       "_origin": "ast",
-      "id": "server_src_services_analytics_analyticsservice_analyticsservice_getspendingvelocity",
+      "id": "server_src_services_ai_toolregistry_toolregistry_executetool",
       "community": 5,
-      "community_name": "analyticsService.js",
-      "norm_label": ".getspendingvelocity()"
+      "community_name": "Expense.js",
+      "norm_label": ".executetool()"
+    },
+    {
+      "label": ".getCategoryHeatmap()",
+      "file_type": "code",
+      "source_file": "server/src/services/analytics/trendService.js",
+      "source_location": "L46",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_services_analytics_trendservice_trendservice_getcategoryheatmap",
+      "community": 5,
+      "community_name": "Expense.js",
+      "norm_label": ".getcategoryheatmap()"
+    },
+    {
+      "label": ".getDailyPattern()",
+      "file_type": "code",
+      "source_file": "server/src/services/analytics/trendService.js",
+      "source_location": "L114",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_services_analytics_trendservice_trendservice_getdailypattern",
+      "community": 5,
+      "community_name": "Expense.js",
+      "norm_label": ".getdailypattern()"
+    },
+    {
+      "label": ".getMerchantFrequency()",
+      "file_type": "code",
+      "source_file": "server/src/services/analytics/trendService.js",
+      "source_location": "L81",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_services_analytics_trendservice_trendservice_getmerchantfrequency",
+      "community": 5,
+      "community_name": "Expense.js",
+      "norm_label": ".getmerchantfrequency()"
+    },
+    {
+      "label": ".getWeeklyTrend()",
+      "file_type": "code",
+      "source_file": "server/src/services/analytics/trendService.js",
+      "source_location": "L12",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_services_analytics_trendservice_trendservice_getweeklytrend",
+      "community": 5,
+      "community_name": "Expense.js",
+      "norm_label": ".getweeklytrend()"
     },
     {
       "label": "budgetController.js",
@@ -1927,7 +2121,7 @@
       "label": "aiLimiter",
       "file_type": "code",
       "source_file": "server/src/middleware/rateLimiter.js",
-      "source_location": "L64",
+      "source_location": "L69",
       "_origin": "ast",
       "id": "server_src_middleware_ratelimiter_ailimiter",
       "community": 10,
@@ -1938,7 +2132,7 @@
       "label": "authLimiter",
       "file_type": "code",
       "source_file": "server/src/middleware/rateLimiter.js",
-      "source_location": "L28",
+      "source_location": "L31",
       "_origin": "ast",
       "id": "server_src_middleware_ratelimiter_authlimiter",
       "community": 10,
@@ -1949,7 +2143,7 @@
       "label": "demoLimiter",
       "file_type": "code",
       "source_file": "server/src/middleware/rateLimiter.js",
-      "source_location": "L46",
+      "source_location": "L51",
       "_origin": "ast",
       "id": "server_src_middleware_ratelimiter_demolimiter",
       "community": 10,
@@ -1960,7 +2154,7 @@
       "label": "globalLimiter",
       "file_type": "code",
       "source_file": "server/src/middleware/rateLimiter.js",
-      "source_location": "L10",
+      "source_location": "L11",
       "_origin": "ast",
       "id": "server_src_middleware_ratelimiter_globallimiter",
       "community": 10,
@@ -1977,6 +2171,39 @@
       "community": 10,
       "community_name": "authController.js",
       "norm_label": "ratelimit"
+    },
+    {
+      "label": "Category.js",
+      "file_type": "code",
+      "source_file": "server/src/models/Category.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "server_src_models_category",
+      "community": 10,
+      "community_name": "authController.js",
+      "norm_label": "category.js"
+    },
+    {
+      "label": "categorySchema",
+      "file_type": "code",
+      "source_file": "server/src/models/Category.js",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "server_src_models_category_categoryschema",
+      "community": 10,
+      "community_name": "authController.js",
+      "norm_label": "categoryschema"
+    },
+    {
+      "label": "mongoose",
+      "file_type": "code",
+      "source_file": "server/src/models/Category.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "server_src_models_category_mongoose",
+      "community": 10,
+      "community_name": "authController.js",
+      "norm_label": "mongoose"
     },
     {
       "label": "RefreshToken.js",
@@ -2180,7 +2407,7 @@
       "label": "devDependencies",
       "file_type": "code",
       "source_file": "server/package.json",
-      "source_location": "L27",
+      "source_location": "L28",
       "_origin": "ast",
       "id": "server_package_devdependencies",
       "community": 11,
@@ -2191,7 +2418,7 @@
       "label": "jest",
       "file_type": "code",
       "source_file": "server/package.json",
-      "source_location": "L28",
+      "source_location": "L29",
       "_origin": "ast",
       "id": "server_package_devdependencies_jest",
       "community": 11,
@@ -2202,7 +2429,7 @@
       "label": "nodemon",
       "file_type": "code",
       "source_file": "server/package.json",
-      "source_location": "L29",
+      "source_location": "L30",
       "_origin": "ast",
       "id": "server_package_devdependencies_nodemon",
       "community": 11,
@@ -2213,7 +2440,7 @@
       "label": "supertest",
       "file_type": "code",
       "source_file": "server/package.json",
-      "source_location": "L30",
+      "source_location": "L31",
       "_origin": "ast",
       "id": "server_package_devdependencies_supertest",
       "community": 11,
@@ -2312,7 +2539,7 @@
       "label": "jest",
       "file_type": "concept",
       "source_file": "server/package.json",
-      "source_location": "L28",
+      "source_location": "L29",
       "_origin": "ast",
       "id": "jest",
       "community": 11,
@@ -2323,7 +2550,7 @@
       "label": "nodemon",
       "file_type": "concept",
       "source_file": "server/package.json",
-      "source_location": "L29",
+      "source_location": "L30",
       "_origin": "ast",
       "id": "nodemon",
       "community": 11,
@@ -2334,7 +2561,7 @@
       "label": "supertest",
       "file_type": "concept",
       "source_file": "server/package.json",
-      "source_location": "L30",
+      "source_location": "L31",
       "_origin": "ast",
       "id": "supertest",
       "community": 11,
@@ -2349,7 +2576,7 @@
       "_origin": "ast",
       "id": "server_src_controllers_auditcontroller",
       "community": 12,
-      "community_name": "Expense.js",
+      "community_name": "exportAndAudit.test.js",
       "norm_label": "auditcontroller.js"
     },
     {
@@ -2360,7 +2587,7 @@
       "_origin": "ast",
       "id": "server_src_controllers_auditcontroller_asynchandler",
       "community": 12,
-      "community_name": "Expense.js",
+      "community_name": "exportAndAudit.test.js",
       "norm_label": "asynchandler"
     },
     {
@@ -2371,41 +2598,8 @@
       "_origin": "ast",
       "id": "server_src_controllers_auditcontroller_auditlog",
       "community": 12,
-      "community_name": "Expense.js",
+      "community_name": "exportAndAudit.test.js",
       "norm_label": "auditlog"
-    },
-    {
-      "label": "exportController.js",
-      "file_type": "code",
-      "source_file": "server/src/controllers/exportController.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "server_src_controllers_exportcontroller",
-      "community": 12,
-      "community_name": "Expense.js",
-      "norm_label": "exportcontroller.js"
-    },
-    {
-      "label": "asyncHandler",
-      "file_type": "code",
-      "source_file": "server/src/controllers/exportController.js",
-      "source_location": "L2",
-      "_origin": "ast",
-      "id": "server_src_controllers_exportcontroller_asynchandler",
-      "community": 12,
-      "community_name": "Expense.js",
-      "norm_label": "asynchandler"
-    },
-    {
-      "label": "Expense",
-      "file_type": "code",
-      "source_file": "server/src/controllers/exportController.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "server_src_controllers_exportcontroller_expense",
-      "community": 12,
-      "community_name": "Expense.js",
-      "norm_label": "expense"
     },
     {
       "label": "auditLogger.js",
@@ -2415,7 +2609,7 @@
       "_origin": "ast",
       "id": "server_src_middleware_auditlogger",
       "community": 12,
-      "community_name": "Expense.js",
+      "community_name": "exportAndAudit.test.js",
       "norm_label": "auditlogger.js"
     },
     {
@@ -2426,7 +2620,7 @@
       "_origin": "ast",
       "id": "server_src_middleware_auditlogger_auditlog",
       "community": 12,
-      "community_name": "Expense.js",
+      "community_name": "exportAndAudit.test.js",
       "norm_label": "auditlog"
     },
     {
@@ -2437,7 +2631,7 @@
       "_origin": "ast",
       "id": "server_src_middleware_auditlogger_redacted_fields",
       "community": 12,
-      "community_name": "Expense.js",
+      "community_name": "exportAndAudit.test.js",
       "norm_label": "redacted_fields"
     },
     {
@@ -2448,7 +2642,7 @@
       "_origin": "ast",
       "id": "server_src_models_auditlog",
       "community": 12,
-      "community_name": "Expense.js",
+      "community_name": "exportAndAudit.test.js",
       "norm_label": "auditlog.js"
     },
     {
@@ -2459,7 +2653,7 @@
       "_origin": "ast",
       "id": "server_src_models_auditlog_audit_ttl_days",
       "community": 12,
-      "community_name": "Expense.js",
+      "community_name": "exportAndAudit.test.js",
       "norm_label": "audit_ttl_days"
     },
     {
@@ -2470,7 +2664,7 @@
       "_origin": "ast",
       "id": "server_src_models_auditlog_auditlogschema",
       "community": 12,
-      "community_name": "Expense.js",
+      "community_name": "exportAndAudit.test.js",
       "norm_label": "auditlogschema"
     },
     {
@@ -2481,63 +2675,8 @@
       "_origin": "ast",
       "id": "server_src_models_auditlog_mongoose",
       "community": 12,
-      "community_name": "Expense.js",
+      "community_name": "exportAndAudit.test.js",
       "norm_label": "mongoose"
-    },
-    {
-      "label": "Expense.js",
-      "file_type": "code",
-      "source_file": "server/src/models/Expense.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "server_src_models_expense",
-      "community": 12,
-      "community_name": "Expense.js",
-      "norm_label": "expense.js"
-    },
-    {
-      "label": "expenseSchema",
-      "file_type": "code",
-      "source_file": "server/src/models/Expense.js",
-      "source_location": "L3",
-      "_origin": "ast",
-      "id": "server_src_models_expense_expenseschema",
-      "community": 12,
-      "community_name": "Expense.js",
-      "norm_label": "expenseschema"
-    },
-    {
-      "label": "mongoose",
-      "file_type": "code",
-      "source_file": "server/src/models/Expense.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "server_src_models_expense_mongoose",
-      "community": 12,
-      "community_name": "Expense.js",
-      "norm_label": "mongoose"
-    },
-    {
-      "label": "trendService.js",
-      "file_type": "code",
-      "source_file": "server/src/services/analytics/trendService.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "server_src_services_analytics_trendservice",
-      "community": 12,
-      "community_name": "Expense.js",
-      "norm_label": "trendservice.js"
-    },
-    {
-      "label": "Expense",
-      "file_type": "code",
-      "source_file": "server/src/services/analytics/trendService.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "server_src_services_analytics_trendservice_expense",
-      "community": 12,
-      "community_name": "Expense.js",
-      "norm_label": "expense"
     },
     {
       "label": "exportAndAudit.test.js",
@@ -2547,7 +2686,7 @@
       "_origin": "ast",
       "id": "server_tests_exportandaudit_test",
       "community": 12,
-      "community_name": "Expense.js",
+      "community_name": "exportAndAudit.test.js",
       "norm_label": "exportandaudit.test.js"
     },
     {
@@ -2558,7 +2697,7 @@
       "_origin": "ast",
       "id": "server_tests_exportandaudit_test_app",
       "community": 12,
-      "community_name": "Expense.js",
+      "community_name": "exportAndAudit.test.js",
       "norm_label": "app"
     },
     {
@@ -2569,7 +2708,7 @@
       "_origin": "ast",
       "id": "server_tests_exportandaudit_test_auditlog",
       "community": 12,
-      "community_name": "Expense.js",
+      "community_name": "exportAndAudit.test.js",
       "norm_label": "auditlog"
     },
     {
@@ -2580,7 +2719,7 @@
       "_origin": "ast",
       "id": "server_tests_exportandaudit_test_expense",
       "community": 12,
-      "community_name": "Expense.js",
+      "community_name": "exportAndAudit.test.js",
       "norm_label": "expense"
     },
     {
@@ -2591,7 +2730,7 @@
       "_origin": "ast",
       "id": "server_tests_exportandaudit_test_mongomemoryserver",
       "community": 12,
-      "community_name": "Expense.js",
+      "community_name": "exportAndAudit.test.js",
       "norm_label": "{ mongomemoryserver }"
     },
     {
@@ -2602,7 +2741,7 @@
       "_origin": "ast",
       "id": "server_tests_exportandaudit_test_mongoose",
       "community": 12,
-      "community_name": "Expense.js",
+      "community_name": "exportAndAudit.test.js",
       "norm_label": "mongoose"
     },
     {
@@ -2613,7 +2752,7 @@
       "_origin": "ast",
       "id": "server_tests_exportandaudit_test_request",
       "community": 12,
-      "community_name": "Expense.js",
+      "community_name": "exportAndAudit.test.js",
       "norm_label": "request"
     },
     {
@@ -3486,70 +3625,290 @@
       "norm_label": "\ud83d\udccc summary reference"
     },
     {
-      "label": "analyticsRoutes.js",
+      "label": "User.js",
       "file_type": "code",
-      "source_file": "server/src/routes/analyticsRoutes.js",
+      "source_file": "server/src/models/User.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "server_src_routes_analyticsroutes",
+      "id": "server_src_models_user",
       "community": 19,
-      "community_name": "express",
-      "norm_label": "analyticsroutes.js"
+      "community_name": "aiProviders.test.js",
+      "norm_label": "user.js"
     },
     {
-      "label": "express",
+      "label": "mongoose",
       "file_type": "code",
-      "source_file": "server/src/routes/analyticsRoutes.js",
+      "source_file": "server/src/models/User.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "server_src_routes_analyticsroutes_express",
+      "id": "server_src_models_user_mongoose",
       "community": 19,
-      "community_name": "express",
-      "norm_label": "express"
+      "community_name": "aiProviders.test.js",
+      "norm_label": "mongoose"
     },
     {
-      "label": "{ getAnalyticsOverview }",
+      "label": "userSchema",
       "file_type": "code",
-      "source_file": "server/src/routes/analyticsRoutes.js",
+      "source_file": "server/src/models/User.js",
       "source_location": "L3",
       "_origin": "ast",
-      "id": "server_src_routes_analyticsroutes_getanalyticsoverview",
+      "id": "server_src_models_user_userschema",
       "community": 19,
-      "community_name": "express",
-      "norm_label": "{ getanalyticsoverview }"
+      "community_name": "aiProviders.test.js",
+      "norm_label": "userschema"
     },
     {
-      "label": "{ protect }",
+      "label": "localRagEngine.js",
       "file_type": "code",
-      "source_file": "server/src/routes/analyticsRoutes.js",
+      "source_file": "server/src/services/ai/localRagEngine.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "server_src_services_ai_localragengine",
+      "community": 19,
+      "community_name": "aiProviders.test.js",
+      "norm_label": "localragengine.js"
+    },
+    {
+      "label": "aiProviders.test.js",
+      "file_type": "code",
+      "source_file": "server/tests/aiProviders.test.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "server_tests_aiproviders_test",
+      "community": 19,
+      "community_name": "aiProviders.test.js",
+      "norm_label": "aiproviders.test.js"
+    },
+    {
+      "label": "app",
+      "file_type": "code",
+      "source_file": "server/tests/aiProviders.test.js",
       "source_location": "L4",
       "_origin": "ast",
-      "id": "server_src_routes_analyticsroutes_protect",
+      "id": "server_tests_aiproviders_test_app",
       "community": 19,
-      "community_name": "express",
-      "norm_label": "{ protect }"
+      "community_name": "aiProviders.test.js",
+      "norm_label": "app"
     },
     {
-      "label": "router",
+      "label": "Expense",
       "file_type": "code",
-      "source_file": "server/src/routes/analyticsRoutes.js",
+      "source_file": "server/tests/aiProviders.test.js",
+      "source_location": "L6",
+      "_origin": "ast",
+      "id": "server_tests_aiproviders_test_expense",
+      "community": 19,
+      "community_name": "aiProviders.test.js",
+      "norm_label": "expense"
+    },
+    {
+      "label": "LocalRagEngine",
+      "file_type": "code",
+      "source_file": "server/tests/aiProviders.test.js",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "server_tests_aiproviders_test_localragengine",
+      "community": 19,
+      "community_name": "aiProviders.test.js",
+      "norm_label": "localragengine"
+    },
+    {
+      "label": "{ MongoMemoryServer }",
+      "file_type": "code",
+      "source_file": "server/tests/aiProviders.test.js",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "server_tests_aiproviders_test_mongomemoryserver",
+      "community": 19,
+      "community_name": "aiProviders.test.js",
+      "norm_label": "{ mongomemoryserver }"
+    },
+    {
+      "label": "mongoose",
+      "file_type": "code",
+      "source_file": "server/tests/aiProviders.test.js",
       "source_location": "L2",
       "_origin": "ast",
-      "id": "server_src_routes_analyticsroutes_router",
+      "id": "server_tests_aiproviders_test_mongoose",
       "community": 19,
-      "community_name": "express",
-      "norm_label": "router"
+      "community_name": "aiProviders.test.js",
+      "norm_label": "mongoose"
     },
     {
-      "label": "express",
-      "file_type": "concept",
-      "source_file": "package.json",
-      "source_location": "L18",
+      "label": "request",
+      "file_type": "code",
+      "source_file": "server/tests/aiProviders.test.js",
+      "source_location": "L1",
       "_origin": "ast",
-      "id": "ref_express",
+      "id": "server_tests_aiproviders_test_request",
       "community": 19,
-      "community_name": "express",
-      "norm_label": "express"
+      "community_name": "aiProviders.test.js",
+      "norm_label": "request"
+    },
+    {
+      "label": "UnifiedAIClient",
+      "file_type": "code",
+      "source_file": "server/tests/aiProviders.test.js",
+      "source_location": "L8",
+      "_origin": "ast",
+      "id": "server_tests_aiproviders_test_unifiedaiclient",
+      "community": 19,
+      "community_name": "aiProviders.test.js",
+      "norm_label": "unifiedaiclient"
+    },
+    {
+      "label": "User",
+      "file_type": "code",
+      "source_file": "server/tests/aiProviders.test.js",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "server_tests_aiproviders_test_user",
+      "community": 19,
+      "community_name": "aiProviders.test.js",
+      "norm_label": "user"
+    },
+    {
+      "label": "auth.test.js",
+      "file_type": "code",
+      "source_file": "server/tests/auth.test.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "server_tests_auth_test",
+      "community": 19,
+      "community_name": "aiProviders.test.js",
+      "norm_label": "auth.test.js"
+    },
+    {
+      "label": "app",
+      "file_type": "code",
+      "source_file": "server/tests/auth.test.js",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "server_tests_auth_test_app",
+      "community": 19,
+      "community_name": "aiProviders.test.js",
+      "norm_label": "app"
+    },
+    {
+      "label": "{ MongoMemoryServer }",
+      "file_type": "code",
+      "source_file": "server/tests/auth.test.js",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "server_tests_auth_test_mongomemoryserver",
+      "community": 19,
+      "community_name": "aiProviders.test.js",
+      "norm_label": "{ mongomemoryserver }"
+    },
+    {
+      "label": "mongoose",
+      "file_type": "code",
+      "source_file": "server/tests/auth.test.js",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "server_tests_auth_test_mongoose",
+      "community": 19,
+      "community_name": "aiProviders.test.js",
+      "norm_label": "mongoose"
+    },
+    {
+      "label": "request",
+      "file_type": "code",
+      "source_file": "server/tests/auth.test.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "server_tests_auth_test_request",
+      "community": 19,
+      "community_name": "aiProviders.test.js",
+      "norm_label": "request"
+    },
+    {
+      "label": "User",
+      "file_type": "code",
+      "source_file": "server/tests/auth.test.js",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "server_tests_auth_test_user",
+      "community": 19,
+      "community_name": "aiProviders.test.js",
+      "norm_label": "user"
+    },
+    {
+      "label": "expenses.test.js",
+      "file_type": "code",
+      "source_file": "server/tests/expenses.test.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "server_tests_expenses_test",
+      "community": 19,
+      "community_name": "aiProviders.test.js",
+      "norm_label": "expenses.test.js"
+    },
+    {
+      "label": "app",
+      "file_type": "code",
+      "source_file": "server/tests/expenses.test.js",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "server_tests_expenses_test_app",
+      "community": 19,
+      "community_name": "aiProviders.test.js",
+      "norm_label": "app"
+    },
+    {
+      "label": "Expense",
+      "file_type": "code",
+      "source_file": "server/tests/expenses.test.js",
+      "source_location": "L6",
+      "_origin": "ast",
+      "id": "server_tests_expenses_test_expense",
+      "community": 19,
+      "community_name": "aiProviders.test.js",
+      "norm_label": "expense"
+    },
+    {
+      "label": "{ MongoMemoryServer }",
+      "file_type": "code",
+      "source_file": "server/tests/expenses.test.js",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "server_tests_expenses_test_mongomemoryserver",
+      "community": 19,
+      "community_name": "aiProviders.test.js",
+      "norm_label": "{ mongomemoryserver }"
+    },
+    {
+      "label": "mongoose",
+      "file_type": "code",
+      "source_file": "server/tests/expenses.test.js",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "server_tests_expenses_test_mongoose",
+      "community": 19,
+      "community_name": "aiProviders.test.js",
+      "norm_label": "mongoose"
+    },
+    {
+      "label": "request",
+      "file_type": "code",
+      "source_file": "server/tests/expenses.test.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "server_tests_expenses_test_request",
+      "community": 19,
+      "community_name": "aiProviders.test.js",
+      "norm_label": "request"
+    },
+    {
+      "label": "User",
+      "file_type": "code",
+      "source_file": "server/tests/expenses.test.js",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "server_tests_expenses_test_user",
+      "community": 19,
+      "community_name": "aiProviders.test.js",
+      "norm_label": "user"
     },
     {
       "label": "client.js",
@@ -3574,6 +3933,17 @@
       "norm_label": "app.jsx"
     },
     {
+      "label": "VALID_TABS",
+      "file_type": "code",
+      "source_file": "client/src/App.jsx",
+      "source_location": "L19",
+      "_origin": "ast",
+      "id": "client_src_app_valid_tabs",
+      "community": 2,
+      "community_name": "App.jsx",
+      "norm_label": "valid_tabs"
+    },
+    {
       "label": "CopilotDrawer.jsx",
       "file_type": "code",
       "source_file": "client/src/components/Copilot/CopilotDrawer.jsx",
@@ -3583,6 +3953,17 @@
       "community": 2,
       "community_name": "App.jsx",
       "norm_label": "copilotdrawer.jsx"
+    },
+    {
+      "label": "DEFAULT_MESSAGE",
+      "file_type": "code",
+      "source_file": "client/src/components/Copilot/CopilotDrawer.jsx",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "client_src_components_copilot_copilotdrawer_default_message",
+      "community": 2,
+      "community_name": "App.jsx",
+      "norm_label": "default_message"
     },
     {
       "label": "ExpenseFormModal.jsx",
@@ -3761,6 +4142,17 @@
       "norm_label": "recurringpage.jsx"
     },
     {
+      "label": "SettingsPage.jsx",
+      "file_type": "code",
+      "source_file": "client/src/pages/SettingsPage.jsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "client_src_pages_settingspage",
+      "community": 2,
+      "community_name": "App.jsx",
+      "norm_label": "settingspage.jsx"
+    },
+    {
       "label": "react",
       "file_type": "concept",
       "source_file": "package.json",
@@ -3856,7 +4248,7 @@
       "_origin": "ast",
       "id": "server_src_routes_categoryroutes",
       "community": 21,
-      "community_name": "categoryRoutes.js",
+      "community_name": "express",
       "norm_label": "categoryroutes.js"
     },
     {
@@ -3867,7 +4259,7 @@
       "_origin": "ast",
       "id": "server_src_routes_categoryroutes_express",
       "community": 21,
-      "community_name": "categoryRoutes.js",
+      "community_name": "express",
       "norm_label": "express"
     },
     {
@@ -3878,7 +4270,7 @@
       "_origin": "ast",
       "id": "server_src_routes_categoryroutes_getcategories_createcategory",
       "community": 21,
-      "community_name": "categoryRoutes.js",
+      "community_name": "express",
       "norm_label": "{ getcategories, createcategory }"
     },
     {
@@ -3889,7 +4281,7 @@
       "_origin": "ast",
       "id": "server_src_routes_categoryroutes_protect",
       "community": 21,
-      "community_name": "categoryRoutes.js",
+      "community_name": "express",
       "norm_label": "{ protect }"
     },
     {
@@ -3900,8 +4292,19 @@
       "_origin": "ast",
       "id": "server_src_routes_categoryroutes_router",
       "community": 21,
-      "community_name": "categoryRoutes.js",
+      "community_name": "express",
       "norm_label": "router"
+    },
+    {
+      "label": "express",
+      "file_type": "concept",
+      "source_file": "package.json",
+      "source_location": "L18",
+      "_origin": "ast",
+      "id": "ref_express",
+      "community": 21,
+      "community_name": "express",
+      "norm_label": "express"
     },
     {
       "label": "auth.js",
@@ -3937,34 +4340,45 @@
       "norm_label": "user"
     },
     {
-      "label": "aiRoutes.js",
+      "label": "analyticsRoutes.js",
       "file_type": "code",
-      "source_file": "server/src/routes/aiRoutes.js",
+      "source_file": "server/src/routes/analyticsRoutes.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "server_src_routes_airoutes",
+      "id": "server_src_routes_analyticsroutes",
       "community": 22,
       "community_name": "auth.js",
-      "norm_label": "airoutes.js"
+      "norm_label": "analyticsroutes.js"
     },
     {
       "label": "express",
       "file_type": "code",
-      "source_file": "server/src/routes/aiRoutes.js",
+      "source_file": "server/src/routes/analyticsRoutes.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "server_src_routes_airoutes_express",
+      "id": "server_src_routes_analyticsroutes_express",
       "community": 22,
       "community_name": "auth.js",
       "norm_label": "express"
     },
     {
+      "label": "{ getAnalyticsOverview }",
+      "file_type": "code",
+      "source_file": "server/src/routes/analyticsRoutes.js",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "server_src_routes_analyticsroutes_getanalyticsoverview",
+      "community": 22,
+      "community_name": "auth.js",
+      "norm_label": "{ getanalyticsoverview }"
+    },
+    {
       "label": "{ protect }",
       "file_type": "code",
-      "source_file": "server/src/routes/aiRoutes.js",
-      "source_location": "L10",
+      "source_file": "server/src/routes/analyticsRoutes.js",
+      "source_location": "L4",
       "_origin": "ast",
-      "id": "server_src_routes_airoutes_protect",
+      "id": "server_src_routes_analyticsroutes_protect",
       "community": 22,
       "community_name": "auth.js",
       "norm_label": "{ protect }"
@@ -3972,24 +4386,13 @@
     {
       "label": "router",
       "file_type": "code",
-      "source_file": "server/src/routes/aiRoutes.js",
+      "source_file": "server/src/routes/analyticsRoutes.js",
       "source_location": "L2",
       "_origin": "ast",
-      "id": "server_src_routes_airoutes_router",
+      "id": "server_src_routes_analyticsroutes_router",
       "community": 22,
       "community_name": "auth.js",
       "norm_label": "router"
-    },
-    {
-      "label": "{\n  suggestCategory,\n  getMonthlySummaryAI,\n  getSpendingExplanation,\n  copilotChat,\n  getInsights,\n}",
-      "file_type": "code",
-      "source_file": "server/src/routes/aiRoutes.js",
-      "source_location": "L3",
-      "_origin": "ast",
-      "id": "server_src_routes_airoutes_suggestcategory_getmonthlysummaryai_getspendingexplanation_copilotchat_getinsights",
-      "community": 22,
-      "community_name": "auth.js",
-      "norm_label": "{\n  suggestcategory,\n  getmonthlysummaryai,\n  getspendingexplanation,\n  copilotchat,\n  getinsights,\n}"
     },
     {
       "label": "auditRoutes.js",
@@ -4045,50 +4448,6 @@
       "community": 22,
       "community_name": "auth.js",
       "norm_label": "router"
-    },
-    {
-      "label": "aiController.js",
-      "file_type": "code",
-      "source_file": "server/src/controllers/aiController.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "server_src_controllers_aicontroller",
-      "community": 23,
-      "community_name": "aiController.js",
-      "norm_label": "aicontroller.js"
-    },
-    {
-      "label": "AIService",
-      "file_type": "code",
-      "source_file": "server/src/controllers/aiController.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "server_src_controllers_aicontroller_aiservice",
-      "community": 23,
-      "community_name": "aiController.js",
-      "norm_label": "aiservice"
-    },
-    {
-      "label": "asyncHandler",
-      "file_type": "code",
-      "source_file": "server/src/controllers/aiController.js",
-      "source_location": "L2",
-      "_origin": "ast",
-      "id": "server_src_controllers_aicontroller_asynchandler",
-      "community": 23,
-      "community_name": "aiController.js",
-      "norm_label": "asynchandler"
-    },
-    {
-      "label": "{ BadRequestError }",
-      "file_type": "code",
-      "source_file": "server/src/controllers/aiController.js",
-      "source_location": "L3",
-      "_origin": "ast",
-      "id": "server_src_controllers_aicontroller_badrequesterror",
-      "community": 23,
-      "community_name": "aiController.js",
-      "norm_label": "{ badrequesterror }"
     },
     {
       "label": "exportRoutes.js",
@@ -4179,37 +4538,70 @@
       "norm_label": "vite.config.js"
     },
     {
-      "label": "Category.js",
+      "label": "aiController.js",
       "file_type": "code",
-      "source_file": "server/src/models/Category.js",
+      "source_file": "server/src/controllers/aiController.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "server_src_models_category",
+      "id": "server_src_controllers_aicontroller",
       "community": 3,
       "community_name": "aiService.js",
-      "norm_label": "category.js"
+      "norm_label": "aicontroller.js"
     },
     {
-      "label": "categorySchema",
+      "label": "AIService",
       "file_type": "code",
-      "source_file": "server/src/models/Category.js",
+      "source_file": "server/src/controllers/aiController.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "server_src_controllers_aicontroller_aiservice",
+      "community": 3,
+      "community_name": "aiService.js",
+      "norm_label": "aiservice"
+    },
+    {
+      "label": "asyncHandler",
+      "file_type": "code",
+      "source_file": "server/src/controllers/aiController.js",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "server_src_controllers_aicontroller_asynchandler",
+      "community": 3,
+      "community_name": "aiService.js",
+      "norm_label": "asynchandler"
+    },
+    {
+      "label": "{ BadRequestError }",
+      "file_type": "code",
+      "source_file": "server/src/controllers/aiController.js",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "server_src_controllers_aicontroller_badrequesterror",
+      "community": 3,
+      "community_name": "aiService.js",
+      "norm_label": "{ badrequesterror }"
+    },
+    {
+      "label": "UnifiedAIClient",
+      "file_type": "code",
+      "source_file": "server/src/controllers/aiController.js",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "server_src_controllers_aicontroller_unifiedaiclient",
+      "community": 3,
+      "community_name": "aiService.js",
+      "norm_label": "unifiedaiclient"
+    },
+    {
+      "label": "User",
+      "file_type": "code",
+      "source_file": "server/src/controllers/aiController.js",
       "source_location": "L3",
       "_origin": "ast",
-      "id": "server_src_models_category_categoryschema",
+      "id": "server_src_controllers_aicontroller_user",
       "community": 3,
       "community_name": "aiService.js",
-      "norm_label": "categoryschema"
-    },
-    {
-      "label": "mongoose",
-      "file_type": "code",
-      "source_file": "server/src/models/Category.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "server_src_models_category_mongoose",
-      "community": 3,
-      "community_name": "aiService.js",
-      "norm_label": "mongoose"
+      "norm_label": "user"
     },
     {
       "label": "aiService.js",
@@ -4226,7 +4618,7 @@
       "label": "AnalyticsService",
       "file_type": "code",
       "source_file": "server/src/services/ai/aiService.js",
-      "source_location": "L5",
+      "source_location": "L6",
       "_origin": "ast",
       "id": "server_src_services_ai_aiservice_analyticsservice",
       "community": 3,
@@ -4234,21 +4626,10 @@
       "norm_label": "analyticsservice"
     },
     {
-      "label": "Category",
-      "file_type": "code",
-      "source_file": "server/src/services/ai/aiService.js",
-      "source_location": "L6",
-      "_origin": "ast",
-      "id": "server_src_services_ai_aiservice_category",
-      "community": 3,
-      "community_name": "aiService.js",
-      "norm_label": "category"
-    },
-    {
       "label": "ContextBuilder",
       "file_type": "code",
       "source_file": "server/src/services/ai/aiService.js",
-      "source_location": "L2",
+      "source_location": "L3",
       "_origin": "ast",
       "id": "server_src_services_ai_aiservice_contextbuilder",
       "community": 3,
@@ -4256,21 +4637,10 @@
       "norm_label": "contextbuilder"
     },
     {
-      "label": "{ getGeminiModel, isAvailable }",
-      "file_type": "code",
-      "source_file": "server/src/services/ai/aiService.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "server_src_services_ai_aiservice_getgeminimodel_isavailable",
-      "community": 3,
-      "community_name": "aiService.js",
-      "norm_label": "{ getgeminimodel, isavailable }"
-    },
-    {
       "label": "IntentRouter",
       "file_type": "code",
       "source_file": "server/src/services/ai/aiService.js",
-      "source_location": "L3",
+      "source_location": "L4",
       "_origin": "ast",
       "id": "server_src_services_ai_aiservice_intentrouter",
       "community": 3,
@@ -4278,15 +4648,48 @@
       "norm_label": "intentrouter"
     },
     {
+      "label": "LocalRagEngine",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "server_src_services_ai_aiservice_localragengine",
+      "community": 3,
+      "community_name": "aiService.js",
+      "norm_label": "localragengine"
+    },
+    {
       "label": "ToolRegistry",
       "file_type": "code",
       "source_file": "server/src/services/ai/aiService.js",
-      "source_location": "L4",
+      "source_location": "L5",
       "_origin": "ast",
       "id": "server_src_services_ai_aiservice_toolregistry",
       "community": 3,
       "community_name": "aiService.js",
       "norm_label": "toolregistry"
+    },
+    {
+      "label": "UnifiedAIClient",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "server_src_services_ai_aiservice_unifiedaiclient",
+      "community": 3,
+      "community_name": "aiService.js",
+      "norm_label": "unifiedaiclient"
+    },
+    {
+      "label": "User",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "server_src_services_ai_aiservice_user",
+      "community": 3,
+      "community_name": "aiService.js",
+      "norm_label": "user"
     },
     {
       "label": "contextBuilder.js",
@@ -4311,28 +4714,6 @@
       "norm_label": "analyticsservice"
     },
     {
-      "label": "geminiClient.js",
-      "file_type": "code",
-      "source_file": "server/src/services/ai/geminiClient.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "server_src_services_ai_geminiclient",
-      "community": 3,
-      "community_name": "aiService.js",
-      "norm_label": "geminiclient.js"
-    },
-    {
-      "label": "{ GoogleGenerativeAI }",
-      "file_type": "code",
-      "source_file": "server/src/services/ai/geminiClient.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "server_src_services_ai_geminiclient_googlegenerativeai",
-      "community": 3,
-      "community_name": "aiService.js",
-      "norm_label": "{ googlegenerativeai }"
-    },
-    {
       "label": "intentRouter.js",
       "file_type": "code",
       "source_file": "server/src/services/ai/intentRouter.js",
@@ -4344,37 +4725,59 @@
       "norm_label": "intentrouter.js"
     },
     {
-      "label": "toolRegistry.js",
+      "label": "unifiedAIClient.js",
       "file_type": "code",
-      "source_file": "server/src/services/ai/toolRegistry.js",
+      "source_file": "server/src/services/ai/unifiedAIClient.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "server_src_services_ai_toolregistry",
+      "id": "server_src_services_ai_unifiedaiclient",
       "community": 3,
       "community_name": "aiService.js",
-      "norm_label": "toolregistry.js"
+      "norm_label": "unifiedaiclient.js"
     },
     {
-      "label": "AnalyticsService",
+      "label": "clientPool",
       "file_type": "code",
-      "source_file": "server/src/services/ai/toolRegistry.js",
-      "source_location": "L1",
+      "source_file": "server/src/services/ai/unifiedAIClient.js",
+      "source_location": "L91",
       "_origin": "ast",
-      "id": "server_src_services_ai_toolregistry_analyticsservice",
+      "id": "server_src_services_ai_unifiedaiclient_clientpool",
       "community": 3,
       "community_name": "aiService.js",
-      "norm_label": "analyticsservice"
+      "norm_label": "clientpool"
     },
     {
-      "label": "Expense",
+      "label": "{ GoogleGenerativeAI }",
       "file_type": "code",
-      "source_file": "server/src/services/ai/toolRegistry.js",
-      "source_location": "L2",
+      "source_file": "server/src/services/ai/unifiedAIClient.js",
+      "source_location": "L6",
       "_origin": "ast",
-      "id": "server_src_services_ai_toolregistry_expense",
+      "id": "server_src_services_ai_unifiedaiclient_googlegenerativeai",
       "community": 3,
       "community_name": "aiService.js",
-      "norm_label": "expense"
+      "norm_label": "{ googlegenerativeai }"
+    },
+    {
+      "label": "OpenAI",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/unifiedAIClient.js",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "server_src_services_ai_unifiedaiclient_openai",
+      "community": 3,
+      "community_name": "aiService.js",
+      "norm_label": "openai"
+    },
+    {
+      "label": "PROVIDER_METADATA",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/unifiedAIClient.js",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "server_src_services_ai_unifiedaiclient_provider_metadata",
+      "community": 3,
+      "community_name": "aiService.js",
+      "norm_label": "provider_metadata"
     },
     {
       "label": "joi",
@@ -4971,6 +5374,61 @@
       "norm_label": "request"
     },
     {
+      "label": "aiRoutes.js",
+      "file_type": "code",
+      "source_file": "server/src/routes/aiRoutes.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "server_src_routes_airoutes",
+      "community": 37,
+      "community_name": "aiRoutes.js",
+      "norm_label": "airoutes.js"
+    },
+    {
+      "label": "express",
+      "file_type": "code",
+      "source_file": "server/src/routes/aiRoutes.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "server_src_routes_airoutes_express",
+      "community": 37,
+      "community_name": "aiRoutes.js",
+      "norm_label": "express"
+    },
+    {
+      "label": "{ protect }",
+      "file_type": "code",
+      "source_file": "server/src/routes/aiRoutes.js",
+      "source_location": "L13",
+      "_origin": "ast",
+      "id": "server_src_routes_airoutes_protect",
+      "community": 37,
+      "community_name": "aiRoutes.js",
+      "norm_label": "{ protect }"
+    },
+    {
+      "label": "router",
+      "file_type": "code",
+      "source_file": "server/src/routes/aiRoutes.js",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "server_src_routes_airoutes_router",
+      "community": 37,
+      "community_name": "aiRoutes.js",
+      "norm_label": "router"
+    },
+    {
+      "label": "{\n  suggestCategory,\n  getMonthlySummaryAI,\n  getSpendingExplanation,\n  copilotChat,\n  getInsights,\n  getAIConfig,\n  updateAIConfig,\n  testConnection,\n}",
+      "file_type": "code",
+      "source_file": "server/src/routes/aiRoutes.js",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "server_src_routes_airoutes_suggestcategory_getmonthlysummaryai_getspendingexplanation_copilotchat_getinsights_getaiconfig_updateaiconfig_testconnection",
+      "community": 37,
+      "community_name": "aiRoutes.js",
+      "norm_label": "{\n  suggestcategory,\n  getmonthlysummaryai,\n  getspendingexplanation,\n  copilotchat,\n  getinsights,\n  getaiconfig,\n  updateaiconfig,\n  testconnection,\n}"
+    },
+    {
       "label": "categoryController.js",
       "file_type": "code",
       "source_file": "server/src/controllers/categoryController.js",
@@ -5103,39 +5561,6 @@
       "norm_label": "mongoose"
     },
     {
-      "label": "User.js",
-      "file_type": "code",
-      "source_file": "server/src/models/User.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "server_src_models_user",
-      "community": 4,
-      "community_name": "analytics.test.js",
-      "norm_label": "user.js"
-    },
-    {
-      "label": "mongoose",
-      "file_type": "code",
-      "source_file": "server/src/models/User.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "server_src_models_user_mongoose",
-      "community": 4,
-      "community_name": "analytics.test.js",
-      "norm_label": "mongoose"
-    },
-    {
-      "label": "userSchema",
-      "file_type": "code",
-      "source_file": "server/src/models/User.js",
-      "source_location": "L3",
-      "_origin": "ast",
-      "id": "server_src_models_user_userschema",
-      "community": 4,
-      "community_name": "analytics.test.js",
-      "norm_label": "userschema"
-    },
-    {
       "label": "analytics.test.js",
       "file_type": "code",
       "source_file": "server/tests/analytics.test.js",
@@ -5224,72 +5649,6 @@
       "norm_label": "user"
     },
     {
-      "label": "auth.test.js",
-      "file_type": "code",
-      "source_file": "server/tests/auth.test.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "server_tests_auth_test",
-      "community": 4,
-      "community_name": "analytics.test.js",
-      "norm_label": "auth.test.js"
-    },
-    {
-      "label": "app",
-      "file_type": "code",
-      "source_file": "server/tests/auth.test.js",
-      "source_location": "L4",
-      "_origin": "ast",
-      "id": "server_tests_auth_test_app",
-      "community": 4,
-      "community_name": "analytics.test.js",
-      "norm_label": "app"
-    },
-    {
-      "label": "{ MongoMemoryServer }",
-      "file_type": "code",
-      "source_file": "server/tests/auth.test.js",
-      "source_location": "L3",
-      "_origin": "ast",
-      "id": "server_tests_auth_test_mongomemoryserver",
-      "community": 4,
-      "community_name": "analytics.test.js",
-      "norm_label": "{ mongomemoryserver }"
-    },
-    {
-      "label": "mongoose",
-      "file_type": "code",
-      "source_file": "server/tests/auth.test.js",
-      "source_location": "L2",
-      "_origin": "ast",
-      "id": "server_tests_auth_test_mongoose",
-      "community": 4,
-      "community_name": "analytics.test.js",
-      "norm_label": "mongoose"
-    },
-    {
-      "label": "request",
-      "file_type": "code",
-      "source_file": "server/tests/auth.test.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "server_tests_auth_test_request",
-      "community": 4,
-      "community_name": "analytics.test.js",
-      "norm_label": "request"
-    },
-    {
-      "label": "User",
-      "file_type": "code",
-      "source_file": "server/tests/auth.test.js",
-      "source_location": "L5",
-      "_origin": "ast",
-      "id": "server_tests_auth_test_user",
-      "community": 4,
-      "community_name": "analytics.test.js",
-      "norm_label": "user"
-    },
-    {
       "label": "budgets.test.js",
       "file_type": "code",
       "source_file": "server/tests/budgets.test.js",
@@ -5354,83 +5713,6 @@
       "community": 4,
       "community_name": "analytics.test.js",
       "norm_label": "request"
-    },
-    {
-      "label": "expenses.test.js",
-      "file_type": "code",
-      "source_file": "server/tests/expenses.test.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "server_tests_expenses_test",
-      "community": 4,
-      "community_name": "analytics.test.js",
-      "norm_label": "expenses.test.js"
-    },
-    {
-      "label": "app",
-      "file_type": "code",
-      "source_file": "server/tests/expenses.test.js",
-      "source_location": "L4",
-      "_origin": "ast",
-      "id": "server_tests_expenses_test_app",
-      "community": 4,
-      "community_name": "analytics.test.js",
-      "norm_label": "app"
-    },
-    {
-      "label": "Expense",
-      "file_type": "code",
-      "source_file": "server/tests/expenses.test.js",
-      "source_location": "L6",
-      "_origin": "ast",
-      "id": "server_tests_expenses_test_expense",
-      "community": 4,
-      "community_name": "analytics.test.js",
-      "norm_label": "expense"
-    },
-    {
-      "label": "{ MongoMemoryServer }",
-      "file_type": "code",
-      "source_file": "server/tests/expenses.test.js",
-      "source_location": "L3",
-      "_origin": "ast",
-      "id": "server_tests_expenses_test_mongomemoryserver",
-      "community": 4,
-      "community_name": "analytics.test.js",
-      "norm_label": "{ mongomemoryserver }"
-    },
-    {
-      "label": "mongoose",
-      "file_type": "code",
-      "source_file": "server/tests/expenses.test.js",
-      "source_location": "L2",
-      "_origin": "ast",
-      "id": "server_tests_expenses_test_mongoose",
-      "community": 4,
-      "community_name": "analytics.test.js",
-      "norm_label": "mongoose"
-    },
-    {
-      "label": "request",
-      "file_type": "code",
-      "source_file": "server/tests/expenses.test.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "server_tests_expenses_test_request",
-      "community": 4,
-      "community_name": "analytics.test.js",
-      "norm_label": "request"
-    },
-    {
-      "label": "User",
-      "file_type": "code",
-      "source_file": "server/tests/expenses.test.js",
-      "source_location": "L5",
-      "_origin": "ast",
-      "id": "server_tests_expenses_test_user",
-      "community": 4,
-      "community_name": "analytics.test.js",
-      "norm_label": "user"
     },
     {
       "label": "response.js",
@@ -5532,6 +5814,28 @@
       "norm_label": "pinterest inspired design system"
     },
     {
+      "label": "geminiClient.js",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/geminiClient.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "server_src_services_ai_geminiclient",
+      "community": 44,
+      "community_name": "geminiClient.js",
+      "norm_label": "geminiclient.js"
+    },
+    {
+      "label": "{ GoogleGenerativeAI }",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/geminiClient.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "server_src_services_ai_geminiclient_googlegenerativeai",
+      "community": 44,
+      "community_name": "geminiClient.js",
+      "norm_label": "{ googlegenerativeai }"
+    },
+    {
       "label": "analyticsController.js",
       "file_type": "code",
       "source_file": "server/src/controllers/analyticsController.js",
@@ -5539,7 +5843,7 @@
       "_origin": "ast",
       "id": "server_src_controllers_analyticscontroller",
       "community": 5,
-      "community_name": "analyticsService.js",
+      "community_name": "Expense.js",
       "norm_label": "analyticscontroller.js"
     },
     {
@@ -5550,7 +5854,7 @@
       "_origin": "ast",
       "id": "server_src_controllers_analyticscontroller_analyticsservice",
       "community": 5,
-      "community_name": "analyticsService.js",
+      "community_name": "Expense.js",
       "norm_label": "analyticsservice"
     },
     {
@@ -5561,8 +5865,74 @@
       "_origin": "ast",
       "id": "server_src_controllers_analyticscontroller_asynchandler",
       "community": 5,
-      "community_name": "analyticsService.js",
+      "community_name": "Expense.js",
       "norm_label": "asynchandler"
+    },
+    {
+      "label": "exportController.js",
+      "file_type": "code",
+      "source_file": "server/src/controllers/exportController.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "server_src_controllers_exportcontroller",
+      "community": 5,
+      "community_name": "Expense.js",
+      "norm_label": "exportcontroller.js"
+    },
+    {
+      "label": "asyncHandler",
+      "file_type": "code",
+      "source_file": "server/src/controllers/exportController.js",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "server_src_controllers_exportcontroller_asynchandler",
+      "community": 5,
+      "community_name": "Expense.js",
+      "norm_label": "asynchandler"
+    },
+    {
+      "label": "Expense",
+      "file_type": "code",
+      "source_file": "server/src/controllers/exportController.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "server_src_controllers_exportcontroller_expense",
+      "community": 5,
+      "community_name": "Expense.js",
+      "norm_label": "expense"
+    },
+    {
+      "label": "Expense.js",
+      "file_type": "code",
+      "source_file": "server/src/models/Expense.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "server_src_models_expense",
+      "community": 5,
+      "community_name": "Expense.js",
+      "norm_label": "expense.js"
+    },
+    {
+      "label": "expenseSchema",
+      "file_type": "code",
+      "source_file": "server/src/models/Expense.js",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "server_src_models_expense_expenseschema",
+      "community": 5,
+      "community_name": "Expense.js",
+      "norm_label": "expenseschema"
+    },
+    {
+      "label": "mongoose",
+      "file_type": "code",
+      "source_file": "server/src/models/Expense.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "server_src_models_expense_mongoose",
+      "community": 5,
+      "community_name": "Expense.js",
+      "norm_label": "mongoose"
     },
     {
       "label": "Goal.js",
@@ -5572,7 +5942,7 @@
       "_origin": "ast",
       "id": "server_src_models_goal",
       "community": 5,
-      "community_name": "analyticsService.js",
+      "community_name": "Expense.js",
       "norm_label": "goal.js"
     },
     {
@@ -5583,7 +5953,7 @@
       "_origin": "ast",
       "id": "server_src_models_goal_goalschema",
       "community": 5,
-      "community_name": "analyticsService.js",
+      "community_name": "Expense.js",
       "norm_label": "goalschema"
     },
     {
@@ -5594,7 +5964,7 @@
       "_origin": "ast",
       "id": "server_src_models_goal_mongoose",
       "community": 5,
-      "community_name": "analyticsService.js",
+      "community_name": "Expense.js",
       "norm_label": "mongoose"
     },
     {
@@ -5605,7 +5975,7 @@
       "_origin": "ast",
       "id": "server_src_models_recurringexpense",
       "community": 5,
-      "community_name": "analyticsService.js",
+      "community_name": "Expense.js",
       "norm_label": "recurringexpense.js"
     },
     {
@@ -5616,7 +5986,7 @@
       "_origin": "ast",
       "id": "server_src_models_recurringexpense_mongoose",
       "community": 5,
-      "community_name": "analyticsService.js",
+      "community_name": "Expense.js",
       "norm_label": "mongoose"
     },
     {
@@ -5627,8 +5997,41 @@
       "_origin": "ast",
       "id": "server_src_models_recurringexpense_recurringexpenseschema",
       "community": 5,
-      "community_name": "analyticsService.js",
+      "community_name": "Expense.js",
       "norm_label": "recurringexpenseschema"
+    },
+    {
+      "label": "toolRegistry.js",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/toolRegistry.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "server_src_services_ai_toolregistry",
+      "community": 5,
+      "community_name": "Expense.js",
+      "norm_label": "toolregistry.js"
+    },
+    {
+      "label": "AnalyticsService",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/toolRegistry.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "server_src_services_ai_toolregistry_analyticsservice",
+      "community": 5,
+      "community_name": "Expense.js",
+      "norm_label": "analyticsservice"
+    },
+    {
+      "label": "Expense",
+      "file_type": "code",
+      "source_file": "server/src/services/ai/toolRegistry.js",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "server_src_services_ai_toolregistry_expense",
+      "community": 5,
+      "community_name": "Expense.js",
+      "norm_label": "expense"
     },
     {
       "label": "analyticsService.js",
@@ -5638,7 +6041,7 @@
       "_origin": "ast",
       "id": "server_src_services_analytics_analyticsservice",
       "community": 5,
-      "community_name": "analyticsService.js",
+      "community_name": "Expense.js",
       "norm_label": "analyticsservice.js"
     },
     {
@@ -5649,7 +6052,7 @@
       "_origin": "ast",
       "id": "server_src_services_analytics_analyticsservice_budget",
       "community": 5,
-      "community_name": "analyticsService.js",
+      "community_name": "Expense.js",
       "norm_label": "budget"
     },
     {
@@ -5660,7 +6063,7 @@
       "_origin": "ast",
       "id": "server_src_services_analytics_analyticsservice_expense",
       "community": 5,
-      "community_name": "analyticsService.js",
+      "community_name": "Expense.js",
       "norm_label": "expense"
     },
     {
@@ -5671,7 +6074,7 @@
       "_origin": "ast",
       "id": "server_src_services_analytics_analyticsservice_goal",
       "community": 5,
-      "community_name": "analyticsService.js",
+      "community_name": "Expense.js",
       "norm_label": "goal"
     },
     {
@@ -5682,7 +6085,7 @@
       "_origin": "ast",
       "id": "server_src_services_analytics_analyticsservice_mongoose",
       "community": 5,
-      "community_name": "analyticsService.js",
+      "community_name": "Expense.js",
       "norm_label": "mongoose"
     },
     {
@@ -5693,8 +6096,30 @@
       "_origin": "ast",
       "id": "server_src_services_analytics_analyticsservice_recurringexpense",
       "community": 5,
-      "community_name": "analyticsService.js",
+      "community_name": "Expense.js",
       "norm_label": "recurringexpense"
+    },
+    {
+      "label": "trendService.js",
+      "file_type": "code",
+      "source_file": "server/src/services/analytics/trendService.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "server_src_services_analytics_trendservice",
+      "community": 5,
+      "community_name": "Expense.js",
+      "norm_label": "trendservice.js"
+    },
+    {
+      "label": "Expense",
+      "file_type": "code",
+      "source_file": "server/src/services/analytics/trendService.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "server_src_services_analytics_trendservice_expense",
+      "community": 5,
+      "community_name": "Expense.js",
+      "norm_label": "expense"
     },
     {
       "label": "goals.test.js",
@@ -5704,7 +6129,7 @@
       "_origin": "ast",
       "id": "server_tests_goals_test",
       "community": 5,
-      "community_name": "analyticsService.js",
+      "community_name": "Expense.js",
       "norm_label": "goals.test.js"
     },
     {
@@ -5715,7 +6140,7 @@
       "_origin": "ast",
       "id": "server_tests_goals_test_app",
       "community": 5,
-      "community_name": "analyticsService.js",
+      "community_name": "Expense.js",
       "norm_label": "app"
     },
     {
@@ -5726,7 +6151,7 @@
       "_origin": "ast",
       "id": "server_tests_goals_test_goal",
       "community": 5,
-      "community_name": "analyticsService.js",
+      "community_name": "Expense.js",
       "norm_label": "goal"
     },
     {
@@ -5737,7 +6162,7 @@
       "_origin": "ast",
       "id": "server_tests_goals_test_mongomemoryserver",
       "community": 5,
-      "community_name": "analyticsService.js",
+      "community_name": "Expense.js",
       "norm_label": "{ mongomemoryserver }"
     },
     {
@@ -5748,7 +6173,7 @@
       "_origin": "ast",
       "id": "server_tests_goals_test_mongoose",
       "community": 5,
-      "community_name": "analyticsService.js",
+      "community_name": "Expense.js",
       "norm_label": "mongoose"
     },
     {
@@ -5759,7 +6184,7 @@
       "_origin": "ast",
       "id": "server_tests_goals_test_request",
       "community": 5,
-      "community_name": "analyticsService.js",
+      "community_name": "Expense.js",
       "norm_label": "request"
     },
     {
@@ -5770,7 +6195,7 @@
       "_origin": "ast",
       "id": "server_tests_recurring_test",
       "community": 5,
-      "community_name": "analyticsService.js",
+      "community_name": "Expense.js",
       "norm_label": "recurring.test.js"
     },
     {
@@ -5781,7 +6206,7 @@
       "_origin": "ast",
       "id": "server_tests_recurring_test_app",
       "community": 5,
-      "community_name": "analyticsService.js",
+      "community_name": "Expense.js",
       "norm_label": "app"
     },
     {
@@ -5792,7 +6217,7 @@
       "_origin": "ast",
       "id": "server_tests_recurring_test_expense",
       "community": 5,
-      "community_name": "analyticsService.js",
+      "community_name": "Expense.js",
       "norm_label": "expense"
     },
     {
@@ -5803,7 +6228,7 @@
       "_origin": "ast",
       "id": "server_tests_recurring_test_mongomemoryserver",
       "community": 5,
-      "community_name": "analyticsService.js",
+      "community_name": "Expense.js",
       "norm_label": "{ mongomemoryserver }"
     },
     {
@@ -5814,7 +6239,7 @@
       "_origin": "ast",
       "id": "server_tests_recurring_test_mongoose",
       "community": 5,
-      "community_name": "analyticsService.js",
+      "community_name": "Expense.js",
       "norm_label": "mongoose"
     },
     {
@@ -5825,7 +6250,7 @@
       "_origin": "ast",
       "id": "server_tests_recurring_test_recurringexpense",
       "community": 5,
-      "community_name": "analyticsService.js",
+      "community_name": "Expense.js",
       "norm_label": "recurringexpense"
     },
     {
@@ -5836,7 +6261,7 @@
       "_origin": "ast",
       "id": "server_tests_recurring_test_request",
       "community": 5,
-      "community_name": "analyticsService.js",
+      "community_name": "Expense.js",
       "norm_label": "request"
     },
     {
@@ -6720,6 +7145,17 @@
       "norm_label": "mongoose"
     },
     {
+      "label": "openai",
+      "file_type": "code",
+      "source_file": "server/package.json",
+      "source_location": "L26",
+      "_origin": "ast",
+      "id": "server_package_dependencies_openai",
+      "community": 8,
+      "community_name": "dependencies",
+      "norm_label": "openai"
+    },
+    {
       "label": "bcryptjs",
       "file_type": "concept",
       "source_file": "server/package.json",
@@ -6850,6 +7286,17 @@
       "community": 8,
       "community_name": "dependencies",
       "norm_label": "mongoose"
+    },
+    {
+      "label": "openai",
+      "file_type": "concept",
+      "source_file": "server/package.json",
+      "source_location": "L26",
+      "_origin": "ast",
+      "id": "openai",
+      "community": 8,
+      "community_name": "dependencies",
+      "norm_label": "openai"
     },
     {
       "label": "joi",
@@ -7249,7 +7696,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "client/src/App.jsx",
-      "source_location": "L18",
+      "source_location": "L34",
       "weight": 1.0,
       "_origin": "ast",
       "source": "client_src_app_mainapp",
@@ -7261,7 +7708,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "client/src/App.jsx",
-      "source_location": "L28",
+      "source_location": "L96",
       "weight": 1.0,
       "_origin": "ast",
       "source": "client_src_app_mainapp",
@@ -7274,7 +7721,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "client/src/components/Copilot/CopilotDrawer.jsx",
-      "source_location": "L48",
+      "source_location": "L86",
       "weight": 1.0,
       "_origin": "ast",
       "source": "client_src_components_copilot_copilotdrawer_copilotdrawer",
@@ -7286,7 +7733,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "client/src/components/Expenses/ExpenseFormModal.jsx",
-      "source_location": "L16",
+      "source_location": "L18",
       "weight": 1.0,
       "_origin": "ast",
       "source": "client_src_components_expenses_expenseformmodal_expenseformmodal",
@@ -7298,7 +7745,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "client/src/components/Expenses/ExpenseFormModal.jsx",
-      "source_location": "L37",
+      "source_location": "L75",
       "weight": 1.0,
       "_origin": "ast",
       "source": "client_src_components_expenses_expenseformmodal_expenseformmodal",
@@ -7322,7 +7769,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "client/src/components/Shell/Sidebar.jsx",
-      "source_location": "L21",
+      "source_location": "L22",
       "weight": 1.0,
       "_origin": "ast",
       "source": "client_src_components_shell_sidebar_sidebar",
@@ -7430,11 +7877,35 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "client/src/pages/RecurringPage.jsx",
-      "source_location": "L47",
+      "source_location": "L53",
       "weight": 1.0,
       "_origin": "ast",
       "source": "client_src_pages_recurringpage_recurringpage",
       "target": "client_src_api_client_getlocaldatestring"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "client/src/pages/SettingsPage.jsx",
+      "source_location": "L30",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "client_src_pages_settingspage_settingspage",
+      "target": "client_src_context_authcontext_useauth"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "client/src/pages/SettingsPage.jsx",
+      "source_location": "L88",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "client_src_pages_settingspage_settingspage",
+      "target": "client_src_api_client_apifetch"
     },
     {
       "relation": "calls",
@@ -7489,7 +7960,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "server/src/services/ai/aiService.js",
-      "source_location": "L151",
+      "source_location": "L164",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_src_services_ai_aiservice_aiservice_copilotchat",
@@ -7500,44 +7971,44 @@
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
       "source_file": "server/src/services/ai/aiService.js",
-      "source_location": "L186",
+      "source_location": "L167",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_src_services_ai_aiservice_aiservice_copilotchat",
-      "target": "server_src_services_ai_geminiclient_getgeminimodel"
+      "target": "server_src_services_ai_aiservice_getuseraiconfig",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
       "source_file": "server/src/services/ai/aiService.js",
-      "source_location": "L92",
+      "source_location": "L85",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_src_services_ai_aiservice_aiservice_getmonthlysummaryai",
-      "target": "server_src_services_ai_geminiclient_getgeminimodel"
+      "target": "server_src_services_ai_aiservice_getuseraiconfig",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
       "source_file": "server/src/services/ai/aiService.js",
-      "source_location": "L130",
+      "source_location": "L126",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_src_services_ai_aiservice_aiservice_getspendingexplanation",
-      "target": "server_src_services_ai_geminiclient_getgeminimodel"
+      "target": "server_src_services_ai_aiservice_getuseraiconfig",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "server/src/services/ai/aiService.js",
-      "source_location": "L23",
+      "source_location": "L41",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_src_services_ai_aiservice_aiservice_suggestcategory",
@@ -7548,13 +8019,61 @@
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
       "source_file": "server/src/services/ai/aiService.js",
-      "source_location": "L52",
+      "source_location": "L46",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_src_services_ai_aiservice_aiservice_suggestcategory",
-      "target": "server_src_services_ai_geminiclient_getgeminimodel"
+      "target": "server_src_services_ai_aiservice_getuseraiconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L65",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_src_services_ai_aiservice_aiservice_suggestcategory",
+      "target": "server_src_services_ai_aiservice_extractjson",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/unifiedAIClient.js",
+      "source_location": "L137",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_src_services_ai_unifiedaiclient_unifiedaiclient_generatecompletion",
+      "target": "server_src_services_ai_unifiedaiclient_resolveapikey",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/unifiedAIClient.js",
+      "source_location": "L207",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_src_services_ai_unifiedaiclient_unifiedaiclient_generatecompletion",
+      "target": "server_src_services_ai_unifiedaiclient_getopenaiclient",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/unifiedAIClient.js",
+      "source_location": "L249",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_src_services_ai_unifiedaiclient_unifiedaiclient_testconnection",
+      "target": "server_src_services_ai_unifiedaiclient_unifiedaiclient_generatecompletion",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -7829,7 +8348,7 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "client_src_app",
-      "target": "client_src_pages_authpage_authpage",
+      "target": "client_src_pages_settingspage_settingspage",
       "confidence_score": 1.0
     },
     {
@@ -7838,6 +8357,18 @@
       "confidence": "EXTRACTED",
       "source_file": "client/src/App.jsx",
       "source_location": "L15",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "client_src_app",
+      "target": "client_src_pages_authpage_authpage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/App.jsx",
+      "source_location": "L16",
       "weight": 1.0,
       "_origin": "ast",
       "source": "client_src_app",
@@ -7993,7 +8524,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "client/src/components/Shell/Sidebar.jsx",
-      "source_location": "L18",
+      "source_location": "L19",
       "weight": 1.0,
       "_origin": "ast",
       "source": "client_src_components_shell_sidebar",
@@ -8170,6 +8701,30 @@
     },
     {
       "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/pages/SettingsPage.jsx",
+      "source_location": "L24",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "client_src_pages_settingspage",
+      "target": "client_src_api_client_apifetch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/pages/SettingsPage.jsx",
+      "source_location": "L25",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "client_src_pages_settingspage",
+      "target": "client_src_context_authcontext_useauth",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
       "confidence": "EXTRACTED",
       "source_file": "server/package.json",
       "source_location": "L14",
@@ -8328,7 +8883,19 @@
       "relation": "imports",
       "confidence": "EXTRACTED",
       "source_file": "server/package.json",
-      "source_location": "L28",
+      "source_location": "L26",
+      "weight": 1.0,
+      "context": "import",
+      "_origin": "ast",
+      "source": "server_package_dependencies_openai",
+      "target": "openai",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "server/package.json",
+      "source_location": "L29",
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
@@ -8340,7 +8907,7 @@
       "relation": "imports",
       "confidence": "EXTRACTED",
       "source_file": "server/package.json",
-      "source_location": "L29",
+      "source_location": "L30",
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
@@ -8352,7 +8919,7 @@
       "relation": "imports",
       "confidence": "EXTRACTED",
       "source_file": "server/package.json",
-      "source_location": "L30",
+      "source_location": "L31",
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
@@ -8365,7 +8932,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "server/src/controllers/aiController.js",
-      "source_location": "L3",
+      "source_location": "L5",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_src_controllers_aicontroller",
@@ -8533,7 +9100,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "server/src/routes/aiRoutes.js",
-      "source_location": "L10",
+      "source_location": "L13",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_src_routes_airoutes",
@@ -8880,18 +9447,6 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "server/src/services/ai/aiService.js",
-      "source_location": "L1",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "server_src_services_ai_aiservice",
-      "target": "server_src_services_ai_geminiclient_getgeminimodel",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
       "source_file": "server/src/utils/AppError.js",
       "source_location": "L1",
       "weight": 1.0,
@@ -9137,7 +9692,7 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "client_src_app",
-      "target": "client_src_pages_authpage",
+      "target": "client_src_pages_settingspage",
       "confidence_score": 1.0
     },
     {
@@ -9146,6 +9701,18 @@
       "confidence": "EXTRACTED",
       "source_file": "client/src/App.jsx",
       "source_location": "L15",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "client_src_app",
+      "target": "client_src_pages_authpage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/App.jsx",
+      "source_location": "L16",
       "weight": 1.0,
       "_origin": "ast",
       "source": "client_src_app",
@@ -9325,7 +9892,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "client/src/components/Shell/Sidebar.jsx",
-      "source_location": "L18",
+      "source_location": "L19",
       "weight": 1.0,
       "_origin": "ast",
       "source": "client_src_components_shell_sidebar",
@@ -9612,6 +10179,42 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "client/src/pages/SettingsPage.jsx",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "client_src_pages_settingspage",
+      "target": "ref_react",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/pages/SettingsPage.jsx",
+      "source_location": "L24",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "client_src_pages_settingspage",
+      "target": "client_src_api_client",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/pages/SettingsPage.jsx",
+      "source_location": "L25",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "client_src_pages_settingspage",
+      "target": "client_src_context_authcontext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "server/src/controllers/aiController.js",
       "source_location": "L1",
       "weight": 1.0,
@@ -9629,7 +10232,7 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_src_controllers_aicontroller",
-      "target": "server_src_utils_asynchandler",
+      "target": "server_src_services_ai_unifiedaiclient",
       "confidence_score": 1.0
     },
     {
@@ -9638,6 +10241,30 @@
       "confidence": "EXTRACTED",
       "source_file": "server/src/controllers/aiController.js",
       "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_src_controllers_aicontroller",
+      "target": "server_src_models_user",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/aiController.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_src_controllers_aicontroller",
+      "target": "server_src_utils_asynchandler",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/aiController.js",
+      "source_location": "L5",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_src_controllers_aicontroller",
@@ -10081,7 +10708,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "server/src/routes/aiRoutes.js",
-      "source_location": "L10",
+      "source_location": "L13",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_src_routes_airoutes",
@@ -10793,7 +11420,7 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_src_services_ai_aiservice",
-      "target": "server_src_services_ai_geminiclient",
+      "target": "server_src_services_ai_unifiedaiclient",
       "confidence_score": 1.0
     },
     {
@@ -10805,7 +11432,7 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_src_services_ai_aiservice",
-      "target": "server_src_services_ai_contextbuilder",
+      "target": "server_src_services_ai_localragengine",
       "confidence_score": 1.0
     },
     {
@@ -10817,7 +11444,7 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_src_services_ai_aiservice",
-      "target": "server_src_services_ai_intentrouter",
+      "target": "server_src_services_ai_contextbuilder",
       "confidence_score": 1.0
     },
     {
@@ -10829,7 +11456,7 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_src_services_ai_aiservice",
-      "target": "server_src_services_ai_toolregistry",
+      "target": "server_src_services_ai_intentrouter",
       "confidence_score": 1.0
     },
     {
@@ -10841,7 +11468,7 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_src_services_ai_aiservice",
-      "target": "server_src_services_analytics_analyticsservice",
+      "target": "server_src_services_ai_toolregistry",
       "confidence_score": 1.0
     },
     {
@@ -10853,7 +11480,19 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_src_services_ai_aiservice",
-      "target": "server_src_models_category",
+      "target": "server_src_services_analytics_analyticsservice",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_src_services_ai_aiservice",
+      "target": "server_src_models_user",
       "confidence_score": 1.0
     },
     {
@@ -10962,6 +11601,66 @@
       "_origin": "ast",
       "source": "server_src_utils_apperror",
       "target": "server_src_utils_errors",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/tests/aiProviders.test.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_tests_aiproviders_test",
+      "target": "server_src_server",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/tests/aiProviders.test.js",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_tests_aiproviders_test",
+      "target": "server_src_models_user",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/tests/aiProviders.test.js",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_tests_aiproviders_test",
+      "target": "server_src_models_expense",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/tests/aiProviders.test.js",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_tests_aiproviders_test",
+      "target": "server_src_services_ai_localragengine",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server/tests/aiProviders.test.js",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_tests_aiproviders_test",
+      "target": "server_src_services_ai_unifiedaiclient",
       "confidence_score": 1.0
     },
     {
@@ -11762,7 +12461,29 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "client/src/App.jsx",
-      "source_location": "L116",
+      "source_location": "L19",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "client_src_app",
+      "target": "client_src_app_valid_tabs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/App.jsx",
+      "source_location": "L21",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "client_src_app",
+      "target": "client_src_app_getinitialtab",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/App.jsx",
+      "source_location": "L212",
       "weight": 1.0,
       "_origin": "ast",
       "source": "client_src_app",
@@ -11773,7 +12494,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "client/src/App.jsx",
-      "source_location": "L17",
+      "source_location": "L33",
       "weight": 1.0,
       "_origin": "ast",
       "source": "client_src_app",
@@ -11784,7 +12505,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "client/src/components/Copilot/CopilotDrawer.jsx",
-      "source_location": "L6",
+      "source_location": "L15",
       "weight": 1.0,
       "_origin": "ast",
       "source": "client_src_components_copilot_copilotdrawer",
@@ -11794,8 +12515,19 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "client/src/components/Copilot/CopilotDrawer.jsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "client_src_components_copilot_copilotdrawer",
+      "target": "client_src_components_copilot_copilotdrawer_default_message",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "client/src/components/Expenses/ExpenseFormModal.jsx",
-      "source_location": "L6",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast",
       "source": "client_src_components_expenses_expenseformmodal",
@@ -11817,7 +12549,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "client/src/components/Shell/Sidebar.jsx",
-      "source_location": "L20",
+      "source_location": "L21",
       "weight": 1.0,
       "_origin": "ast",
       "source": "client_src_components_shell_sidebar",
@@ -11965,6 +12697,17 @@
       "_origin": "ast",
       "source": "client_src_pages_recurringpage",
       "target": "client_src_pages_recurringpage_recurringpage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/pages/SettingsPage.jsx",
+      "source_location": "L29",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "client_src_pages_settingspage",
+      "target": "client_src_pages_settingspage_settingspage",
       "confidence_score": 1.0
     },
     {
@@ -13148,7 +13891,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "server/package.json",
-      "source_location": "L27",
+      "source_location": "L28",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_package",
@@ -13357,11 +14100,11 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "server/package.json",
-      "source_location": "L28",
+      "source_location": "L26",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "server_package_devdependencies",
-      "target": "server_package_devdependencies_jest",
+      "source": "server_package_dependencies",
+      "target": "server_package_dependencies_openai",
       "confidence_score": 1.0
     },
     {
@@ -13372,7 +14115,7 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_package_devdependencies",
-      "target": "server_package_devdependencies_nodemon",
+      "target": "server_package_devdependencies_jest",
       "confidence_score": 1.0
     },
     {
@@ -13380,6 +14123,17 @@
       "confidence": "EXTRACTED",
       "source_file": "server/package.json",
       "source_location": "L30",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_package_devdependencies",
+      "target": "server_package_devdependencies_nodemon",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/package.json",
+      "source_location": "L31",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_package_devdependencies",
@@ -13478,7 +14232,40 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "server/src/controllers/aiController.js",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_src_controllers_aicontroller",
+      "target": "server_src_controllers_aicontroller_maskkey",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/aiController.js",
       "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_src_controllers_aicontroller",
+      "target": "server_src_controllers_aicontroller_unifiedaiclient",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/aiController.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_src_controllers_aicontroller",
+      "target": "server_src_controllers_aicontroller_user",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/controllers/aiController.js",
+      "source_location": "L4",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_src_controllers_aicontroller",
@@ -13489,7 +14276,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "server/src/controllers/aiController.js",
-      "source_location": "L3",
+      "source_location": "L5",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_src_controllers_aicontroller",
@@ -14050,22 +14837,11 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "server/src/middleware/rateLimiter.js",
-      "source_location": "L10",
+      "source_location": "L11",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_src_middleware_ratelimiter",
       "target": "server_src_middleware_ratelimiter_globallimiter",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "server/src/middleware/rateLimiter.js",
-      "source_location": "L28",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "server_src_middleware_ratelimiter",
-      "target": "server_src_middleware_ratelimiter_authlimiter",
       "confidence_score": 1.0
     },
     {
@@ -14083,7 +14859,18 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "server/src/middleware/rateLimiter.js",
-      "source_location": "L46",
+      "source_location": "L31",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_src_middleware_ratelimiter",
+      "target": "server_src_middleware_ratelimiter_authlimiter",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/middleware/rateLimiter.js",
+      "source_location": "L51",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_src_middleware_ratelimiter",
@@ -14094,7 +14881,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "server/src/middleware/rateLimiter.js",
-      "source_location": "L64",
+      "source_location": "L69",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_src_middleware_ratelimiter",
@@ -14358,7 +15145,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "server/src/routes/aiRoutes.js",
-      "source_location": "L10",
+      "source_location": "L13",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_src_routes_airoutes",
@@ -14384,7 +15171,7 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_src_routes_airoutes",
-      "target": "server_src_routes_airoutes_suggestcategory_getmonthlysummaryai_getspendingexplanation_copilotchat_getinsights",
+      "target": "server_src_routes_airoutes_suggestcategory_getmonthlysummaryai_getspendingexplanation_copilotchat_getinsights_getaiconfig_updateaiconfig_testconnection",
       "confidence_score": 1.0
     },
     {
@@ -15198,18 +15985,29 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_src_services_ai_aiservice",
-      "target": "server_src_services_ai_aiservice_getgeminimodel_isavailable",
+      "target": "server_src_services_ai_aiservice_unifiedaiclient",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "server/src/services/ai/aiService.js",
-      "source_location": "L18",
+      "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_src_services_ai_aiservice",
-      "target": "server_src_services_ai_aiservice_aiservice",
+      "target": "server_src_services_ai_aiservice_sanitizeusertext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L19",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_src_services_ai_aiservice",
+      "target": "server_src_services_ai_aiservice_extractjson",
       "confidence_score": 1.0
     },
     {
@@ -15220,7 +16018,18 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_src_services_ai_aiservice",
-      "target": "server_src_services_ai_aiservice_contextbuilder",
+      "target": "server_src_services_ai_aiservice_localragengine",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L26",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_src_services_ai_aiservice",
+      "target": "server_src_services_ai_aiservice_getuseraiconfig",
       "confidence_score": 1.0
     },
     {
@@ -15231,7 +16040,18 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_src_services_ai_aiservice",
-      "target": "server_src_services_ai_aiservice_intentrouter",
+      "target": "server_src_services_ai_aiservice_contextbuilder",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/aiService.js",
+      "source_location": "L36",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_src_services_ai_aiservice",
+      "target": "server_src_services_ai_aiservice_aiservice",
       "confidence_score": 1.0
     },
     {
@@ -15242,7 +16062,7 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_src_services_ai_aiservice",
-      "target": "server_src_services_ai_aiservice_toolregistry",
+      "target": "server_src_services_ai_aiservice_intentrouter",
       "confidence_score": 1.0
     },
     {
@@ -15253,7 +16073,7 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_src_services_ai_aiservice",
-      "target": "server_src_services_ai_aiservice_analyticsservice",
+      "target": "server_src_services_ai_aiservice_toolregistry",
       "confidence_score": 1.0
     },
     {
@@ -15264,18 +16084,18 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_src_services_ai_aiservice",
-      "target": "server_src_services_ai_aiservice_category",
+      "target": "server_src_services_ai_aiservice_analyticsservice",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "server/src/services/ai/aiService.js",
-      "source_location": "L9",
+      "source_location": "L7",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_src_services_ai_aiservice",
-      "target": "server_src_services_ai_aiservice_sanitizeusertext",
+      "target": "server_src_services_ai_aiservice_user",
       "confidence_score": 1.0
     },
     {
@@ -15325,6 +16145,17 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/localRagEngine.js",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_src_services_ai_localragengine",
+      "target": "server_src_services_ai_localragengine_localragengine",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "server/src/services/ai/toolRegistry.js",
       "source_location": "L1",
       "weight": 1.0,
@@ -15353,6 +16184,83 @@
       "_origin": "ast",
       "source": "server_src_services_ai_toolregistry",
       "target": "server_src_services_ai_toolregistry_toolregistry",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/unifiedAIClient.js",
+      "source_location": "L114",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_src_services_ai_unifiedaiclient",
+      "target": "server_src_services_ai_unifiedaiclient_resolveapikey",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/unifiedAIClient.js",
+      "source_location": "L125",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_src_services_ai_unifiedaiclient",
+      "target": "server_src_services_ai_unifiedaiclient_unifiedaiclient",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/unifiedAIClient.js",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_src_services_ai_unifiedaiclient",
+      "target": "server_src_services_ai_unifiedaiclient_googlegenerativeai",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/unifiedAIClient.js",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_src_services_ai_unifiedaiclient",
+      "target": "server_src_services_ai_unifiedaiclient_openai",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/unifiedAIClient.js",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_src_services_ai_unifiedaiclient",
+      "target": "server_src_services_ai_unifiedaiclient_provider_metadata",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/unifiedAIClient.js",
+      "source_location": "L91",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_src_services_ai_unifiedaiclient",
+      "target": "server_src_services_ai_unifiedaiclient_clientpool",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/unifiedAIClient.js",
+      "source_location": "L93",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_src_services_ai_unifiedaiclient",
+      "target": "server_src_services_ai_unifiedaiclient_getopenaiclient",
       "confidence_score": 1.0
     },
     {
@@ -15771,6 +16679,94 @@
       "_origin": "ast",
       "source": "server_src_validators_recurringvalidator",
       "target": "server_src_validators_recurringvalidator_createrecurringschema",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/tests/aiProviders.test.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_tests_aiproviders_test",
+      "target": "server_tests_aiproviders_test_request",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/tests/aiProviders.test.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_tests_aiproviders_test",
+      "target": "server_tests_aiproviders_test_mongoose",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/tests/aiProviders.test.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_tests_aiproviders_test",
+      "target": "server_tests_aiproviders_test_mongomemoryserver",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/tests/aiProviders.test.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_tests_aiproviders_test",
+      "target": "server_tests_aiproviders_test_app",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/tests/aiProviders.test.js",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_tests_aiproviders_test",
+      "target": "server_tests_aiproviders_test_user",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/tests/aiProviders.test.js",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_tests_aiproviders_test",
+      "target": "server_tests_aiproviders_test_expense",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/tests/aiProviders.test.js",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_tests_aiproviders_test",
+      "target": "server_tests_aiproviders_test_localragengine",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server/tests/aiProviders.test.js",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_tests_aiproviders_test",
+      "target": "server_tests_aiproviders_test_unifiedaiclient",
       "confidence_score": 1.0
     },
     {
@@ -16393,7 +17389,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "server/src/services/ai/aiService.js",
-      "source_location": "L119",
+      "source_location": "L124",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_src_services_ai_aiservice_aiservice",
@@ -16404,7 +17400,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "server/src/services/ai/aiService.js",
-      "source_location": "L150",
+      "source_location": "L163",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_src_services_ai_aiservice_aiservice",
@@ -16415,7 +17411,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "server/src/services/ai/aiService.js",
-      "source_location": "L214",
+      "source_location": "L207",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_src_services_ai_aiservice_aiservice",
@@ -16426,7 +17422,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "server/src/services/ai/aiService.js",
-      "source_location": "L22",
+      "source_location": "L40",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_src_services_ai_aiservice_aiservice",
@@ -16437,7 +17433,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "server/src/services/ai/aiService.js",
-      "source_location": "L78",
+      "source_location": "L83",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_src_services_ai_aiservice_aiservice",
@@ -16469,12 +17465,89 @@
     {
       "relation": "method",
       "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/localRagEngine.js",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_src_services_ai_localragengine_localragengine",
+      "target": "server_src_services_ai_localragengine_localragengine_categorize",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/localRagEngine.js",
+      "source_location": "L115",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_src_services_ai_localragengine_localragengine",
+      "target": "server_src_services_ai_localragengine_localragengine_generatespendingexplanation",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/localRagEngine.js",
+      "source_location": "L140",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_src_services_ai_localragengine_localragengine",
+      "target": "server_src_services_ai_localragengine_localragengine_generatecopilotanswer",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/localRagEngine.js",
+      "source_location": "L82",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_src_services_ai_localragengine_localragengine",
+      "target": "server_src_services_ai_localragengine_localragengine_generatemonthlysummary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
       "source_file": "server/src/services/ai/toolRegistry.js",
       "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast",
       "source": "server_src_services_ai_toolregistry_toolregistry",
       "target": "server_src_services_ai_toolregistry_toolregistry_executetool",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/unifiedAIClient.js",
+      "source_location": "L129",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_src_services_ai_unifiedaiclient_unifiedaiclient",
+      "target": "server_src_services_ai_unifiedaiclient_unifiedaiclient_generatecompletion",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/unifiedAIClient.js",
+      "source_location": "L232",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_src_services_ai_unifiedaiclient_unifiedaiclient",
+      "target": "server_src_services_ai_unifiedaiclient_unifiedaiclient_testconnection",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "server/src/services/ai/unifiedAIClient.js",
+      "source_location": "L280",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "server_src_services_ai_unifiedaiclient_unifiedaiclient",
+      "target": "server_src_services_ai_unifiedaiclient_unifiedaiclient_getprovidermetadata",
       "confidence_score": 1.0
     },
     {
@@ -16842,6 +17915,18 @@
     },
     {
       "relation": "indirect_call",
+      "context": "argument",
+      "confidence": "INFERRED",
+      "source_file": "client/src/App.jsx",
+      "source_location": "L35",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "client_src_app_mainapp",
+      "target": "client_src_app_getinitialtab",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "indirect_call",
       "confidence": "INFERRED",
       "source_file": "server/src/server.js",
       "source_location": "L136",
@@ -16868,7 +17953,7 @@
       "relation": "indirect_call",
       "confidence": "INFERRED",
       "source_file": "server/src/middleware/rateLimiter.js",
-      "source_location": "L13",
+      "source_location": "L16",
       "weight": 1.0,
       "_origin": "ast",
       "context": "collection",
@@ -16926,5 +18011,5 @@
       "source_file": "Documentation/BACKEND.md"
     }
   ],
-  "built_at_commit": "e3b4857ac930107a879c155dc9b5367460a98bae"
+  "built_at_commit": "ee7d2d7bc8c6c7cef5c36f20474a3e625337000f"
 }

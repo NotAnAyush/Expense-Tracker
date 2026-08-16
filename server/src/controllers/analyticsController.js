@@ -13,6 +13,7 @@ exports.getAnalyticsOverview = asyncHandler(async (req, res) => {
     goalProgress,
     merchantSummary,
     anomalies,
+    financialHealthScore,
   ] = await Promise.all([
     AnalyticsService.getMonthlySummary(userId),
     AnalyticsService.getCategoryBreakdown(userId),
@@ -23,6 +24,7 @@ exports.getAnalyticsOverview = asyncHandler(async (req, res) => {
     AnalyticsService.getGoalProgress(userId),
     AnalyticsService.getMerchantSummary(userId),
     AnalyticsService.getAnomalies(userId),
+    AnalyticsService.getFinancialHealthScore(userId),
   ]);
 
   res.json({
@@ -35,5 +37,6 @@ exports.getAnalyticsOverview = asyncHandler(async (req, res) => {
     goalProgress,
     merchantSummary,
     anomalies,
+    financialHealthScore,
   });
 });

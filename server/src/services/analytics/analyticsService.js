@@ -226,19 +226,34 @@ class AnalyticsService {
   }
 
   /**
-   * Spending Velocity & Forecast
+   * Bill-Aware Spending Velocity & Run-Rate Forecaster
+   * Distinguishes contractual recurring subscriptions from discretionary daily pace
    */
   static async getSpendingVelocity(userId) {
     const summary = await this.getMonthlySummary(userId);
-    const dailyPace = summary.averageDailySpend;
-    const projectedMonthEndSpend = dailyPace * summary.daysInMonth;
+    const recurring = await this.getRecurringExpenseSummary(userId);
+
+    const fixedBurden = recurring.monthlyBurden || 0;
+    const currentSpend = summary.totalSpend;
+    const currentDay = summary.currentDay;
+    const daysRemaining = summary.daysRemaining;
+
+    // Discretionary spend is total spend minus any fixed burden that has already occurred
+    const discretionarySpend = Math.max(0, currentSpend - Math.min(currentSpend, fixedBurden));
+    const discretionaryDailyPace = Math.round(discretionarySpend / Math.max(1, currentDay));
+
+    // Bill-Aware Projection: Current Spend + (Discretionary Pace * Days Remaining) + (Any remaining unpaid fixed burden)
+    const projectedDiscretionary = discretionaryDailyPace * summary.daysInMonth;
+    const projectedMonthEndSpend = Math.round(Math.max(currentSpend, projectedDiscretionary + fixedBurden));
 
     return {
-      currentSpend: summary.totalSpend,
-      currentDay: summary.currentDay,
-      daysRemaining: summary.daysRemaining,
-      dailyPace,
-      projectedMonthEndSpend: Math.round(projectedMonthEndSpend),
+      currentSpend,
+      currentDay,
+      daysRemaining,
+      dailyPace: summary.averageDailySpend,
+      discretionaryDailyPace,
+      fixedMonthlyBurden: fixedBurden,
+      projectedMonthEndSpend,
     };
   }
 
@@ -327,60 +342,161 @@ class AnalyticsService {
   }
 
   /**
-   * Anomaly Detection (Statistical Z-Score)
-   * Uses two-pass aggregation: first computes mean/stdDev, then filters outliers
+   * Category-Scoped Median Absolute Deviation (MAD) & Statistical Anomaly Detection
+   * Fintech-grade outlier detection resistant to extreme skewing.
    */
   static async getAnomalies(userId) {
     const userObjId = typeof userId === 'string' ? new mongoose.Types.ObjectId(userId) : userId;
 
-    // Pass 1: Compute statistical baseline
-    const statsResult = await Expense.aggregate([
-      { $match: { userId: userObjId } },
-      {
-        $group: {
-          _id: null,
-          mean: { $avg: '$amount' },
-          count: { $sum: 1 },
-          amounts: { $push: '$amount' },
-        },
-      },
+    const expenses = await Expense.find({ userId: userObjId }).sort({ date: -1 }).limit(100);
+    if (!expenses.length || expenses.length < 3) {
+      return { anomalies: [] };
+    }
+
+    // Group expenses by category
+    const categoryGroups = {};
+    expenses.forEach(e => {
+      const cat = e.category || 'General';
+      if (!categoryGroups[cat]) categoryGroups[cat] = [];
+      categoryGroups[cat].push(e);
+    });
+
+    const anomalies = [];
+
+    // Calculate Category-Scoped MAD for categories with sufficient records (>=3)
+    for (const [category, items] of Object.entries(categoryGroups)) {
+      if (items.length >= 3) {
+        const amounts = items.map(i => i.amount).sort((a, b) => a - b);
+        const mid = Math.floor(amounts.length / 2);
+        const median = amounts.length % 2 !== 0 ? amounts[mid] : (amounts[mid - 1] + amounts[mid]) / 2;
+
+        const absDevs = amounts.map(a => Math.abs(a - median)).sort((a, b) => a - b);
+        const mad = absDevs.length % 2 !== 0 ? absDevs[mid] : (absDevs[mid - 1] + absDevs[mid]) / 2;
+
+        if (mad > 0) {
+          items.forEach(item => {
+            const modZ = (0.6745 * (item.amount - median)) / mad;
+            // Outlier condition: Modified Z-score > 2.5 and amount is at least 1.5x median
+            if (modZ > 2.5 && item.amount >= median * 1.5) {
+              anomalies.push({
+                expenseId: item._id,
+                title: item.title,
+                amount: item.amount,
+                category: item.category,
+                date: item.date,
+                merchant: item.merchant,
+                typicalAverage: Math.round(median),
+                deviationFactor: parseFloat(modZ.toFixed(1)),
+                reason: `Transaction amount (₹${item.amount.toLocaleString()}) is ${modZ.toFixed(1)}x higher than category typical spend (₹${Math.round(median).toLocaleString()}).`,
+                method: 'MAD',
+              });
+            }
+          });
+        }
+      }
+    }
+
+    // Fallback standard Z-Score if category-scoped MAD returned nothing or for global outliers
+    if (anomalies.length === 0) {
+      const allAmounts = expenses.map(e => e.amount);
+      const mean = allAmounts.reduce((a, b) => a + b, 0) / allAmounts.length;
+      const variance = allAmounts.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / allAmounts.length;
+      const stdDev = Math.sqrt(variance);
+
+      if (stdDev > 0 && mean > 0) {
+        const threshold = mean + (2.0 * stdDev);
+        const minAmount = mean * 1.5;
+        const anomalyThreshold = Math.max(threshold, minAmount);
+
+        expenses.forEach(e => {
+          if (e.amount >= anomalyThreshold && anomalies.length < 5) {
+            anomalies.push({
+              expenseId: e._id,
+              title: e.title,
+              amount: e.amount,
+              category: e.category,
+              date: e.date,
+              merchant: e.merchant,
+              typicalAverage: Math.round(mean),
+              deviationFactor: parseFloat(((e.amount - mean) / stdDev).toFixed(1)),
+              reason: `Transaction amount (₹${e.amount.toLocaleString()}) is significantly higher than overall average (₹${Math.round(mean).toLocaleString()}).`,
+              method: 'Z-Score',
+            });
+          }
+        });
+      }
+    }
+
+    return { anomalies: anomalies.slice(0, 10) };
+  }
+
+  /**
+   * Composite Financial Health Score (0–100 FICO-Style Index)
+   * Evaluates Budget Adherence (35%), Recurring Burden (25%), MoM Stability (20%), and Goal Progress (20%)
+   */
+  static async getFinancialHealthScore(userId) {
+    const [budgetUtil, recurring, comparison, goalProgress] = await Promise.all([
+      this.getBudgetUtilization(userId),
+      this.getRecurringExpenseSummary(userId),
+      this.getMonthlyComparison(userId),
+      this.getGoalProgress(userId),
     ]);
 
-    if (!statsResult.length || statsResult[0].count < 3) {
-      return { anomalies: [] };
+    // 1. Budget Adherence Pillar (35 points)
+    let budgetScore = 35;
+    if (budgetUtil.totalAllocated > 0) {
+      const spendRatio = budgetUtil.totalSpent / budgetUtil.totalAllocated;
+      if (spendRatio > 1.2) budgetScore = 10;
+      else if (spendRatio > 1.0) budgetScore = 20;
+      else if (spendRatio > 0.85) budgetScore = 28;
+      else budgetScore = 35;
     }
 
-    const { mean, amounts } = statsResult[0];
-    const variance = amounts.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / amounts.length;
-    const stdDev = Math.sqrt(variance);
+    // 2. Fixed Expense Ratio Pillar (25 points)
+    let recurringScore = 25;
+    const currentSpend = comparison.currentMonthSpend || 1;
+    const fixedRatio = recurring.monthlyBurden / Math.max(1, currentSpend + recurring.monthlyBurden);
+    if (fixedRatio > 0.6) recurringScore = 10;
+    else if (fixedRatio > 0.4) recurringScore = 18;
+    else recurringScore = 25;
 
-    if (stdDev === 0 || mean === 0) {
-      return { anomalies: [] };
+    // 3. Month-over-Month Stability Pillar (20 points)
+    let stabilityScore = 20;
+    const momChange = Math.abs(comparison.changePercent || 0);
+    if (momChange > 40 && comparison.isIncrease) stabilityScore = 8;
+    else if (momChange > 20 && comparison.isIncrease) stabilityScore = 14;
+    else stabilityScore = 20;
+
+    // 4. Savings Goal Contribution Pillar (20 points)
+    let goalScore = 20;
+    if (goalProgress.activeGoalsCount > 0) {
+      const avgPercentage = goalProgress.goals.reduce((s, g) => s + g.percentage, 0) / goalProgress.activeGoalsCount;
+      goalScore = Math.min(20, Math.round((avgPercentage / 100) * 20) + 10);
     }
 
-    // Pass 2: Find outliers (Z > 2.0 AND amount >= 1.5 * mean)
-    const threshold = mean + (2.0 * stdDev);
-    const minAmount = mean * 1.5;
-    const anomalyThreshold = Math.max(threshold, minAmount);
+    const totalScore = Math.min(100, Math.max(0, budgetScore + recurringScore + stabilityScore + goalScore));
 
-    const anomalyExpenses = await Expense.find({
-      userId,
-      amount: { $gte: anomalyThreshold },
-    }).sort({ date: -1 }).limit(10);
+    let grade = 'A';
+    let status = 'Excellent Financial Discipline';
+    if (totalScore < 60) {
+      grade = 'C';
+      status = 'Needs Optimization';
+    } else if (totalScore < 80) {
+      grade = 'B';
+      status = 'Good Financial Trajectory';
+    }
 
-    const anomalies = anomalyExpenses.map(e => ({
-      expenseId: e._id,
-      title: e.title,
-      amount: e.amount,
-      category: e.category,
-      date: e.date,
-      merchant: e.merchant,
-      typicalAverage: Math.round(mean),
-      deviationFactor: parseFloat(((e.amount - mean) / stdDev).toFixed(1)),
-      reason: `Transaction amount (${e.amount}) is significantly higher than user average (${Math.round(mean)}).`,
-    }));
-
-    return { anomalies };
+    return {
+      score: totalScore,
+      grade,
+      status,
+      pillars: {
+        budgetAdherence: { score: budgetScore, max: 35, percentage: Math.round((budgetScore / 35) * 100) },
+        fixedExpenseRatio: { score: recurringScore, max: 25, percentage: Math.round((recurringScore / 25) * 100) },
+        momStability: { score: stabilityScore, max: 20, percentage: Math.round((stabilityScore / 20) * 100) },
+        goalPace: { score: goalScore, max: 20, percentage: Math.round((goalScore / 20) * 100) },
+      },
+    };
   }
 }
 
