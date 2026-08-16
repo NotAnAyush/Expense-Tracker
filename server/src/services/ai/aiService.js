@@ -266,6 +266,18 @@ NEVER hallucinate numbers not present in Grounding Facts.`;
 
     return insights.sort((a, b) => b.score - a.score).slice(0, 4);
   }
+
+  /**
+   * INTELLIGENCE 6 — Multimodal Receipt & Invoice Vision OCR
+   */
+  static async scanReceipt(imageBase64, mimeType = 'image/jpeg', userId = null) {
+    const userConfig = await getUserAiConfig(userId);
+    return UnifiedAIClient.scanReceipt({
+      imageBase64,
+      mimeType,
+      userConfig,
+    });
+  }
 }
 
 module.exports = AIService;

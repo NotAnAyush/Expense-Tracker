@@ -277,6 +277,126 @@ class UnifiedAIClient {
     }
   }
 
+  /**
+   * Multimodal Receipt & Invoice Vision OCR Scanner
+   * Extracts merchant, amount, category, date, line items, and payment method from image Base64
+   */
+  static async scanReceipt({ imageBase64, mimeType = 'image/jpeg', userConfig = {} }) {
+    if (!imageBase64) {
+      throw new Error('Receipt image data is required');
+    }
+
+    const cleanBase64 = imageBase64.replace(/^data:[a-zA-Z0-9/+-]+;base64,/, '').trim();
+    const provider = userConfig.provider || 'gemini';
+    const effectiveKey = this.getEffectiveApiKey(provider, userConfig.apiKey);
+
+    const prompt = `You are an expert financial receipt and invoice OCR parser.
+Analyze this receipt image and extract the key transactional details.
+Return ONLY a valid, single JSON object adhering strictly to this schema:
+{
+  "merchant": string (The name of the store, business, or service provider),
+  "amount": number (The final total amount paid),
+  "currency": string (e.g. "₹", "$", "€", "£"),
+  "date": string (ISO date "YYYY-MM-DD" if visible, or current date),
+  "category": string (Must be one of: "Food & Dining", "Transportation", "Housing & Utilities", "Entertainment", "Shopping", "Health & Medical", "Subscriptions", "General"),
+  "paymentMethod": string (One of: "Card", "Cash", "UPI", "Bank Transfer", "Other"),
+  "confidence": number (Confidence score between 0.0 and 1.0),
+  "taxAmount": number (Total tax if listed, or 0),
+  "lineItems": [
+    { "name": string, "price": number }
+  ]
+}
+Do not include markdown code block backticks, just raw JSON.`;
+
+    // 1. Google Gemini Multimodal Vision
+    if (provider === 'gemini' || !provider) {
+      if (!effectiveKey) {
+        throw new Error('Gemini API key is required for receipt vision scanner. Please configure it in AI Settings.');
+      }
+
+      const genAI = new GoogleGenerativeAI(effectiveKey);
+      const modelName = userConfig.model && userConfig.model.includes('gemini') ? userConfig.model : 'gemini-1.5-flash';
+      const model = genAI.getGenerativeModel({ model: modelName });
+
+      const result = await model.generateContent([
+        prompt,
+        {
+          inlineData: {
+            data: cleanBase64,
+            mimeType: mimeType || 'image/jpeg',
+          },
+        },
+      ]);
+
+      const text = result.response.text();
+      return this._parseReceiptJson(text);
+    }
+
+    // 2. OpenAI / Compatible Vision Models (gpt-4o-mini, gpt-4o)
+    const baseURL = userConfig.customBaseUrl || PROVIDER_METADATA[provider]?.baseURL || 'https://api.openai.com/v1';
+    if (!effectiveKey) {
+      throw new Error(`API key required for ${provider} vision scanner.`);
+    }
+
+    const client = getOpenAIClient(effectiveKey, baseURL);
+    const visionModel = userConfig.model || 'gpt-4o-mini';
+
+    const response = await client.chat.completions.create({
+      model: visionModel,
+      messages: [
+        {
+          role: 'user',
+          content: [
+            { type: 'text', text: prompt },
+            {
+              type: 'image_url',
+              image_url: {
+                url: `data:${mimeType};base64,${cleanBase64}`,
+              },
+            },
+          ],
+        },
+      ],
+      temperature: 0.1,
+      response_format: { type: 'json_object' },
+    });
+
+    const content = response.choices?.[0]?.message?.content?.trim() || '';
+    return this._parseReceiptJson(content);
+  }
+
+  /**
+   * Helper to safely extract and validate JSON from AI vision outputs
+   */
+  static _parseReceiptJson(rawText) {
+    let cleanText = rawText.trim();
+    if (cleanText.startsWith('```json')) {
+      cleanText = cleanText.replace(/^```json\s*/, '').replace(/\s*```$/, '');
+    } else if (cleanText.startsWith('```')) {
+      cleanText = cleanText.replace(/^```\s*/, '').replace(/\s*```$/, '');
+    }
+
+    try {
+      const parsed = JSON.parse(cleanText);
+      return {
+        merchant: String(parsed.merchant || 'Store / Merchant').trim(),
+        amount: Math.abs(Number(parsed.amount) || 0),
+        currency: parsed.currency || '₹',
+        date: parsed.date || new Date().toISOString().slice(0, 10),
+        category: parsed.category || 'Food & Dining',
+        paymentMethod: parsed.paymentMethod || 'UPI',
+        confidence: typeof parsed.confidence === 'number' ? Math.min(1, Math.max(0, parsed.confidence)) : 0.9,
+        taxAmount: Number(parsed.taxAmount) || 0,
+        lineItems: Array.isArray(parsed.lineItems) ? parsed.lineItems.map(item => ({
+          name: String(item.name || 'Item'),
+          price: Math.abs(Number(item.price) || 0),
+        })) : [],
+      };
+    } catch (parseErr) {
+      throw new Error(`Failed to parse structured receipt data from AI output: ${parseErr.message}`);
+    }
+  }
+
   static getProviderMetadata() {
     return PROVIDER_METADATA;
   }

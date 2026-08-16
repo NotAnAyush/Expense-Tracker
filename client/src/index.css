@@ -974,3 +974,20 @@ body::before {
     padding: 28px 22px;
   }
 }
+
+/* ==========================================================================
+   Privacy Shield Mask Mode Utility
+   ========================================================================== */
+.privacy-masked {
+  filter: blur(8px) !important;
+  user-select: none !important;
+  pointer-events: none !important;
+  transition: filter 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.privacy-masked:hover {
+  filter: blur(0px) !important;
+  user-select: auto !important;
+  pointer-events: auto !important;
+}
+

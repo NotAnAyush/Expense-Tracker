@@ -20,6 +20,9 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import { motion } from 'framer-motion';
 import { apiFetch } from '../api/client';
 import { PinCard } from '../components/UI/PinCard';
+import { FinancialHealthCard } from '../components/Dashboard/FinancialHealthCard';
+import { usePrivacy } from '../context/PrivacyContext';
+import { Camera, Mic, FileSpreadsheet } from 'lucide-react';
 
 // Vibrant Category Colors & Emojis Map
 const CATEGORY_META = {
@@ -34,7 +37,15 @@ const CATEGORY_META = {
 
 const DEFAULT_COLORS = ['#00FF87', '#FFD700', '#9D4EDD', '#00F0FF', '#FF007A', '#FF9900', '#10B981'];
 
-export const DashboardPage = ({ onOpenCopilot, onAddExpense }) => {
+export const DashboardPage = ({
+  onOpenCopilot,
+  onAddExpense,
+  onAddIncome,
+  onOpenReceiptScan,
+  onOpenVoiceLog,
+  onOpenBankImport,
+}) => {
+  const { isPrivacyMaskActive } = usePrivacy();
   const [data, setData] = useState(null);
   const [aiSummary, setAiSummary] = useState(null);
   const [insights, setInsights] = useState([]);
@@ -97,7 +108,7 @@ export const DashboardPage = ({ onOpenCopilot, onAddExpense }) => {
     );
   }
 
-  const { monthlySummary, categoryBreakdown, monthlyComparison, budgetUtilization, spendingVelocity } = data;
+  const { monthlySummary, categoryBreakdown, monthlyComparison, budgetUtilization, spendingVelocity, cashFlowSummary } = data;
 
   const filteredCategories = activeChip === 'All'
     ? categoryBreakdown.breakdown
@@ -168,35 +179,227 @@ export const DashboardPage = ({ onOpenCopilot, onAddExpense }) => {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
       
-      {/* 1. HERO TITLE & GAMIFIED FILTER CHIPS */}
+      {/* 1. HERO TITLE & QUICK ACTIONS BAR */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '16px' }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
             <span style={{ fontSize: '12px', fontWeight: 800, color: '#00FF87', background: 'rgba(0, 255, 135, 0.12)', padding: '3px 10px', borderRadius: '999px', textTransform: 'uppercase', letterSpacing: '0.8px' }}>
-              ⚡ Live Intelligence
+              ⚡ Live Wealth Hub
             </span>
-            <span style={{ fontSize: '13px', color: '#94A3B8' }}>Updated moments ago</span>
+            <span style={{ fontSize: '13px', color: '#94A3B8' }}>Cash flow & Intelligence</span>
           </div>
           <h1 className="display-xl">
             Financial Overview
           </h1>
         </div>
 
-        {/* Filter Chip Strip */}
-        <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '4px', maxWidth: '100%' }}>
-          {filterChips.map((chip) => (
-            <button
-              key={chip}
-              onClick={() => setActiveChip(chip)}
-              className={`filter-chip ${activeChip === chip ? 'filter-chip-active' : ''}`}
+        {/* Quick-Action Floating Dock */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+          {onOpenVoiceLog && (
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={onOpenVoiceLog}
+              style={{
+                padding: '9px 14px',
+                borderRadius: '12px',
+                background: 'rgba(0, 240, 255, 0.12)',
+                border: '1px solid rgba(0, 240, 255, 0.35)',
+                color: '#00F0FF',
+                fontWeight: 700,
+                fontSize: '13px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+              }}
             >
-              {CATEGORY_META[chip]?.emoji && <span style={{ marginRight: '6px' }}>{CATEGORY_META[chip].emoji}</span>}
-              {chip}
-            </button>
-          ))}
+              <Mic size={15} /> Voice Log
+            </motion.button>
+          )}
+
+          {onOpenBankImport && (
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={onOpenBankImport}
+              style={{
+                padding: '9px 14px',
+                borderRadius: '12px',
+                background: 'rgba(255, 215, 0, 0.12)',
+                border: '1px solid rgba(255, 215, 0, 0.35)',
+                color: '#FFD700',
+                fontWeight: 700,
+                fontSize: '13px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+              }}
+            >
+              <FileSpreadsheet size={15} /> Import CSV
+            </motion.button>
+          )}
+
+          {onOpenReceiptScan && (
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={onOpenReceiptScan}
+              style={{
+                padding: '9px 14px',
+                borderRadius: '12px',
+                background: 'rgba(0, 240, 255, 0.12)',
+                border: '1px solid rgba(0, 240, 255, 0.35)',
+                color: '#00F0FF',
+                fontWeight: 700,
+                fontSize: '13px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+              }}
+            >
+              <Camera size={15} /> Scan Receipt
+            </motion.button>
+          )}
+
+          {onAddIncome && (
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={onAddIncome}
+              style={{
+                padding: '9px 14px',
+                borderRadius: '12px',
+                background: 'rgba(0, 255, 135, 0.12)',
+                border: '1px solid rgba(0, 255, 135, 0.35)',
+                color: '#00FF87',
+                fontWeight: 800,
+                fontSize: '13px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+              }}
+            >
+              <Plus size={15} /> + Income
+            </motion.button>
+          )}
+
+          <motion.button
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={onAddExpense}
+            style={{
+              padding: '9px 18px',
+              borderRadius: '12px',
+              background: 'linear-gradient(135deg, #00FF87 0%, #FFD700 100%)',
+              border: 'none',
+              color: '#050810',
+              fontWeight: 800,
+              fontSize: '13.5px',
+              fontFamily: 'var(--font-heading)',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              boxShadow: '0 4px 15px rgba(0, 255, 135, 0.35)',
+            }}
+          >
+            <Plus size={16} /> Record Expense
+          </motion.button>
         </div>
+      </div>
+
+      {/* 2. DUAL-ENTRY 3-WAY NET CASH FLOW PILL BANNER */}
+      {cashFlowSummary && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          style={{
+            padding: '16px 22px',
+            borderRadius: '18px',
+            background: 'linear-gradient(135deg, rgba(16, 26, 44, 0.85) 0%, rgba(10, 14, 26, 0.95) 100%)',
+            border: '1.5px solid rgba(255, 255, 255, 0.08)',
+            boxShadow: '0 8px 30px rgba(0, 0, 0, 0.3)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '16px',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <div style={{ width: '10px', height: '10px', borderRadius: '999px', background: '#00FF87', boxShadow: '0 0 10px #00FF87' }} />
+              <div>
+                <div style={{ fontSize: '11px', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase' }}>Inflow (Income)</div>
+                <div style={{ fontSize: '17px', fontWeight: 800, color: '#00FF87', fontFamily: 'var(--font-display)' }}>
+                  ₹{(cashFlowSummary.totalIncome || 0).toLocaleString()}
+                </div>
+              </div>
+            </div>
+
+            <div style={{ width: '1px', height: '32px', background: 'rgba(255, 255, 255, 0.1)' }} />
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <div style={{ width: '10px', height: '10px', borderRadius: '999px', background: '#FF7D7D', boxShadow: '0 0 10px #FF7D7D' }} />
+              <div>
+                <div style={{ fontSize: '11px', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase' }}>Outflow (Spent)</div>
+                <div style={{ fontSize: '17px', fontWeight: 800, color: '#FF7D7D', fontFamily: 'var(--font-display)' }}>
+                  ₹{(cashFlowSummary.totalExpense || 0).toLocaleString()}
+                </div>
+              </div>
+            </div>
+
+            <div style={{ width: '1px', height: '32px', background: 'rgba(255, 255, 255, 0.1)' }} />
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <div style={{ width: '10px', height: '10px', borderRadius: '999px', background: '#00F0FF', boxShadow: '0 0 10px #00F0FF' }} />
+              <div>
+                <div style={{ fontSize: '11px', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase' }}>Net Cash Surplus</div>
+                <div style={{ fontSize: '17px', fontWeight: 800, color: cashFlowSummary.netSavings >= 0 ? '#00F0FF' : '#FF7D7D', fontFamily: 'var(--font-display)' }}>
+                  {cashFlowSummary.netSavings >= 0 ? '+' : ''}₹{(cashFlowSummary.netSavings || 0).toLocaleString()}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            style={{
+              padding: '6px 14px',
+              borderRadius: '12px',
+              background: cashFlowSummary.savingsRate >= 20 ? 'rgba(0, 255, 135, 0.15)' : 'rgba(255, 215, 0, 0.15)',
+              border: `1px solid ${cashFlowSummary.savingsRate >= 20 ? 'rgba(0, 255, 135, 0.3)' : 'rgba(255, 215, 0, 0.3)'}`,
+              color: cashFlowSummary.savingsRate >= 20 ? '#00FF87' : '#FFD700',
+              fontWeight: 800,
+              fontSize: '13px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+            }}
+          >
+            <ShieldCheck size={16} />
+            <span>Savings Rate: {cashFlowSummary.savingsRate}%</span>
+          </div>
+        </motion.div>
+      )}
+
+      {/* Filter Chip Strip */}
+      <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '4px', maxWidth: '100%' }}>
+        {filterChips.map((chip) => (
+          <button
+            key={chip}
+            onClick={() => setActiveChip(chip)}
+            className={`filter-chip ${activeChip === chip ? 'filter-chip-active' : ''}`}
+          >
+            {CATEGORY_META[chip]?.emoji && <span style={{ marginRight: '6px' }}>{CATEGORY_META[chip].emoji}</span>}
+            {chip}
+          </button>
+        ))}
       </div>
 
       {/* Selected Category Spotlight (when category chip active) */}
@@ -288,6 +491,11 @@ export const DashboardPage = ({ onOpenCopilot, onAddExpense }) => {
           subtitle="Calculated trajectory based on velocity"
         />
       </div>
+
+      {/* 2.5 DETERMINISTIC FINANCIAL HEALTH INDEX (0-100 FHI) CARD */}
+      {data.financialHealth && activeChip === 'All' && (
+        <FinancialHealthCard healthData={data.financialHealth} />
+      )}
 
       {/* 3. MONTHLY AI SYNTHESIS BANNER ("AI Finance Weather Report") */}
       {aiSummary && activeChip === 'All' && (

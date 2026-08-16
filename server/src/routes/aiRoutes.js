@@ -6,6 +6,7 @@ const {
   getSpendingExplanation,
   copilotChat,
   getInsights,
+  scanReceipt,
   getAIConfig,
   updateAIConfig,
   testConnection,
@@ -15,6 +16,7 @@ const { protect } = require('../middleware/auth');
 router.use(protect);
 
 router.post('/categorize', suggestCategory);
+router.post('/receipt-scan', scanReceipt);
 router.get('/summary', getMonthlySummaryAI);
 router.get('/explanation', getSpendingExplanation);
 router.post('/copilot', copilotChat);

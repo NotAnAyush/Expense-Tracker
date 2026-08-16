@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Sparkles, AlertOctagon, TrendingUp, TrendingDown, Zap, ArrowUpRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { apiFetch } from '../api/client';
+import { FinancialHealthCard } from '../components/Dashboard/FinancialHealthCard';
 
 export const AnalyticsPage = () => {
   const [data, setData] = useState(null);
@@ -39,7 +40,7 @@ export const AnalyticsPage = () => {
     );
   }
 
-  const { monthlyComparison, categoryBreakdown, anomalies } = data;
+  const { monthlyComparison, categoryBreakdown, anomalies, financialHealth } = data;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
@@ -54,6 +55,11 @@ export const AnalyticsPage = () => {
           Statistical month-over-month comparison, category shift deltas, and automated anomaly detection.
         </p>
       </div>
+
+      {/* Financial Health Index 5-Pillar Scorecard */}
+      {financialHealth && (
+        <FinancialHealthCard healthData={financialHealth} />
+      )}
 
       {/* AI Spending Explanation Banner */}
       {explanation && (

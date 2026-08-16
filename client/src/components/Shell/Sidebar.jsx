@@ -13,7 +13,10 @@ import {
   ShieldCheck,
   Activity,
   Flame,
-  Sliders
+  Sliders,
+  Users,
+  TrendingDown,
+  Plane
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useAuth } from '../../context/AuthContext';
@@ -32,6 +35,30 @@ export const Sidebar = ({ activeTab, setActiveTab, onOpenCopilot }) => {
       id: 'expenses', 
       label: 'Transactions', 
       icon: Receipt 
+    },
+    { 
+      id: 'fire', 
+      label: 'FIRE & What-If', 
+      icon: Flame, 
+      badge: { text: 'Monte Carlo', type: 'ai' } 
+    },
+    { 
+      id: 'trips', 
+      label: 'Travel & FX', 
+      icon: Plane, 
+      badge: { text: 'Vault', type: 'mint' } 
+    },
+    { 
+      id: 'splits', 
+      label: 'Group Ledgers', 
+      icon: Users, 
+      badge: { text: 'UPI', type: 'mint' } 
+    },
+    { 
+      id: 'debts', 
+      label: 'Debt Payoff', 
+      icon: TrendingDown, 
+      badge: { text: 'Snowball', type: 'gold' } 
     },
     { 
       id: 'budgets', 
@@ -59,7 +86,7 @@ export const Sidebar = ({ activeTab, setActiveTab, onOpenCopilot }) => {
       id: 'settings', 
       label: 'AI & Settings', 
       icon: Sliders,
-      badge: { text: 'v2.2', type: 'ai' }
+      badge: { text: 'v3.0', type: 'ai' }
     },
   ];
 
