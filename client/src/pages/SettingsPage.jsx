@@ -18,7 +18,15 @@ import {
   Eye,
   EyeOff,
   ChevronDown,
-  Save
+  Save,
+  Share2,
+  Compass,
+  Orbit,
+  Box,
+  Info,
+  Activity,
+  ExternalLink,
+  ArrowUpRight
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { apiFetch } from '../api/client';
@@ -26,12 +34,160 @@ import { useAuth } from '../context/AuthContext';
 
 const DRAFT_KEY = 'richy_draft_ai_config';
 
+const PROVIDER_KEY_URLS = {
+  gemini: 'https://aistudio.google.com/app/apikey',
+  openai: 'https://platform.openai.com/api-keys',
+  claude: 'https://console.anthropic.com/settings/keys',
+  groq: 'https://console.groq.com/keys',
+  deepseek: 'https://platform.deepseek.com/api_keys',
+  mistral: 'https://console.mistral.ai/api-keys/',
+  openrouter: 'https://openrouter.ai/settings/keys',
+  together: 'https://api.together.ai/settings/api-keys',
+  perplexity: 'https://www.perplexity.ai/settings/api',
+  xai: 'https://console.x.ai/',
+  cohere: 'https://dashboard.cohere.com/api-keys',
+  ollama: 'https://ollama.com/download',
+};
+
+const MODEL_TAGS = {
+  // Google Gemini Models
+  'gemini-3.7-flash': { tag: 'Hybrid Thinking Flagship', icon: '🧠', desc: 'Google premier frontier model combining instant multimodal speed with dynamic reasoning.', tier: 'Latest 2026' },
+  'gemini-3.7-flash-thinking': { tag: 'Extended Reasoning CoT', icon: '🤔', desc: 'Gemini 3.7 with dedicated Chain-of-Thought deliberation for high-stakes financial analysis.', tier: 'Reasoning' },
+  'gemini-3.5-pro': { tag: 'Deep Analytical Pro', icon: '🔬', desc: 'Advanced math, coding, and multi-step complex financial auditing engine.', tier: 'Pro' },
+  'gemini-3.5-flash': { tag: 'Next-Gen Flash Workhorse', icon: '⚡', desc: 'High-throughput sub-second latency with 1M+ token context.', tier: 'Fast' },
+  'gemini-3.0-pro': { tag: 'Gemini 3.0 Pro Foundation', icon: '📊', desc: 'Enterprise reasoning foundation model for deep portfolio analytics.', tier: 'Pro' },
+  'gemini-3.0-flash': { tag: 'Gemini 3.0 Real-Time', icon: '⚡', desc: 'High speed real-time multimodal financial analysis.', tier: 'Fast' },
+  'gemini-2.5-flash': { tag: 'Ultra-Fast Multimodal', icon: '⚡', desc: 'Google high-speed flagship with 1M context and receipt OCR vision.', tier: 'Recommended' },
+  'gemini-2.5-pro': { tag: 'Deep Reasoning', icon: '🧠', desc: 'Google state-of-the-art analytical model for complex mathematics and finances.', tier: 'Advanced' },
+  'gemini-2.0-flash': { tag: 'High-Speed Multimodal', icon: '⚡', desc: 'Production workhorse with sub-second latency and multimodal receipt OCR.', tier: 'Recommended' },
+  'gemini-2.0-flash-lite': { tag: 'Cost-Efficient Speed', icon: '💸', desc: 'Ultra-low latency lightweight model optimized for high throughput.', tier: 'Fast' },
+  'gemini-2.0-pro-exp-02-05': { tag: 'Pro Experimental', icon: '🔬', desc: 'Cutting-edge experimental flagship with extreme problem-solving depth.', tier: 'Experimental' },
+  'gemini-2.0-flash-thinking-exp-01-21': { tag: 'Thinking / CoT', icon: '🤔', desc: 'Explicit Chain-of-Thought reasoning model designed for financial simulations.', tier: 'Reasoning' },
+  'gemini-1.5-flash': { tag: 'Versatile Workhorse', icon: '✨', desc: 'Proven stable multimodal intelligence with large 1M context window.', tier: 'Stable' },
+  'gemini-1.5-flash-8b': { tag: 'High Frequency', icon: '🚀', desc: 'Lightweight model for high-frequency categorization and queries.', tier: 'Fast' },
+  'gemini-1.5-pro': { tag: 'Long Context Multimodal', icon: '📊', desc: 'Heavy analytical powerhouse with up to 2M token context window.', tier: 'Advanced' },
+  'gemini-exp-1206': { tag: 'Gemini Experimental', icon: '🧪', desc: 'Experimental preview model with enhanced benchmark capabilities.', tier: 'Experimental' },
+  'gemini-1.0-pro': { tag: 'Legacy Text', icon: '📜', desc: 'Original Gemini text model for standard structured text queries.', tier: 'Legacy' },
+
+  // OpenAI Models
+  'gpt-4.5-preview': { tag: 'GPT-4.5 Frontier', icon: '✨', desc: 'OpenAI largest and most capable foundation model for nuanced financial reasoning.', tier: 'Latest 2026' },
+  'o3': { tag: 'Next-Gen Autonomous Reasoning', icon: '🔬', desc: 'OpenAI premier frontier reasoning system with state-of-the-art accuracy.', tier: 'Reasoning' },
+  'o3-mini': { tag: 'High-Speed STEM & Math', icon: '🧠', desc: 'High-speed reasoning model specialized for mathematical problem-solving.', tier: 'Reasoning' },
+  'o3-pro': { tag: 'Deep Deliberation Pro', icon: '💡', desc: 'Maximum compute reasoning model for multi-scenario financial forecasting.', tier: 'Pro' },
+  'o1': { tag: 'Autonomous Reasoning', icon: '🔬', desc: 'Deep deliberative reasoning system for complex auditing and strategy.', tier: 'Advanced' },
+  'o1-pro': { tag: 'Extended Thinking Pro', icon: '🧠', desc: 'Highest reasoning compute tier for verifiable accuracy.', tier: 'Pro' },
+  'o1-mini': { tag: 'Fast Reasoning', icon: '💡', desc: 'Compact reasoning model focused on speed and STEM deduction.', tier: 'Fast' },
+  'gpt-4o': { tag: 'Omnimodal Flagship', icon: '✨', desc: 'OpenAI flagship model with top-tier vision, reasoning, and accuracy.', tier: 'Recommended' },
+  'gpt-4o-mini': { tag: 'Fast & Affordable', icon: '⚡', desc: 'Efficient lightweight multimodal model for high-speed financial tracking.', tier: 'Recommended' },
+  'chatgpt-4o-latest': { tag: 'Continuous Latest 4o', icon: '🔄', desc: 'Dynamically tracking the newest ChatGPT-4o production checkpoint.', tier: 'Dynamic' },
+  'gpt-4-turbo': { tag: '128k High Capacity', icon: '🚀', desc: 'High capacity model for large context window analysis.', tier: 'Standard' },
+  'gpt-4': { tag: 'Legacy Flagship', icon: '📊', desc: 'Classic GPT-4 foundation model.', tier: 'Legacy' },
+  'gpt-3.5-turbo': { tag: 'Legacy High-Speed', icon: '⚡', desc: 'Classic lightweight text generation model.', tier: 'Legacy' },
+
+  // Claude Models
+  'claude-3-7-sonnet-latest': { tag: 'Claude 3.7 Latest Checkpoint', icon: '🧠', desc: 'Latest production build of Anthropic hybrid instant and extended reasoning flagship.', tier: 'Latest 2026' },
+  'claude-3-7-sonnet-20250219': { tag: 'Hybrid Reasoning Flagship', icon: '🧠', desc: 'Anthropic flagship with selectable instant and extended thinking.', tier: 'Premier' },
+  'claude-3-5-sonnet-latest': { tag: 'Continuous Latest 3.5', icon: '✨', desc: 'Latest release of the acclaimed Claude 3.5 Sonnet architecture.', tier: 'Recommended' },
+  'claude-3-5-sonnet-20241022': { tag: 'Premier Financial Intelligence', icon: '✨', desc: 'Industry benchmark for nuanced financial reasoning and structuring.', tier: 'Recommended' },
+  'claude-3-5-haiku-latest': { tag: 'Sub-Second Responsive Latest', icon: '⚡', desc: 'Blazing-fast model matching previous generation flagship capabilities.', tier: 'Fast' },
+  'claude-3-5-haiku-20241022': { tag: 'Sub-Second Responsive', icon: '⚡', desc: 'Blazing-fast model with sub-second response times.', tier: 'Fast' },
+  'claude-3-opus-latest': { tag: 'Continuous Latest Opus', icon: '📚', desc: 'Latest checkpoint of maximum analytical depth for forensic auditing.', tier: 'Advanced' },
+  'claude-3-opus-20240229': { tag: 'Deep Complex Analysis', icon: '📚', desc: 'Maximum analytical depth for thorough forensic budget auditing.', tier: 'Advanced' },
+  'claude-3-sonnet-20240229': { tag: 'Balanced Reasoning', icon: '⚖️', desc: 'Solid enterprise-grade intelligence.', tier: 'Standard' },
+  'claude-3-haiku-20240307': { tag: 'Compact & Fast', icon: '⚡', desc: 'Fast baseline Claude model.', tier: 'Legacy' },
+
+  // Groq Models
+  'llama-3.3-70b-versatile': { tag: '70B Open Flagship on LPU', icon: '⚡', desc: 'Ultra-fast 70B open weights model running on Groq Tensor LPUs.', tier: 'Recommended' },
+  'llama-3.3-70b-specdec': { tag: 'Speculative Decoding 70B', icon: '🚀', desc: 'Accelerated speculative decoding on Groq hardware at 400+ tokens/sec.', tier: 'Ultra-Fast' },
+  'llama-3.1-70b-versatile': { tag: '70B High Capacity', icon: '⚡', desc: 'High capability open model on fast LPUs.', tier: 'Standard' },
+  'llama-3.1-8b-instant': { tag: 'Sub-100ms Ultra-Fast', icon: '🚀', desc: 'Near instantaneous token streaming for real-time copilot interactions.', tier: 'Fast' },
+  'llama-3.2-90b-vision-preview': { tag: '90B Multimodal Vision LPU', icon: '👁️', desc: 'Meta premier open vision model accelerated on Groq LPUs.', tier: 'Vision' },
+  'llama-3.2-11b-vision-preview': { tag: '11B Fast Vision LPU', icon: '👁️', desc: 'High-speed image receipt and invoice understanding.', tier: 'Vision' },
+  'llama-3.2-3b-preview': { tag: '3B Micro-Latency LPU', icon: '⚡', desc: 'Sub-50ms instant text generation.', tier: 'Micro' },
+  'llama-3.2-1b-preview': { tag: '1B Ultra-Compact LPU', icon: '⚡', desc: 'Fastest possible response generation.', tier: 'Micro' },
+  'deepseek-r1-distill-llama-70b': { tag: 'R1 Reasoning on LPU', icon: '🧠', desc: 'DeepSeek R1 reasoning architecture distilled and accelerated on Groq.', tier: 'Reasoning' },
+  'deepseek-r1-distill-qwen-32b': { tag: 'Math & Logic Distill', icon: '💡', desc: 'Qwen-based R1 reasoning distillation on Groq hardware.', tier: 'Reasoning' },
+  'qwen-2.5-coder-32b': { tag: 'Qwen Coding & Logic 32B', icon: '💻', desc: 'Specialized logic and structured schema synthesis.', tier: 'Standard' },
+  'qwen-2.5-32b': { tag: 'Multilingual Logic', icon: '🌐', desc: 'Balanced 32B dense parameter model.', tier: 'Standard' },
+  'mixtral-8x7b-32768': { tag: '32k Mixture of Experts', icon: '🔄', desc: 'High-throughput 8x7B MoE architecture.', tier: 'Standard' },
+  'gemma2-9b-it': { tag: 'Google Gemma 2 on Groq', icon: '💎', desc: 'Google lightweight model running on Groq LPUs.', tier: 'Fast' },
+
+  // DeepSeek Models
+  'deepseek-chat': { tag: 'DeepSeek-V3 671B MoE', icon: '✨', desc: 'High-performance 671B mixture-of-experts general intelligence.', tier: 'Recommended' },
+  'deepseek-reasoner': { tag: 'DeepSeek-R1 Deep Reasoning', icon: '🧠', desc: 'Reinforcement-learning trained chain-of-thought financial analyst.', tier: 'Reasoning' },
+  'deepseek-v3': { tag: 'DeepSeek-V3 Direct ID', icon: '✨', desc: 'Direct alias for DeepSeek-V3 671B parameter production engine.', tier: 'Advanced' },
+  'deepseek-r1': { tag: 'DeepSeek-R1 Direct ID', icon: '🧠', desc: 'Direct alias for DeepSeek-R1 reasoning engine.', tier: 'Reasoning' },
+
+  // Mistral Models
+  'mistral-large-latest': { tag: 'Enterprise Flagship', icon: '✨', desc: 'Top-tier European flagship for reasoning, multilingual, and coding.', tier: 'Advanced' },
+  'mistral-large-2411': { tag: 'Mistral Large Nov 2024', icon: '✨', desc: 'State-of-the-art flagship reasoning version from Mistral AI.', tier: 'Advanced' },
+  'mistral-small-latest': { tag: 'Fast & Lightweight', icon: '⚡', desc: 'Cost-effective high-speed model for everyday tasks.', tier: 'Recommended' },
+  'mistral-small-2409': { tag: 'Mistral Small Checkpoint', icon: '⚡', desc: 'Proven cost-efficient lightweight enterprise model.', tier: 'Standard' },
+  'pixtral-large-latest': { tag: 'Multimodal Vision OCR', icon: '👁️', desc: 'Frontier multimodal model for document and receipt inspection.', tier: 'Vision' },
+  'pixtral-12b-2409': { tag: '12B Vision Document Model', icon: '👁️', desc: 'Compact multimodal image and document extraction.', tier: 'Vision' },
+  'ministral-8b-latest': { tag: 'Edge Powerhouse', icon: '📱', desc: 'High performance edge model with low memory footprint.', tier: 'Fast' },
+  'ministral-3b-latest': { tag: 'Ultra-Compact Edge', icon: '🚀', desc: 'Sub-second lightweight model for immediate responses.', tier: 'Fast' },
+  'codestral-latest': { tag: 'Logic & Code Engine', icon: '💻', desc: 'Specialized for math, syntax, and computational workflows.', tier: 'Standard' },
+  'codestral-2501': { tag: 'Codestral Jan 2025', icon: '💻', desc: 'Upgraded coding and precision calculation checkpoint.', tier: 'Standard' },
+  'open-mixtral-8x22b': { tag: 'Large Open MoE', icon: '🔄', desc: 'High capacity open weights mixture-of-experts.', tier: 'Standard' },
+
+  // OpenRouter Models
+  'google/gemini-2.0-flash-001': { tag: 'Gemini 2.0 via OpenRouter', icon: '⚡', desc: 'Next-gen Gemini speed routed via OpenRouter unified API.', tier: 'Recommended' },
+  'google/gemini-2.0-pro-exp-02-05:free': { tag: 'Free Experimental Tier', icon: '🆓', desc: 'No-cost community access to Gemini 2.0 Pro Experimental.', tier: 'Free Tier' },
+  'google/gemini-2.0-flash-thinking-exp:free': { tag: 'Free Thinking Tier', icon: '🆓', desc: 'Free access to Gemini 2.0 Flash Thinking reasoning engine.', tier: 'Free Tier' },
+  'google/gemini-1.5-pro': { tag: 'Gemini 1.5 Pro Router', icon: '📊', desc: 'Long-context Gemini model via OpenRouter API.', tier: 'Advanced' },
+  'openai/gpt-4.5-preview': { tag: 'GPT-4.5 via Router', icon: '✨', desc: 'OpenAI flagship foundation model on OpenRouter.', tier: 'Latest 2026' },
+  'anthropic/claude-3.7-sonnet': { tag: 'Claude 3.7 on OpenRouter', icon: '🧠', desc: 'Anthropic hybrid reasoning model routed via OpenRouter.', tier: 'Premier' },
+  'anthropic/claude-3.7-sonnet:thinking': { tag: 'Claude 3.7 Thinking Mode', icon: '🤔', desc: 'OpenRouter parameter enabling extended CoT thinking budget.', tier: 'Reasoning' },
+  'auto': { tag: 'Auto Smart Router', icon: '🎯', desc: 'Automatically routes queries to the optimal price-to-performance model.', tier: 'Smart' },
+
+  // Together AI Models
+  'meta-llama/Llama-3.3-70B-Instruct-Turbo': { tag: 'Turbo 70B Open Model', icon: '⚡', desc: 'High-speed accelerated Llama 3.3 70B on Together cloud.', tier: 'Recommended' },
+  'deepseek-ai/DeepSeek-R1': { tag: 'DeepSeek R1 on Together', icon: '🧠', desc: 'Full-scale DeepSeek R1 reasoning on high-bandwidth clusters.', tier: 'Reasoning' },
+  'deepseek-ai/DeepSeek-V3': { tag: 'DeepSeek V3 on Together', icon: '✨', desc: 'Full-scale DeepSeek V3 671B MoE model.', tier: 'Advanced' },
+  'Qwen/Qwen2.5-72B-Instruct-Turbo': { tag: 'Qwen 2.5 72B Turbo', icon: '🌐', desc: 'Alibaba leading 72B open model on Together AI infrastructure.', tier: 'Advanced' },
+  'Qwen/Qwen2.5-Coder-32B-Instruct': { tag: 'Qwen 2.5 Coder 32B', icon: '💻', desc: 'Specialized math & code reasoning on Together AI.', tier: 'Standard' },
+  'mistralai/Mixtral-8x22B-Instruct-v0.1': { tag: 'Mixtral 8x22B Cloud', icon: '🔄', desc: 'Heavyweight Mixture-of-Experts on Together AI.', tier: 'Standard' },
+
+  // Perplexity AI Models
+  'sonar-pro': { tag: 'Online Grounded Search & Reasoning', icon: '🔍', desc: 'Premier search-augmented model citing real-time web sources and market rates.', tier: 'Recommended' },
+  'sonar': { tag: 'Fast Grounded Search', icon: '⚡', desc: 'Lightweight real-time web-connected intelligence.', tier: 'Fast' },
+  'sonar-reasoning-pro': { tag: 'Deep Research with Live Web Search', icon: '🔬', desc: 'Multi-turn deep research engine with real-time web grounding.', tier: 'Advanced' },
+  'sonar-reasoning': { tag: 'Reasoning with Live Web Search', icon: '🧠', desc: 'Step-by-step reasoning verified against real-time internet data.', tier: 'Reasoning' },
+  'r1-1776': { tag: 'Perplexity R1-1776 Post-Trained', icon: '🗽', desc: 'DeepSeek R1 post-trained by Perplexity for unbiased factual citations.', tier: 'Reasoning' },
+
+  // xAI Grok Models
+  'grok-2-1212': { tag: 'xAI Grok 2 Frontier', icon: '✨', desc: 'Frontier reasoning and real-world understanding by xAI.', tier: 'Recommended' },
+  'grok-2': { tag: 'xAI Grok 2 Alias', icon: '✨', desc: 'Standard production alias for Grok 2.', tier: 'Standard' },
+  'grok-2-vision-1212': { tag: 'xAI Grok 2 Vision', icon: '👁️', desc: 'Multimodal vision and transactional OCR understanding.', tier: 'Vision' },
+  'grok-2-vision': { tag: 'xAI Grok 2 Vision Alias', icon: '👁️', desc: 'Standard alias for Grok 2 Vision.', tier: 'Vision' },
+  'grok-beta': { tag: 'xAI Grok Preview', icon: '🚀', desc: 'Early preview release of newest xAI architecture.', tier: 'Preview' },
+
+  // Cohere Models
+  'command-r-plus': { tag: 'Enterprise Tool & RAG Flagship', icon: '✨', desc: 'Optimized for high-accuracy financial retrieval and structured workflows.', tier: 'Recommended' },
+  'command-r': { tag: 'Scalable RAG Model', icon: '⚡', desc: 'Cost-effective model with strong citation and tool support.', tier: 'Standard' },
+  'command-light': { tag: 'Fast Instruction Model', icon: '🚀', desc: 'Fast, lightweight command model for rapid responses.', tier: 'Fast' },
+
+  // Ollama Offline Models
+  'llama3.2': { tag: 'Offline Local 3B', icon: '🛡️', desc: 'Lightweight local model running entirely offline on your hardware.', tier: 'Local' },
+  'llama3.3': { tag: 'Offline Local 70B', icon: '🛡️', desc: 'High capability local open model without cloud dependency.', tier: 'Local' },
+  'qwen2.5': { tag: 'Offline Qwen 2.5', icon: '🌐', desc: 'Multilingual offline model on Ollama.', tier: 'Local' },
+  'mistral': { tag: 'Offline Mistral', icon: '🇫🇷', desc: 'Classic 7B offline local model.', tier: 'Local' },
+  'gemma2': { tag: 'Offline Gemma 2', icon: '💎', desc: 'Google Gemma 2 running locally.', tier: 'Local' },
+  'phi4': { tag: 'Offline Phi-4', icon: '🔬', desc: 'Microsoft Phi-4 compact reasoning model.', tier: 'Local' },
+  'codellama': { tag: 'Offline Code Llama', icon: '💻', desc: 'Code and structured data model.', tier: 'Local' },
+  'starcoder2': { tag: 'Offline StarCoder 2', icon: '💻', desc: 'Code generation offline model.', tier: 'Local' },
+
+  // Native Local RAG
+  'deterministic-rag-v2': { tag: 'Zero-Cloud In-Memory Math', icon: '🛡️', desc: '100% deterministic mathematical accounting engine (0ms latency, zero API keys).', tier: 'Offline RAG' },
+};
+
 export const SettingsPage = () => {
   const { user } = useAuth();
 
   // AI Configuration State
   const [provider, setProvider] = useState('gemini');
-  const [model, setModel] = useState('gemini-1.5-flash');
+  const [model, setModel] = useState('gemini-2.0-flash');
   const [customModelInput, setCustomModelInput] = useState('');
   const [apiKey, setApiKey] = useState('');
   const [hasCustomKey, setHasCustomKey] = useState(false);
@@ -63,6 +219,10 @@ export const SettingsPage = () => {
     deepseek: Server,
     mistral: Layers,
     openrouter: Globe,
+    together: Share2,
+    perplexity: Compass,
+    xai: Orbit,
+    cohere: Box,
     ollama: Terminal,
     custom: Sliders,
     local_rag: ShieldCheck,
@@ -76,6 +236,10 @@ export const SettingsPage = () => {
     deepseek: 'linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(99, 102, 241, 0.2))',
     mistral: 'linear-gradient(135deg, rgba(236, 72, 153, 0.2), rgba(168, 85, 247, 0.2))',
     openrouter: 'linear-gradient(135deg, rgba(121, 40, 202, 0.25), rgba(0, 255, 135, 0.25))',
+    together: 'linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(236, 72, 153, 0.2))',
+    perplexity: 'linear-gradient(135deg, rgba(20, 184, 166, 0.2), rgba(59, 130, 246, 0.2))',
+    xai: 'linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(239, 68, 68, 0.2))',
+    cohere: 'linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(245, 158, 11, 0.2))',
     ollama: 'linear-gradient(135deg, rgba(100, 116, 139, 0.2), rgba(148, 163, 184, 0.2))',
     custom: 'linear-gradient(135deg, rgba(147, 51, 234, 0.2), rgba(79, 70, 229, 0.2))',
     local_rag: 'linear-gradient(135deg, rgba(0, 255, 135, 0.25), rgba(255, 215, 0, 0.25))',
@@ -281,7 +445,7 @@ export const SettingsPage = () => {
           )}
         </div>
         <p style={{ color: '#94A3B8', fontSize: '14px', margin: 0, lineHeight: 1.5 }}>
-          Customize your AI Provider (Gemini, OpenAI, Claude, Groq, DeepSeek, OpenRouter, Ollama, or Custom Endpoints) with automatic Local RAG fallback.
+          Customize your AI Provider (Google Gemini, OpenAI, Claude, Groq, DeepSeek, Mistral, OpenRouter, Together AI, Perplexity, xAI Grok, Cohere, Ollama, or Custom Endpoints) with automatic Local RAG fallback.
         </p>
       </div>
 
@@ -370,15 +534,45 @@ export const SettingsPage = () => {
                       <Icon size={17} color={isSelected ? '#00FF87' : '#94A3B8'} />
                     </div>
 
-                    {isSelected ? (
-                      <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#00FF87', fontSize: '11px', fontWeight: 800 }}>
-                        <CheckCircle2 size={14} /> ACTIVE
-                      </span>
-                    ) : (
-                      <span style={{ fontSize: '10px', color: '#64748B', textTransform: 'uppercase', fontWeight: 700 }}>
-                        {key === 'ollama' || key === 'local_rag' ? 'OFFLINE' : 'CLOUD'}
-                      </span>
-                    )}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      {(info.apiKeyUrl || PROVIDER_KEY_URLS[key]) && (
+                        <a
+                          href={info.apiKeyUrl || PROVIDER_KEY_URLS[key]}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          title={`Open ${info.name} API Key Portal`}
+                          style={{
+                            color: '#64748B',
+                            display: 'flex',
+                            alignItems: 'center',
+                            padding: '3px',
+                            borderRadius: '6px',
+                            background: 'rgba(255, 255, 255, 0.04)',
+                            transition: 'all 0.2s ease',
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.color = '#00FF87';
+                            e.currentTarget.style.background = 'rgba(0, 255, 135, 0.15)';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.color = '#64748B';
+                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)';
+                          }}
+                        >
+                          <ExternalLink size={12} />
+                        </a>
+                      )}
+                      {isSelected ? (
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#00FF87', fontSize: '11px', fontWeight: 800 }}>
+                          <CheckCircle2 size={14} /> ACTIVE
+                        </span>
+                      ) : (
+                        <span style={{ fontSize: '10px', color: '#64748B', textTransform: 'uppercase', fontWeight: 700 }}>
+                          {key === 'ollama' || key === 'local_rag' ? 'OFFLINE' : 'CLOUD'}
+                        </span>
+                      )}
+                    </div>
                   </div>
 
                   <div>
@@ -425,12 +619,20 @@ export const SettingsPage = () => {
                       className="auth-input-field"
                       style={{ cursor: 'pointer', appearance: 'none', WebkitAppearance: 'none' }}
                     >
-                      {availableModels.map((m) => (
-                        <option key={m} value={m} style={{ background: '#0F1420', color: '#F1F5F9' }}>
-                          {m} {m === currentProviderMeta.defaultModel ? '(Default)' : ''}
+                      {availableModels.map((m) => {
+                        const metaTag = MODEL_TAGS[m];
+                        return (
+                          <option key={m} value={m} style={{ background: '#0F1420', color: '#F1F5F9' }}>
+                            {m} {metaTag ? `— ${metaTag.icon} ${metaTag.tag}` : ''} {m === currentProviderMeta.defaultModel ? '★ (Default)' : ''}
+                          </option>
+                        );
+                      })}
+                      {!availableModels.includes(model) && model !== 'custom-input' && (
+                        <option value={model} style={{ background: '#0F1420', color: '#F1F5F9' }}>
+                          {model} (Custom Saved)
                         </option>
-                      ))}
-                      <option value="custom-input" style={{ background: '#0F1420', color: '#F1F5F9' }}>
+                      )}
+                      <option value="custom-input" style={{ background: '#0F1420', color: '#00FF87', fontWeight: 700 }}>
                         + Enter Custom Model ID...
                       </option>
                     </select>
@@ -454,23 +656,122 @@ export const SettingsPage = () => {
                     type="text"
                     value={customModelInput}
                     onChange={(e) => setCustomModelInput(e.target.value)}
-                    placeholder="Enter model string (e.g. gpt-4-32k, llama3-70b)"
+                    placeholder="Enter model string (e.g. gemini-2.5-pro, gpt-4o, llama-3.3-70b)"
                     className="auth-input-field"
                     style={{ marginTop: '8px' }}
                   />
                 )}
+
+                {/* Dynamic Selected Model Capability Pill */}
+                {(() => {
+                  const activeKey = model === 'custom-input' ? customModelInput.trim() : model;
+                  const metaTag = MODEL_TAGS[activeKey];
+                  if (metaTag) {
+                    return (
+                      <motion.div
+                        key={activeKey}
+                        initial={{ opacity: 0, y: 4 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        style={{
+                          marginTop: '10px',
+                          padding: '10px 14px',
+                          borderRadius: '12px',
+                          background: 'rgba(255, 255, 255, 0.03)',
+                          border: '1px solid rgba(255, 255, 255, 0.07)',
+                          display: 'flex',
+                          alignItems: 'flex-start',
+                          gap: '10px',
+                        }}
+                      >
+                        <span style={{ fontSize: '18px', lineHeight: 1, marginTop: '1px' }}>{metaTag.icon || '✨'}</span>
+                        <div style={{ flex: 1 }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '3px', flexWrap: 'wrap' }}>
+                            <span style={{ fontSize: '12px', fontWeight: 800, color: '#00FF87' }}>{metaTag.tag}</span>
+                            {metaTag.tier && (
+                              <span
+                                style={{
+                                  fontSize: '10px',
+                                  fontWeight: 700,
+                                  padding: '1px 7px',
+                                  borderRadius: '6px',
+                                  background: 'rgba(0, 240, 255, 0.12)',
+                                  color: '#00F0FF',
+                                  border: '1px solid rgba(0, 240, 255, 0.25)',
+                                  textTransform: 'uppercase',
+                                }}
+                              >
+                                {metaTag.tier}
+                              </span>
+                            )}
+                          </div>
+                          <p style={{ fontSize: '11.5px', color: '#94A3B8', margin: 0, lineHeight: 1.4 }}>
+                            {metaTag.desc}
+                          </p>
+                        </div>
+                      </motion.div>
+                    );
+                  }
+                  if (model === 'custom-input' && customModelInput.trim()) {
+                    return (
+                      <div
+                        style={{
+                          marginTop: '8px',
+                          padding: '8px 12px',
+                          borderRadius: '10px',
+                          background: 'rgba(0, 255, 135, 0.05)',
+                          border: '1px solid rgba(0, 255, 135, 0.15)',
+                          fontSize: '11.5px',
+                          color: '#00FF87',
+                        }}
+                      >
+                        ⚙️ Custom Target Model: <strong>{customModelInput.trim()}</strong>
+                      </div>
+                    );
+                  }
+                  return null;
+                })()}
               </div>
 
               {/* API Key Input (if not local_rag) */}
               {provider !== 'local_rag' && (
                 <div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px', flexWrap: 'wrap', gap: '6px' }}>
                     <label style={{ fontSize: '12.5px', fontWeight: 700, color: '#CBD5E1', margin: 0 }}>
                       API Key (BYOK)
                     </label>
-                    <span style={{ fontSize: '11px', color: '#64748B' }}>
-                      {hasCustomKey ? 'Custom Key Saved' : 'Using Server Environment'}
-                    </span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      {(currentProviderMeta.apiKeyUrl || PROVIDER_KEY_URLS[provider]) && (
+                        <a
+                          href={currentProviderMeta.apiKeyUrl || PROVIDER_KEY_URLS[provider]}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          title={`Open ${currentProviderMeta.name || provider} API Key Portal`}
+                          style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '5px',
+                            fontSize: '11px',
+                            fontWeight: 800,
+                            color: '#00FF87',
+                            background: 'rgba(0, 255, 135, 0.1)',
+                            border: '1px solid rgba(0, 255, 135, 0.3)',
+                            padding: '3px 9px',
+                            borderRadius: '6px',
+                            textDecoration: 'none',
+                            cursor: 'pointer',
+                            boxShadow: '0 2px 8px rgba(0, 255, 135, 0.15)',
+                            transition: 'all 0.2s ease',
+                          }}
+                        >
+                          <Key size={11} />
+                          <span>Get {currentProviderMeta.name ? currentProviderMeta.name.split(' ')[0] : 'Provider'} Key</span>
+                          <ExternalLink size={11} />
+                        </a>
+                      )}
+                      <span style={{ fontSize: '11px', color: '#64748B' }}>
+                        {hasCustomKey ? 'Custom Key Saved' : 'Using Server Environment'}
+                      </span>
+                    </div>
                   </div>
                   <div className="auth-input-wrapper" style={{ position: 'relative' }}>
                     <Key size={17} className="auth-input-icon" />
@@ -500,9 +801,30 @@ export const SettingsPage = () => {
                       {showApiKey ? <EyeOff size={16} /> : <Eye size={16} />}
                     </button>
                   </div>
-                  <span style={{ fontSize: '11px', color: '#64748B', marginTop: '4px', display: 'block' }}>
-                    {provider === 'ollama' ? 'Ollama uses local daemon (no cloud key required).' : 'Keys are stored securely per user and masked.'}
-                  </span>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '6px', flexWrap: 'wrap', gap: '6px' }}>
+                    <span style={{ fontSize: '11px', color: '#64748B' }}>
+                      {provider === 'ollama' ? 'Ollama uses local daemon (no cloud key required).' : 'Keys are stored securely per user and masked.'}
+                    </span>
+                    {(currentProviderMeta.apiKeyUrl || PROVIDER_KEY_URLS[provider]) && (
+                      <a
+                        href={currentProviderMeta.apiKeyUrl || PROVIDER_KEY_URLS[provider]}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          fontSize: '11.5px',
+                          color: '#00F0FF',
+                          textDecoration: 'none',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '4px',
+                          fontWeight: 700,
+                        }}
+                      >
+                        <span>Open {currentProviderMeta.name ? currentProviderMeta.name.replace(/ \(.*\)/, '') : ''} Key Portal</span>
+                        <ArrowUpRight size={13} />
+                      </a>
+                    )}
+                  </div>
                 </div>
               )}
             </div>

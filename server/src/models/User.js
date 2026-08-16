@@ -46,7 +46,7 @@ const userSchema = new mongoose.Schema({
   aiConfig: {
     provider: {
       type: String,
-      enum: ['gemini', 'openai', 'claude', 'groq', 'deepseek', 'mistral', 'openrouter', 'ollama', 'custom', 'local_rag'],
+      enum: ['gemini', 'openai', 'claude', 'groq', 'deepseek', 'mistral', 'openrouter', 'ollama', 'together', 'perplexity', 'xai', 'cohere', 'custom', 'local_rag'],
       default: 'gemini',
     },
     model: {

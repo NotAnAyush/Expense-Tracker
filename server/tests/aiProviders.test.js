@@ -77,28 +77,60 @@ describe('Multi-AI Provider & Local RAG Architecture Tests', () => {
       expect(res.status).toBe(200);
       expect(res.body.config).toBeDefined();
       expect(res.body.config.provider).toBe('gemini');
+      expect(res.body.providers.gemini).toBeDefined();
+      expect(res.body.providers.gemini.models).toContain('gemini-3.7-flash');
+      expect(res.body.providers.gemini.models).toContain('gemini-2.5-flash');
+      expect(res.body.providers.gemini.models).toContain('gemini-2.0-flash');
+      expect(res.body.providers.gemini.models).toContain('gemini-2.0-flash-thinking-exp-01-21');
+      expect(res.body.providers.gemini.models).toContain('gemini-1.5-flash');
       expect(res.body.providers.openai).toBeDefined();
+      expect(res.body.providers.openai.models).toContain('gpt-4.5-preview');
+      expect(res.body.providers.openai.models).toContain('o3-mini');
+      expect(res.body.providers.claude).toBeDefined();
+      expect(res.body.providers.claude.models).toContain('claude-3-7-sonnet-20250219');
       expect(res.body.providers.groq).toBeDefined();
       expect(res.body.providers.deepseek).toBeDefined();
-      expect(res.body.providers.claude).toBeDefined();
+      expect(res.body.providers.gemini.apiKeyUrl).toBe('https://aistudio.google.com/app/apikey');
+      expect(res.body.providers.openai.apiKeyUrl).toBe('https://platform.openai.com/api-keys');
+      expect(res.body.providers.claude.apiKeyUrl).toBe('https://console.anthropic.com/settings/keys');
+      expect(res.body.providers.groq.apiKeyUrl).toBe('https://console.groq.com/keys');
+      expect(res.body.providers.deepseek.apiKeyUrl).toBe('https://platform.deepseek.com/api_keys');
+      expect(res.body.providers.together.apiKeyUrl).toBe('https://api.together.ai/settings/api-keys');
+      expect(res.body.providers.perplexity.apiKeyUrl).toBe('https://www.perplexity.ai/settings/api');
+      expect(res.body.providers.xai.apiKeyUrl).toBe('https://console.x.ai/');
+      expect(res.body.providers.cohere.apiKeyUrl).toBe('https://dashboard.cohere.com/api-keys');
       expect(res.body.providers.local_rag).toBeDefined();
     });
 
-    it('PUT /api/ai/config should update user provider and model preferences', async () => {
-      const res = await request(app)
+    it('PUT /api/ai/config should update user provider and model preferences for Gemini and other models', async () => {
+      const resGemini = await request(app)
         .put('/api/ai/config')
         .set('Authorization', `Bearer ${userToken}`)
         .send({
-          provider: 'groq',
-          model: 'llama-3.3-70b-versatile',
+          provider: 'gemini',
+          model: 'gemini-2.0-flash-thinking-exp-01-21',
+          temperature: 0.3,
+          useLocalRagFallback: true,
+        });
+
+      expect(resGemini.status).toBe(200);
+      expect(resGemini.body.config.provider).toBe('gemini');
+      expect(resGemini.body.config.model).toBe('gemini-2.0-flash-thinking-exp-01-21');
+      expect(resGemini.body.config.temperature).toBe(0.3);
+
+      const resTogether = await request(app)
+        .put('/api/ai/config')
+        .set('Authorization', `Bearer ${userToken}`)
+        .send({
+          provider: 'together',
+          model: 'deepseek-ai/DeepSeek-R1',
           temperature: 0.1,
           useLocalRagFallback: true,
         });
 
-      expect(res.status).toBe(200);
-      expect(res.body.config.provider).toBe('groq');
-      expect(res.body.config.model).toBe('llama-3.3-70b-versatile');
-      expect(res.body.config.temperature).toBe(0.1);
+      expect(resTogether.status).toBe(200);
+      expect(resTogether.body.config.provider).toBe('together');
+      expect(resTogether.body.config.model).toBe('deepseek-ai/DeepSeek-R1');
     });
 
     it('POST /api/ai/test-connection should succeed for local_rag with 0ms latency', async () => {
