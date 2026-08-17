@@ -1,16 +1,16 @@
 # Graph Report - V2  (2026-08-17)
 
 ## Corpus Check
-- 144 files · ~128,650 words
+- 144 files · ~126,747 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2020 nodes · 2757 edges · 165 communities (138 shown, 27 thin omitted)
+- 2020 nodes · 2757 edges · 163 communities (137 shown, 26 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 11 edges (avg confidence: 0.72)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `7a15baa3`
+- Built from commit: `f6eba66a`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -173,11 +173,9 @@
 - [[_COMMUNITY_Community 155|Community 155]]
 - [[_COMMUNITY_Community 156|Community 156]]
 - [[_COMMUNITY_Community 157|Community 157]]
-- [[_COMMUNITY_Community 158|Community 158]]
-- [[_COMMUNITY_Community 159|Community 159]]
+- [[_COMMUNITY_Community 160|Community 160]]
+- [[_COMMUNITY_Community 161|Community 161]]
 - [[_COMMUNITY_Community 162|Community 162]]
-- [[_COMMUNITY_Community 163|Community 163]]
-- [[_COMMUNITY_Community 164|Community 164]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `mongoose` - 36 edges
@@ -206,7 +204,7 @@
 ## Hyperedges (group relationships)
 - **Finance AI Platform Core Architecture** — documentation_backend_architecture, plan_revised_master_prompt, design_pinterest_design_pinterest_spec [INFERRED 0.95]
 
-## Communities (165 total, 27 thin omitted)
+## Communities (163 total, 26 thin omitted)
 
 ### Community 0 - "asyncHandler.js"
 Cohesion: 0.08
@@ -264,7 +262,17 @@ Nodes (24): express, jwt, protect(), User, express, { protect }, router, {
 
 ### Community 12 - "Expense.js"
 Cohesion: 0.08
-Nodes (18): AIService, asyncHandler, { BadRequestError }, asyncHandler, Budget, { NotFoundError, BadRequestError }, asyncHandler, Expense (+10 more)
+Nodes (23): express, jwt, User, express, { protect }, router, {
+  suggestCategory,
+  getMonthlySummaryAI,
+  getSpendingExplanation,
+  copilotChat,
+  getInsights,
+  scanReceipt,
+  getAIConfig,
+  updateAIConfig,
+  testConnection,
+}, express (+15 more)
 
 ### Community 13 - "AppError"
 Cohesion: 0.07
@@ -275,10 +283,6 @@ Cohesion: 0.09
 Nodes (19): ApiResponse, Expense, { FxService }, { TripVault }, FxService, mongoose, TripExpenseSchema, TripVaultSchema (+11 more)
 
 ### Community 15 - "goalRoutes.js"
-Cohesion: 0.09
-Nodes (20): express, jwt, User, express, { getAnalyticsOverview, getCashFlow }, { getAnalyticsOverview, getCashFlow, getFinancialHealth }, { protect }, router (+12 more)
-
-### Community 16 - "budgetRoutes.js"
 Cohesion: 0.12
 Nodes (14): {
   AppError,
@@ -291,37 +295,41 @@ Nodes (14): {
   TooManyRequestsError,
 }, ConflictError, ForbiddenError, NotFoundError, TooManyRequestsError, UnauthorizedError, ValidationError, ApiResponse (+6 more)
 
-### Community 17 - "recurringRoutes.js"
+### Community 16 - "budgetRoutes.js"
 Cohesion: 0.08
 Nodes (24): 1. Authentication (`/api/auth`), 1. User Model (`User.js`), 2. RefreshToken Model (`RefreshToken.js`), 2. Transactions / Expenses (`/api/expenses`), 3. Budgets & Pace (`/api/budgets`), 3. Expense Model (`Expense.js`), 4. AuditLog Model (`AuditLog.js`), 4. Savings Goals (`/api/goals`) (+16 more)
 
-### Community 18 - "⚡ Enterprise AI/ML Production Improvement Blueprint"
+### Community 17 - "recurringRoutes.js"
 Cohesion: 0.08
 Nodes (24): author, description, keywords, license, name, private, scripts, build (+16 more)
 
-### Community 19 - "express"
+### Community 18 - "⚡ Enterprise AI/ML Production Improvement Blueprint"
 Cohesion: 0.11
 Nodes (14): ApiResponse, asyncHandler, { BadRequestError }, commitBankStatement, ImportService, previewBankStatement, crypto, Expense (+6 more)
 
-### Community 20 - "setup-git-hooks.cjs"
-Cohesion: 0.09
-Nodes (20): jsonwebtoken, mongoose, userSchema, jsonwebtoken, jwt, { MongoMemoryServer }, mongoose, request (+12 more)
-
-### Community 21 - "categoryRoutes.js"
+### Community 19 - "express"
 Cohesion: 0.09
 Nodes (21): Additional Forbidden Patterns, Anti-Patterns (Do NOT Use), Buttons, Cards, code:css (@import url('https://fonts.googleapis.com/css2?family=Fira+C), code:css (/* Primary Button */), code:css (.card {), code:css (.input {) (+13 more)
 
-### Community 22 - "auth.js"
+### Community 20 - "setup-git-hooks.cjs"
 Cohesion: 0.12
 Nodes (19): RefreshToken, aiLimiter, authLimiter, demoLimiter, globalLimiter, isTestEnv(), rateLimit, shouldSkip() (+11 more)
 
-### Community 23 - "aiController.js"
+### Community 21 - "categoryRoutes.js"
 Cohesion: 0.09
 Nodes (19): 1. Executive Summary & Runtime Health, 2. Complete Innovation Roadmap Matrix (`v2.3.0` – `v3.0.0`), 2. Graphify Knowledge Graph Mapping, 3. Core Architectural Hubs ("God Nodes"), 3. Core Architectural Subsystems, 4. Key Subsystems & Community Structure, 5. Active Feature Checklist, code:block1 (Corpus Size: 99 files · ~67,335 words) (+11 more)
 
-### Community 24 - "exportRoutes.js"
+### Community 22 - "auth.js"
+Cohesion: 0.1
+Nodes (14): AnalyticsService, asyncHandler, asyncHandler, Goal, { NotFoundError, BadRequestError }, goalSchema, mongoose, AnalyticsService (+6 more)
+
+### Community 23 - "aiController.js"
 Cohesion: 0.14
 Nodes (11): AIService, AnalyticsService, Category, ContextBuilder, { getGeminiModel, isAvailable }, IntentRouter, sanitizeUserText(), ToolRegistry (+3 more)
+
+### Community 24 - "exportRoutes.js"
+Cohesion: 0.11
+Nodes (12): AIService, asyncHandler, { BadRequestError }, asyncHandler, Budget, { NotFoundError, BadRequestError }, asyncHandler, Expense (+4 more)
 
 ### Community 25 - "validate.js"
 Cohesion: 0.11
@@ -336,8 +344,8 @@ Cohesion: 0.11
 Nodes (18): client/package.json, devDependencies, @types/react, @types/react-dom, vite, @vitejs/plugin-react, name, private (+10 more)
 
 ### Community 28 - "Graphify Knowledge Graph Rule"
-Cohesion: 0.11
-Nodes (12): AnalyticsService, asyncHandler, AnalyticsService, ContextBuilder, AnalyticsService, Expense, ToolRegistry, Budget (+4 more)
+Cohesion: 0.12
+Nodes (14): asyncHandler, Expense, { NotFoundError, BadRequestError }, RecurringExpense, expenseSchema, mongoose, mongoose, recurringExpenseSchema (+6 more)
 
 ### Community 29 - "vite.config.js"
 Cohesion: 0.12
@@ -345,31 +353,31 @@ Nodes (16): app, copilot, Expense, facts, LocalRagEngine, { MongoMemoryServer },
 
 ### Community 30 - "Pinterest Style UI & Masonry Design System"
 Cohesion: 0.12
-Nodes (9): TripVaultController, express, { protect }, router, { TripVaultController }, express, { protect }, router (+1 more)
+Nodes (13): protect(), cleanupTimer, idempotency(), idempotencyCache, requestLogger(), sanitizeInput(), sanitizeValue(), express (+5 more)
 
 ### Community 31 - "Design System Master Tokens & Styling Guide"
 Cohesion: 0.12
-Nodes (13): asyncHandler, { BadRequestError, UnauthorizedError }, bcrypt, Budget, Category, crypto, Expense, Goal (+5 more)
+Nodes (9): TripVaultController, express, { protect }, router, { TripVaultController }, express, { protect }, router (+1 more)
 
 ### Community 32 - "joi"
-Cohesion: 0.13
-Nodes (13): AUDIT_TTL_DAYS, auditLogSchema, mongoose, mongoose, refreshTokenSchema, mongoose, app, AuditLog (+5 more)
+Cohesion: 0.12
+Nodes (13): asyncHandler, { BadRequestError, UnauthorizedError }, bcrypt, Budget, Category, crypto, Expense, Goal (+5 more)
 
 ### Community 33 - "🔑 Complete REST API Endpoints Reference"
-Cohesion: 0.13
-Nodes (12): protect(), cleanupTimer, idempotency(), idempotencyCache, requestLogger(), sanitizeInput(), sanitizeValue(), { exportExpenses, exportTaxSummary } (+4 more)
-
-### Community 34 - "Project Status & Architectural Knowledge Report"
 Cohesion: 0.12
 Nodes (13): mongoose, userSchema, app, { MongoMemoryServer }, mongoose, request, User, app (+5 more)
 
-### Community 35 - "errors.js"
+### Community 34 - "Project Status & Architectural Knowledge Report"
 Cohesion: 0.14
 Nodes (11): AnalyticsService, Expense, ToolRegistry, Budget, Expense, Goal, Income, mongoose (+3 more)
 
-### Community 36 - "patterns.test.js"
+### Community 35 - "errors.js"
 Cohesion: 0.13
 Nodes (14): app, Budget, { Debt }, Expense, Goal, { Group }, Income, { MongoMemoryServer } (+6 more)
+
+### Community 36 - "patterns.test.js"
+Cohesion: 0.13
+Nodes (10): AnalyticsService, ContextBuilder, IntentRouter, LocalRagEngine, ToolRegistry, UnifiedAIClient, User, AnalyticsService (+2 more)
 
 ### Community 37 - "Community 37"
 Cohesion: 0.21
@@ -384,29 +392,24 @@ Cohesion: 0.13
 Nodes (15): 62. FINAL QUALITY AUDIT, Accessibility, AI, Analytics, Deployment, Foundation, Grounding, Mobile (+7 more)
 
 ### Community 40 - "ApiResponse"
-Cohesion: 0.14
-Nodes (12): mongodb-memory-server, app, Budget, { MongoMemoryServer }, mongoose, request, validBudget, app (+4 more)
+Cohesion: 0.15
+Nodes (11): budgetSchema, mongoose, mongoose, refreshTokenSchema, mongoose, app, Budget, { MongoMemoryServer } (+3 more)
 
 ### Community 41 - "Richy Rich Engineering Documentation & User Manual"
 Cohesion: 0.14
-Nodes (13): jest, nodemon, devDependencies, jest, nodemon, supertest, supertest, app (+5 more)
+Nodes (13): jest, nodemon, devDependencies, jest, nodemon, supertest, supertest, jwt (+5 more)
 
 ### Community 42 - "graphify.md"
 Cohesion: 0.14
-Nodes (13): app, Expense, { FireSimulatorEngine }, fiveYear, Income, jwt, milestones, { MongoMemoryServer } (+5 more)
+Nodes (12): mongodb-memory-server, app, { MongoMemoryServer }, mongoose, mongoUri, request, User, app (+4 more)
 
 ### Community 43 - "pinterest/README.md"
 Cohesion: 0.14
-Nodes (12): mongoose, recurringExpenseSchema, app, Expense, futureDate, { MongoMemoryServer }, mongoose, newNext (+4 more)
+Nodes (13): app, Expense, { FireSimulatorEngine }, fiveYear, Income, jwt, milestones, { MongoMemoryServer } (+5 more)
 
 ### Community 44 - "Community 44"
-Cohesion: 0.16
-Nodes (10): AppError, { createBudgetSchema, updateBudgetSchema }, express, {
-  getBudgets,
-  createBudget,
-  updateBudget,
-  deleteBudget,
-}, { protect }, router, validate, createBudgetSchema (+2 more)
+Cohesion: 0.14
+Nodes (12): mongoose, recurringExpenseSchema, app, Expense, futureDate, { MongoMemoryServer }, mongoose, newNext (+4 more)
 
 ### Community 45 - "Community 45"
 Cohesion: 0.16
@@ -420,21 +423,28 @@ Nodes (12): { createExpenseSchema, updateExpenseSchema }, express, {
 }, { protect }, router, validate, createExpenseSchema, Joi (+4 more)
 
 ### Community 46 - "Community 46"
+Cohesion: 0.16
+Nodes (10): AppError, { createBudgetSchema, updateBudgetSchema }, express, {
+  getBudgets,
+  createBudget,
+  updateBudget,
+  deleteBudget,
+}, { protect }, router, validate, createBudgetSchema (+2 more)
+
+### Community 47 - "Community 47"
 Cohesion: 0.14
 Nodes (14): 46. TESTING THE AI LAYER, Contradictory data, Empty dataset, Gemini API failure, Gemini timeout, Hallucinated amount, Invalid category, Malformed model response (+6 more)
 
-### Community 47 - "Community 47"
-Cohesion: 0.16
-Nodes (10): AppError, { createRecurringSchema, updateRecurringSchema }, express, {
-  getRecurringExpenses,
-  createRecurringExpense,
-  updateRecurringExpense,
-  deleteRecurringExpense,
-  getRecurringHistory,
-  recordRecurringPayment,
-}, { protect }, router, validate, createRecurringSchema (+2 more)
-
 ### Community 48 - "Community 48"
+Cohesion: 0.16
+Nodes (10): AppError, { createBudgetSchema, updateBudgetSchema }, express, {
+  getBudgets,
+  createBudget,
+  updateBudget,
+  deleteBudget,
+}, { protect }, router, validate, createBudgetSchema (+2 more)
+
+### Community 49 - "Community 49"
 Cohesion: 0.18
 Nodes (12): RefreshToken, { authLimiter, demoLimiter }, express, { protect }, { registerSchema, loginSchema, refreshTokenSchema }, {
   registerUser,
@@ -445,15 +455,15 @@ Nodes (12): RefreshToken, { authLimiter, demoLimiter }, express, { protect }, { 
   logoutUser,
 }, router, validate (+4 more)
 
-### Community 49 - "Community 49"
-Cohesion: 0.15
-Nodes (11): budgetSchema, mongoose, app, Budget, Expense, { MongoMemoryServer }, mongoose, mongoUri (+3 more)
-
 ### Community 50 - "Community 50"
+Cohesion: 0.15
+Nodes (12): jsonwebtoken, jsonwebtoken, ayushBalance, jwt, { MongoMemoryServer }, mongoose, priyaBalance, request (+4 more)
+
+### Community 51 - "Community 51"
 Cohesion: 0.15
 Nodes (11): asyncHandler, cursor, endDate, Expense, expenses, query, row, sections (+3 more)
 
-### Community 51 - "Community 51"
+### Community 52 - "Community 52"
 Cohesion: 0.22
 Nodes (6): {
   AppError,
@@ -466,7 +476,7 @@ Nodes (6): {
   TooManyRequestsError,
 }, ConflictError, ForbiddenError, TooManyRequestsError, UnauthorizedError, ValidationError
 
-### Community 53 - "Community 53"
+### Community 54 - "Community 54"
 Cohesion: 0.18
 Nodes (11): { createIncomeSchema, updateIncomeSchema }, express, {
   getIncomes,
@@ -477,11 +487,11 @@ Nodes (11): { createIncomeSchema, updateIncomeSchema }, express, {
   getIncomeSummary,
 }, { protect }, router, validate, createIncomeSchema, Joi (+3 more)
 
-### Community 54 - "Community 54"
+### Community 55 - "Community 55"
 Cohesion: 0.15
 Nodes (13): 3. DO NOT BREAK THE ORIGINAL PROJECT ROADMAP, Phase 0, Phase 1, Phase 10, Phase 11, Phase 2, Phase 3, Phase 4 (+5 more)
 
-### Community 56 - "Community 56"
+### Community 57 - "Community 57"
 Cohesion: 0.18
 Nodes (11): { createExpenseSchema, updateExpenseSchema }, express, {
   getExpenses,
@@ -492,15 +502,27 @@ Nodes (11): { createExpenseSchema, updateExpenseSchema }, express, {
   getExpenseSummary,
 }, { protect }, router, validate, createExpenseSchema, Joi (+3 more)
 
-### Community 57 - "Community 57"
+### Community 58 - "Community 58"
 Cohesion: 0.2
 Nodes (6): FireSimulatorEngine, ApiResponse, Expense, { FireSimulatorEngine }, Goal, Income
 
-### Community 58 - "Community 58"
+### Community 59 - "Community 59"
+Cohesion: 0.17
+Nodes (10): mongoose, userSchema, app, Income, { MongoMemoryServer }, mongoose, mongoUri, request (+2 more)
+
+### Community 60 - "Community 60"
+Cohesion: 0.17
+Nodes (10): AUDIT_TTL_DAYS, auditLogSchema, mongoose, app, AuditLog, Expense, { MongoMemoryServer }, mongoose (+2 more)
+
+### Community 61 - "Community 61"
 Cohesion: 0.17
 Nodes (10): incomeSchema, mongoose, app, duplicates, Expense, Income, { MongoMemoryServer }, mongoose (+2 more)
 
-### Community 60 - "Community 60"
+### Community 63 - "Community 63"
+Cohesion: 0.17
+Nodes (9): asyncHandler, Budget, cleanCat, { NotFoundError, BadRequestError }, asyncHandler, { BadRequestError, ConflictError }, Category, cleanName (+1 more)
+
+### Community 64 - "Community 64"
 Cohesion: 0.17
 Nodes (9): ApiResponse, app, {
   AppError,
@@ -512,7 +534,7 @@ Nodes (9): ApiResponse, app, {
   TooManyRequestsError,
 }, asyncHandler, err, failingFn, { MongoMemoryServer }, mongoose (+1 more)
 
-### Community 61 - "Community 61"
+### Community 65 - "Community 65"
 Cohesion: 0.2
 Nodes (10): { createGoalSchema, updateGoalSchema }, express, {
   getGoals,
@@ -521,11 +543,11 @@ Nodes (10): { createGoalSchema, updateGoalSchema }, express, {
   deleteGoal,
 }, { protect }, router, validate, createGoalSchema, Joi (+2 more)
 
-### Community 62 - "Community 62"
+### Community 66 - "Community 66"
 Cohesion: 0.17
 Nodes (11): code:block1 (┌───────────────────────────────────────────────────────────), code:mermaid (gantt), 🧭 Executive Summary & Product Vision, 📊 Feature Impact & Feasibility Matrix, 💎 High-Impact Feature Pillars, High-Impact, Genuine & Transformative Financial Features for Next-Gen Personal Wealth Management, Immediate Action Plan:, 🚀 Richy Rich — Strategic Feature Roadmap & Productivity Innovations (+3 more)
 
-### Community 63 - "Community 63"
+### Community 67 - "Community 67"
 Cohesion: 0.2
 Nodes (10): { createGoalSchema, updateGoalSchema }, express, {
   getGoals,
@@ -534,23 +556,19 @@ Nodes (10): { createGoalSchema, updateGoalSchema }, express, {
   deleteGoal,
 }, { protect }, router, validate, createGoalSchema, Joi (+2 more)
 
-### Community 64 - "Community 64"
-Cohesion: 0.18
-Nodes (9): goalSchema, mongoose, app, futureDate, Goal, { MongoMemoryServer }, mongoose, request (+1 more)
-
-### Community 65 - "Community 65"
+### Community 68 - "Community 68"
 Cohesion: 0.18
 Nodes (10): AnalyticsService, app, augustDate, Expense, Income, { MongoMemoryServer }, mongoose, mongoUri (+2 more)
 
-### Community 66 - "Community 66"
+### Community 69 - "Community 69"
+Cohesion: 0.18
+Nodes (9): goalSchema, mongoose, app, futureDate, Goal, { MongoMemoryServer }, mongoose, request (+1 more)
+
+### Community 70 - "Community 70"
 Cohesion: 0.18
 Nodes (10): app, currentYear, Expense, { MongoMemoryServer }, mongoose, mongoUri, request, splitExpense (+2 more)
 
-### Community 67 - "Community 67"
-Cohesion: 0.18
-Nodes (8): AnalyticsService, ContextBuilder, IntentRouter, LocalRagEngine, ToolRegistry, UnifiedAIClient, User, IntentRouter
-
-### Community 68 - "Community 68"
+### Community 71 - "Community 71"
 Cohesion: 0.22
 Nodes (9): { createRecurringSchema, updateRecurringSchema }, express, {
   getRecurringExpenses,
@@ -561,118 +579,108 @@ Nodes (9): { createRecurringSchema, updateRecurringSchema }, express, {
   recordRecurringPayment,
 }, { protect }, router, validate, createRecurringSchema, Joi (+1 more)
 
-### Community 69 - "Community 69"
+### Community 72 - "Community 72"
 Cohesion: 0.18
 Nodes (10): 1. Backend Setup, 2. Frontend Setup, 3. Environment Configuration, AI-First Personal Finance Intelligence Platform (V2), Architectural Architecture, code:block1 (Financial Data Layer (MongoDB/Mongoose Source of Truth)), code:bash (cd server), code:bash (cd client) (+2 more)
 
-### Community 70 - "Community 70"
-Cohesion: 0.18
-Nodes (10): 1. Executive Summary & Core Philosophy, 2. Repository Layout & Project Anatomy, 7. Team AI Customizations (`.agents` Workspace), code:mermaid (graph TD), code:block16 (.agents/), code:block2 (Expense-Tracker-V2/), Customization Directory Structure:, Richy Rich v2.2 — Engineering Team Collaboration & Antigravity Manual (+2 more)
-
-### Community 71 - "Community 71"
+### Community 73 - "Community 73"
 Cohesion: 0.18
 Nodes (11): 6.1. The Three AI Interaction Modalities, 6.2. Planning Mode Workflow, 6.3. Context `@ Mentions` & Slash Commands, 6. Mastering Google Antigravity 2.0 & Antigravity IDE, A. Passive Modality: Antigravity Tab (Autocomplete & Supercomplete), B. Instructive Modality: Inline Command (<kbd>Ctrl</kbd>+<kbd>I</kbd> / <kbd>Cmd</kbd>+<kbd>I</kbd>), C. Collaborative Modality: Agent & Planning Mode, code:mermaid (graph LR) (+3 more)
 
-### Community 72 - "Community 72"
+### Community 74 - "Community 74"
+Cohesion: 0.18
+Nodes (10): 1. Executive Summary & Core Philosophy, 2. Repository Layout & Project Anatomy, 7. Team AI Customizations (`.agents` Workspace), code:mermaid (graph TD), code:block16 (.agents/), code:block2 (Expense-Tracker-V2/), Customization Directory Structure:, Richy Rich v2.2 — Engineering Team Collaboration & Antigravity Manual (+2 more)
+
+### Community 75 - "Community 75"
 Cohesion: 0.18
 Nodes (9): budgetSchema, mongoose, app, Budget, Expense, { MongoMemoryServer }, mongoose, request (+1 more)
 
-### Community 73 - "Community 73"
+### Community 76 - "Community 76"
 Cohesion: 0.22
-Nodes (9): { createBudgetSchema, updateBudgetSchema }, express, {
-  getBudgets,
-  createBudget,
-  updateBudget,
-  deleteBudget,
-}, { protect }, router, validate, createBudgetSchema, Joi (+1 more)
+Nodes (9): { createRecurringSchema, updateRecurringSchema }, express, {
+  getRecurringExpenses,
+  createRecurringExpense,
+  updateRecurringExpense,
+  deleteRecurringExpense,
+  getRecurringHistory,
+  recordRecurringPayment,
+}, { protect }, router, validate, createRecurringSchema, Joi (+1 more)
 
-### Community 74 - "Community 74"
+### Community 77 - "Community 77"
 Cohesion: 0.24
 Nodes (4): ApiResponse, { DebtSimplificationEngine }, { Group }, DebtSimplificationEngine
 
-### Community 75 - "Community 75"
-Cohesion: 0.2
-Nodes (9): app, Expense, fakeId, { MongoMemoryServer }, mongoose, mongoUri, request, User (+1 more)
-
-### Community 76 - "Community 76"
-Cohesion: 0.2
-Nodes (9): app, Budget, Expense, Goal, Income, { MongoMemoryServer }, mongoose, mongoUri (+1 more)
-
-### Community 77 - "Community 77"
-Cohesion: 0.31
-Nodes (4): AIService, extractJson(), getUserAiConfig(), sanitizeUserText()
-
 ### Community 78 - "Community 78"
 Cohesion: 0.2
-Nodes (8): asyncHandler, diffDays, Expense, nextDate, { NotFoundError, BadRequestError }, now, RecurringExpense, totalSpentAllTime
+Nodes (9): app, Budget, Expense, { MongoMemoryServer }, mongoose, mongoUri, newExpense, request (+1 more)
 
 ### Community 79 - "Community 79"
 Cohesion: 0.2
-Nodes (10): 3. Local Development Setup (Zero to Hero), code:bash (git clone https://github.com/NotAnAyush/Expense-Tracker.git), code:bash (npm run setup), code:ini (# Server Configuration), code:bash (curl http://localhost:5000/api/health), code:json ({), Step 1: System Prerequisites, Step 2: Clone & One-Command Setup (+2 more)
+Nodes (9): app, Budget, Expense, Goal, Income, { MongoMemoryServer }, mongoose, mongoUri (+1 more)
 
 ### Community 80 - "Community 80"
 Cohesion: 0.2
-Nodes (8): mongoose, recurringExpenseSchema, app, Expense, { MongoMemoryServer }, mongoose, RecurringExpense, request
+Nodes (9): app, Expense, fakeId, { MongoMemoryServer }, mongoose, mongoUri, request, User (+1 more)
+
+### Community 81 - "Community 81"
+Cohesion: 0.31
+Nodes (4): AIService, extractJson(), getUserAiConfig(), sanitizeUserText()
 
 ### Community 82 - "Community 82"
-Cohesion: 0.22
-Nodes (9): express-rate-limit, aiLimiter, authLimiter, demoLimiter, globalLimiter, isTestEnv(), rateLimit, shouldSkip() (+1 more)
+Cohesion: 0.2
+Nodes (8): asyncHandler, diffDays, Expense, nextDate, { NotFoundError, BadRequestError }, now, RecurringExpense, totalSpentAllTime
 
 ### Community 83 - "Community 83"
 Cohesion: 0.2
-Nodes (10): server/package.json, description, main, name, scripts, dev, start, test (+2 more)
-
-### Community 84 - "Community 84"
-Cohesion: 0.28
-Nodes (5): ApiResponse, { Debt }, { DebtAmortizationEngine }, Expense, DebtAmortizationEngine
+Nodes (10): 3. Local Development Setup (Zero to Hero), code:bash (git clone https://github.com/NotAnAyush/Expense-Tracker.git), code:bash (npm run setup), code:ini (# Server Configuration), code:bash (curl http://localhost:5000/api/health), code:json ({), Step 1: System Prerequisites, Step 2: Clone & One-Command Setup (+2 more)
 
 ### Community 85 - "Community 85"
-Cohesion: 0.22
-Nodes (8): app, Income, { MongoMemoryServer }, mongoose, mongoUri, request, User, validIncome
+Cohesion: 0.2
+Nodes (10): server/package.json, description, main, name, scripts, dev, start, test (+2 more)
 
 ### Community 86 - "Community 86"
 Cohesion: 0.22
-Nodes (5): AnalyticsService, asyncHandler, asyncHandler, AuditLog, query
+Nodes (9): express-rate-limit, aiLimiter, authLimiter, demoLimiter, globalLimiter, isTestEnv(), rateLimit, shouldSkip() (+1 more)
 
 ### Community 87 - "Community 87"
-Cohesion: 0.22
-Nodes (9): 39. SIGNATURE DASHBOARD DESIGN, AI summary, Budget health, Financial summary, Header, Insights, Recent transactions, Spending visualization (+1 more)
+Cohesion: 0.28
+Nodes (5): ApiResponse, { Debt }, { DebtAmortizationEngine }, Expense, DebtAmortizationEngine
 
 ### Community 88 - "Community 88"
 Cohesion: 0.22
-Nodes (9): 8.1. Backend REST Architecture (`server/`), 8.2. Frontend Client Architecture (`client/`), 8.3. Multi-AI Provider Framework & Local RAG Architecture, 8. Full-Stack Architecture & Code Conventions, Cascade Fallback System:, code:javascript (const asyncHandler = require('../utils/asyncHandler');), code:javascript (router.post('/', protect, validate(createExpenseSchema), cre), code:block19 ([User AI Request] ──► [Selected Cloud AI Provider]) (+1 more)
+Nodes (5): AnalyticsService, asyncHandler, asyncHandler, AuditLog, query
 
 ### Community 89 - "Community 89"
-Cohesion: 0.25
-Nodes (6): AIService, asyncHandler, { BadRequestError }, metadata, UnifiedAIClient, User
+Cohesion: 0.22
+Nodes (9): 39. SIGNATURE DASHBOARD DESIGN, AI summary, Budget health, Financial summary, Header, Insights, Recent transactions, Spending visualization (+1 more)
 
 ### Community 90 - "Community 90"
-Cohesion: 0.25
-Nodes (8): 50. DEVELOPMENT CHECKPOINTS, CHECKPOINT A, CHECKPOINT B, CHECKPOINT C, CHECKPOINT D, CHECKPOINT E, CHECKPOINT F, CHECKPOINT G
+Cohesion: 0.22
+Nodes (9): 8.1. Backend REST Architecture (`server/`), 8.2. Frontend Client Architecture (`client/`), 8.3. Multi-AI Provider Framework & Local RAG Architecture, 8. Full-Stack Architecture & Code Conventions, Cascade Fallback System:, code:javascript (const asyncHandler = require('../utils/asyncHandler');), code:javascript (router.post('/', protect, validate(createExpenseSchema), cre), code:block19 ([User AI Request] ──► [Selected Cloud AI Provider]) (+1 more)
 
 ### Community 91 - "Community 91"
 Cohesion: 0.25
-Nodes (8): 48. AI QUALITY METRICS, Accuracy, Conciseness, Grounding, Helpfulness, Latency, Safety, Tool correctness
+Nodes (6): asyncHandler, cAmt, Goal, { NotFoundError, BadRequestError }, tAmt, NotFoundError
 
 ### Community 92 - "Community 92"
 Cohesion: 0.25
-Nodes (8): 5.1. Branching Strategy, 5.2. Conventional Commits 1.0, 5.3. Daily Synchronization Workflow, 5.4. Pull Request (PR) Quality Checklist, 5. Git & GitHub Professional Collaboration Standards, code:block12 (<type>(<optional scope>): <short description in present tens), code:bash (# 1. Stash any uncommitted work if needed), Commit Types:
+Nodes (6): AIService, asyncHandler, { BadRequestError }, metadata, UnifiedAIClient, User
 
 ### Community 93 - "Community 93"
+Cohesion: 0.25
+Nodes (8): 50. DEVELOPMENT CHECKPOINTS, CHECKPOINT A, CHECKPOINT B, CHECKPOINT C, CHECKPOINT D, CHECKPOINT E, CHECKPOINT F, CHECKPOINT G
+
+### Community 94 - "Community 94"
+Cohesion: 0.25
+Nodes (8): 48. AI QUALITY METRICS, Accuracy, Conciseness, Grounding, Helpfulness, Latency, Safety, Tool correctness
+
+### Community 95 - "Community 95"
+Cohesion: 0.25
+Nodes (8): 5.1. Branching Strategy, 5.2. Conventional Commits 1.0, 5.3. Daily Synchronization Workflow, 5.4. Pull Request (PR) Quality Checklist, 5. Git & GitHub Professional Collaboration Standards, code:block12 (<type>(<optional scope>): <short description in present tens), code:bash (# 1. Stash any uncommitted work if needed), Commit Types:
+
+### Community 96 - "Community 96"
 Cohesion: 0.29
 Nodes (6): GroupExpenseSchema, GroupSchema, MemberSchema, mongoose, SettlementSchema, SplitItemSchema
-
-### Community 97 - "Community 97"
-Cohesion: 0.29
-Nodes (6): asyncHandler, Income, { NotFoundError, BadRequestError }, query, sortOptions, totalAmount
-
-### Community 98 - "Community 98"
-Cohesion: 0.29
-Nodes (5): asyncHandler, Budget, cleanCat, { NotFoundError, BadRequestError }, NotFoundError
-
-### Community 99 - "Community 99"
-Cohesion: 0.29
-Nodes (5): asyncHandler, { BadRequestError, ConflictError }, Category, cleanName, BadRequestError
 
 ### Community 100 - "Community 100"
 Cohesion: 0.29
@@ -680,11 +688,11 @@ Nodes (6): asyncHandler, Expense, { NotFoundError, BadRequestError }, query, sor
 
 ### Community 101 - "Community 101"
 Cohesion: 0.29
-Nodes (7): 1. Income & Cash Flow Model (`server/src/models/Income.js`), 2. Cash Flow Analytics Extension (`server/src/services/analytics/analyticsService.js`), 3. Receipt OCR AI Controller (`server/src/controllers/aiController.js`), code:javascript (const mongoose = require('mongoose');), code:javascript (static async getCashFlowSummary(userId, year, month) {), code:javascript (const scanReceipt = asyncHandler(async (req, res) => {), 📐 Detailed API & Database Blueprints for Phase 1 & 2
+Nodes (6): asyncHandler, Income, { NotFoundError, BadRequestError }, query, sortOptions, totalAmount
 
 ### Community 102 - "Community 102"
 Cohesion: 0.29
-Nodes (7): 38. UI ARCHITECTURE FOR AI, Analytics page, Budget page, Dashboard, Global assistant, Goals page, Transaction page
+Nodes (7): 1. Income & Cash Flow Model (`server/src/models/Income.js`), 2. Cash Flow Analytics Extension (`server/src/services/analytics/analyticsService.js`), 3. Receipt OCR AI Controller (`server/src/controllers/aiController.js`), code:javascript (const mongoose = require('mongoose');), code:javascript (static async getCashFlowSummary(userId, year, month) {), code:javascript (const scanReceipt = asyncHandler(async (req, res) => {), 📐 Detailed API & Database Blueprints for Phase 1 & 2
 
 ### Community 103 - "Community 103"
 Cohesion: 0.29
@@ -692,7 +700,7 @@ Nodes (7): 6. PHASE 2 — FINANCIAL DATA FOUNDATION, Budget, Category, Expense, 
 
 ### Community 104 - "Community 104"
 Cohesion: 0.29
-Nodes (7): Level 1 — Record, Level 2 — Understand, Level 3 — Explain, Level 4 — Predict, Level 5 — Assist, Level 6 — Converse, Personal Finance Intelligence Platform
+Nodes (7): 49. FEATURE PRIORITY — PRESERVE THE ORIGINAL PLAN, TIER 1 — CORE MVP, TIER 2 — FEATURE-RICH TRACKER, TIER 3 — INTELLIGENCE FOUNDATION, TIER 4 — AI INTELLIGENCE, TIER 5 — FINANCE COPILOT, TIER 6 — ADVANCED AI
 
 ### Community 105 - "Community 105"
 Cohesion: 0.29
@@ -704,19 +712,19 @@ Nodes (7): 11. CORE AI PRINCIPLE, Assistant, Communicator, Interpreter, Pattern 
 
 ### Community 107 - "Community 107"
 Cohesion: 0.29
-Nodes (7): 49. FEATURE PRIORITY — PRESERVE THE ORIGINAL PLAN, TIER 1 — CORE MVP, TIER 2 — FEATURE-RICH TRACKER, TIER 3 — INTELLIGENCE FOUNDATION, TIER 4 — AI INTELLIGENCE, TIER 5 — FINANCE COPILOT, TIER 6 — ADVANCED AI
+Nodes (7): Level 1 — Record, Level 2 — Understand, Level 3 — Explain, Level 4 — Predict, Level 5 — Assist, Level 6 — Converse, Personal Finance Intelligence Platform
 
 ### Community 108 - "Community 108"
 Cohesion: 0.29
-Nodes (7): 10. Troubleshooting, Common Traps & Quick Reference, code:powershell (Get-Process -Id (Get-NetTCPConnection -LocalPort 5000).Ownin), code:bash (kill -9 $(lsof -ti:5000)), Issue 1: `Cannot find module 'xyz'` after `git pull`, Issue 2: `Error: listen EADDRINUSE: address already in use :::5000`, Issue 3: 401 Unauthorized / Token Expiration Loop, Quick Reference Command Cheat Sheet
+Nodes (7): 38. UI ARCHITECTURE FOR AI, Analytics page, Budget page, Dashboard, Global assistant, Goals page, Transaction page
 
 ### Community 109 - "Community 109"
 Cohesion: 0.29
-Nodes (5): asyncHandler, { BadRequestError, ConflictError }, Category, categorySchema, mongoose
+Nodes (7): 10. Troubleshooting, Common Traps & Quick Reference, code:powershell (Get-Process -Id (Get-NetTCPConnection -LocalPort 5000).Ownin), code:bash (kill -9 $(lsof -ti:5000)), Issue 1: `Cannot find module 'xyz'` after `git pull`, Issue 2: `Error: listen EADDRINUSE: address already in use :::5000`, Issue 3: 401 Unauthorized / Token Expiration Loop, Quick Reference Command Cheat Sheet
 
 ### Community 110 - "Community 110"
 Cohesion: 0.29
-Nodes (5): asyncHandler, Goal, { NotFoundError, BadRequestError }, goalSchema, mongoose
+Nodes (5): asyncHandler, { BadRequestError, ConflictError }, Category, categorySchema, mongoose
 
 ### Community 112 - "Community 112"
 Cohesion: 0.29
@@ -724,105 +732,99 @@ Nodes (6): fs, gitDir, hooksDir, path, postMergeFile, repoRoot
 
 ### Community 114 - "Community 114"
 Cohesion: 0.33
-Nodes (5): asyncHandler, cAmt, Goal, { NotFoundError, BadRequestError }, tAmt
+Nodes (3): AuditLog, auditLogger(), REDACTED_FIELDS
 
 ### Community 115 - "Community 115"
 Cohesion: 0.33
-Nodes (3): AuditLog, auditLogger(), REDACTED_FIELDS
+Nodes (6): 1. 📸 Multimodal Receipt & Invoice Scanner (Vision OCR), code:json ({), Technical Specification, The Feature, The Problem, User Flow
 
 ### Community 116 - "Community 116"
 Cohesion: 0.33
-Nodes (6): 1. 📸 Multimodal Receipt & Invoice Scanner (Vision OCR), code:json ({), Technical Specification, The Feature, The Problem, User Flow
+Nodes (6): Budget warning, Goal trajectory, Insights, Recurring burden, Spending increase, Unusual transaction
 
 ### Community 117 - "Community 117"
 Cohesion: 0.33
-Nodes (6): Budget warning, Goal trajectory, Insights, Recurring burden, Spending increase, Unusual transaction
+Nodes (5): user manual/README.md, code:bash (# Complete workspace setup (installs hooks + client & server), 📖 Primary Manual, 🚀 Quick Commands, Richy Rich Engineering Documentation & User Manual
 
 ### Community 118 - "Community 118"
 Cohesion: 0.33
-Nodes (5): user manual/README.md, code:bash (# Complete workspace setup (installs hooks + client & server), 📖 Primary Manual, 🚀 Quick Commands, Richy Rich Engineering Documentation & User Manual
+Nodes (6): 4. Automated Dependency Synchronization & Git Hooks, code:block10 (Error: Cannot find module 'package-name'), code:bash (npm run setup:hooks), Manual Hook Re-installation:, The "Missing Package After Pull" Problem, The Solution: Automated `post-merge` Git Hook
 
 ### Community 119 - "Community 119"
 Cohesion: 0.33
-Nodes (6): 4. Automated Dependency Synchronization & Git Hooks, code:block10 (Error: Cannot find module 'package-name'), code:bash (npm run setup:hooks), Manual Hook Re-installation:, The "Missing Package After Pull" Problem, The Solution: Automated `post-merge` Git Hook
+Nodes (5): app, Goal, { MongoMemoryServer }, mongoose, request
 
 ### Community 120 - "Community 120"
 Cohesion: 0.33
 Nodes (5): app, Budget, { MongoMemoryServer }, mongoose, request
 
-### Community 121 - "Community 121"
-Cohesion: 0.33
-Nodes (5): app, Goal, { MongoMemoryServer }, mongoose, request
-
-### Community 123 - "Community 123"
-Cohesion: 0.4
-Nodes (4): express, { protect }, router, {
-  suggestCategory,
-  getMonthlySummaryAI,
-  getSpendingExplanation,
-  copilotChat,
-  getInsights,
-  scanReceipt,
-  getAIConfig,
-  updateAIConfig,
-  testConnection,
-}
-
-### Community 124 - "Community 124"
-Cohesion: 0.4
-Nodes (4): { DebtController }, express, { protect }, router
-
-### Community 125 - "Community 125"
+### Community 122 - "Community 122"
 Cohesion: 0.4
 Nodes (4): express, { protect }, router, { SimulationController }
 
-### Community 126 - "Community 126"
+### Community 123 - "Community 123"
+Cohesion: 0.4
+Nodes (4): { exportExpenses, exportTaxSummary }, express, { protect }, router
+
+### Community 124 - "Community 124"
 Cohesion: 0.4
 Nodes (5): 2. 🏦 Bank Statement CSV / PDF Batch Importer with Smart Reconciliation, code:javascript (importId: { type: String, default: null, index: true },), Database Schema Extension (`models/Expense.js`):, The Feature, The Problem
 
-### Community 127 - "Community 127"
+### Community 125 - "Community 125"
 Cohesion: 0.4
 Nodes (5): 4. 👥 Shared Expenses & Group Bill Splitting (Integrated P2P Ledger), code:javascript (const groupSchema = new mongoose.Schema({), Schema (`models/GroupExpense.js`):, The Feature, The Problem
 
-### Community 128 - "Community 128"
+### Community 126 - "Community 126"
 Cohesion: 0.4
 Nodes (5): 41. AI RESPONSE DESIGN, Answer, Evidence, Explanation, Optional action
 
-### Community 129 - "Community 129"
-Cohesion: 0.4
-Nodes (5): 2. NON-NEGOTIABLE ARCHITECTURAL PRINCIPLE, Layer 1 — Financial Source of Truth, Layer 2 — Financial Intelligence Primitives, Layer 3 — AI Intelligence Layer, Layer 4 — Experience Layer
-
-### Community 130 - "Community 130"
+### Community 127 - "Community 127"
 Cohesion: 0.4
 Nodes (5): 4. UPDATED PHASE MODEL, AI capabilities, Deterministic intelligence primitives, Financial entities, PHASE 0 — PRODUCT + AI ARCHITECTURE
 
-### Community 131 - "Community 131"
+### Community 128 - "Community 128"
+Cohesion: 0.4
+Nodes (5): 2. NON-NEGOTIABLE ARCHITECTURAL PRINCIPLE, Layer 1 — Financial Source of Truth, Layer 2 — Financial Intelligence Primitives, Layer 3 — AI Intelligence Layer, Layer 4 — Experience Layer
+
+### Community 129 - "Community 129"
 Cohesion: 0.4
 Nodes (5): 9. Testing, Quality Assurance & Production Builds, code:bash (# Run all test suites), code:bash (npm run build), Production Build Validation, Running Automated Test Suites
 
-### Community 132 - "Community 132"
+### Community 130 - "Community 130"
 Cohesion: 0.4
 Nodes (5): code:bash (npm run dev:server), code:bash (npm run dev:client), Step 4: Running the Application Locally, Terminal 1 — Backend API Server:, Terminal 2 — Frontend Client:
 
-### Community 134 - "Community 134"
+### Community 131 - "Community 131"
+Cohesion: 0.4
+Nodes (3): AnalyticsService, Expense, ToolRegistry
+
+### Community 133 - "Community 133"
 Cohesion: 0.4
 Nodes (4): app, { MongoMemoryServer }, mongoose, request
 
-### Community 136 - "Community 136"
+### Community 134 - "Community 134"
 Cohesion: 0.5
 Nodes (3): DebtPaymentLogSchema, DebtSchema, mongoose
 
-### Community 138 - "Community 138"
+### Community 136 - "Community 136"
 Cohesion: 0.5
 Nodes (4): 6. 🛡️ Composite Financial Health Index (Fintech Score 0–100), Output Tiers:, The Feature, The Problem
 
-### Community 139 - "Community 139"
+### Community 137 - "Community 137"
 Cohesion: 0.5
 Nodes (4): 3. 💵 Comprehensive Cash Flow, Income Tracking & True Savings Rate, code:block4 (┌──────────────────┐       ┌──────────────────────┐       ┌─), The Feature, The Problem
 
-### Community 140 - "Community 140"
+### Community 138 - "Community 138"
 Cohesion: 0.5
 Nodes (4): 55. PERFORMANCE RULE, First, Second, Third
+
+### Community 141 - "Community 141"
+Cohesion: 0.67
+Nodes (3): 10. ⚡ Offline-First PWA, Voice Quick-Log & Privacy Vault, The Feature, The Problem
+
+### Community 142 - "Community 142"
+Cohesion: 0.67
+Nodes (3): 8. 🏷️ Multi-Tagging, Split Transactions & Tax Prep Assistant, The Feature, The Problem
 
 ### Community 143 - "Community 143"
 Cohesion: 0.67
@@ -838,37 +840,29 @@ Nodes (3): 7. 🔮 What-If Scenario Simulator & FIRE Retirement Forecaster, The 
 
 ### Community 146 - "Community 146"
 Cohesion: 0.67
-Nodes (3): 8. 🏷️ Multi-Tagging, Split Transactions & Tax Prep Assistant, The Feature, The Problem
+Nodes (3): 21. TWO-STAGE AI ARCHITECTURE, Stage 1 — Data retrieval, Stage 2 — Interpretation
 
 ### Community 147 - "Community 147"
 Cohesion: 0.67
-Nodes (3): 10. ⚡ Offline-First PWA, Voice Quick-Log & Privacy Vault, The Feature, The Problem
-
-### Community 148 - "Community 148"
-Cohesion: 0.67
 Nodes (3): AI-First Personal Finance Intelligence Platform, Build the financial system first. Build intelligence on top of it. Never reverse the dependency., MASTER ANTIGRAVITY BUILD PROMPT
 
-### Community 149 - "Community 149"
-Cohesion: 0.67
-Nodes (3): 21. TWO-STAGE AI ARCHITECTURE, Stage 1 — Data retrieval, Stage 2 — Interpretation
-
-### Community 150 - "Community 150"
+### Community 148 - "Community 148"
 Cohesion: 0.67
 Nodes (3): 40. FINANCE COPILOT UX, Follow-up questions, Quick questions
 
 ## Knowledge Gaps
 - **1227 isolated node(s):** `VALID_TABS`, `DEFAULT_MESSAGE`, `TAX_SECTIONS`, `DEFAULT_INCOME_CATEGORIES`, `AuthContext` (+1222 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **27 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **26 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `mongoose` connect `joi` to `analyticsService.js`, `Community 136`, `expenseRoutes.js`, `setup-git-hooks.cjs`, `Community 152`, `Codebase Standards & Architecture Constraints`, `vite.config.js`, `errors.js`, `patterns.test.js`, `ApiResponse`, `Richy Rich Engineering Documentation & User Manual`, `graphify.md`, `pinterest/README.md`, `Community 49`, `Community 58`, `Community 60`, `Community 64`, `Community 65`, `Community 66`, `Community 75`, `Community 76`, `Community 85`, `Community 93`?**
+- **Why does `mongoose` connect `ApiResponse` to `analyticsService.js`, `Community 134`, `expenseRoutes.js`, `Community 150`, `Codebase Standards & Architecture Constraints`, `vite.config.js`, `Project Status & Architectural Knowledge Report`, `errors.js`, `Richy Rich Engineering Documentation & User Manual`, `graphify.md`, `pinterest/README.md`, `Community 44`, `Community 50`, `Community 59`, `Community 60`, `Community 61`, `Community 64`, `Community 68`, `Community 69`, `Community 70`, `Community 78`, `Community 79`, `Community 80`, `Community 96`?**
   _High betweenness centrality (0.027) - this node is a cross-community bridge._
-- **Why does `express` connect `server/package.json` to `dependencies`, `Community 73`, `Community 47`, `⚡ Enterprise AI/ML Production Improvement Blueprint`, `auth.js`, `Community 56`, `Community 63`?**
+- **Why does `express` connect `server/package.json` to `Community 67`, `dependencies`, `Community 76`, `Community 48`, `recurringRoutes.js`, `setup-git-hooks.cjs`, `Community 57`?**
   _High betweenness centrality (0.014) - this node is a cross-community bridge._
-- **Why does `keywords` connect `⚡ Enterprise AI/ML Production Improvement Blueprint` to `server/package.json`, `🧠 AI/ML Architecture & Comprehensive Evolution Guide`?**
+- **Why does `keywords` connect `recurringRoutes.js` to `server/package.json`, `🧠 AI/ML Architecture & Comprehensive Evolution Guide`?**
   _High betweenness centrality (0.014) - this node is a cross-community bridge._
 - **What connects `VALID_TABS`, `DEFAULT_MESSAGE`, `TAX_SECTIONS` to the rest of the system?**
   _1227 weakly-connected nodes found - possible documentation gaps or missing edges._

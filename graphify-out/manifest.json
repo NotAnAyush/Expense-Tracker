@@ -40,8 +40,8 @@
     "hash": "073705c824c6bb5e3dd1b1ca4299897c"
   },
   "D:\\Project\\Expense Tracker\\V2\\client\\src\\components\\Expenses\\ReceiptScanModal.jsx": {
-    "mtime": 1786900244.254767,
-    "hash": "8fc8d8164368bdeb65f23959e35436a9"
+    "mtime": 1786956770.7332568,
+    "hash": "5278c34bc91b1db956547b1e12d4c21d"
   },
   "D:\\Project\\Expense Tracker\\V2\\client\\src\\components\\Expenses\\VoiceQuickLogModal.jsx": {
     "mtime": 1786900244.254767,
@@ -124,8 +124,8 @@
     "hash": "3e00514058f7845ffdd8cd478d626ef1"
   },
   "D:\\Project\\Expense Tracker\\V2\\server\\src\\server.js": {
-    "mtime": 1786900244.2882893,
-    "hash": "c43947badf313ab3180d4a91d9324a9d"
+    "mtime": 1786956750.9529521,
+    "hash": "acd55dd75c94c278b1b7db2df6e4a7e1"
   },
   "D:\\Project\\Expense Tracker\\V2\\server\\src\\config\\db.js": {
     "mtime": 1786765427.811912,
@@ -204,8 +204,8 @@
     "hash": "983bbc8936eb0b048a3d9e250b42902d"
   },
   "D:\\Project\\Expense Tracker\\V2\\server\\src\\middleware\\errorHandler.js": {
-    "mtime": 1786765427.8175173,
-    "hash": "5355d8183db60fc970fd274cad73b8d5"
+    "mtime": 1786956759.877978,
+    "hash": "413ebf1c4fe3c2f41148757ef3d0cdb4"
   },
   "D:\\Project\\Expense Tracker\\V2\\server\\src\\middleware\\idempotency.js": {
     "mtime": 1786765427.8185165,
@@ -584,7 +584,7 @@
     "hash": "b821883f0f5c6524206cb1f8780ec093"
   },
   "D:\\Project\\Expense Tracker\\V2\\client\\public\\logo.jpg": {
-    "mtime": 1786605771.7296057,
-    "hash": "700feb95bc1697f7eeda76a8d5176e10"
+    "mtime": 1786956421.9872267,
+    "hash": "c2b02d32e34e1a7e0c2563d5d87ab38f"
   }
 }

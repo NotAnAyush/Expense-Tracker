@@ -70,7 +70,17 @@ const errorHandler = (err, req, res, next) => {
     });
   }
 
-  // 6. Unhandled / Internal Server Errors
+  // 6. Handle Payload Too Large (413)
+  if (err.type === 'entity.too.large' || err.status === 413) {
+    return res.status(413).json({
+      error: {
+        code: 'PAYLOAD_TOO_LARGE',
+        message: 'The uploaded file or payload exceeds the maximum allowed limit (25MB).',
+      },
+    });
+  }
+
+  // 7. Unhandled / Internal Server Errors
   if (process.env.NODE_ENV !== 'test') {
     console.error('[Unhandled Error]', err.stack || err);
   }

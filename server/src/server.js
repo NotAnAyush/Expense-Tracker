@@ -87,9 +87,9 @@ app.use(cors({
 // 4. Compression — Gzip responses
 app.use(compression());
 
-// 5. Body Parsing — With payload limits
-app.use(express.json({ limit: '1mb' }));
-app.use(express.urlencoded({ extended: true, limit: '1mb' }));
+// 5. Body Parsing — With payload limits (25mb for multimodal receipt scanning & document parsing)
+app.use(express.json({ limit: '25mb' }));
+app.use(express.urlencoded({ extended: true, limit: '25mb' }));
 
 // 6. NoSQL Injection Sanitizer
 app.use(sanitizeInput);
