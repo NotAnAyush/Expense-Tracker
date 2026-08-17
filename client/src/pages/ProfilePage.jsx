@@ -37,7 +37,7 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { apiFetch } from '../api/client';
+import { apiFetch, API_BASE_URL } from '../api/client';
 import { useAuth } from '../context/AuthContext';
 import { usePrivacy } from '../context/PrivacyContext';
 
@@ -345,7 +345,7 @@ export const ProfilePage = () => {
     try {
       const endpoint = format === 'csv' ? '/export/csv' : '/export/json';
       const token = localStorage.getItem('token');
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}${endpoint}`, {
+      const response = await fetch(`${API_BASE_URL}${endpoint}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

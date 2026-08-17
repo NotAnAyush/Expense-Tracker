@@ -1,6 +1,6 @@
 /**
  * In-Memory Mutation-Aware AI State-Hash Cache
- * Sub-5ms response times for repeat queries when underlying financial data has not changed.
+ * Provides sub-5ms response times for repeat queries when underlying financial data has not changed.
  */
 
 class AICache {
@@ -10,7 +10,7 @@ class AICache {
   }
 
   /**
-   * Generates a deterministic cache key based on user and data mutation fingerprint
+   * Generates a deterministic cache key based on user, scope, and optional data mutation fingerprint
    */
   generateKey(userId, scope, stateFingerprint = '') {
     return `${userId}:${scope}:${stateFingerprint}`;
