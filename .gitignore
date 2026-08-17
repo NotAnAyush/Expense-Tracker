@@ -24,6 +24,6 @@ Thumbs.db
 .idea/
 
 # Tooling & Cache
-graphify-out/cache/
+graphify-out/
 scratch/
 
