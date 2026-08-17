@@ -477,7 +477,7 @@ class UnifiedAIClient {
 
     const cleanBase64 = imageBase64.replace(/^data:[a-zA-Z0-9/+-]+;base64,/, '').trim();
     const provider = userConfig.provider || 'gemini';
-    const effectiveKey = this.getEffectiveApiKey(provider, userConfig.apiKey);
+    const effectiveKey = resolveApiKey(provider, userConfig.apiKey);
 
     const prompt = `You are an expert financial receipt and invoice OCR parser.
 Analyze this receipt image and extract the key transactional details.
@@ -558,11 +558,21 @@ Do not include markdown code block backticks, just raw JSON.`;
    * Helper to safely extract and validate JSON from AI vision outputs
    */
   static _parseReceiptJson(rawText) {
+    if (!rawText || typeof rawText !== 'string') {
+      throw new Error('No receipt text data received from AI model');
+    }
+
     let cleanText = rawText.trim();
-    if (cleanText.startsWith('```json')) {
-      cleanText = cleanText.replace(/^```json\s*/, '').replace(/\s*```$/, '');
-    } else if (cleanText.startsWith('```')) {
-      cleanText = cleanText.replace(/^```\s*/, '').replace(/\s*```$/, '');
+    // 1. Check for fenced code block ```json ... ```
+    const codeBlockMatch = cleanText.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
+    if (codeBlockMatch) {
+      cleanText = codeBlockMatch[1].trim();
+    } else {
+      // 2. Fallback: Extract innermost or outermost balanced JSON object
+      const jsonMatch = cleanText.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        cleanText = jsonMatch[0].trim();
+      }
     }
 
     try {
