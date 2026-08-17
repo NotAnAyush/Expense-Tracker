@@ -3,7 +3,7 @@ import { X, UploadCloud, Camera, Sparkles, Check, AlertCircle, FileText, ArrowRi
 import { motion, AnimatePresence } from 'framer-motion';
 import { apiFetch, getLocalDateString } from '../../api/client';
 
-export const ReceiptScanModal = ({ isOpen, onClose, onSaveExpense, categories = [] }) => {
+export const ReceiptScanModal = ({ isOpen, onClose, onSaveExpense, onConfirmScan, categories = [] }) => {
   const [dragActive, setDragActive] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
@@ -148,7 +148,6 @@ export const ReceiptScanModal = ({ isOpen, onClose, onSaveExpense, categories = 
     } catch (err) {
       console.error('OCR scan failed:', err);
       setErrorMsg(err.message || 'Vision OCR extraction failed. You can still fill in the details manually.');
-      // Pre-fill defaults
       setMerchant('Store / Merchant');
       setAmount('');
       setCategory('Food & Dining');
@@ -194,7 +193,11 @@ export const ReceiptScanModal = ({ isOpen, onClose, onSaveExpense, categories = 
       })) : [],
     };
 
-    await onSaveExpense(payload);
+    if (onConfirmScan) {
+      onConfirmScan(payload);
+    } else if (onSaveExpense) {
+      await onSaveExpense(payload);
+    }
     handleReset();
     onClose();
   };
@@ -204,72 +207,61 @@ export const ReceiptScanModal = ({ isOpen, onClose, onSaveExpense, categories = 
   return (
     <AnimatePresence>
       <div
-        style={{
-          position: 'fixed',
-          inset: 0,
-          zIndex: 9999,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '20px',
-          background: 'rgba(5, 8, 16, 0.85)',
-          backdropFilter: 'blur(18px)',
-          WebkitBackdropFilter: 'blur(18px)',
-        }}
+        className="modal-overlay"
         onClick={(e) => {
           if (e.target === e.currentTarget) onClose();
         }}
       >
         <motion.div
-          initial={{ opacity: 0, scale: 0.94, y: 15 }}
+          initial={{ opacity: 0, scale: 0.95, y: 15 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.94, y: 15 }}
-          transition={{ duration: 0.22, ease: 'easeOut' }}
+          exit={{ opacity: 0, scale: 0.95, y: 15 }}
+          transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+          className="glass-card"
           style={{
             width: '100%',
             maxWidth: scanResult ? '820px' : '520px',
-            background: 'linear-gradient(145deg, rgba(16, 22, 36, 0.98) 0%, rgba(10, 14, 24, 0.99) 100%)',
-            border: '1.5px solid rgba(0, 240, 255, 0.3)',
-            borderRadius: '24px',
-            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.7), 0 0 35px rgba(0, 240, 255, 0.15)',
-            overflow: 'hidden',
             maxHeight: '92vh',
             display: 'flex',
             flexDirection: 'column',
+            padding: 0,
+            overflow: 'hidden',
+            border: '1.5px solid rgba(0, 240, 255, 0.3)',
+            boxShadow: '0 25px 60px rgba(0,0,0,0.8), 0 0 35px rgba(0, 240, 255, 0.15)',
             transition: 'max-width 0.3s ease',
           }}
         >
           {/* Header */}
           <div
             style={{
-              padding: '18px 24px',
+              padding: '16px 20px',
               borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              background: 'linear-gradient(90deg, rgba(0, 240, 255, 0.08) 0%, transparent 100%)',
+              background: 'linear-gradient(90deg, rgba(0, 240, 255, 0.06) 0%, transparent 100%)',
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
               <div
                 style={{
-                  width: '38px',
-                  height: '38px',
-                  borderRadius: '12px',
-                  background: 'linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(121, 40, 202, 0.2))',
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '10px',
+                  background: 'linear-gradient(135deg, rgba(0, 240, 255, 0.25), rgba(121, 40, 202, 0.25))',
                   border: '1px solid rgba(0, 240, 255, 0.4)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}
               >
-                <Camera size={20} color="#00F0FF" />
+                <Camera size={18} color="#00F0FF" />
               </div>
               <div>
-                <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 800, color: '#F1F5F9', fontFamily: 'var(--font-heading)' }}>
+                <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 800, color: '#F1F5F9', fontFamily: 'var(--font-heading)' }}>
                   Multimodal Receipt Scanner
                 </h3>
-                <span style={{ fontSize: '12px', color: '#94A3B8' }}>
+                <span style={{ fontSize: '11.5px', color: '#94A3B8' }}>
                   Gemini Vision OCR with sub-second parameter extraction
                 </span>
               </div>
@@ -277,37 +269,30 @@ export const ReceiptScanModal = ({ isOpen, onClose, onSaveExpense, categories = 
 
             <button
               onClick={onClose}
-              style={{
-                background: 'rgba(255, 255, 255, 0.06)',
-                border: 'none',
-                borderRadius: '10px',
-                padding: '8px',
-                color: '#94A3B8',
-                cursor: 'pointer',
-              }}
+              style={{ background: 'none', border: 'none', color: '#94A3B8', cursor: 'pointer', padding: '4px' }}
             >
               <X size={18} />
             </button>
           </div>
 
           {/* Body Content */}
-          <div style={{ padding: '24px', overflowY: 'auto', flex: 1 }}>
+          <div style={{ padding: '20px', overflowY: 'auto', flex: 1 }}>
             {errorMsg && (
               <div
                 style={{
                   padding: '10px 14px',
                   borderRadius: '12px',
-                  background: 'rgba(255, 77, 77, 0.12)',
-                  border: '1px solid rgba(255, 77, 77, 0.3)',
-                  color: '#FF7D7D',
-                  fontSize: '13px',
+                  background: 'rgba(244, 63, 94, 0.12)',
+                  border: '1px solid rgba(244, 63, 94, 0.3)',
+                  color: '#FB7185',
+                  fontSize: '12.5px',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '8px',
-                  marginBottom: '16px',
+                  marginBottom: '14px',
                 }}
               >
-                <AlertCircle size={16} />
+                <AlertCircle size={15} />
                 <span>{errorMsg}</span>
               </div>
             )}
@@ -321,9 +306,9 @@ export const ReceiptScanModal = ({ isOpen, onClose, onSaveExpense, categories = 
                 onDrop={handleDrop}
                 onClick={() => fileInputRef.current?.click()}
                 style={{
-                  border: `2px dashed ${dragActive ? '#00F0FF' : 'rgba(255, 255, 255, 0.15)'}`,
-                  borderRadius: '20px',
-                  padding: '48px 24px',
+                  border: `2px dashed ${dragActive ? '#00F0FF' : 'rgba(255, 255, 255, 0.12)'}`,
+                  borderRadius: '18px',
+                  padding: '40px 20px',
                   textAlign: 'center',
                   background: dragActive ? 'rgba(0, 240, 255, 0.06)' : 'rgba(255, 255, 255, 0.02)',
                   cursor: 'pointer',
@@ -338,286 +323,131 @@ export const ReceiptScanModal = ({ isOpen, onClose, onSaveExpense, categories = 
                   style={{ display: 'none' }}
                 />
                 <motion.div
-                  animate={{ y: [0, -6, 0] }}
-                  transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+                  animate={{ y: [0, -4, 0] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
                   style={{
-                    width: '64px',
-                    height: '64px',
-                    borderRadius: '20px',
+                    width: '56px',
+                    height: '56px',
+                    borderRadius: '16px',
                     background: 'linear-gradient(135deg, rgba(0, 240, 255, 0.15), rgba(0, 255, 135, 0.15))',
                     border: '1px solid rgba(0, 240, 255, 0.3)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    margin: '0 auto 16px',
+                    margin: '0 auto 14px',
                   }}
                 >
-                  <UploadCloud size={32} color="#00F0FF" />
+                  <UploadCloud size={28} color="#00F0FF" />
                 </motion.div>
-                <h4 style={{ margin: '0 0 6px', fontSize: '16px', fontWeight: 700, color: '#F1F5F9' }}>
-                  Drag & Drop Receipt or Click to Browse
+                <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 800, color: '#F1F5F9' }}>
+                  Upload Receipt Image or PDF
                 </h4>
-                <p style={{ margin: 0, fontSize: '13px', color: '#94A3B8' }}>
-                  Supports JPEG, PNG, WebP photos and PDF invoices (Max 10MB)
+                <p style={{ fontSize: '12px', color: '#94A3B8', marginTop: '4px', maxWidth: '300px', margin: '4px auto 14px' }}>
+                  Drag & drop, browse files, or snapshot your paper bill
                 </p>
+                <button
+                  type="button"
+                  className="btn-primary-mint"
+                  style={{ margin: '0 auto', height: '34px', fontSize: '12.5px', padding: '0 16px' }}
+                >
+                  <Camera size={14} /> Select File
+                </button>
               </div>
             )}
 
             {scanning && (
-              /* Scanning Animation */
-              <div style={{ padding: '40px 20px', textAlign: 'center' }}>
-                <div style={{ position: 'relative', width: '220px', height: '280px', margin: '0 auto 24px', borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(0, 240, 255, 0.4)', background: '#0F172A' }}>
-                  {previewUrl && (
-                    <img
-                      src={previewUrl}
-                      alt="Receipt"
-                      style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.6 }}
-                    />
-                  )}
-                  {/* Laser Scanner Line */}
-                  <motion.div
-                    animate={{ y: [0, 270, 0] }}
-                    transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-                    style={{
-                      position: 'absolute',
-                      left: 0,
-                      right: 0,
-                      height: '3px',
-                      background: 'linear-gradient(90deg, transparent, #00F0FF, #00FF87, transparent)',
-                      boxShadow: '0 0 15px #00F0FF',
-                      zIndex: 2,
-                    }}
-                  />
+              /* Scanning Shimmer State */
+              <div style={{ padding: '40px 20px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '14px' }}>
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
+                  style={{ width: '42px', height: '42px', borderRadius: '50%', border: '3px solid rgba(0, 240, 255, 0.2)', borderTopColor: '#00F0FF' }}
+                />
+                <div>
+                  <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 800, color: '#F1F5F9' }}>
+                    Gemini Vision Scanning Receipt...
+                  </h4>
+                  <p style={{ fontSize: '12px', color: '#94A3B8', marginTop: '4px' }}>
+                    Detecting merchant, total bill amount, tax codes, and itemized rows
+                  </p>
                 </div>
-                <h4 style={{ margin: '0 0 6px', fontSize: '17px', fontWeight: 800, color: '#00F0FF', fontFamily: 'var(--font-heading)' }}>
-                  Vision AI Analyzing Receipt...
-                </h4>
-                <p style={{ margin: 0, fontSize: '13px', color: '#94A3B8' }}>
-                  Detecting merchant, amount, taxes, date and line items
-                </p>
               </div>
             )}
 
-            {scanResult && !scanning && (
-              /* Side by Side Preview & Editable Form */
-              <div style={{ display: 'grid', gridTemplateColumns: previewUrl ? '1fr 1.3fr' : '1fr', gap: '20px' }}>
-                {/* Left Receipt Visual */}
+            {scanResult && (
+              /* Review & Confirm Screen */
+              <div style={{ display: 'grid', gridTemplateColumns: previewUrl ? '1fr 1.2fr' : '1fr', gap: '20px', alignItems: 'start' }}>
                 {previewUrl && (
-                  <div
-                    style={{
-                      borderRadius: '16px',
-                      overflow: 'hidden',
-                      border: '1px solid rgba(255, 255, 255, 0.1)',
-                      background: '#0B0F19',
-                      maxHeight: '380px',
-                      display: 'flex',
-                      flexDirection: 'column',
-                    }}
-                  >
-                    <div style={{ padding: '8px 12px', background: 'rgba(255, 255, 255, 0.05)', fontSize: '11px', color: '#94A3B8', display: 'flex', justifyContent: 'space-between' }}>
-                      <span>Scanned Image Preview</span>
-                      {scanResult.confidence && (
-                        <span style={{ color: '#00FF87', fontWeight: 700 }}>
-                          {(scanResult.confidence * 100).toFixed(0)}% Confidence
-                        </span>
-                      )}
-                    </div>
-                    <img
-                      src={previewUrl}
-                      alt="Receipt Preview"
-                      style={{ width: '100%', height: '100%', objectFit: 'contain', maxHeight: '340px' }}
-                    />
+                  <div style={{ borderRadius: '14px', overflow: 'hidden', border: '1px solid rgba(255, 255, 255, 0.1)', maxHeight: '380px', background: '#050810' }}>
+                    <img src={previewUrl} alt="Receipt preview" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                   </div>
                 )}
 
-                {/* Right Editable Fields */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '10px' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: '10px' }}>
                     <div>
-                      <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#CBD5E1', marginBottom: '4px' }}>
-                        Merchant / Store
-                      </label>
+                      <label className="form-label">Merchant / Vendor</label>
                       <input
                         type="text"
                         value={merchant}
                         onChange={(e) => setMerchant(e.target.value)}
-                        placeholder="Merchant"
-                        style={{
-                          width: '100%',
-                          padding: '10px 12px',
-                          borderRadius: '10px',
-                          background: 'rgba(255, 255, 255, 0.06)',
-                          border: '1px solid rgba(255, 255, 255, 0.12)',
-                          color: '#F8FAFC',
-                          fontSize: '13px',
-                        }}
+                        className="glass-input"
                       />
                     </div>
-
                     <div>
-                      <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#00FF87', marginBottom: '4px' }}>
-                        Total Amount (₹)
-                      </label>
+                      <label className="form-label" style={{ color: '#00FF87' }}>Total (₹) *</label>
                       <input
                         type="number"
+                        required
                         value={amount}
                         onChange={(e) => setAmount(e.target.value)}
-                        placeholder="0.00"
-                        style={{
-                          width: '100%',
-                          padding: '10px 12px',
-                          borderRadius: '10px',
-                          background: 'rgba(0, 255, 135, 0.08)',
-                          border: '1px solid rgba(0, 255, 135, 0.3)',
-                          color: '#00FF87',
-                          fontSize: '14px',
-                          fontWeight: 700,
-                        }}
+                        className="glass-input"
+                        style={{ color: '#00FF87', fontWeight: 800 }}
                       />
                     </div>
                   </div>
 
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
                     <div>
-                      <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#CBD5E1', marginBottom: '4px' }}>
-                        Category
-                      </label>
+                      <label className="form-label">Category</label>
                       <select
                         value={category}
                         onChange={(e) => setCategory(e.target.value)}
-                        style={{
-                          width: '100%',
-                          padding: '10px 12px',
-                          borderRadius: '10px',
-                          background: '#0F172A',
-                          border: '1px solid rgba(255, 255, 255, 0.12)',
-                          color: '#F8FAFC',
-                          fontSize: '13px',
-                        }}
+                        className="glass-input select-field"
                       >
                         {categoryList.map(c => (
                           <option key={c} value={c}>{c}</option>
                         ))}
                       </select>
                     </div>
-
                     <div>
-                      <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#CBD5E1', marginBottom: '4px' }}>
-                        Date
-                      </label>
+                      <label className="form-label">Date</label>
                       <input
                         type="date"
                         value={date}
                         onChange={(e) => setDate(e.target.value)}
-                        style={{
-                          width: '100%',
-                          padding: '10px 12px',
-                          borderRadius: '10px',
-                          background: 'rgba(255, 255, 255, 0.06)',
-                          border: '1px solid rgba(255, 255, 255, 0.12)',
-                          color: '#F8FAFC',
-                          fontSize: '13px',
-                        }}
+                        className="glass-input"
                       />
                     </div>
                   </div>
 
-                  {/* Line Items Table if Extracted */}
-                  {lineItems.length > 0 && (
-                    <div
-                      style={{
-                        padding: '10px',
-                        borderRadius: '12px',
-                        background: 'rgba(255, 255, 255, 0.03)',
-                        border: '1px solid rgba(255, 255, 255, 0.08)',
-                        maxHeight: '120px',
-                        overflowY: 'auto',
-                      }}
-                    >
-                      <span style={{ fontSize: '11px', fontWeight: 700, color: '#00F0FF', display: 'block', marginBottom: '6px' }}>
-                        Line Items Breakdown ({lineItems.length})
-                      </span>
-                      {lineItems.map((item, idx) => (
-                        <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#E2E8F0', padding: '2px 0' }}>
-                          <span style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', maxWidth: '200px' }}>{item.name}</span>
-                          <span style={{ fontWeight: 700, color: '#00FF87' }}>₹{item.price}</span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
                   <div>
-                    <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#CBD5E1', marginBottom: '4px' }}>
-                      Notes / Description
-                    </label>
+                    <label className="form-label">Notes</label>
                     <input
                       type="text"
                       value={note}
                       onChange={(e) => setNote(e.target.value)}
-                      placeholder="Extracted details"
-                      style={{
-                        width: '100%',
-                        padding: '10px 12px',
-                        borderRadius: '10px',
-                        background: 'rgba(255, 255, 255, 0.06)',
-                        border: '1px solid rgba(255, 255, 255, 0.12)',
-                        color: '#F8FAFC',
-                        fontSize: '13px',
-                      }}
+                      className="glass-input"
                     />
                   </div>
 
-                  {/* Action Buttons */}
                   <div style={{ display: 'flex', gap: '10px', marginTop: '6px' }}>
-                    <button
-                      type="button"
-                      onClick={handleReset}
-                      style={{
-                        flex: 1,
-                        padding: '12px',
-                        borderRadius: '12px',
-                        background: 'rgba(255, 255, 255, 0.06)',
-                        border: '1px solid rgba(255, 255, 255, 0.12)',
-                        color: '#94A3B8',
-                        fontSize: '13px',
-                        fontWeight: 700,
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        gap: '6px',
-                      }}
-                    >
-                      <RefreshCw size={14} />
-                      Scan Another
+                    <button type="button" onClick={handleReset} className="btn-glass-secondary" style={{ flex: 1 }}>
+                      <RefreshCw size={13} /> Scan Another
                     </button>
-
-                    <motion.button
-                      type="button"
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={handleConfirmSave}
-                      style={{
-                        flex: 2,
-                        padding: '12px',
-                        borderRadius: '12px',
-                        background: 'linear-gradient(135deg, #00FF87 0%, #00F0FF 100%)',
-                        border: 'none',
-                        color: '#050810',
-                        fontSize: '14px',
-                        fontWeight: 800,
-                        fontFamily: 'var(--font-heading)',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        gap: '8px',
-                        boxShadow: '0 4px 20px rgba(0, 255, 135, 0.4)',
-                      }}
-                    >
-                      <Check size={16} />
-                      Confirm & Save Transaction
-                    </motion.button>
+                    <button type="button" onClick={handleConfirmSave} className="btn-primary-mint" style={{ flex: 2 }}>
+                      <Check size={14} /> Confirm & Save
+                    </button>
                   </div>
                 </div>
               </div>
