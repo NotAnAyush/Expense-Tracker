@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Expense = require('../../models/Expense');
+const Income = require('../../models/Income');
 const Budget = require('../../models/Budget');
 const Goal = require('../../models/Goal');
 const RecurringExpense = require('../../models/RecurringExpense');
@@ -496,6 +497,461 @@ class AnalyticsService {
         momStability: { score: stabilityScore, max: 20, percentage: Math.round((stabilityScore / 20) * 100) },
         goalPace: { score: goalScore, max: 20, percentage: Math.round((goalScore / 20) * 100) },
       },
+    };
+  }
+
+  /**
+   * Comprehensive Cash Flow, Income Tracking & True Savings Rate Engine
+   * Deterministically calculates monthly net cash flow and 6-month historical trajectory
+   */
+  static async getCashFlowSummary(userId, targetYear, targetMonth) {
+    const now = new Date();
+    const year = targetYear ? parseInt(targetYear, 10) : now.getFullYear();
+    const month = targetMonth !== undefined ? parseInt(targetMonth, 10) : now.getMonth();
+
+    const startDate = new Date(year, month, 1);
+    const endDate = new Date(year, month + 1, 0, 23, 59, 59, 999);
+    const userObjId = typeof userId === 'string' ? new mongoose.Types.ObjectId(userId) : userId;
+
+    const [incomeResult, expenseResult, incomeCategories] = await Promise.all([
+      Income.aggregate([
+        { $match: { userId: userObjId, date: { $gte: startDate, $lte: endDate } } },
+        { $group: { _id: null, totalIncome: { $sum: '$amount' }, count: { $sum: 1 } } },
+      ]),
+      Expense.aggregate([
+        { $match: { userId: userObjId, date: { $gte: startDate, $lte: endDate } } },
+        { $group: { _id: null, totalExpense: { $sum: '$amount' }, count: { $sum: 1 } } },
+      ]),
+      Income.aggregate([
+        { $match: { userId: userObjId, date: { $gte: startDate, $lte: endDate } } },
+        { $group: { _id: '$category', total: { $sum: '$amount' }, count: { $sum: 1 } } },
+        { $sort: { total: -1 } },
+      ]),
+    ]);
+
+    const totalIncome = incomeResult.length > 0 ? incomeResult[0].totalIncome : 0;
+    const incomeCount = incomeResult.length > 0 ? incomeResult[0].count : 0;
+    const totalExpense = expenseResult.length > 0 ? expenseResult[0].totalExpense : 0;
+    const expenseCount = expenseResult.length > 0 ? expenseResult[0].count : 0;
+
+    const netSavings = totalIncome - totalExpense;
+    const savingsRate = totalIncome > 0 ? parseFloat(((netSavings / totalIncome) * 100).toFixed(1)) : 0;
+
+    // 6-Month Cash Flow Trend
+    const sixMonthsAgo = new Date(year, month - 5, 1);
+    const [trendIncomes, trendExpenses] = await Promise.all([
+      Income.aggregate([
+        { $match: { userId: userObjId, date: { $gte: sixMonthsAgo, $lte: endDate } } },
+        {
+          $group: {
+            _id: { year: { $year: '$date' }, month: { $month: '$date' } },
+            income: { $sum: '$amount' },
+          },
+        },
+      ]),
+      Expense.aggregate([
+        { $match: { userId: userObjId, date: { $gte: sixMonthsAgo, $lte: endDate } } },
+        {
+          $group: {
+            _id: { year: { $year: '$date' }, month: { $month: '$date' } },
+            expense: { $sum: '$amount' },
+          },
+        },
+      ]),
+    ]);
+
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const trend = [];
+
+    for (let i = 5; i >= 0; i--) {
+      const d = new Date(year, month - i, 1);
+      const mYear = d.getFullYear();
+      const mMonth = d.getMonth() + 1; // MongoDB $month is 1-indexed
+
+      const inc = trendIncomes.find(t => t._id.year === mYear && t._id.month === mMonth)?.income || 0;
+      const exp = trendExpenses.find(t => t._id.year === mYear && t._id.month === mMonth)?.expense || 0;
+      const net = inc - exp;
+      const rate = inc > 0 ? parseFloat(((net / inc) * 100).toFixed(1)) : 0;
+
+      trend.push({
+        monthName: `${monthNames[mMonth - 1]} ${String(mYear).slice(-2)}`,
+        year: mYear,
+        month: mMonth,
+        income: inc,
+        expense: exp,
+        netSavings: net,
+        savingsRate: rate,
+      });
+    }
+
+      return {
+        year,
+        month: month + 1,
+        totalIncome,
+        incomeCount,
+        totalExpense,
+        expenseCount,
+        netSavings,
+        savingsRate,
+        status: netSavings >= 0 ? 'SURPLUS' : 'DEFICIT',
+        incomeCategoryBreakdown: incomeCategories.map(c => ({
+          category: c._id || 'Salary',
+          total: c.total,
+          count: c.count,
+          percentage: totalIncome > 0 ? parseFloat(((c.total / totalIncome) * 100).toFixed(1)) : 0,
+        })),
+        trend,
+      };
+    }
+
+  /**
+   * Deterministic Financial Health Index (0-100 FHI)
+}
+
+  /**
+   * Merchant Summary — uses aggregation pipeline
+   */
+  static async getMerchantSummary(userId) {
+    const userObjId = typeof userId === 'string' ? new mongoose.Types.ObjectId(userId) : userId;
+
+    const topMerchants = await Expense.aggregate([
+      { $match: { userId: userObjId, merchant: { $exists: true, $ne: '' } } },
+      {
+        $group: {
+          _id: '$merchant',
+          totalSpend: { $sum: '$amount' },
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { totalSpend: -1 } },
+      { $limit: 5 },
+      {
+        $project: {
+          _id: 0,
+          merchant: '$_id',
+          totalSpend: { $round: ['$totalSpend', 0] },
+          count: 1,
+        },
+      },
+    ]);
+
+    return { topMerchants };
+  }
+
+  /**
+   * Anomaly Detection (Statistical Z-Score)
+   * Uses two-pass aggregation: first computes mean/stdDev, then filters outliers
+   */
+  static async getAnomalies(userId) {
+    const userObjId = typeof userId === 'string' ? new mongoose.Types.ObjectId(userId) : userId;
+
+    // Pass 1: Compute statistical baseline
+    const statsResult = await Expense.aggregate([
+      { $match: { userId: userObjId } },
+      {
+        $group: {
+          _id: null,
+          mean: { $avg: '$amount' },
+          count: { $sum: 1 },
+          amounts: { $push: '$amount' },
+        },
+      },
+    ]);
+
+    if (!statsResult.length || statsResult[0].count < 3) {
+      return { anomalies: [] };
+    }
+
+    const { mean, amounts } = statsResult[0];
+    const variance = amounts.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / amounts.length;
+    const stdDev = Math.sqrt(variance);
+
+    if (stdDev === 0 || mean === 0) {
+      return { anomalies: [] };
+    }
+
+    // Pass 2: Find outliers (Z > 2.0 AND amount >= 1.5 * mean)
+    const threshold = mean + (2.0 * stdDev);
+    const minAmount = mean * 1.5;
+    const anomalyThreshold = Math.max(threshold, minAmount);
+
+    const anomalyExpenses = await Expense.find({
+      userId,
+      amount: { $gte: anomalyThreshold },
+    }).sort({ date: -1 }).limit(10);
+
+    const anomalies = anomalyExpenses.map(e => ({
+      expenseId: e._id,
+      title: e.title,
+      amount: e.amount,
+      category: e.category,
+      date: e.date,
+      merchant: e.merchant,
+      typicalAverage: Math.round(mean),
+      deviationFactor: parseFloat(((e.amount - mean) / stdDev).toFixed(1)),
+      reason: `Transaction amount (${e.amount}) is significantly higher than user average (${Math.round(mean)}).`,
+    }));
+
+    return { anomalies };
+  }
+
+  /**
+   * Comprehensive Cash Flow, Income Tracking & True Savings Rate Engine
+   * Deterministically calculates monthly net cash flow and 6-month historical trajectory
+   */
+  static async getCashFlowSummary(userId, targetYear, targetMonth) {
+    const now = new Date();
+    const year = targetYear ? parseInt(targetYear, 10) : now.getFullYear();
+    const month = targetMonth !== undefined ? parseInt(targetMonth, 10) : now.getMonth();
+
+    const startDate = new Date(year, month, 1);
+    const endDate = new Date(year, month + 1, 0, 23, 59, 59, 999);
+    const userObjId = typeof userId === 'string' ? new mongoose.Types.ObjectId(userId) : userId;
+
+    const [incomeResult, expenseResult, incomeCategories] = await Promise.all([
+      Income.aggregate([
+        { $match: { userId: userObjId, date: { $gte: startDate, $lte: endDate } } },
+        { $group: { _id: null, totalIncome: { $sum: '$amount' }, count: { $sum: 1 } } },
+      ]),
+      Expense.aggregate([
+        { $match: { userId: userObjId, date: { $gte: startDate, $lte: endDate } } },
+        { $group: { _id: null, totalExpense: { $sum: '$amount' }, count: { $sum: 1 } } },
+      ]),
+      Income.aggregate([
+        { $match: { userId: userObjId, date: { $gte: startDate, $lte: endDate } } },
+        { $group: { _id: '$category', total: { $sum: '$amount' }, count: { $sum: 1 } } },
+        { $sort: { total: -1 } },
+      ]),
+    ]);
+
+    const totalIncome = incomeResult.length > 0 ? incomeResult[0].totalIncome : 0;
+    const incomeCount = incomeResult.length > 0 ? incomeResult[0].count : 0;
+    const totalExpense = expenseResult.length > 0 ? expenseResult[0].totalExpense : 0;
+    const expenseCount = expenseResult.length > 0 ? expenseResult[0].count : 0;
+
+    const netSavings = totalIncome - totalExpense;
+    const savingsRate = totalIncome > 0 ? parseFloat(((netSavings / totalIncome) * 100).toFixed(1)) : 0;
+
+    // 6-Month Cash Flow Trend
+    const sixMonthsAgo = new Date(year, month - 5, 1);
+    const [trendIncomes, trendExpenses] = await Promise.all([
+      Income.aggregate([
+        { $match: { userId: userObjId, date: { $gte: sixMonthsAgo, $lte: endDate } } },
+        {
+          $group: {
+            _id: { year: { $year: '$date' }, month: { $month: '$date' } },
+            income: { $sum: '$amount' },
+          },
+        },
+      ]),
+      Expense.aggregate([
+        { $match: { userId: userObjId, date: { $gte: sixMonthsAgo, $lte: endDate } } },
+        {
+          $group: {
+            _id: { year: { $year: '$date' }, month: { $month: '$date' } },
+            expense: { $sum: '$amount' },
+          },
+        },
+      ]),
+    ]);
+
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const trend = [];
+
+    for (let i = 5; i >= 0; i--) {
+      const d = new Date(year, month - i, 1);
+      const mYear = d.getFullYear();
+      const mMonth = d.getMonth() + 1; // MongoDB $month is 1-indexed
+
+      const inc = trendIncomes.find(t => t._id.year === mYear && t._id.month === mMonth)?.income || 0;
+      const exp = trendExpenses.find(t => t._id.year === mYear && t._id.month === mMonth)?.expense || 0;
+      const net = inc - exp;
+      const rate = inc > 0 ? parseFloat(((net / inc) * 100).toFixed(1)) : 0;
+
+      trend.push({
+        monthName: `${monthNames[mMonth - 1]} ${String(mYear).slice(-2)}`,
+        year: mYear,
+        month: mMonth,
+        income: inc,
+        expense: exp,
+        netSavings: net,
+        savingsRate: rate,
+      });
+    }
+
+    return {
+      year,
+      month: month + 1,
+      totalIncome,
+      incomeCount,
+      totalExpense,
+      expenseCount,
+      netSavings,
+      savingsRate,
+      status: netSavings >= 0 ? 'SURPLUS' : 'DEFICIT',
+      incomeCategoryBreakdown: incomeCategories.map(c => ({
+        category: c._id || 'Salary',
+        total: c.total,
+        count: c.count,
+        percentage: totalIncome > 0 ? parseFloat(((c.total / totalIncome) * 100).toFixed(1)) : 0,
+      })),
+      trend,
+    };
+  }
+
+  /**
+   * Deterministic Financial Health Index (0-100 FHI)
+   * 5-Pillar mathematical model with actionable recommendations
+   */
+  static async getFinancialHealthIndex(userId, targetYear, targetMonth) {
+    const now = new Date();
+    const year = targetYear ? parseInt(targetYear, 10) : now.getFullYear();
+    const month = targetMonth !== undefined ? parseInt(targetMonth, 10) : now.getMonth();
+
+    const [cashflow, budgetUtil, velocity, goals] = await Promise.all([
+      this.getCashFlowSummary(userId, year, month),
+      this.getBudgetUtilization(userId, year, month),
+      this.getSpendingVelocity(userId, year, month),
+      Goal.find({ userId }).lean(),
+    ]);
+
+    // Pillar 1: Savings Rate (25 pts)
+    let p1SavingsScore = 0;
+    if (cashflow.savingsRate >= 30) {
+      p1SavingsScore = 25;
+    } else if (cashflow.savingsRate > 0) {
+      p1SavingsScore = Math.round((cashflow.savingsRate / 30) * 25 * 10) / 10;
+    } else {
+      p1SavingsScore = 0;
+    }
+
+    // Pillar 2: Budget Adherence (25 pts)
+    let p2BudgetScore = 18;
+    if (budgetUtil.totalBudgets > 0) {
+      const overspendRatio = budgetUtil.totalAllocated > 0
+        ? Math.max(0, (budgetUtil.totalSpent - budgetUtil.totalAllocated) / budgetUtil.totalAllocated)
+        : (budgetUtil.totalSpent > 0 ? 1 : 0);
+
+      const unbreachedRatio = budgetUtil.totalBudgets > 0
+        ? (budgetUtil.totalBudgets - budgetUtil.overBudgetCount) / budgetUtil.totalBudgets
+        : 1;
+
+      const adherenceRatio = Math.max(0, 1 - overspendRatio) * 0.6 + unbreachedRatio * 0.4;
+      p2BudgetScore = Math.round(adherenceRatio * 25 * 10) / 10;
+    }
+
+    // Pillar 3: Spending Velocity & Discipline (20 pts)
+    let p3VelocityScore = 20;
+    const vRatio = velocity.velocityRatio || 1.0;
+    if (vRatio <= 1.0) {
+      p3VelocityScore = 20;
+    } else if (vRatio <= 1.3) {
+      p3VelocityScore = Math.round((20 - (vRatio - 1.0) * 33.3) * 10) / 10;
+    } else {
+      p3VelocityScore = Math.max(3, Math.round((10 - (vRatio - 1.3) * 20) * 10) / 10);
+    }
+
+    // Pillar 4: Emergency Buffer & Liquid Net Runway (15 pts)
+    const avgMonthlyBurn = velocity.projectedMonthEndSpend || cashflow.totalExpense || 1;
+    const cumulativeSavings = (cashflow.trend || []).reduce((sum, t) => sum + (t.netSavings || 0), 0);
+    const runwayMonths = avgMonthlyBurn > 0 ? Math.max(0, cumulativeSavings / avgMonthlyBurn) : 0;
+
+    let p4RunwayScore = 0;
+    if (runwayMonths >= 6) {
+      p4RunwayScore = 15;
+    } else if (runwayMonths >= 3) {
+      p4RunwayScore = 11;
+    } else if (runwayMonths >= 1) {
+      p4RunwayScore = 7;
+    } else if (runwayMonths > 0) {
+      p4RunwayScore = 4;
+    } else {
+      p4RunwayScore = 1;
+    }
+
+    // Pillar 5: Goal Trajectory (15 pts)
+    let p5GoalScore = 10;
+    const activeGoals = (goals || []).filter((g) => g.status === 'active' || (!g.status && !g.isCompleted));
+    if (activeGoals.length > 0) {
+      const avgProgress = activeGoals.reduce((sum, g) => {
+        const ratio = g.targetAmount > 0 ? Math.min(1, (g.currentAmount || 0) / g.targetAmount) : 0;
+        return sum + ratio;
+      }, 0) / activeGoals.length;
+      p5GoalScore = Math.round(avgProgress * 15 * 10) / 10;
+    }
+
+    const totalScore = Math.min(100, Math.max(0, Math.round(
+      p1SavingsScore + p2BudgetScore + p3VelocityScore + p4RunwayScore + p5GoalScore
+    )));
+
+    // Tier Classification
+    let tier = 'Builder';
+    let tierBadge = '🏗️ Foundation Builder';
+    let tierDescription = 'Solid fundamentals with great opportunities to optimize cash surplus and runway.';
+
+    if (totalScore >= 85) {
+      tier = 'Sovereign';
+      tierBadge = '👑 Financial Sovereign';
+      tierDescription = 'Elite financial discipline. Exceptional savings rate, runway, and budget control.';
+    } else if (totalScore >= 65) {
+      tier = 'Optimized';
+      tierBadge = '💎 Wealth Optimizer';
+      tierDescription = 'Strong surplus generator. High budget adherence and compounding trajectory.';
+    } else if (totalScore < 40) {
+      tier = 'Novice';
+      tierBadge = '⚠️ High Vulnerability';
+      tierDescription = 'Cash flow leaks or deficit detected. Immediate budget stabilization recommended.';
+    }
+
+    const levers = [];
+
+    if (p1SavingsScore < 20) {
+      const potentialGain = Math.round(25 - p1SavingsScore);
+      levers.push({
+        pillar: 'Savings Rate',
+        title: 'Accelerate Monthly Inflow Retention',
+        description: `Target saving 25% of income to capture +${potentialGain} FHI points.`,
+        potentialGain,
+        actionType: 'CUT_EXPENSES',
+      });
+    }
+
+    if (p2BudgetScore < 20) {
+      const potentialGain = Math.round(25 - p2BudgetScore);
+      levers.push({
+        pillar: 'Budget Adherence',
+        title: 'Establish Category Guardrails',
+        description: `Trim over-budget categories to reclaim +${potentialGain} FHI points.`,
+        potentialGain,
+        actionType: 'ADJUST_BUDGET',
+      });
+    }
+
+    if (p3VelocityScore < 15) {
+      const potentialGain = Math.round(20 - p3VelocityScore);
+      levers.push({
+        pillar: 'Daily Spend Velocity',
+        title: 'Stabilize Mid-Month Daily Pace',
+        description: `Restricting your daily outflow will boost FHI by +${potentialGain} pts.`,
+        potentialGain,
+        actionType: 'THROTTLE_VELOCITY',
+      });
+    }
+
+    return {
+      score: totalScore,
+      tier,
+      tierBadge,
+      tierDescription,
+      pillars: {
+        savingsRate: { score: p1SavingsScore, max: 25, label: 'Savings Rate & Inflow' },
+        budgetAdherence: { score: p2BudgetScore, max: 25, label: 'Budget Guardrails' },
+        spendingVelocity: { score: p3VelocityScore, max: 20, label: 'Spending Stability' },
+        emergencyRunway: { score: p4RunwayScore, max: 15, label: 'Emergency Runway' },
+        goalTrajectory: { score: p5GoalScore, max: 15, label: 'Goal Velocity' },
+      },
+      actionableLevers: levers.slice(0, 3),
+      calculatedAt: new Date().toISOString(),
     };
   }
 }

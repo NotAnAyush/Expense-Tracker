@@ -79,6 +79,16 @@ exports.getInsights = asyncHandler(async (req, res) => {
   res.json({ insights });
 });
 
+exports.scanReceipt = asyncHandler(async (req, res) => {
+  const { imageBase64, mimeType } = req.body;
+  if (!imageBase64) {
+    throw new BadRequestError('Receipt imageBase64 data is required');
+  }
+
+  const parsedReceipt = await AIService.scanReceipt(imageBase64, mimeType, req.user._id);
+  res.json(parsedReceipt);
+});
+
 exports.getAIConfig = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id).select('aiConfig preferredCurrency themePreference');
   const metadata = UnifiedAIClient.getProviderMetadata();

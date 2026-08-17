@@ -13,7 +13,10 @@ import {
   ShieldCheck,
   Activity,
   Flame,
-  Sliders
+  Sliders,
+  Users,
+  TrendingDown,
+  Plane
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useAuth } from '../../context/AuthContext';
@@ -32,6 +35,30 @@ export const Sidebar = ({ activeTab, setActiveTab, onOpenCopilot }) => {
       id: 'expenses', 
       label: 'Transactions', 
       icon: Receipt 
+    },
+    { 
+      id: 'fire', 
+      label: 'FIRE & What-If', 
+      icon: Flame, 
+      badge: { text: 'Monte Carlo', type: 'ai' } 
+    },
+    { 
+      id: 'trips', 
+      label: 'Travel & FX', 
+      icon: Plane, 
+      badge: { text: 'Vault', type: 'mint' } 
+    },
+    { 
+      id: 'splits', 
+      label: 'Group Ledgers', 
+      icon: Users, 
+      badge: { text: 'UPI', type: 'mint' } 
+    },
+    { 
+      id: 'debts', 
+      label: 'Debt Payoff', 
+      icon: TrendingDown, 
+      badge: { text: 'Snowball', type: 'gold' } 
     },
     { 
       id: 'budgets', 
@@ -59,7 +86,7 @@ export const Sidebar = ({ activeTab, setActiveTab, onOpenCopilot }) => {
       id: 'settings', 
       label: 'AI & Settings', 
       icon: Sliders,
-      badge: { text: 'v2.2', type: 'ai' }
+      badge: { text: 'v3.0', type: 'ai' }
     },
   ];
 
@@ -522,19 +549,29 @@ export const Sidebar = ({ activeTab, setActiveTab, onOpenCopilot }) => {
           </div>
         </motion.div>
 
-        {/* User Info & Logout Card */}
-        <div
+        {/* User Info & Profile Trigger */}
+        <motion.div
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          onClick={() => setActiveTab('profile')}
           style={{
             padding: '11px 13px',
             borderRadius: '16px',
-            background: 'rgba(255, 255, 255, 0.04)',
-            border: '1px solid rgba(255, 255, 255, 0.08)',
+            background: activeTab === 'profile'
+              ? 'linear-gradient(135deg, rgba(0, 255, 135, 0.15), rgba(0, 240, 255, 0.1))'
+              : 'rgba(255, 255, 255, 0.04)',
+            border: activeTab === 'profile'
+              ? '1.5px solid rgba(0, 255, 135, 0.5)'
+              : '1px solid rgba(255, 255, 255, 0.08)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
             backdropFilter: 'blur(10px)',
             transition: 'var(--transition)',
+            cursor: 'pointer',
+            boxShadow: activeTab === 'profile' ? '0 0 16px rgba(0, 255, 135, 0.2)' : 'none',
           }}
+          title="Open Sovereign Profile & Account Settings"
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0 }}>
             <div style={{ position: 'relative' }}>
@@ -543,18 +580,33 @@ export const Sidebar = ({ activeTab, setActiveTab, onOpenCopilot }) => {
                   width: '34px',
                   height: '34px',
                   borderRadius: '999px',
-                  background: 'linear-gradient(135deg, #FFD700 0%, #FF8800 100%)',
+                  background: user?.avatarStyle === 'gradient_mint'
+                    ? 'linear-gradient(135deg, #00FF87 0%, #00F0FF 100%)'
+                    : user?.avatarStyle === 'gradient_violet'
+                    ? 'linear-gradient(135deg, #7928CA 0%, #FF007A 100%)'
+                    : user?.avatarStyle === 'gradient_flame'
+                    ? 'linear-gradient(135deg, #FF416C 0%, #FF4B2B 100%)'
+                    : 'linear-gradient(135deg, #FFD700 0%, #FF8800 100%)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   fontWeight: 800,
-                  color: '#050810',
+                  color: user?.avatarStyle === 'gradient_violet' || user?.avatarStyle === 'gradient_flame' ? '#FFFFFF' : '#050810',
                   fontSize: '13px',
                   fontFamily: 'var(--font-display)',
                   boxShadow: '0 2px 10px rgba(255, 215, 0, 0.3)',
+                  overflow: 'hidden',
                 }}
               >
-                {user?.name ? user.name.charAt(0).toUpperCase() : 'R'}
+                {user?.avatarUrl ? (
+                  <img src={user.avatarUrl} alt={user.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                ) : user?.avatarStyle === 'emoji' ? (
+                  user?.avatarEmoji || '👑'
+                ) : user?.name ? (
+                  user.name.charAt(0).toUpperCase()
+                ) : (
+                  'R'
+                )}
               </div>
               {/* Online Dot */}
               <span
@@ -576,11 +628,11 @@ export const Sidebar = ({ activeTab, setActiveTab, onOpenCopilot }) => {
                 style={{
                   fontSize: '12.5px',
                   fontWeight: 700,
-                  color: '#F1F5F9',
+                  color: activeTab === 'profile' ? '#00FF87' : '#F1F5F9',
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
-                  maxWidth: '120px',
+                  maxWidth: '110px',
                 }}
               >
                 {user?.name || 'Richy VIP'}
@@ -592,7 +644,7 @@ export const Sidebar = ({ activeTab, setActiveTab, onOpenCopilot }) => {
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
-                  maxWidth: '120px',
+                  maxWidth: '110px',
                 }}
               >
                 {user?.email || 'user@richy.app'}
@@ -601,9 +653,12 @@ export const Sidebar = ({ activeTab, setActiveTab, onOpenCopilot }) => {
           </div>
 
           <motion.button
-            whileHover={{ scale: 1.15, color: '#F43F5E', backgroundColor: 'rgba(244, 63, 94, 0.12)' }}
+            whileHover={{ scale: 1.2, color: '#F43F5E', backgroundColor: 'rgba(244, 63, 94, 0.15)' }}
             whileTap={{ scale: 0.9 }}
-            onClick={logout}
+            onClick={(e) => {
+              e.stopPropagation();
+              logout();
+            }}
             title="Sign Out"
             style={{
               color: '#94A3B8',
@@ -620,7 +675,7 @@ export const Sidebar = ({ activeTab, setActiveTab, onOpenCopilot }) => {
           >
             <LogOut size={16} />
           </motion.button>
-        </div>
+        </motion.div>
       </div>
     </aside>
   );

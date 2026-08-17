@@ -3,6 +3,14 @@ const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 const app = require('../src/server');
 const User = require('../src/models/User');
+const Expense = require('../src/models/Expense');
+const Income = require('../src/models/Income');
+const Budget = require('../src/models/Budget');
+const Goal = require('../src/models/Goal');
+const RecurringExpense = require('../src/models/RecurringExpense');
+const { Debt } = require('../src/models/Debt');
+const { TripVault } = require('../src/models/TripVault');
+const { Group } = require('../src/models/Group');
 
 let mongoServer;
 
@@ -190,6 +198,48 @@ describe('Auth Endpoints', () => {
         .send({ refreshToken: authUser.refreshToken });
 
       expect(refreshRes.statusCode).toBe(401);
+    });
+  });
+
+  describe('POST /api/auth/demo', () => {
+    it('should create and seed full practical demo account across all 8 modules', async () => {
+      const res = await request(app)
+        .post('/api/auth/demo')
+        .send({ forceRefresh: true });
+
+      expect(res.statusCode).toBe(200);
+      expect(res.body.token).toBeDefined();
+      expect(res.body.refreshToken).toBeDefined();
+      expect(res.body.email).toBe('demo@antigravity.finance');
+      expect(res.body.isDemo).toBe(true);
+
+      const userId = res.body._id;
+
+      // Verify all 8 collections are populated
+      const [expenses, incomes, budgets, goals, recurring, debts, trips, groups] = await Promise.all([
+        Expense.find({ userId }),
+        Income.find({ userId }),
+        Budget.find({ userId }),
+        Goal.find({ userId }),
+        RecurringExpense.find({ userId }),
+        Debt.find({ userId }),
+        TripVault.find({ userId }),
+        Group.find({ createdBy: userId }),
+      ]);
+
+      expect(expenses.length).toBeGreaterThanOrEqual(15);
+      expect(incomes.length).toBeGreaterThanOrEqual(6);
+      expect(budgets.length).toBe(8);
+      expect(goals.length).toBe(4);
+      expect(recurring.length).toBe(8);
+      expect(debts.length).toBe(3);
+      expect(trips.length).toBe(2);
+      expect(groups.length).toBe(2);
+
+      // Verify specific practical entities
+      expect(debts.some(d => d.name.includes('HDFC'))).toBe(true);
+      expect(trips.some(t => t.name.includes('Tokyo'))).toBe(true);
+      expect(groups.some(g => g.name.includes('Flat 402'))).toBe(true);
     });
   });
 });

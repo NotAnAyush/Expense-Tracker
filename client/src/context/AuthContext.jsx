@@ -89,8 +89,32 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
+  const refreshUser = async () => {
+    if (token) {
+      try {
+        const userData = await apiFetch('/auth/me');
+        setUser(userData);
+        return userData;
+      } catch (err) {
+        console.error('Failed to refresh user:', err);
+      }
+    }
+    return null;
+  };
+
+  const updateUserProfile = async (updates) => {
+    const data = await apiFetch('/users/profile', {
+      method: 'PUT',
+      body: JSON.stringify(updates),
+    });
+    if (data.user) {
+      setUser((prev) => ({ ...prev, ...data.user }));
+    }
+    return data;
+  };
+
   return (
-    <AuthContext.Provider value={{ user, token, loading, login, register, loginDemo, logout }}>
+    <AuthContext.Provider value={{ user, setUser, token, loading, login, register, loginDemo, logout, refreshUser, updateUserProfile }}>
       {children}
     </AuthContext.Provider>
   );

@@ -397,44 +397,15 @@ NEVER hallucinate numbers not present in Grounding Facts.`;
   }
 
   /**
-   * INTELLIGENCE 7 — Multimodal Receipt & Invoice Vision OCR
+   * INTELLIGENCE 6 — Multimodal Receipt & Invoice Vision OCR
    */
-  static async scanReceipt(userId, imageBase64, mimeType = 'image/jpeg') {
+  static async scanReceipt(imageBase64, mimeType = 'image/jpeg', userId = null) {
     const userConfig = await getUserAiConfig(userId);
-
-    const prompt = `You are a financial receipt parser. Extract receipt metadata into valid JSON only:
-{
-  "merchant": "Merchant Name",
-  "amount": 123.45,
-  "date": "YYYY-MM-DD",
-  "category": "Recommended Category (Food & Dining, Transportation, Housing & Utilities, Entertainment, Shopping, Health & Medical, Subscriptions)",
-  "tax": 0.00,
-  "confidence": 0.95,
-  "lineItems": [{"item": "Item Name", "price": 10.00}]
-}`;
-
-    try {
-      const rawResponse = await UnifiedAIClient.generateMultimodalCompletion({
-        prompt,
-        imageBase64,
-        mimeType,
-        userConfig,
-      });
-
-      const parsed = extractJson(rawResponse);
-      return {
-        success: true,
-        data: parsed,
-        isAiGenerated: true,
-        source: userConfig.provider || 'gemini',
-      };
-    } catch (err) {
-      console.warn('[Receipt Vision OCR Fallback]', err.message);
-      return {
-        success: false,
-        message: err.message || 'Failed to scan receipt image.',
-      };
-    }
+    return UnifiedAIClient.scanReceipt({
+      imageBase64,
+      mimeType,
+      userConfig,
+    });
   }
 }
 

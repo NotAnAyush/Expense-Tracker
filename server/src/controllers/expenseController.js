@@ -11,6 +11,10 @@ exports.getExpenses = asyncHandler(async (req, res) => {
     endDate,
     merchant,
     search,
+    tag,
+    isTaxDeductible,
+    taxSection,
+    reimbursementStatus,
     paymentMethod,
     minAmount,
     maxAmount,
@@ -30,6 +34,22 @@ exports.getExpenses = asyncHandler(async (req, res) => {
     query.merchant = { $regex: merchant, $options: 'i' };
   }
 
+  if (tag) {
+    query.tags = tag;
+  }
+
+  if (isTaxDeductible !== undefined) {
+    query.isTaxDeductible = isTaxDeductible === 'true' || isTaxDeductible === true;
+  }
+
+  if (taxSection) {
+    query.taxSection = taxSection;
+  }
+
+  if (reimbursementStatus) {
+    query.reimbursementStatus = reimbursementStatus;
+  }
+
   if (paymentMethod) {
     query.paymentMethod = paymentMethod;
   }
@@ -40,6 +60,7 @@ exports.getExpenses = asyncHandler(async (req, res) => {
       { note: { $regex: search, $options: 'i' } },
       { merchant: { $regex: search, $options: 'i' } },
       { category: { $regex: search, $options: 'i' } },
+      { tags: { $regex: search, $options: 'i' } },
     ];
   }
 
@@ -91,7 +112,21 @@ exports.getExpenseById = asyncHandler(async (req, res) => {
 // @desc    Create new expense
 // @route   POST /api/expenses
 exports.createExpense = asyncHandler(async (req, res) => {
-  const { title, amount, category, date, note, merchant, paymentMethod, tags, source } = req.body;
+  const {
+    title,
+    amount,
+    category,
+    date,
+    note,
+    merchant,
+    paymentMethod,
+    tags,
+    splits,
+    isTaxDeductible,
+    taxSection,
+    reimbursementStatus,
+    source,
+  } = req.body;
 
   if (!title || amount === undefined || !category) {
     throw new BadRequestError('Please provide title, amount, and category');
@@ -108,6 +143,10 @@ exports.createExpense = asyncHandler(async (req, res) => {
     merchant: merchant || '',
     paymentMethod: paymentMethod || 'Card',
     tags: tags || [],
+    splits: splits || [],
+    isTaxDeductible: Boolean(isTaxDeductible),
+    taxSection: taxSection || '',
+    reimbursementStatus: reimbursementStatus || 'none',
     source: source || 'manual',
   });
 
@@ -122,7 +161,20 @@ exports.updateExpense = asyncHandler(async (req, res) => {
     throw new NotFoundError('Expense not found');
   }
 
-  const { title, amount, category, date, note, merchant, paymentMethod, tags } = req.body;
+  const {
+    title,
+    amount,
+    category,
+    date,
+    note,
+    merchant,
+    paymentMethod,
+    tags,
+    splits,
+    isTaxDeductible,
+    taxSection,
+    reimbursementStatus,
+  } = req.body;
 
   if (title !== undefined) expense.title = title;
   if (amount !== undefined) expense.amount = Number(amount);
@@ -132,6 +184,10 @@ exports.updateExpense = asyncHandler(async (req, res) => {
   if (merchant !== undefined) expense.merchant = merchant;
   if (paymentMethod !== undefined) expense.paymentMethod = paymentMethod;
   if (tags !== undefined) expense.tags = tags;
+  if (splits !== undefined) expense.splits = splits;
+  if (isTaxDeductible !== undefined) expense.isTaxDeductible = Boolean(isTaxDeductible);
+  if (taxSection !== undefined) expense.taxSection = taxSection;
+  if (reimbursementStatus !== undefined) expense.reimbursementStatus = reimbursementStatus;
 
   const updatedExpense = await expense.save();
   res.json(updatedExpense);

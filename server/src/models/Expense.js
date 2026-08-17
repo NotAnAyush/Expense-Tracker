@@ -51,6 +51,37 @@ const expenseSchema = new mongoose.Schema({
     type: String,
     trim: true,
   }],
+  splits: [{
+    category: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    amount: {
+      type: Number,
+      required: true,
+      min: 0,
+    },
+    note: {
+      type: String,
+      default: '',
+      trim: true,
+    },
+  }],
+  isTaxDeductible: {
+    type: Boolean,
+    default: false,
+  },
+  taxSection: {
+    type: String,
+    default: '',
+    trim: true,
+  },
+  reimbursementStatus: {
+    type: String,
+    enum: ['none', 'pending', 'submitted', 'reimbursed'],
+    default: 'none',
+  },
   recurringExpenseId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'RecurringExpense',
