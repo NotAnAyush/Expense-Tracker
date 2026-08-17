@@ -1,0 +1,118 @@
+{
+  "nodes": [
+    {
+      "id": "node-moc",
+      "type": "file",
+      "file": "Documentation/00-Index.md",
+      "x": 0,
+      "y": 0,
+      "width": 320,
+      "height": 220,
+      "color": "6"
+    },
+    {
+      "id": "node-models",
+      "type": "file",
+      "file": "Documentation/01-Architecture/Database-Models.md",
+      "x": -450,
+      "y": 300,
+      "width": 340,
+      "height": 220,
+      "color": "4"
+    },
+    {
+      "id": "node-api",
+      "type": "file",
+      "file": "Documentation/01-Architecture/API-Contracts.md",
+      "x": -80,
+      "y": 300,
+      "width": 340,
+      "height": 220,
+      "color": "5"
+    },
+    {
+      "id": "node-services",
+      "type": "file",
+      "file": "Documentation/01-Architecture/Services-and-Engines.md",
+      "x": 300,
+      "y": 300,
+      "width": 340,
+      "height": 220,
+      "color": "2"
+    },
+    {
+      "id": "node-design",
+      "type": "file",
+      "file": "Documentation/02-Design-System/Design-Tokens.md",
+      "x": -450,
+      "y": 600,
+      "width": 340,
+      "height": 220,
+      "color": "3"
+    },
+    {
+      "id": "node-features",
+      "type": "file",
+      "file": "Documentation/03-Features/Feature-Roadmap.md",
+      "x": -80,
+      "y": 600,
+      "width": 340,
+      "height": 220,
+      "color": "1"
+    },
+    {
+      "id": "node-kanban",
+      "type": "file",
+      "file": "Documentation/05-Tasks/Project-Kanban.md",
+      "x": 300,
+      "y": 600,
+      "width": 340,
+      "height": 220,
+      "color": "6"
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-1",
+      "fromNode": "node-moc",
+      "fromSide": "bottom",
+      "toNode": "node-models",
+      "toSide": "top"
+    },
+    {
+      "id": "edge-2",
+      "fromNode": "node-moc",
+      "fromSide": "bottom",
+      "toNode": "node-api",
+      "toSide": "top"
+    },
+    {
+      "id": "edge-3",
+      "fromNode": "node-moc",
+      "fromSide": "bottom",
+      "toNode": "node-services",
+      "toSide": "top"
+    },
+    {
+      "id": "edge-4",
+      "fromNode": "node-models",
+      "fromSide": "bottom",
+      "toNode": "node-design",
+      "toSide": "top"
+    },
+    {
+      "id": "edge-5",
+      "fromNode": "node-api",
+      "fromSide": "bottom",
+      "toNode": "node-features",
+      "toSide": "top"
+    },
+    {
+      "id": "edge-6",
+      "fromNode": "node-services",
+      "fromSide": "bottom",
+      "toNode": "node-kanban",
+      "toSide": "top"
+    }
+  ]
+}

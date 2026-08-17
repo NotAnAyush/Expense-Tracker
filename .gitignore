@@ -26,4 +26,7 @@ Thumbs.db
 # Tooling & Cache
 graphify-out/
 scratch/
+.smart-env/
+.obsidian/
+Expense Tracker/
 
