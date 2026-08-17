@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus } from 'lucide-react';
+import { Plus, Trash2 } from 'lucide-react';
 import { apiFetch } from '../api/client';
 import { PinCard } from '../components/UI/PinCard';
 
