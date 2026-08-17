@@ -1,6 +1,10 @@
-const API_BASE_URL = (typeof window !== 'undefined' && window.location.hostname === 'localhost' && window.location.port === '5173')
-  ? '/api'
-  : (import.meta.env?.VITE_API_URL || 'http://localhost:5000/api');
+export const API_BASE_URL = import.meta.env?.VITE_API_URL || (
+  typeof window !== 'undefined'
+    ? (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+      ? `http://${window.location.hostname}:5000/api`
+      : '/api'
+    : 'http://localhost:5000/api'
+);
 
 export const getLocalDateString = (date = new Date()) => {
   const d = new Date(date);
@@ -72,14 +76,20 @@ export const apiFetch = async (endpoint, options = {}) => {
       let errorMessage = 'API request failed';
       if (data.error?.details && Array.isArray(data.error.details) && data.error.details.length > 0) {
         errorMessage = data.error.details.map((d) => d.message).join(' • ');
-      } else if (data.message) {
-        errorMessage = data.message;
+      } else if (typeof data.error === 'string') {
+        errorMessage = data.error;
       } else if (data.error?.message) {
         errorMessage = data.error.message;
+      } else if (data.message) {
+        errorMessage = data.message;
+      } else if (response.status === 401) {
+        errorMessage = data.message || data.error?.message || 'Invalid email or password.';
+      } else if (response.status === 404) {
+        errorMessage = data.message || data.error?.message || 'Requested resource not found (404).';
       } else if (response.status === 429) {
         errorMessage = 'Too many requests. Please wait a moment before trying again.';
       } else if (response.status === 500) {
-        errorMessage = 'Internal server error. Please try again.';
+        errorMessage = data.error?.message || 'Internal server error. Please try again.';
       }
 
       const error = new Error(errorMessage);

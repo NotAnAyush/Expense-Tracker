@@ -96,7 +96,9 @@ const auditLogger = (req, res, next) => {
       });
     } catch (err) {
       // Audit log failures should never crash the request
-      console.error('[Audit Logger Error]', err.message);
+      if (process.env.NODE_ENV !== 'test' && !err.message?.includes('client was closed')) {
+        console.error('[Audit Logger Error]', err.message);
+      }
     }
   });
 
