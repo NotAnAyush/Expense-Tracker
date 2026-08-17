@@ -18,6 +18,7 @@ const { NotFoundError } = require('./utils/errors');
 
 // Route imports
 const authRoutes = require('./routes/authRoutes');
+const userRoutes = require('./routes/userRoutes');
 const expenseRoutes = require('./routes/expenseRoutes');
 const incomeRoutes = require('./routes/incomeRoutes');
 const budgetRoutes = require('./routes/budgetRoutes');
@@ -147,6 +148,7 @@ app.get('/api/health', getHealthStatus);
 // API Routes
 // ========================
 app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
 app.use('/api/expenses', expenseRoutes);
 app.use('/api/income', incomeRoutes);
 app.use('/api/budgets', budgetRoutes);

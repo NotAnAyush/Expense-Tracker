@@ -21,11 +21,12 @@ import { GoalsPage } from './pages/GoalsPage';
 import { RecurringPage } from './pages/RecurringPage';
 import { AnalyticsPage } from './pages/AnalyticsPage';
 import { SettingsPage } from './pages/SettingsPage';
+import { ProfilePage } from './pages/ProfilePage';
 import { AuthPage } from './pages/AuthPage';
 import { apiFetch } from './api/client';
 import { WifiOff, Wifi } from 'lucide-react';
 
-const VALID_TABS = ['dashboard', 'expenses', 'fire', 'trips', 'splits', 'debts', 'budgets', 'goals', 'recurring', 'analytics', 'settings'];
+const VALID_TABS = ['dashboard', 'expenses', 'fire', 'trips', 'splits', 'debts', 'budgets', 'goals', 'recurring', 'analytics', 'settings', 'profile'];
 
 const getInitialTab = () => {
   const hash = window.location.hash.replace('#', '').trim();
@@ -204,6 +205,7 @@ const MainApp = () => {
           onOpenVoiceLog={() => setVoiceLogModalOpen(true)}
           onOpenBankImport={() => setBankImportModalOpen(true)}
           onOpenCopilot={() => setCopilotOpen(true)}
+          onOpenProfile={() => handleTabChange('profile')}
           searchQuery={searchQuery}
           setSearchQuery={handleSearchChange}
         />
@@ -248,6 +250,7 @@ const MainApp = () => {
           {activeTab === 'recurring' && <RecurringPage key={refreshKey} categories={categories} />}
           {activeTab === 'analytics' && <AnalyticsPage key={refreshKey} />}
           {activeTab === 'settings' && <SettingsPage key={refreshKey} />}
+          {activeTab === 'profile' && <ProfilePage key={refreshKey} />}
         </main>
       </div>
 

@@ -1,590 +1,962 @@
 {
-  "D:\\Project\\Expense Tracker\\V2\\client\\vite.config.js": {
-    "mtime": 1786765427.808608,
-    "hash": "a9a2ec40fb0e7ce9e3389662c52bc5a2"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\client\\src\\App.jsx": {
-    "mtime": 1786896068.8559222,
-    "hash": "f873f59a7bd62b1d401658155cbae9fb"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\client\\src\\main.jsx": {
-    "mtime": 1786527056.004842,
-    "hash": "ec05c83d9bfed70d888b2da13f269eef"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\client\\src\\api\\client.js": {
-    "mtime": 1786765427.8059106,
-    "hash": "46e02bc81dc539592728aef73d72e90f"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\client\\src\\components\\Copilot\\CopilotDrawer.jsx": {
-    "mtime": 1786772162.6521533,
-    "hash": "6b9f792855b37a6179f84198ab2b5aa1"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\client\\src\\components\\Dashboard\\FinancialHealthCard.jsx": {
-    "mtime": 1786894730.572109,
-    "hash": "58be72d491b3bfefa7fd55384c8a8898"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\client\\src\\components\\Debt\\AddDebtModal.jsx": {
-    "mtime": 1786895631.8987398,
-    "hash": "db0168cfaceb0bbe4b2708a03d15bc6e"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\client\\src\\components\\Expenses\\BankStatementModal.jsx": {
-    "mtime": 1786894758.2690282,
-    "hash": "922549746bb47dbf7e7115ce54890fa5"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\client\\src\\components\\Expenses\\ExpenseFormModal.jsx": {
-    "mtime": 1786894149.2435267,
-    "hash": "d25e6a872503344fc4e4e0811813fcee"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\client\\src\\components\\Expenses\\IncomeFormModal.jsx": {
-    "mtime": 1786894102.4638424,
-    "hash": "073705c824c6bb5e3dd1b1ca4299897c"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\client\\src\\components\\Expenses\\ReceiptScanModal.jsx": {
-    "mtime": 1786894121.0875387,
-    "hash": "8fc8d8164368bdeb65f23959e35436a9"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\client\\src\\components\\Expenses\\VoiceQuickLogModal.jsx": {
-    "mtime": 1786894744.537899,
-    "hash": "1f9597e44e77087f99710962ad194d2f"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\client\\src\\components\\Groups\\AddGroupExpenseModal.jsx": {
-    "mtime": 1786895583.707176,
-    "hash": "30d66210c9028bded6ecf293cc0167db"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\client\\src\\components\\Groups\\UpiQrModal.jsx": {
-    "mtime": 1786895571.0799563,
-    "hash": "2f137941c36f60e92b2894929b6a32fe"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\client\\src\\components\\Shell\\Header.jsx": {
-    "mtime": 1786894788.8803003,
-    "hash": "5cff78148430b8d67571299a68ed0bcb"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\client\\src\\components\\Shell\\Sidebar.jsx": {
-    "mtime": 1786896051.6102874,
-    "hash": "b2bc4c06dd90c8e26961961c27424904"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\client\\src\\components\\UI\\PinCard.jsx": {
-    "mtime": 1786679469.2571092,
-    "hash": "ffbffe2a68e5259d037bc273d2bacf31"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\client\\src\\context\\AuthContext.jsx": {
-    "mtime": 1786765427.806978,
-    "hash": "509c145cf9f69427070b38e7f6463683"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\client\\src\\context\\PrivacyContext.jsx": {
-    "mtime": 1786894709.673898,
-    "hash": "261969a3821de011d6a86b9747070f5f"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\client\\src\\pages\\AnalyticsPage.jsx": {
-    "mtime": 1786894865.6638525,
-    "hash": "7cc1a240ea658da274ecd3e50614bda0"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\client\\src\\pages\\AuthPage.jsx": {
-    "mtime": 1786765427.8080838,
-    "hash": "9b765129056ff5e086373431bdb2fef3"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\client\\src\\pages\\BudgetsPage.jsx": {
-    "mtime": 1786605771.7377534,
-    "hash": "677f413af275119fbbb59077da59fb83"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\client\\src\\pages\\DashboardPage.jsx": {
-    "mtime": 1786894852.4355,
-    "hash": "f25d8bc0b0a6732e343c2bd9f2e3e8ac"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\client\\src\\pages\\DebtPayoffPage.jsx": {
-    "mtime": 1786895648.9221518,
-    "hash": "d162c177ab6b0bda2b0d59c5a0c3e1f1"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\client\\src\\pages\\ExpensesPage.jsx": {
-    "mtime": 1786894918.9989111,
-    "hash": "393f62f636872888d19e9cad588ea81f"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\client\\src\\pages\\GoalsPage.jsx": {
-    "mtime": 1786772162.654235,
-    "hash": "11d5328de86a4893796e3900c9b7a964"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\client\\src\\pages\\GroupSplitPage.jsx": {
-    "mtime": 1786895621.8823204,
-    "hash": "ef84f13e029855ebfbb61d235b593ae0"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\client\\src\\pages\\RecurringPage.jsx": {
-    "mtime": 1786772162.6547532,
-    "hash": "25e6644b68821d946d715aded8f5ca40"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\client\\src\\pages\\SettingsPage.jsx": {
-    "mtime": 1786772162.6557994,
-    "hash": "92355402f7b944d218552c7c435afc0e"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\client\\src\\pages\\TripVaultPage.jsx": {
-    "mtime": 1786896032.539111,
-    "hash": "900901542d8d01a23cd62994136cfd2b"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\client\\src\\pages\\WealthSimulatorPage.jsx": {
-    "mtime": 1786896015.1738405,
-    "hash": "3e00514058f7845ffdd8cd478d626ef1"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\server.js": {
-    "mtime": 1786895864.4016905,
-    "hash": "fe54df3ae99fa6344ee9b33745a2bbea"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\config\\db.js": {
-    "mtime": 1786765427.811912,
-    "hash": "6d41948e054b8ab6aa87a9f628d5bcd7"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\controllers\\aiController.js": {
-    "mtime": 1786893986.2130656,
-    "hash": "9ca5af291b5e6cb4e3098961d5e7c6bc"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\controllers\\analyticsController.js": {
-    "mtime": 1786894459.738297,
-    "hash": "cfa4186740dba4d062df1a680bf57290"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\controllers\\auditController.js": {
-    "mtime": 1786765427.8129845,
-    "hash": "527e826bf66dff77b6c97b1f051d59cc"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\controllers\\authController.js": {
-    "mtime": 1786765427.8145077,
-    "hash": "9a0f4372c396f8ab0e40187d6258ebde"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\controllers\\budgetController.js": {
-    "mtime": 1786765427.8145077,
-    "hash": "504bc3c14cbbcb09b778b0c05f17dbe7"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\controllers\\categoryController.js": {
-    "mtime": 1786765427.815514,
-    "hash": "096b344c8c11ce1f1596280e320b6834"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\controllers\\debtController.js": {
-    "mtime": 1786895518.8276246,
-    "hash": "839ebc6f5d94798d7d4ee116edf007a1"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\controllers\\expenseController.js": {
-    "mtime": 1786893904.454936,
-    "hash": "54f0abeb40941c3caf6c1fe1c01d3ede"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\controllers\\exportController.js": {
-    "mtime": 1786894005.9998777,
-    "hash": "32aabd44f8c934d7566126408ba6bbe0"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\controllers\\goalController.js": {
-    "mtime": 1786765427.8165195,
-    "hash": "e6bc9c2b6dcfb75294dbdc9f5d2fc1ff"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\controllers\\groupController.js": {
-    "mtime": 1786895510.0558856,
-    "hash": "1b5f1370bf34638628d4921b91c81b01"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\controllers\\importController.js": {
-    "mtime": 1786894500.5422857,
-    "hash": "51ea80ba69ec8bbfe50e08f032f021eb"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\controllers\\incomeController.js": {
-    "mtime": 1786893888.0190015,
-    "hash": "95d0a4eea3ce2a43f5701bda8ff1aabe"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\controllers\\recurringController.js": {
-    "mtime": 1786765427.8175173,
-    "hash": "330932778a4ac07d71ee19009acf2ed6"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\controllers\\simulationController.js": {
-    "mtime": 1786895990.0481899,
-    "hash": "b497518d5b65d9a54c4e56e5286259df"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\controllers\\tripVaultController.js": {
-    "mtime": 1786895821.849184,
-    "hash": "b47f7efc14ecf178e2870027c8e598ad"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\middleware\\auditLogger.js": {
-    "mtime": 1786765427.8175173,
-    "hash": "ab66803edfb2e36283f445a229ecdff2"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\middleware\\auth.js": {
-    "mtime": 1786526902.6043777,
-    "hash": "983bbc8936eb0b048a3d9e250b42902d"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\middleware\\errorHandler.js": {
-    "mtime": 1786765427.8175173,
-    "hash": "5355d8183db60fc970fd274cad73b8d5"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\middleware\\idempotency.js": {
-    "mtime": 1786765427.8185165,
-    "hash": "d38e0a46a2b63d3e69d72002151d823f"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\middleware\\rateLimiter.js": {
-    "mtime": 1786772384.8066247,
-    "hash": "bea2ce69fb036912f3859766288193aa"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\middleware\\requestLogger.js": {
-    "mtime": 1786765427.8185165,
-    "hash": "58e99cc36eacd95d88443ca503e8854c"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\middleware\\sanitize.js": {
-    "mtime": 1786538723.9163868,
-    "hash": "ac197389fc86f96bba972d8b82931370"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\middleware\\validate.js": {
-    "mtime": 1786765427.8185165,
-    "hash": "ca6119b18986de90f2554aed90d4fb63"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\models\\AuditLog.js": {
-    "mtime": 1786765427.8196614,
-    "hash": "e4e18c1be6f0aaf000864905625377f2"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\models\\Budget.js": {
-    "mtime": 1786526891.8008547,
-    "hash": "a820164752ea90de71f8b0fe7d961e77"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\models\\Category.js": {
-    "mtime": 1786605112.248201,
-    "hash": "9893864be93a3f35561284e228db81ce"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\models\\Debt.js": {
-    "mtime": 1786895214.479288,
-    "hash": "ca79757100b9b1f4481352ac8763cd74"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\models\\Expense.js": {
-    "mtime": 1786893862.8170278,
-    "hash": "5527382deafd5cc7c94934b0d5bf0abb"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\models\\Goal.js": {
-    "mtime": 1786765427.8201768,
-    "hash": "83e643f1a9cf8ccf725837717404d847"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\models\\Group.js": {
-    "mtime": 1786895412.6390655,
-    "hash": "e887692046b18f83f80ecca9d8099ed7"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\models\\Income.js": {
-    "mtime": 1786893854.9386551,
-    "hash": "39b4af2721abb5ac3bbeeb1866ab5cfe"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\models\\RecurringExpense.js": {
-    "mtime": 1786526894.3760967,
-    "hash": "dc512e0480064d8e4e1b818bff702c51"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\models\\RefreshToken.js": {
-    "mtime": 1786765427.8207507,
-    "hash": "2cafaf649f8b18fe05aba8f92d942366"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\models\\TripVault.js": {
-    "mtime": 1786895804.3160179,
-    "hash": "5da217fcd7ef62d37483e70a7e3d0904"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\models\\User.js": {
-    "mtime": 1786772162.661935,
-    "hash": "25463615faee9bf663a1d354b8fae345"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\routes\\aiRoutes.js": {
-    "mtime": 1786893996.2741034,
-    "hash": "9018fad8948494fac2342538ddf3fad0"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\routes\\analyticsRoutes.js": {
-    "mtime": 1786894467.3539188,
-    "hash": "8ba4e81ea3f09979a1d2d0602dbc0cc6"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\routes\\auditRoutes.js": {
-    "mtime": 1786765427.8207507,
-    "hash": "a66c6718876642b3e4dad50f4ef3b745"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\routes\\authRoutes.js": {
-    "mtime": 1786765427.8217568,
-    "hash": "35c867a138c537e79117abb29d28a4b4"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\routes\\budgetRoutes.js": {
-    "mtime": 1786765427.8217568,
-    "hash": "5ca83b1155bacf0dd4017d27439f1fb7"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\routes\\categoryRoutes.js": {
-    "mtime": 1786526937.6074328,
-    "hash": "2b6ef767fcddd44d5a3baf7dc5b89fe8"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\routes\\debtRoutes.js": {
-    "mtime": 1786895237.7868392,
-    "hash": "2d3bb266992c04d525e2c1eb0563fd10"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\routes\\expenseRoutes.js": {
-    "mtime": 1786765427.8227677,
-    "hash": "a56aa8b6da9f0697d53f7a189e9518d6"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\routes\\exportRoutes.js": {
-    "mtime": 1786894015.3778946,
-    "hash": "bfe970035dcdea9e672a4dfe75baef4b"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\routes\\fxRoutes.js": {
-    "mtime": 1786895833.7304423,
-    "hash": "90668eceebe0213d737a95a187270cee"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\routes\\goalRoutes.js": {
-    "mtime": 1786765427.823757,
-    "hash": "de724085a7fea1df0fdb1fd6497531b3"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\routes\\groupRoutes.js": {
-    "mtime": 1786895198.0608046,
-    "hash": "e4abd8c640dc72868c074693a601c23c"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\routes\\importRoutes.js": {
-    "mtime": 1786894405.7930484,
-    "hash": "33abfc885e53c495e1d207276c712ae0"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\routes\\incomeRoutes.js": {
-    "mtime": 1786893892.7782185,
-    "hash": "6d6b04749c69b3dbc56f913e1b216d83"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\routes\\recurringRoutes.js": {
-    "mtime": 1786765427.823757,
-    "hash": "37dbd16e647c6b70df1ea397c2d744ef"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\routes\\simulationRoutes.js": {
-    "mtime": 1786895798.3428164,
-    "hash": "55793f74bfd1ddb6f8f336dd858c1c99"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\routes\\tripVaultRoutes.js": {
-    "mtime": 1786895827.8815787,
-    "hash": "0a91db3dd3cbd88ecfa62d6f7b6e579d"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\services\\ai\\aiService.js": {
-    "mtime": 1786893978.466433,
-    "hash": "679a32837f25d1161b820787bafbb20e"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\services\\ai\\contextBuilder.js": {
-    "mtime": 1786526953.9975412,
-    "hash": "0efaae01329a323d1a78fa77f1500708"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\services\\ai\\geminiClient.js": {
-    "mtime": 1786526951.015681,
-    "hash": "60af97a7da8d5d25e246dcc71e5cda97"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\services\\ai\\intentRouter.js": {
-    "mtime": 1786526959.2401502,
-    "hash": "06dd8f0250cbcbea08172f6e76d709b6"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\services\\ai\\localRagEngine.js": {
-    "mtime": 1786772162.6658754,
-    "hash": "9ae23010c8b659f1786c6c315fb231c7"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\services\\ai\\toolRegistry.js": {
-    "mtime": 1786526956.3961575,
-    "hash": "e78aad7c116b19c6a9f3cd001bea319a"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\services\\ai\\unifiedAIClient.js": {
-    "mtime": 1786893964.2798116,
-    "hash": "b27196c848c145176fea71875fa9d3f4"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\services\\analytics\\analyticsService.js": {
-    "mtime": 1786899575.6373096,
-    "hash": "63978b199ac150b7755697109c4877b2"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\services\\analytics\\fireSimulatorEngine.js": {
-    "mtime": 1786895785.3846114,
-    "hash": "6be8838dddd597d652b80e397f4533a6"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\services\\analytics\\trendService.js": {
-    "mtime": 1786765427.8257592,
-    "hash": "24ce470ccee61938bfbfcd1e53a0b31f"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\services\\debt\\debtAmortizationEngine.js": {
-    "mtime": 1786895222.8072805,
-    "hash": "c5b6abb2c91241782afed4056b605d4b"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\services\\fx\\fxService.js": {
-    "mtime": 1786895811.6780975,
-    "hash": "c056eef96d83ca0b16e3cc0e5a69ff28"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\services\\group\\debtSimplificationEngine.js": {
-    "mtime": 1786895284.556111,
-    "hash": "3348c056dbdd2df5694e56a93d285c1a"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\services\\import\\importService.js": {
-    "mtime": 1786894690.9778907,
-    "hash": "f2a3f33ffacc025ed9c517fe7f41c0d2"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\utils\\AppError.js": {
-    "mtime": 1786765427.8257592,
-    "hash": "98664c0cb322beb936c209cc18d2cffd"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\utils\\asyncHandler.js": {
-    "mtime": 1786765427.8257592,
-    "hash": "34474c723cab91a1436ef65157a6f09d"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\utils\\errors.js": {
-    "mtime": 1786765427.8257592,
-    "hash": "8046438a4e76e70c16d5890c91bde3dd"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\utils\\response.js": {
-    "mtime": 1786765427.8257592,
-    "hash": "e8ffcfe804e6453cfc6d29e3041daa53"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\validators\\authValidator.js": {
-    "mtime": 1786765427.8272674,
-    "hash": "88da715e83b49f594a89d984b1f4b246"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\validators\\budgetValidator.js": {
-    "mtime": 1786765427.8272674,
-    "hash": "7de19bd4a1ad5b42799aa3fc06296d91"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\validators\\expenseValidator.js": {
-    "mtime": 1786893878.3812728,
-    "hash": "79428d9050c54764a86c7f00ee735f10"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\validators\\goalValidator.js": {
-    "mtime": 1786765427.8272674,
-    "hash": "f220dbbf6deaea5a94270b221d8dbaa2"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\validators\\incomeValidator.js": {
-    "mtime": 1786893869.081942,
-    "hash": "c5cdca758ce2a082fe6a3c1cb818e170"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\src\\validators\\recurringValidator.js": {
-    "mtime": 1786765427.8272674,
-    "hash": "1d8f717b016ec9341b0f5d987a972609"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\tests\\aiProviders.test.js": {
-    "mtime": 1786772162.6669297,
-    "hash": "817dbaf11d5986af559b2f69b650b691"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\tests\\analytics.test.js": {
-    "mtime": 1786526976.0700154,
-    "hash": "114bb440471eb8397ba27da5cd8f7214"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\tests\\auth.test.js": {
-    "mtime": 1786765427.8289454,
-    "hash": "55f57971a3718c4dcc81b9e8461bf7ad"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\tests\\budgets.test.js": {
-    "mtime": 1786765427.8289454,
-    "hash": "8ba7bb6ecdfc6edfda73179e044b5587"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\tests\\cashflow.test.js": {
-    "mtime": 1786894054.9269674,
-    "hash": "0607e7c5422dda31cec4187db8052391"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\tests\\debtPayoff.test.js": {
-    "mtime": 1786895159.3252945,
-    "hash": "868f7227081c27d46d2e73cb868af2ea"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\tests\\expenses.test.js": {
-    "mtime": 1786765427.8289454,
-    "hash": "a1f9d30e7cb8bb82ecafd94dcfd4a4c5"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\tests\\exportAndAudit.test.js": {
-    "mtime": 1786765427.8297672,
-    "hash": "b0ba3bc5f682fcf511dbe6ad45f1a225"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\tests\\financialHealth.test.js": {
-    "mtime": 1786894617.6523604,
-    "hash": "942212a4a2b53f7ae5bbbcb524d2c079"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\tests\\fireSimulation.test.js": {
-    "mtime": 1786895974.104782,
-    "hash": "a8c636d1b15981c72a946d7b9fb102cd"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\tests\\goals.test.js": {
-    "mtime": 1786765427.8297672,
-    "hash": "3fa91a3924b1f64723cadccaebf155ad"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\tests\\groupSplits.test.js": {
-    "mtime": 1786895557.2079556,
-    "hash": "59639cd29f38ab2a137315a7d4e39bd1"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\tests\\income.test.js": {
-    "mtime": 1786894045.9982188,
-    "hash": "7369d42bd63d95261cafce03f832514a"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\tests\\patterns.test.js": {
-    "mtime": 1786765427.8307796,
-    "hash": "dfe83709b8245192f8b43140f52c0af4"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\tests\\receiptScan.test.js": {
-    "mtime": 1786894162.917791,
-    "hash": "61cf12cc4588145e3fefa474bcdbe6c1"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\tests\\recurring.test.js": {
-    "mtime": 1786765427.8307796,
-    "hash": "8524a7109c6aae3258d949679a32b32d"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\tests\\statementImport.test.js": {
-    "mtime": 1786894695.883775,
-    "hash": "63331942120b8415fffc0835e89e7757"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\tests\\taxAndSplits.test.js": {
-    "mtime": 1786894066.7124734,
-    "hash": "02c08530db28cfc0d77f8340a93d01e9"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\tests\\tripVault.test.js": {
-    "mtime": 1786895936.023042,
-    "hash": "f1f8f643c7509c084230e320b8171a89"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\server\\tests\\validation.test.js": {
-    "mtime": 1786765427.8307796,
-    "hash": "9548293252507b41e7abc71962673fcf"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\BACKEND.md": {
-    "mtime": 1786765427.804293,
-    "hash": "6a2f5c568e6713a762fe8cca479b0209"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\README.md": {
-    "mtime": 1786769094.522491,
-    "hash": "45453b73748602dbf9185bbc4a1f166d"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\skill_output.txt": {
-    "mtime": 1786539622.8764615,
-    "hash": "72a231ac330d5212f0b35fd72ea26be6"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\client\\index.html": {
-    "mtime": 1786679469.2511585,
-    "hash": "294ee68c848ebcb4445152918461a9e9"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\Design\\pinterest\\DESIGN.md": {
-    "mtime": 1778506381.0,
-    "hash": "e71b564144b90083e381fdabbbecc2f8"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\Design\\pinterest\\README.md": {
-    "mtime": 1778506381.0,
-    "hash": "784ea5ee77f18a7e146124dbe500ee00"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\design-system\\expense-tracker\\MASTER.md": {
-    "mtime": 1786605771.7398663,
-    "hash": "b4d5418194c8db5d0554a4141909c245"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\Documentation\\AI_ML_ARCHITECTURE_AND_IMPROVEMENTS.md": {
-    "mtime": 1786769094.5214117,
-    "hash": "580a9e676307c5d8f4fa91cbe61b3f70"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\Documentation\\AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md": {
-    "mtime": 1786772384.7977161,
-    "hash": "553f856bd50fc0fd59406bbf18670d9b"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\Documentation\\BACKEND.md": {
-    "mtime": 1786765427.804828,
-    "hash": "44aa8a98cf1de949c9b0cdc68302ea17"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\Documentation\\FEATURE_ROADMAP_AND_PRODUCTIVITY_INNOVATIONS.md": {
-    "mtime": 1786899356.5236022,
-    "hash": "c0b035ac20bab0c091906cec855bf7df"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\Documentation\\PROJECT_STATUS.md": {
-    "mtime": 1786899347.9678886,
-    "hash": "2604c6cc58f5cec6a5051e27318bfa7a"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\Documentation\\SYSTEM_ARCHITECTURE_AND_WORKING_MODEL.md": {
-    "mtime": 1786880925.759237,
-    "hash": "5e6479270a3413fbe61af5c8cbfd57b8"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\Plan\\Revised Master Antigravity Prompt \u2014 AI-First Personal Finance Intelligence Platform.md": {
-    "mtime": 1786526377.556042,
-    "hash": "f0217432422740588781e3b1014daf20"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\user manual\\README.md": {
-    "mtime": 1786766356.675933,
-    "hash": "1764504371316046e96ad9c3ce901d7e"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\user manual\\TEAM_COLLABORATION_MANUAL.md": {
-    "mtime": 1786772162.6685038,
-    "hash": "b821883f0f5c6524206cb1f8780ec093"
-  },
-  "D:\\Project\\Expense Tracker\\V2\\client\\public\\logo.jpg": {
-    "mtime": 1786605771.7296057,
-    "hash": "700feb95bc1697f7eeda76a8d5176e10"
+  "client/package.json": {
+    "mtime": 1786766785.9561281,
+    "seen": 1786943438.3597388,
+    "ast_hash": "bd81beb81a8fde5c25363c44098b9630",
+    "semantic_hash": ""
+  },
+  "client/src/App.jsx": {
+    "mtime": 1786942771.6288326,
+    "seen": 1786943438.359742,
+    "ast_hash": "f2f456cdfebf3ae861199a2fba25e97c",
+    "semantic_hash": ""
+  },
+  "client/src/api/client.js": {
+    "mtime": 1786766785.9681222,
+    "seen": 1786943438.3597429,
+    "ast_hash": "f03d326f427d0c448c3e3abb6c549fbe",
+    "semantic_hash": ""
+  },
+  "client/src/components/Copilot/CopilotDrawer.jsx": {
+    "mtime": 1786901711.3283014,
+    "seen": 1786943438.359745,
+    "ast_hash": "6b9f792855b37a6179f84198ab2b5aa1",
+    "semantic_hash": ""
+  },
+  "client/src/components/Dashboard/FinancialHealthCard.jsx": {
+    "mtime": 1786901716.613986,
+    "seen": 1786943438.359746,
+    "ast_hash": "58be72d491b3bfefa7fd55384c8a8898",
+    "semantic_hash": ""
+  },
+  "client/src/components/Debt/AddDebtModal.jsx": {
+    "mtime": 1786901716.614273,
+    "seen": 1786943438.3597472,
+    "ast_hash": "db0168cfaceb0bbe4b2708a03d15bc6e",
+    "semantic_hash": ""
+  },
+  "client/src/components/Expenses/BankStatementModal.jsx": {
+    "mtime": 1786901716.6144192,
+    "seen": 1786943438.3597481,
+    "ast_hash": "922549746bb47dbf7e7115ce54890fa5",
+    "semantic_hash": ""
+  },
+  "client/src/components/Expenses/ExpenseFormModal.jsx": {
+    "mtime": 1786901716.6149259,
+    "seen": 1786943438.359749,
+    "ast_hash": "d25e6a872503344fc4e4e0811813fcee",
+    "semantic_hash": ""
+  },
+  "client/src/components/Expenses/IncomeFormModal.jsx": {
+    "mtime": 1786901716.6154354,
+    "seen": 1786943438.3597498,
+    "ast_hash": "073705c824c6bb5e3dd1b1ca4299897c",
+    "semantic_hash": ""
+  },
+  "client/src/components/Expenses/ReceiptScanModal.jsx": {
+    "mtime": 1786901716.6156857,
+    "seen": 1786943438.359752,
+    "ast_hash": "8fc8d8164368bdeb65f23959e35436a9",
+    "semantic_hash": ""
+  },
+  "client/src/components/Expenses/VoiceQuickLogModal.jsx": {
+    "mtime": 1786901716.6158934,
+    "seen": 1786943438.359753,
+    "ast_hash": "1f9597e44e77087f99710962ad194d2f",
+    "semantic_hash": ""
+  },
+  "client/src/components/Groups/AddGroupExpenseModal.jsx": {
+    "mtime": 1786901716.6161866,
+    "seen": 1786943438.359754,
+    "ast_hash": "30d66210c9028bded6ecf293cc0167db",
+    "semantic_hash": ""
+  },
+  "client/src/components/Groups/UpiQrModal.jsx": {
+    "mtime": 1786901716.616364,
+    "seen": 1786943438.359755,
+    "ast_hash": "2f137941c36f60e92b2894929b6a32fe",
+    "semantic_hash": ""
+  },
+  "client/src/components/Shell/Header.jsx": {
+    "mtime": 1786942733.4342527,
+    "seen": 1786943438.359756,
+    "ast_hash": "81fb7f3574741200fe6f7f6c02eaa607",
+    "semantic_hash": ""
+  },
+  "client/src/components/Shell/Sidebar.jsx": {
+    "mtime": 1786942709.2442796,
+    "seen": 1786943438.3597581,
+    "ast_hash": "a2230cd6342a30dbde7f8cb63838f292",
+    "semantic_hash": ""
+  },
+  "client/src/components/UI/PinCard.jsx": {
+    "mtime": 1786766785.9741747,
+    "seen": 1786943438.359759,
+    "ast_hash": "fa25a169ea0309cfdb327a33286ce213",
+    "semantic_hash": ""
+  },
+  "client/src/context/AuthContext.jsx": {
+    "mtime": 1786942651.0590198,
+    "seen": 1786943438.3597598,
+    "ast_hash": "0f30b30eb1ca028ee905e5ba63932f33",
+    "semantic_hash": ""
+  },
+  "client/src/context/PrivacyContext.jsx": {
+    "mtime": 1786901716.6175036,
+    "seen": 1786943438.359761,
+    "ast_hash": "261969a3821de011d6a86b9747070f5f",
+    "semantic_hash": ""
+  },
+  "client/src/main.jsx": {
+    "mtime": 1786599871.2907825,
+    "seen": 1786943438.359762,
+    "ast_hash": "ec05c83d9bfed70d888b2da13f269eef",
+    "semantic_hash": ""
+  },
+  "client/src/pages/AnalyticsPage.jsx": {
+    "mtime": 1786901716.6185389,
+    "seen": 1786943438.359763,
+    "ast_hash": "609f1b1f95e9d556f58fb6660c693f37",
+    "semantic_hash": ""
+  },
+  "client/src/pages/AuthPage.jsx": {
+    "mtime": 1786766785.9794736,
+    "seen": 1786943438.359765,
+    "ast_hash": "ae46efe19f3f1d5d5419e0393a32b4cf",
+    "semantic_hash": ""
+  },
+  "client/src/pages/BudgetsPage.jsx": {
+    "mtime": 1786766785.9812102,
+    "seen": 1786943438.359766,
+    "ast_hash": "f72c034fed86d050637614a41d56746e",
+    "semantic_hash": ""
+  },
+  "client/src/pages/DashboardPage.jsx": {
+    "mtime": 1786901716.6189294,
+    "seen": 1786943438.359767,
+    "ast_hash": "92044ae6b8b6f2ae1d6cde6f6da55566",
+    "semantic_hash": ""
+  },
+  "client/src/pages/DebtPayoffPage.jsx": {
+    "mtime": 1786901716.6191742,
+    "seen": 1786943438.3597682,
+    "ast_hash": "d162c177ab6b0bda2b0d59c5a0c3e1f1",
+    "semantic_hash": ""
+  },
+  "client/src/pages/ExpensesPage.jsx": {
+    "mtime": 1786901716.6195056,
+    "seen": 1786943438.359769,
+    "ast_hash": "393f62f636872888d19e9cad588ea81f",
+    "semantic_hash": ""
+  },
+  "client/src/pages/GoalsPage.jsx": {
+    "mtime": 1786772534.11323,
+    "seen": 1786943438.35977,
+    "ast_hash": "11d5328de86a4893796e3900c9b7a964",
+    "semantic_hash": ""
+  },
+  "client/src/pages/GroupSplitPage.jsx": {
+    "mtime": 1786901716.6201048,
+    "seen": 1786943438.3597708,
+    "ast_hash": "ef84f13e029855ebfbb61d235b593ae0",
+    "semantic_hash": ""
+  },
+  "client/src/pages/ProfilePage.jsx": {
+    "mtime": 1786943410.0919042,
+    "seen": 1786943438.359773,
+    "ast_hash": "8110d99bbd94997835aac579542cd5e5",
+    "semantic_hash": ""
+  },
+  "client/src/pages/RecurringPage.jsx": {
+    "mtime": 1786772534.1360104,
+    "seen": 1786943438.3597739,
+    "ast_hash": "25e6644b68821d946d715aded8f5ca40",
+    "semantic_hash": ""
+  },
+  "client/src/pages/SettingsPage.jsx": {
+    "mtime": 1786772534.139548,
+    "seen": 1786943438.359775,
+    "ast_hash": "92355402f7b944d218552c7c435afc0e",
+    "semantic_hash": ""
+  },
+  "client/src/pages/TripVaultPage.jsx": {
+    "mtime": 1786901716.6202815,
+    "seen": 1786943438.359776,
+    "ast_hash": "900901542d8d01a23cd62994136cfd2b",
+    "semantic_hash": ""
+  },
+  "client/src/pages/WealthSimulatorPage.jsx": {
+    "mtime": 1786901716.6214278,
+    "seen": 1786943438.359777,
+    "ast_hash": "3e00514058f7845ffdd8cd478d626ef1",
+    "semantic_hash": ""
+  },
+  "client/vite.config.js": {
+    "mtime": 1786766785.9863987,
+    "seen": 1786943438.3597782,
+    "ast_hash": "7bbacb66acad2597b9bafa24e2731ef0",
+    "semantic_hash": ""
+  },
+  "package.json": {
+    "mtime": 1786766785.9882278,
+    "seen": 1786943438.3597791,
+    "ast_hash": "a904a69be6bb6af3c658e71b0f61bf24",
+    "semantic_hash": ""
+  },
+  "scripts/setup-git-hooks.cjs": {
+    "mtime": 1786766785.9892473,
+    "seen": 1786943438.35978,
+    "ast_hash": "c2292a6cec470d7ad308388227cc8c1a",
+    "semantic_hash": ""
+  },
+  "server/package.json": {
+    "mtime": 1786772534.1921127,
+    "seen": 1786943438.359782,
+    "ast_hash": "ce2abf4e30b25bc470c192aa0050d202",
+    "semantic_hash": ""
+  },
+  "server/src/config/db.js": {
+    "mtime": 1786766785.995829,
+    "seen": 1786943438.359783,
+    "ast_hash": "a6f3a55107a1dd2726c063929be28d28",
+    "semantic_hash": ""
+  },
+  "server/src/controllers/aiController.js": {
+    "mtime": 1786901716.6324835,
+    "seen": 1786943438.359784,
+    "ast_hash": "9ca5af291b5e6cb4e3098961d5e7c6bc",
+    "semantic_hash": ""
+  },
+  "server/src/controllers/analyticsController.js": {
+    "mtime": 1786901716.63276,
+    "seen": 1786943438.3597848,
+    "ast_hash": "cfa4186740dba4d062df1a680bf57290",
+    "semantic_hash": ""
+  },
+  "server/src/controllers/auditController.js": {
+    "mtime": 1786766785.9994907,
+    "seen": 1786943438.359787,
+    "ast_hash": "59347859aeefb4857910ebbf32561745",
+    "semantic_hash": ""
+  },
+  "server/src/controllers/authController.js": {
+    "mtime": 1786766786.000937,
+    "seen": 1786943438.359788,
+    "ast_hash": "51f896236db3ab31c84087ecdaf048f5",
+    "semantic_hash": ""
+  },
+  "server/src/controllers/budgetController.js": {
+    "mtime": 1786766786.0021675,
+    "seen": 1786943438.3597891,
+    "ast_hash": "44c433df4c7abe6b36abd492acb8d88a",
+    "semantic_hash": ""
+  },
+  "server/src/controllers/categoryController.js": {
+    "mtime": 1786766786.0037088,
+    "seen": 1786943438.35979,
+    "ast_hash": "847e92ff900be35d3190888ae6599f09",
+    "semantic_hash": ""
+  },
+  "server/src/controllers/debtController.js": {
+    "mtime": 1786901716.6329393,
+    "seen": 1786943438.359791,
+    "ast_hash": "839ebc6f5d94798d7d4ee116edf007a1",
+    "semantic_hash": ""
+  },
+  "server/src/controllers/expenseController.js": {
+    "mtime": 1786901716.6332302,
+    "seen": 1786943438.3597922,
+    "ast_hash": "3e21df1568f0907bbc03b92cb4886e2d",
+    "semantic_hash": ""
+  },
+  "server/src/controllers/exportController.js": {
+    "mtime": 1786901716.6348507,
+    "seen": 1786943438.359793,
+    "ast_hash": "bbcef27c91368e80f153ef0994aaa6c8",
+    "semantic_hash": ""
+  },
+  "server/src/controllers/goalController.js": {
+    "mtime": 1786766786.0059774,
+    "seen": 1786943438.3597949,
+    "ast_hash": "10fd42542d0a0ceac2e905782803eafc",
+    "semantic_hash": ""
+  },
+  "server/src/controllers/groupController.js": {
+    "mtime": 1786901716.635008,
+    "seen": 1786943438.359796,
+    "ast_hash": "1b5f1370bf34638628d4921b91c81b01",
+    "semantic_hash": ""
+  },
+  "server/src/controllers/importController.js": {
+    "mtime": 1786901716.6351511,
+    "seen": 1786943438.359797,
+    "ast_hash": "51ea80ba69ec8bbfe50e08f032f021eb",
+    "semantic_hash": ""
+  },
+  "server/src/controllers/incomeController.js": {
+    "mtime": 1786901716.6353457,
+    "seen": 1786943438.359798,
+    "ast_hash": "95d0a4eea3ce2a43f5701bda8ff1aabe",
+    "semantic_hash": ""
+  },
+  "server/src/controllers/recurringController.js": {
+    "mtime": 1786766786.0068662,
+    "seen": 1786943438.3597991,
+    "ast_hash": "47da98070513c7c2e4cdd1ded75d7dfe",
+    "semantic_hash": ""
+  },
+  "server/src/controllers/simulationController.js": {
+    "mtime": 1786901716.6354902,
+    "seen": 1786943438.3598,
+    "ast_hash": "b497518d5b65d9a54c4e56e5286259df",
+    "semantic_hash": ""
+  },
+  "server/src/controllers/tripVaultController.js": {
+    "mtime": 1786901716.6356537,
+    "seen": 1786943438.359802,
+    "ast_hash": "b47f7efc14ecf178e2870027c8e598ad",
+    "semantic_hash": ""
+  },
+  "server/src/controllers/userController.js": {
+    "mtime": 1786942604.653347,
+    "seen": 1786943438.359803,
+    "ast_hash": "25e25c25defd754712b186f974635a0c",
+    "semantic_hash": ""
+  },
+  "server/src/middleware/auditLogger.js": {
+    "mtime": 1786766786.0077853,
+    "seen": 1786943438.359804,
+    "ast_hash": "795ac7bd3fc20a382243d315594a9e78",
+    "semantic_hash": ""
+  },
+  "server/src/middleware/auth.js": {
+    "mtime": 1786599871.3042116,
+    "seen": 1786943438.3598049,
+    "ast_hash": "983bbc8936eb0b048a3d9e250b42902d",
+    "semantic_hash": ""
+  },
+  "server/src/middleware/errorHandler.js": {
+    "mtime": 1786766786.0085938,
+    "seen": 1786943438.359807,
+    "ast_hash": "664c6825246f0ae35a655460a36792f6",
+    "semantic_hash": ""
+  },
+  "server/src/middleware/idempotency.js": {
+    "mtime": 1786766786.009421,
+    "seen": 1786943438.359808,
+    "ast_hash": "7dfae9a46074ef7886732be2344e96a8",
+    "semantic_hash": ""
+  },
+  "server/src/middleware/rateLimiter.js": {
+    "mtime": 1786772534.1993136,
+    "seen": 1786943438.359809,
+    "ast_hash": "bea2ce69fb036912f3859766288193aa",
+    "semantic_hash": ""
+  },
+  "server/src/middleware/requestLogger.js": {
+    "mtime": 1786766786.0111854,
+    "seen": 1786943438.35981,
+    "ast_hash": "2c90f2ecc3568547f9287cef6ef09423",
+    "semantic_hash": ""
+  },
+  "server/src/middleware/sanitize.js": {
+    "mtime": 1786599871.3048058,
+    "seen": 1786943438.359811,
+    "ast_hash": "ac197389fc86f96bba972d8b82931370",
+    "semantic_hash": ""
+  },
+  "server/src/middleware/validate.js": {
+    "mtime": 1786766786.0118902,
+    "seen": 1786943438.359812,
+    "ast_hash": "72f9ed10225078cbd7a00b0e6ffdd1af",
+    "semantic_hash": ""
+  },
+  "server/src/models/AuditLog.js": {
+    "mtime": 1786766786.012653,
+    "seen": 1786943438.359814,
+    "ast_hash": "a49d483d73ddbb1d91e414d6cb24f2f8",
+    "semantic_hash": ""
+  },
+  "server/src/models/Budget.js": {
+    "mtime": 1786599871.3052711,
+    "seen": 1786943438.359815,
+    "ast_hash": "a820164752ea90de71f8b0fe7d961e77",
+    "semantic_hash": ""
+  },
+  "server/src/models/Category.js": {
+    "mtime": 1786766786.0136912,
+    "seen": 1786943438.3598158,
+    "ast_hash": "e98ed3ee89863d9f2f8cebf67915f0eb",
+    "semantic_hash": ""
+  },
+  "server/src/models/Debt.js": {
+    "mtime": 1786901716.6358087,
+    "seen": 1786943438.359817,
+    "ast_hash": "ca79757100b9b1f4481352ac8763cd74",
+    "semantic_hash": ""
+  },
+  "server/src/models/Expense.js": {
+    "mtime": 1786901716.6362925,
+    "seen": 1786943438.359818,
+    "ast_hash": "5527382deafd5cc7c94934b0d5bf0abb",
+    "semantic_hash": ""
+  },
+  "server/src/models/Goal.js": {
+    "mtime": 1786766786.0144906,
+    "seen": 1786943438.359819,
+    "ast_hash": "41f777309117ccc9e2568b8f7eaae886",
+    "semantic_hash": ""
+  },
+  "server/src/models/Group.js": {
+    "mtime": 1786901716.6364563,
+    "seen": 1786943438.3598201,
+    "ast_hash": "e887692046b18f83f80ecca9d8099ed7",
+    "semantic_hash": ""
+  },
+  "server/src/models/Income.js": {
+    "mtime": 1786901716.6365983,
+    "seen": 1786943438.359821,
+    "ast_hash": "39b4af2721abb5ac3bbeeb1866ab5cfe",
+    "semantic_hash": ""
+  },
+  "server/src/models/RecurringExpense.js": {
+    "mtime": 1786599871.3061402,
+    "seen": 1786943438.359823,
+    "ast_hash": "dc512e0480064d8e4e1b818bff702c51",
+    "semantic_hash": ""
+  },
+  "server/src/models/RefreshToken.js": {
+    "mtime": 1786766786.015162,
+    "seen": 1786943438.359824,
+    "ast_hash": "86a6b41911fc27209a738dead00a6b28",
+    "semantic_hash": ""
+  },
+  "server/src/models/TripVault.js": {
+    "mtime": 1786901716.6367545,
+    "seen": 1786943438.359825,
+    "ast_hash": "5da217fcd7ef62d37483e70a7e3d0904",
+    "semantic_hash": ""
+  },
+  "server/src/models/User.js": {
+    "mtime": 1786942509.94984,
+    "seen": 1786943438.3598258,
+    "ast_hash": "0b864cc94dea6eeb267123690b4a9d94",
+    "semantic_hash": ""
+  },
+  "server/src/routes/aiRoutes.js": {
+    "mtime": 1786901716.6370986,
+    "seen": 1786943438.359827,
+    "ast_hash": "9018fad8948494fac2342538ddf3fad0",
+    "semantic_hash": ""
+  },
+  "server/src/routes/analyticsRoutes.js": {
+    "mtime": 1786901716.6373172,
+    "seen": 1786943438.359828,
+    "ast_hash": "8ba4e81ea3f09979a1d2d0602dbc0cc6",
+    "semantic_hash": ""
+  },
+  "server/src/routes/auditRoutes.js": {
+    "mtime": 1786766786.0157402,
+    "seen": 1786943438.359829,
+    "ast_hash": "9ca59c65c3825d57accccec15c0710ec",
+    "semantic_hash": ""
+  },
+  "server/src/routes/authRoutes.js": {
+    "mtime": 1786766786.01658,
+    "seen": 1786943438.35983,
+    "ast_hash": "7c58537f70e0e2dfd3242338a9b30f37",
+    "semantic_hash": ""
+  },
+  "server/src/routes/budgetRoutes.js": {
+    "mtime": 1786766786.017287,
+    "seen": 1786943438.359832,
+    "ast_hash": "5a2321e666f6c2fb08a982edb03956be",
+    "semantic_hash": ""
+  },
+  "server/src/routes/categoryRoutes.js": {
+    "mtime": 1786599871.3076308,
+    "seen": 1786943438.359833,
+    "ast_hash": "2b6ef767fcddd44d5a3baf7dc5b89fe8",
+    "semantic_hash": ""
+  },
+  "server/src/routes/debtRoutes.js": {
+    "mtime": 1786901716.6374445,
+    "seen": 1786943438.3598342,
+    "ast_hash": "2d3bb266992c04d525e2c1eb0563fd10",
+    "semantic_hash": ""
+  },
+  "server/src/routes/expenseRoutes.js": {
+    "mtime": 1786766786.0183864,
+    "seen": 1786943438.359835,
+    "ast_hash": "41bc881ab96412f82e098c550dd9b5b6",
+    "semantic_hash": ""
+  },
+  "server/src/routes/exportRoutes.js": {
+    "mtime": 1786901716.6378152,
+    "seen": 1786943438.3598359,
+    "ast_hash": "e091aeff21c25819a0b37561b63e354e",
+    "semantic_hash": ""
+  },
+  "server/src/routes/fxRoutes.js": {
+    "mtime": 1786901716.6380506,
+    "seen": 1786943438.359838,
+    "ast_hash": "90668eceebe0213d737a95a187270cee",
+    "semantic_hash": ""
+  },
+  "server/src/routes/goalRoutes.js": {
+    "mtime": 1786766786.020104,
+    "seen": 1786943438.359839,
+    "ast_hash": "b9078c1ee02ae04a7c50583a732a620b",
+    "semantic_hash": ""
+  },
+  "server/src/routes/groupRoutes.js": {
+    "mtime": 1786901716.6381953,
+    "seen": 1786943438.35984,
+    "ast_hash": "e4abd8c640dc72868c074693a601c23c",
+    "semantic_hash": ""
+  },
+  "server/src/routes/importRoutes.js": {
+    "mtime": 1786901716.6383553,
+    "seen": 1786943438.359841,
+    "ast_hash": "33abfc885e53c495e1d207276c712ae0",
+    "semantic_hash": ""
+  },
+  "server/src/routes/incomeRoutes.js": {
+    "mtime": 1786901716.6384928,
+    "seen": 1786943438.359842,
+    "ast_hash": "6d6b04749c69b3dbc56f913e1b216d83",
+    "semantic_hash": ""
+  },
+  "server/src/routes/recurringRoutes.js": {
+    "mtime": 1786766786.0221288,
+    "seen": 1786943438.359843,
+    "ast_hash": "55ce9ec9b4bd385ccd3ae245a496afa9",
+    "semantic_hash": ""
+  },
+  "server/src/routes/simulationRoutes.js": {
+    "mtime": 1786901716.6386275,
+    "seen": 1786943438.3598452,
+    "ast_hash": "55793f74bfd1ddb6f8f336dd858c1c99",
+    "semantic_hash": ""
+  },
+  "server/src/routes/tripVaultRoutes.js": {
+    "mtime": 1786901716.638765,
+    "seen": 1786943438.3598459,
+    "ast_hash": "0a91db3dd3cbd88ecfa62d6f7b6e579d",
+    "semantic_hash": ""
+  },
+  "server/src/routes/userRoutes.js": {
+    "mtime": 1786942538.1329513,
+    "seen": 1786943438.3598468,
+    "ast_hash": "1df584dd81c0d3632f8d9a38653d5281",
+    "semantic_hash": ""
+  },
+  "server/src/server.js": {
+    "mtime": 1786942552.548428,
+    "seen": 1786943438.359848,
+    "ast_hash": "b4e05cf37f8541d356b716c35f72464c",
+    "semantic_hash": ""
+  },
+  "server/src/services/ai/aiService.js": {
+    "mtime": 1786901716.639283,
+    "seen": 1786943438.359849,
+    "ast_hash": "679a32837f25d1161b820787bafbb20e",
+    "semantic_hash": ""
+  },
+  "server/src/services/ai/contextBuilder.js": {
+    "mtime": 1786599871.3093,
+    "seen": 1786943438.35985,
+    "ast_hash": "0efaae01329a323d1a78fa77f1500708",
+    "semantic_hash": ""
+  },
+  "server/src/services/ai/geminiClient.js": {
+    "mtime": 1786599871.3094947,
+    "seen": 1786943438.359852,
+    "ast_hash": "60af97a7da8d5d25e246dcc71e5cda97",
+    "semantic_hash": ""
+  },
+  "server/src/services/ai/intentRouter.js": {
+    "mtime": 1786901711.350128,
+    "seen": 1786943438.359853,
+    "ast_hash": "06dd8f0250cbcbea08172f6e76d709b6",
+    "semantic_hash": ""
+  },
+  "server/src/services/ai/localRagEngine.js": {
+    "mtime": 1786901711.3506448,
+    "seen": 1786943438.359854,
+    "ast_hash": "9ae23010c8b659f1786c6c315fb231c7",
+    "semantic_hash": ""
+  },
+  "server/src/services/ai/toolRegistry.js": {
+    "mtime": 1786901711.350956,
+    "seen": 1786943438.3598552,
+    "ast_hash": "e78aad7c116b19c6a9f3cd001bea319a",
+    "semantic_hash": ""
+  },
+  "server/src/services/ai/unifiedAIClient.js": {
+    "mtime": 1786901716.6395457,
+    "seen": 1786943438.3598561,
+    "ast_hash": "b27196c848c145176fea71875fa9d3f4",
+    "semantic_hash": ""
+  },
+  "server/src/services/analytics/analyticsService.js": {
+    "mtime": 1786901716.6398396,
+    "seen": 1786943438.359858,
+    "ast_hash": "5e68eee042f688491b055ab153122cea",
+    "semantic_hash": ""
+  },
+  "server/src/services/analytics/fireSimulatorEngine.js": {
+    "mtime": 1786901716.640286,
+    "seen": 1786943438.359859,
+    "ast_hash": "6be8838dddd597d652b80e397f4533a6",
+    "semantic_hash": ""
+  },
+  "server/src/services/analytics/trendService.js": {
+    "mtime": 1786766786.0328884,
+    "seen": 1786943438.35986,
+    "ast_hash": "29d39c78dbbe8e9ca1fa8b6d7173036b",
+    "semantic_hash": ""
+  },
+  "server/src/services/debt/debtAmortizationEngine.js": {
+    "mtime": 1786901716.6407125,
+    "seen": 1786943438.359861,
+    "ast_hash": "c5b6abb2c91241782afed4056b605d4b",
+    "semantic_hash": ""
+  },
+  "server/src/services/fx/fxService.js": {
+    "mtime": 1786901716.6410747,
+    "seen": 1786943438.359862,
+    "ast_hash": "c056eef96d83ca0b16e3cc0e5a69ff28",
+    "semantic_hash": ""
+  },
+  "server/src/services/group/debtSimplificationEngine.js": {
+    "mtime": 1786901716.6413565,
+    "seen": 1786943438.359864,
+    "ast_hash": "3348c056dbdd2df5694e56a93d285c1a",
+    "semantic_hash": ""
+  },
+  "server/src/services/import/importService.js": {
+    "mtime": 1786901716.6416368,
+    "seen": 1786943438.3598652,
+    "ast_hash": "f2a3f33ffacc025ed9c517fe7f41c0d2",
+    "semantic_hash": ""
+  },
+  "server/src/utils/AppError.js": {
+    "mtime": 1786766786.033802,
+    "seen": 1786943438.3598661,
+    "ast_hash": "712ac56b33515bbf1f949e5fd544e0f3",
+    "semantic_hash": ""
+  },
+  "server/src/utils/asyncHandler.js": {
+    "mtime": 1786766786.0344558,
+    "seen": 1786943438.3598669,
+    "ast_hash": "db972683f51a0e24e1afc624403d81f7",
+    "semantic_hash": ""
+  },
+  "server/src/utils/errors.js": {
+    "mtime": 1786766786.0352392,
+    "seen": 1786943438.3598678,
+    "ast_hash": "d8e2ba6d494026010310f3692d897348",
+    "semantic_hash": ""
+  },
+  "server/src/utils/response.js": {
+    "mtime": 1786766786.0360067,
+    "seen": 1786943438.35987,
+    "ast_hash": "65627dce062071851e4285248620001a",
+    "semantic_hash": ""
+  },
+  "server/src/validators/authValidator.js": {
+    "mtime": 1786766786.0368679,
+    "seen": 1786943438.359871,
+    "ast_hash": "b45a9812c59068edc2b6f15c1576aa2f",
+    "semantic_hash": ""
+  },
+  "server/src/validators/budgetValidator.js": {
+    "mtime": 1786766786.037694,
+    "seen": 1786943438.359872,
+    "ast_hash": "9ce57be8fa257bffeff6d644e466317c",
+    "semantic_hash": ""
+  },
+  "server/src/validators/expenseValidator.js": {
+    "mtime": 1786901716.6419222,
+    "seen": 1786943438.359874,
+    "ast_hash": "f3201395ad97ab1865587e38bdb2b382",
+    "semantic_hash": ""
+  },
+  "server/src/validators/goalValidator.js": {
+    "mtime": 1786766786.0393357,
+    "seen": 1786943438.359875,
+    "ast_hash": "60aae20d7c4e3b6da6570c9230bf9331",
+    "semantic_hash": ""
+  },
+  "server/src/validators/incomeValidator.js": {
+    "mtime": 1786901716.6422393,
+    "seen": 1786943438.3598762,
+    "ast_hash": "c5cdca758ce2a082fe6a3c1cb818e170",
+    "semantic_hash": ""
+  },
+  "server/src/validators/recurringValidator.js": {
+    "mtime": 1786766786.0406823,
+    "seen": 1786943438.359877,
+    "ast_hash": "31ee375ff61558477e49c999826426e4",
+    "semantic_hash": ""
+  },
+  "server/src/validators/userValidator.js": {
+    "mtime": 1786942522.8903923,
+    "seen": 1786943438.359879,
+    "ast_hash": "9c906a126b2866f129be09200a2d0009",
+    "semantic_hash": ""
+  },
+  "server/tests/aiProviders.test.js": {
+    "mtime": 1786901711.3527124,
+    "seen": 1786943438.35988,
+    "ast_hash": "817dbaf11d5986af559b2f69b650b691",
+    "semantic_hash": ""
+  },
+  "server/tests/analytics.test.js": {
+    "mtime": 1786599871.31078,
+    "seen": 1786943438.359881,
+    "ast_hash": "114bb440471eb8397ba27da5cd8f7214",
+    "semantic_hash": ""
+  },
+  "server/tests/auth.test.js": {
+    "mtime": 1786766786.041753,
+    "seen": 1786943438.3598819,
+    "ast_hash": "62fe78184bebbdc3ce02c45263a87255",
+    "semantic_hash": ""
+  },
+  "server/tests/budgets.test.js": {
+    "mtime": 1786766786.0425475,
+    "seen": 1786943438.359883,
+    "ast_hash": "75acf42a04bb6fb84928ea3e0038a3c1",
+    "semantic_hash": ""
+  },
+  "server/tests/cashflow.test.js": {
+    "mtime": 1786901716.642633,
+    "seen": 1786943438.359885,
+    "ast_hash": "0607e7c5422dda31cec4187db8052391",
+    "semantic_hash": ""
+  },
+  "server/tests/debtPayoff.test.js": {
+    "mtime": 1786901716.6428847,
+    "seen": 1786943438.3598862,
+    "ast_hash": "868f7227081c27d46d2e73cb868af2ea",
+    "semantic_hash": ""
+  },
+  "server/tests/expenses.test.js": {
+    "mtime": 1786766786.0458653,
+    "seen": 1786943438.3598871,
+    "ast_hash": "fd86e3713a99641052e0bbf727f94c0f",
+    "semantic_hash": ""
+  },
+  "server/tests/exportAndAudit.test.js": {
+    "mtime": 1786766786.046867,
+    "seen": 1786943438.3598878,
+    "ast_hash": "422b52d62a17f9f4cd1d45e9617b18ee",
+    "semantic_hash": ""
+  },
+  "server/tests/financialHealth.test.js": {
+    "mtime": 1786901716.6436846,
+    "seen": 1786943438.3598888,
+    "ast_hash": "942212a4a2b53f7ae5bbbcb524d2c079",
+    "semantic_hash": ""
+  },
+  "server/tests/fireSimulation.test.js": {
+    "mtime": 1786901716.6439936,
+    "seen": 1786943438.35989,
+    "ast_hash": "a8c636d1b15981c72a946d7b9fb102cd",
+    "semantic_hash": ""
+  },
+  "server/tests/goals.test.js": {
+    "mtime": 1786766786.047977,
+    "seen": 1786943438.359892,
+    "ast_hash": "4202c543ea5349cdc35c2556d41672f4",
+    "semantic_hash": ""
+  },
+  "server/tests/groupSplits.test.js": {
+    "mtime": 1786901716.6441734,
+    "seen": 1786943438.359893,
+    "ast_hash": "59639cd29f38ab2a137315a7d4e39bd1",
+    "semantic_hash": ""
+  },
+  "server/tests/income.test.js": {
+    "mtime": 1786901716.6443443,
+    "seen": 1786943438.359894,
+    "ast_hash": "7369d42bd63d95261cafce03f832514a",
+    "semantic_hash": ""
+  },
+  "server/tests/patterns.test.js": {
+    "mtime": 1786766786.0489132,
+    "seen": 1786943438.359895,
+    "ast_hash": "a2f9a6ad98fde1876a760dc83bedf549",
+    "semantic_hash": ""
+  },
+  "server/tests/receiptScan.test.js": {
+    "mtime": 1786901716.644587,
+    "seen": 1786943438.3598962,
+    "ast_hash": "61cf12cc4588145e3fefa474bcdbe6c1",
+    "semantic_hash": ""
+  },
+  "server/tests/recurring.test.js": {
+    "mtime": 1786766786.050056,
+    "seen": 1786943438.359898,
+    "ast_hash": "69d603c45ea518ac67ed3c079aac79ea",
+    "semantic_hash": ""
+  },
+  "server/tests/statementImport.test.js": {
+    "mtime": 1786901716.6448498,
+    "seen": 1786943438.3598988,
+    "ast_hash": "63331942120b8415fffc0835e89e7757",
+    "semantic_hash": ""
+  },
+  "server/tests/taxAndSplits.test.js": {
+    "mtime": 1786901716.6450367,
+    "seen": 1786943438.3599,
+    "ast_hash": "02c08530db28cfc0d77f8340a93d01e9",
+    "semantic_hash": ""
+  },
+  "server/tests/tripVault.test.js": {
+    "mtime": 1786901716.6451898,
+    "seen": 1786943438.359902,
+    "ast_hash": "f1f8f643c7509c084230e320b8171a89",
+    "semantic_hash": ""
+  },
+  "server/tests/userProfile.test.js": {
+    "mtime": 1786942576.3143425,
+    "seen": 1786943438.3599029,
+    "ast_hash": "908a72fa2760b3fa446fb45021b29af2",
+    "semantic_hash": ""
+  },
+  "server/tests/validation.test.js": {
+    "mtime": 1786766786.050818,
+    "seen": 1786943438.359904,
+    "ast_hash": "e3b00c938acccb11a2c68b61ee9c1649",
+    "semantic_hash": ""
+  },
+  ".agents/rules/codebase-standards.md": {
+    "mtime": 1786766785.9434488,
+    "seen": 1786943438.359905,
+    "ast_hash": "56500fe995e637fd1912b53ac4a298ec",
+    "semantic_hash": ""
+  },
+  ".agents/rules/graphify.md": {
+    "mtime": 1786772416.8108072,
+    "seen": 1786943438.359906,
+    "ast_hash": "f1e53ecc9194573d3c28fc116c743a2e",
+    "semantic_hash": ""
+  },
+  ".agents/workflows/graphify.md": {
+    "mtime": 1786772416.811218,
+    "seen": 1786943438.3599072,
+    "ast_hash": "6d73634a678cf1e1c71930adf80bd1f0",
+    "semantic_hash": ""
+  },
+  "BACKEND.md": {
+    "mtime": 1786766785.945811,
+    "seen": 1786943438.359908,
+    "ast_hash": "f3446a314bb85dc9afdb1e1856c694be",
+    "semantic_hash": ""
+  },
+  "Design/pinterest/DESIGN.md": {
+    "mtime": 1786599871.2815957,
+    "seen": 1786943438.359909,
+    "ast_hash": "e71b564144b90083e381fdabbbecc2f8",
+    "semantic_hash": ""
+  },
+  "Design/pinterest/README.md": {
+    "mtime": 1786599871.281876,
+    "seen": 1786943438.359911,
+    "ast_hash": "784ea5ee77f18a7e146124dbe500ee00",
+    "semantic_hash": ""
+  },
+  "Documentation/AI_ML_ARCHITECTURE_AND_IMPROVEMENTS.md": {
+    "mtime": 1786772416.811872,
+    "seen": 1786943438.359912,
+    "ast_hash": "580a9e676307c5d8f4fa91cbe61b3f70",
+    "semantic_hash": ""
+  },
+  "Documentation/AI_PRODUCTION_IMPROVEMENT_BLUEPRINT.md": {
+    "mtime": 1786772416.812409,
+    "seen": 1786943438.3599129,
+    "ast_hash": "553f856bd50fc0fd59406bbf18670d9b",
+    "semantic_hash": ""
+  },
+  "Documentation/BACKEND.md": {
+    "mtime": 1786766785.947132,
+    "seen": 1786943438.359915,
+    "ast_hash": "986a2e4cf8ebcb7d1503c5e52fd41631",
+    "semantic_hash": ""
+  },
+  "Documentation/FEATURE_ROADMAP_AND_PRODUCTIVITY_INNOVATIONS.md": {
+    "mtime": 1786901716.611967,
+    "seen": 1786943438.359916,
+    "ast_hash": "c0b035ac20bab0c091906cec855bf7df",
+    "semantic_hash": ""
+  },
+  "Documentation/PROFILE_PAGE_IMPLEMENTATION_PLAN.md": {
+    "mtime": 1786942494.2515602,
+    "seen": 1786943438.3599172,
+    "ast_hash": "7c2e8e15bcdc964133474c9e4238a382",
+    "semantic_hash": ""
+  },
+  "Documentation/PROJECT_STATUS.md": {
+    "mtime": 1786901716.6125774,
+    "seen": 1786943438.359919,
+    "ast_hash": "2604c6cc58f5cec6a5051e27318bfa7a",
+    "semantic_hash": ""
+  },
+  "Documentation/SYSTEM_ARCHITECTURE_AND_WORKING_MODEL.md": {
+    "mtime": 1786901716.6130352,
+    "seen": 1786943438.35992,
+    "ast_hash": "5e6479270a3413fbe61af5c8cbfd57b8",
+    "semantic_hash": ""
+  },
+  "Plan/Revised Master Antigravity Prompt \u2014 AI-First Personal Finance Intelligence Platform.md": {
+    "mtime": 1786599871.2823498,
+    "seen": 1786943438.359922,
+    "ast_hash": "f0217432422740588781e3b1014daf20",
+    "semantic_hash": ""
+  },
+  "README.md": {
+    "mtime": 1786772416.813532,
+    "seen": 1786943438.359923,
+    "ast_hash": "45453b73748602dbf9185bbc4a1f166d",
+    "semantic_hash": ""
+  },
+  "client/index.html": {
+    "mtime": 1786766785.9512808,
+    "seen": 1786943438.359924,
+    "ast_hash": "e05cf0239057de90d132a72e907e4828",
+    "semantic_hash": ""
+  },
+  "design-system/expense-tracker/MASTER.md": {
+    "mtime": 1786766785.9875362,
+    "seen": 1786943438.359925,
+    "ast_hash": "ffe9dbfc1c5bedc19d701ee74f678329",
+    "semantic_hash": ""
+  },
+  "skill_output.txt": {
+    "mtime": 1786599871.31106,
+    "seen": 1786943438.359926,
+    "ast_hash": "03b08957fea6eede93062a7bdfb069f0",
+    "semantic_hash": ""
+  },
+  "user manual/README.md": {
+    "mtime": 1786766786.0544677,
+    "seen": 1786943438.3599281,
+    "ast_hash": "1764504371316046e96ad9c3ce901d7e",
+    "semantic_hash": ""
+  },
+  "user manual/TEAM_COLLABORATION_MANUAL.md": {
+    "mtime": 1786772534.227567,
+    "seen": 1786943438.359929,
+    "ast_hash": "b821883f0f5c6524206cb1f8780ec093",
+    "semantic_hash": ""
+  },
+  "client/public/logo.jpg": {
+    "mtime": 1786766785.9652495,
+    "seen": 1786943438.35993,
+    "ast_hash": "700feb95bc1697f7eeda76a8d5176e10",
+    "semantic_hash": ""
   }
 }
