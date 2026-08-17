@@ -3,21 +3,16 @@ import { Plus, Edit2, Trash2, CheckCircle2, History, X } from 'lucide-react';
 import { apiFetch, getLocalDateString } from '../api/client';
 import { PinCard } from '../components/UI/PinCard';
 
-export const RecurringPage = ({ categories = [] }) => {
+export const RecurringPage = () => {
   const [recurring, setRecurring] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const defaultCategoryList = ['Subscriptions', 'Housing & Utilities', 'Health & Medical', 'Entertainment', 'Transportation', 'Food & Dining'];
-  const availableCategories = categories.length > 0
-    ? categories.filter(c => c.type !== 'income').map(c => c.name || c)
-    : defaultCategoryList;
 
   // Create / Edit Modal State
   const [showModal, setShowModal] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
   const [title, setTitle] = useState('');
   const [amount, setAmount] = useState('');
-  const [category, setCategory] = useState(availableCategories.includes('Subscriptions') ? 'Subscriptions' : availableCategories[0] || 'Subscriptions');
+  const [category, setCategory] = useState('Subscriptions');
   const [frequency, setFrequency] = useState('monthly');
   const [nextOccurrence, setNextOccurrence] = useState('');
   const [active, setActive] = useState(true);
@@ -64,7 +59,7 @@ export const RecurringPage = ({ categories = [] }) => {
 
     setTitle('');
     setAmount('');
-    setCategory(availableCategories.includes('Subscriptions') ? 'Subscriptions' : availableCategories[0] || 'Subscriptions');
+    setCategory('Subscriptions');
     setFrequency('monthly');
     setNextOccurrence(getLocalDateString(new Date()));
     setActive(true);
@@ -271,9 +266,12 @@ export const RecurringPage = ({ categories = [] }) => {
                 <div>
                   <label className="body-sm-strong" style={{ display: 'block', marginBottom: '6px' }}>Category *</label>
                   <select className="text-input" value={category} onChange={(e) => setCategory(e.target.value)} style={{ backgroundColor: 'var(--color-secondary)', color: 'var(--color-foreground)' }}>
-                    {availableCategories.map((cat, idx) => (
-                      <option key={idx} value={cat}>{cat}</option>
-                    ))}
+                    <option value="Subscriptions">Subscriptions</option>
+                    <option value="Housing & Utilities">Housing & Utilities</option>
+                    <option value="Health & Medical">Health & Medical</option>
+                    <option value="Entertainment">Entertainment</option>
+                    <option value="Transportation">Transportation</option>
+                    <option value="Food & Dining">Food & Dining</option>
                   </select>
                 </div>
               </div>

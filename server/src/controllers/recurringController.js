@@ -3,10 +3,6 @@ const Expense = require('../models/Expense');
 const asyncHandler = require('../utils/asyncHandler');
 const { NotFoundError, BadRequestError } = require('../utils/errors');
 
-const escapeRegex = (text = '') => {
-  return String(text).replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
-};
-
 // @desc    Get all recurring expenses for logged in user
 // @route   GET /api/recurring
 exports.getRecurringExpenses = asyncHandler(async (req, res) => {

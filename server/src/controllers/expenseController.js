@@ -2,11 +2,6 @@ const Expense = require('../models/Expense');
 const asyncHandler = require('../utils/asyncHandler');
 const { NotFoundError, BadRequestError } = require('../utils/errors');
 
-// Escape special characters to prevent regex injection and syntax errors
-const escapeRegex = (text = '') => {
-  return String(text).replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
-};
-
 // @desc    Get all expenses for logged in user with filtering & pagination
 // @route   GET /api/expenses
 exports.getExpenses = asyncHandler(async (req, res) => {

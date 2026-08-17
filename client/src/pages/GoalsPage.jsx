@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Target, Plus } from 'lucide-react';
-import { apiFetch, getLocalDateString } from '../api/client';
+import { apiFetch } from '../api/client';
 import { PinCard } from '../components/UI/PinCard';
 
 export const GoalsPage = () => {
@@ -10,14 +10,7 @@ export const GoalsPage = () => {
   const [name, setName] = useState('');
   const [targetAmount, setTargetAmount] = useState('');
   const [currentAmount, setCurrentAmount] = useState('');
-
-  const getDefaultTargetDate = () => {
-    const d = new Date();
-    d.setFullYear(d.getFullYear() + 1);
-    return getLocalDateString(d);
-  };
-
-  const [targetDate, setTargetDate] = useState(getDefaultTargetDate());
+  const [targetDate, setTargetDate] = useState('');
 
   const fetchGoals = async () => {
     try {
@@ -72,7 +65,7 @@ export const GoalsPage = () => {
       setName('');
       setTargetAmount('');
       setCurrentAmount('');
-      setTargetDate(getDefaultTargetDate());
+      setTargetDate('');
       fetchGoals();
     } catch (err) {
       console.error('Failed to create goal:', err);
