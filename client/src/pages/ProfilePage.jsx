@@ -35,6 +35,7 @@ import {
   AlertTriangle,
   QrCode,
   ShieldCheck,
+  Key,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { apiFetch, API_BASE_URL } from '../api/client';

@@ -40,7 +40,10 @@ export const AnalyticsPage = () => {
     );
   }
 
-  const { monthlyComparison, categoryBreakdown, anomalies, financialHealth } = data;
+  const monthlyComparison = data?.monthlyComparison || { categoryDeltas: [] };
+  const categoryDeltas = monthlyComparison?.categoryDeltas || [];
+  const anomalyList = data?.anomalies?.anomalies || (Array.isArray(data?.anomalies) ? data.anomalies : []);
+  const financialHealth = data?.financialHealth || null;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
@@ -62,7 +65,7 @@ export const AnalyticsPage = () => {
       )}
 
       {/* AI Spending Explanation Banner */}
-      {explanation && (
+      {explanation && explanation.explanation && (
         <motion.div
           whileHover={{ scale: 1.01 }}
           className="glass-card"
@@ -90,50 +93,56 @@ export const AnalyticsPage = () => {
         <h3 className="heading-md" style={{ color: '#F1F5F9', marginBottom: '16px' }}>
           Month-Over-Month Category Changes
         </h3>
-        <div style={{ overflowX: 'auto' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '14px' }}>
-            <thead>
-              <tr style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.08)', color: '#94A3B8', fontSize: '13px' }}>
-                <th style={{ padding: '12px 12px' }}>Category</th>
-                <th style={{ padding: '12px 12px' }}>Current Month</th>
-                <th style={{ padding: '12px 12px' }}>Previous Month</th>
-                <th style={{ padding: '12px 12px', textAlign: 'right' }}>Change Delta</th>
-              </tr>
-            </thead>
-            <tbody>
-              {monthlyComparison.categoryDeltas.map((cat, i) => (
-                <tr
-                  key={i}
-                  style={{
-                    borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
-                    transition: 'var(--transition)',
-                  }}
-                >
-                  <td style={{ padding: '14px 12px', fontWeight: 700, color: '#F1F5F9' }}>
-                    {cat.category}
-                  </td>
-                  <td style={{ padding: '14px 12px', color: '#F1F5F9', fontWeight: 600 }}>
-                    ₹{cat.currentAmount.toLocaleString()}
-                  </td>
-                  <td style={{ padding: '14px 12px', color: '#94A3B8' }}>
-                    ₹{cat.previousAmount.toLocaleString()}
-                  </td>
-                  <td
+        {categoryDeltas.length > 0 ? (
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '14px' }}>
+              <thead>
+                <tr style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.08)', color: '#94A3B8', fontSize: '13px' }}>
+                  <th style={{ padding: '12px 12px' }}>Category</th>
+                  <th style={{ padding: '12px 12px' }}>Current Month</th>
+                  <th style={{ padding: '12px 12px' }}>Previous Month</th>
+                  <th style={{ padding: '12px 12px', textAlign: 'right' }}>Change Delta</th>
+                </tr>
+              </thead>
+              <tbody>
+                {categoryDeltas.map((cat, i) => (
+                  <tr
+                    key={i}
                     style={{
-                      padding: '14px 12px',
-                      textAlign: 'right',
-                      fontWeight: 800,
-                      fontFamily: 'var(--font-display)',
-                      color: cat.diff > 0 ? '#F43F5E' : '#00FF87',
+                      borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
+                      transition: 'var(--transition)',
                     }}
                   >
-                    {cat.diff > 0 ? `+₹${cat.diff.toLocaleString()}` : `-₹${Math.abs(cat.diff).toLocaleString()}`} ({cat.changePercent}%)
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+                    <td style={{ padding: '14px 12px', fontWeight: 700, color: '#F1F5F9' }}>
+                      {cat.category}
+                    </td>
+                    <td style={{ padding: '14px 12px', color: '#F1F5F9', fontWeight: 600 }}>
+                      ₹{(Number(cat.currentAmount) || 0).toLocaleString()}
+                    </td>
+                    <td style={{ padding: '14px 12px', color: '#94A3B8' }}>
+                      ₹{(Number(cat.previousAmount) || 0).toLocaleString()}
+                    </td>
+                    <td
+                      style={{
+                        padding: '14px 12px',
+                        textAlign: 'right',
+                        fontWeight: 800,
+                        fontFamily: 'var(--font-display)',
+                        color: (Number(cat.diff) || 0) > 0 ? '#F43F5E' : '#00FF87',
+                      }}
+                    >
+                      {(Number(cat.diff) || 0) > 0 ? `+₹${Number(cat.diff).toLocaleString()}` : `-₹${Math.abs(Number(cat.diff) || 0).toLocaleString()}`} ({cat.changePercent || 0}%)
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <div style={{ padding: '32px', textAlign: 'center', color: '#94A3B8', fontSize: '14px' }}>
+            No month-over-month category variance recorded yet. Log expenses across months to see delta trends.
+          </div>
+        )}
       </div>
 
       {/* Flagged Anomalies Card */}
@@ -145,9 +154,9 @@ export const AnalyticsPage = () => {
           </h3>
         </div>
 
-        {anomalies.anomalies.length > 0 ? (
+        {anomalyList.length > 0 ? (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            {anomalies.anomalies.map((anom, i) => (
+            {anomalyList.map((anom, i) => (
               <motion.div
                 key={i}
                 whileHover={{ x: 4 }}
@@ -157,7 +166,7 @@ export const AnalyticsPage = () => {
                   background: 'rgba(255, 255, 255, 0.03)',
                   border: '1px solid rgba(255, 255, 255, 0.08)',
                   display: 'flex',
-                  justify: 'space-between',
+                  justifyContent: 'space-between',
                   alignItems: 'center',
                 }}
               >
@@ -167,10 +176,10 @@ export const AnalyticsPage = () => {
                 </div>
                 <div style={{ textAlign: 'right' }}>
                   <div className="font-display" style={{ fontWeight: 800, color: '#F43F5E', fontSize: '18px' }}>
-                    ₹{anom.amount.toLocaleString()}
+                    ₹{(Number(anom.amount) || 0).toLocaleString()}
                   </div>
                   <span className="glass-pill" style={{ color: '#FF007A', borderColor: 'rgba(255, 0, 122, 0.3)', fontSize: '11px' }}>
-                    {anom.deviationFactor}x Std Dev
+                    {anom.deviationFactor || '1.5'}x Std Dev
                   </span>
                 </div>
               </motion.div>

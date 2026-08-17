@@ -108,34 +108,40 @@ export const DashboardPage = ({
     );
   }
 
-  const { monthlySummary, categoryBreakdown, monthlyComparison, budgetUtilization, spendingVelocity, cashFlowSummary } = data;
+  const monthlySummary = data?.monthlySummary || { totalSpent: 0, count: 0, daysElapsed: 1, daysRemaining: 29 };
+  const categoryBreakdown = data?.categoryBreakdown || { total: 0, breakdown: [] };
+  const monthlyComparison = data?.monthlyComparison || { currentTotal: 0, previousTotal: 0, percentageChange: 0, categoryDeltas: [] };
+  const budgetUtilization = data?.budgetUtilization || { totalAllocated: 0, totalSpent: 0, totalRemaining: 0, budgets: [] };
+  const spendingVelocity = data?.spendingVelocity || { velocityRatio: 0, isAccelerating: false, avgDailyBurn: 0, projectedMonthlySpend: 0 };
+  const cashFlowSummary = data?.cashFlowSummary || { totalIncome: 0, totalExpense: 0, netSavings: 0, savingsRate: 0 };
+  const categoryList = categoryBreakdown.breakdown || [];
 
   const filteredCategories = activeChip === 'All'
-    ? categoryBreakdown.breakdown
-    : categoryBreakdown.breakdown.filter(c => c.category.toLowerCase() === activeChip.toLowerCase());
+    ? categoryList
+    : categoryList.filter(c => c.category?.toLowerCase() === activeChip.toLowerCase());
 
   const selectedCategoryInfo = activeChip !== 'All'
-    ? categoryBreakdown.breakdown.find(c => c.category.toLowerCase() === activeChip.toLowerCase())
+    ? categoryList.find(c => c.category?.toLowerCase() === activeChip.toLowerCase())
     : null;
 
   const selectedCategoryBudget = activeChip !== 'All'
-    ? budgetUtilization.budgets.find(b => b.category.toLowerCase() === activeChip.toLowerCase())
+    ? (budgetUtilization.budgets || []).find(b => b.category?.toLowerCase() === activeChip.toLowerCase())
     : null;
 
-  const chartCategoryData = (filteredCategories.length > 0 ? filteredCategories : categoryBreakdown.breakdown).map((c, i) => {
+  const chartCategoryData = (filteredCategories.length > 0 ? filteredCategories : categoryList).map((c, i) => {
     const meta = CATEGORY_META[c.category] || { color: DEFAULT_COLORS[i % DEFAULT_COLORS.length], emoji: '💳' };
     return {
       name: c.category,
-      value: c.amount,
-      percentage: c.percentage,
+      value: c.amount || 0,
+      percentage: c.percentage || 0,
       color: meta.color,
       emoji: meta.emoji,
     };
   });
 
   // Calculate velocity health badge & cycle progress
-  const velocityWarning = spendingVelocity.velocityRatio > 1.1;
-  const utilizationPercent = Math.round((budgetUtilization.totalSpent / (budgetUtilization.totalAllocated || 1)) * 100);
+  const velocityWarning = (spendingVelocity.velocityRatio || 0) > 1.1;
+  const utilizationPercent = Math.round(((budgetUtilization.totalSpent || 0) / (budgetUtilization.totalAllocated || 1)) * 100);
   const daysElapsed = Number(monthlySummary.daysElapsed) || 12;
   const daysRemaining = Number(monthlySummary.daysRemaining) || 18;
   const cyclePaceProgress = Math.round((daysElapsed / (daysElapsed + daysRemaining)) * 100);

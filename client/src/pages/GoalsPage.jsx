@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Target, Plus } from 'lucide-react';
+import { Target, Plus, Trash2 } from 'lucide-react';
 import { apiFetch } from '../api/client';
 import { PinCard } from '../components/UI/PinCard';
 
@@ -72,6 +72,17 @@ export const GoalsPage = () => {
     }
   };
 
+  const handleDeleteGoal = async (goalId, goalName) => {
+    if (!goalId) return;
+    if (!window.confirm(`Delete savings goal "${goalName}"?`)) return;
+    try {
+      await apiFetch(`/goals/${goalId}`, { method: 'DELETE' });
+      fetchGoals();
+    } catch (err) {
+      console.error('Failed to delete goal:', err);
+    }
+  };
+
   if (loading) return <div style={{ padding: '64px', textAlign: 'center', color: 'var(--color-muted-text)' }} className="body-md">Loading Goals Engine...</div>;
 
   return (
@@ -86,38 +97,62 @@ export const GoalsPage = () => {
         </button>
       </div>
 
-      <div className="grid-masonry">
-        {goals.map((g) => {
-          const pct = Math.min(100, Math.round((g.currentAmount / g.targetAmount) * 100));
-          return (
-            <div key={g._id} className="pin-card">
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <Target size={22} color="var(--color-accent)" />
-                  <h3 className="heading-md">{g.name}</h3>
+      {goals.length > 0 ? (
+        <div className="grid-masonry">
+          {goals.map((g) => {
+            const current = Number(g.currentAmount) || 0;
+            const target = Number(g.targetAmount) || 1;
+            const pct = Math.min(100, Math.max(0, Math.round((current / target) * 100)));
+            const remaining = Math.max(0, target - current);
+            return (
+              <div key={g._id} className="pin-card">
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <Target size={22} color="var(--color-accent)" />
+                    <h3 className="heading-md">{g.name}</h3>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span className="pin-overlay-pill" style={{ backgroundColor: 'var(--color-secondary)', color: 'var(--color-accent)', borderColor: 'var(--color-border)' }}>
+                      {pct}% Achieved
+                    </span>
+                    <button
+                      onClick={() => handleDeleteGoal(g._id, g.name)}
+                      style={{ background: 'none', border: 'none', color: '#FF7D7D', cursor: 'pointer', padding: '2px' }}
+                      title="Delete goal"
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                  </div>
                 </div>
-                <span className="pin-overlay-pill" style={{ backgroundColor: 'var(--color-secondary)', color: 'var(--color-accent)', borderColor: 'var(--color-border)' }}>
-                  {pct}% Achieved
-                </span>
-              </div>
 
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }} className="body-sm">
-                <span style={{ color: 'var(--color-muted-text)' }}>Saved: ₹{g.currentAmount.toLocaleString()}</span>
-                <span style={{ color: 'var(--color-muted-text)' }}>Target: ₹{g.targetAmount.toLocaleString()}</span>
-              </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }} className="body-sm">
+                  <span style={{ color: 'var(--color-muted-text)' }}>Saved: ₹{current.toLocaleString()}</span>
+                  <span style={{ color: 'var(--color-muted-text)' }}>Target: ₹{target.toLocaleString()}</span>
+                </div>
 
-              <div style={{ width: '100%', height: '8px', backgroundColor: 'var(--color-secondary)', borderRadius: '4px', overflow: 'hidden' }}>
-                <div style={{ height: '100%', width: `${pct}%`, backgroundColor: 'var(--color-accent)', borderRadius: '4px' }} />
-              </div>
+                <div style={{ width: '100%', height: '8px', backgroundColor: 'var(--color-secondary)', borderRadius: '4px', overflow: 'hidden' }}>
+                  <div style={{ height: '100%', width: `${pct}%`, backgroundColor: 'var(--color-accent)', borderRadius: '4px' }} />
+                </div>
 
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '12px', paddingTop: '8px', borderTop: '1px solid var(--color-border)' }} className="body-sm">
-                <span style={{ color: 'var(--color-muted-text)' }}>Target: {new Date(g.targetDate).toLocaleDateString()}</span>
-                <span style={{ color: 'var(--color-muted-text)' }}>Remaining: ₹{(g.targetAmount - g.currentAmount).toLocaleString()}</span>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '12px', paddingTop: '8px', borderTop: '1px solid var(--color-border)' }} className="body-sm">
+                  <span style={{ color: 'var(--color-muted-text)' }}>Target: {g.targetDate ? new Date(g.targetDate).toLocaleDateString() : 'N/A'}</span>
+                  <span style={{ color: 'var(--color-muted-text)' }}>Remaining: ₹{remaining.toLocaleString()}</span>
+                </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      ) : (
+        <div style={{ padding: '48px 24px', textAlign: 'center', background: 'rgba(255, 255, 255, 0.02)', borderRadius: '16px', border: '1px dashed rgba(255, 255, 255, 0.12)' }}>
+          <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#E2E8F0', marginBottom: '6px' }}>No Active Savings Goals</h3>
+          <p style={{ fontSize: '13px', color: '#94A3B8', maxWidth: '420px', margin: '0 auto 16px' }}>
+            Set a target for an emergency fund, travel, vehicle, or home down payment to monitor your trajectory.
+          </p>
+          <button onClick={openGoalModal} className="button-primary" style={{ margin: '0 auto' }}>
+            <Plus size={16} /> Create First Goal
+          </button>
+        </div>
+      )}
 
       {showModal && (
         <div className="modal-overlay">

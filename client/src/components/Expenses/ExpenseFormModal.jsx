@@ -6,7 +6,7 @@ import { apiFetch, getLocalDateString } from '../../api/client';
 const DRAFT_KEY = 'richy_draft_expense';
 const TAX_SECTIONS = ['80C (PF, ELSS, Insurance)', '80D (Medical Insurance)', '80G (Charity / Donation)', 'Business Expense', 'Standard / General'];
 
-export const ExpenseFormModal = ({ isOpen, onClose, onSave, onOpenReceiptScan, categories = [] }) => {
+export const ExpenseFormModal = ({ isOpen, onClose, onSave, onOpenReceiptScan, categories = [], initialData = null }) => {
   const defaultCategoryList = ['Food & Dining', 'Transportation', 'Housing & Utilities', 'Entertainment', 'Shopping', 'Health & Medical', 'Subscriptions'];
   const availableCategories = categories.length > 0 ? categories.map(c => c.name || c) : defaultCategoryList;
 
@@ -34,9 +34,24 @@ export const ExpenseFormModal = ({ isOpen, onClose, onSave, onOpenReceiptScan, c
   const [submitting, setSubmitting] = useState(false);
   const [hasDraftRestored, setHasDraftRestored] = useState(false);
 
-  // Restore draft on open
+  // Restore draft or populate initialData on open
   useEffect(() => {
     if (isOpen) {
+      if (initialData) {
+        if (initialData.title) setTitle(initialData.title);
+        if (initialData.amount) setAmount(String(initialData.amount));
+        if (initialData.category) setCategory(initialData.category);
+        if (initialData.merchant) setMerchant(initialData.merchant);
+        if (initialData.paymentMethod) setPaymentMethod(initialData.paymentMethod);
+        if (initialData.note) setNote(initialData.note);
+        if (initialData.date) setDate(getLocalDateString(new Date(initialData.date)));
+        if (initialData.tags) setTags(initialData.tags);
+        if (initialData.isTaxDeductible) setIsTaxDeductible(initialData.isTaxDeductible);
+        if (initialData.taxSection) setTaxSection(initialData.taxSection);
+        setHasDraftRestored(true);
+        return;
+      }
+
       try {
         const savedDraft = localStorage.getItem(DRAFT_KEY);
         if (savedDraft) {
@@ -63,7 +78,7 @@ export const ExpenseFormModal = ({ isOpen, onClose, onSave, onOpenReceiptScan, c
         setDate(getLocalDateString(new Date()));
       }
     }
-  }, [isOpen]);
+  }, [isOpen, initialData]);
 
   // Autosave draft on any input change
   useEffect(() => {

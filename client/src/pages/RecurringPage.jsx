@@ -3,7 +3,10 @@ import { Plus, Edit2, Trash2, CheckCircle2, History, X } from 'lucide-react';
 import { apiFetch, getLocalDateString } from '../api/client';
 import { PinCard } from '../components/UI/PinCard';
 
-export const RecurringPage = () => {
+export const RecurringPage = ({ categories = [] }) => {
+  const defaultCategoryList = ['Subscriptions', 'Housing & Utilities', 'Health & Medical', 'Entertainment', 'Transportation', 'Food & Dining', 'General'];
+  const categoryOptions = categories.length > 0 ? categories.map(c => c.name || c) : defaultCategoryList;
+
   const [recurring, setRecurring] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -12,7 +15,7 @@ export const RecurringPage = () => {
   const [editingItem, setEditingItem] = useState(null);
   const [title, setTitle] = useState('');
   const [amount, setAmount] = useState('');
-  const [category, setCategory] = useState('Subscriptions');
+  const [category, setCategory] = useState(categoryOptions[0] || 'Subscriptions');
   const [frequency, setFrequency] = useState('monthly');
   const [nextOccurrence, setNextOccurrence] = useState('');
   const [active, setActive] = useState(true);
@@ -191,57 +194,69 @@ export const RecurringPage = () => {
       />
 
       {/* Subscriptions Grid */}
-      <div className="grid-masonry">
-        {recurring.map((item) => (
-          <div key={item._id} className="pin-card" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-              <div>
-                <h3 className="heading-md">{item.title}</h3>
-                <span className="body-sm" style={{ color: 'var(--color-muted-text)' }}>{item.category}</span>
+      {recurring.length > 0 ? (
+        <div className="grid-masonry">
+          {recurring.map((item) => (
+            <div key={item._id} className="pin-card" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                <div>
+                  <h3 className="heading-md">{item.title}</h3>
+                  <span className="body-sm" style={{ color: 'var(--color-muted-text)' }}>{item.category}</span>
+                </div>
+                <div style={{ display: 'flex', gap: '4px' }}>
+                  <button onClick={() => openEditModal(item)} className="button-icon-circular" style={{ width: '32px', height: '32px' }} title="Edit Subscription">
+                    <Edit2 size={14} />
+                  </button>
+                  <button onClick={() => handleDelete(item._id)} className="button-icon-circular" style={{ width: '32px', height: '32px', color: 'var(--color-destructive)' }} title="Delete Subscription">
+                    <Trash2 size={14} />
+                  </button>
+                </div>
               </div>
-              <div style={{ display: 'flex', gap: '4px' }}>
-                <button onClick={() => openEditModal(item)} className="button-icon-circular" style={{ width: '32px', height: '32px' }} title="Edit Subscription">
-                  <Edit2 size={14} />
-                </button>
-                <button onClick={() => handleDelete(item._id)} className="button-icon-circular" style={{ width: '32px', height: '32px', color: 'var(--color-destructive)' }} title="Delete Subscription">
-                  <Trash2 size={14} />
-                </button>
-              </div>
-            </div>
 
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-              <div style={{ fontSize: '24px', fontWeight: 700, fontFamily: 'var(--font-heading)', color: 'var(--color-accent)' }}>
-                ₹{item.amount.toLocaleString()}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                <div style={{ fontSize: '24px', fontWeight: 700, fontFamily: 'var(--font-heading)', color: 'var(--color-accent)' }}>
+                  ₹{(Number(item.amount) || 0).toLocaleString()}
+                </div>
+                <span className="pin-overlay-pill" style={{ backgroundColor: 'var(--color-secondary)', color: 'var(--color-foreground)', borderColor: 'var(--color-border)' }}>
+                  {item.active !== false ? item.frequency : 'Paused'}
+                </span>
               </div>
-              <span className="pin-overlay-pill" style={{ backgroundColor: 'var(--color-secondary)', color: 'var(--color-foreground)', borderColor: 'var(--color-border)' }}>
-                {item.active !== false ? item.frequency : 'Paused'}
-              </span>
-            </div>
 
-            <div className="body-sm" style={{ borderTop: '1px solid var(--color-border)', paddingTop: '8px', fontSize: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ color: 'var(--color-muted-text)' }}>Next Due: {new Date(item.nextOccurrence).toLocaleDateString()}</span>
+              <div className="body-sm" style={{ borderTop: '1px solid var(--color-border)', paddingTop: '8px', fontSize: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ color: 'var(--color-muted-text)' }}>Next Due: {item.nextOccurrence ? new Date(item.nextOccurrence).toLocaleDateString() : 'N/A'}</span>
+                <button
+                  onClick={() => handleMarkPaid(item._id)}
+                  className="button-secondary"
+                  style={{ height: '28px', padding: '2px 10px', fontSize: '11px', gap: '4px' }}
+                  title="Record cycle payment now"
+                >
+                  <CheckCircle2 size={12} color="var(--color-accent)" />
+                  Mark Paid
+                </button>
+              </div>
+
               <button
-                onClick={() => handleMarkPaid(item._id)}
+                onClick={() => openHistoryDrawer(item)}
                 className="button-secondary"
-                style={{ height: '28px', padding: '2px 10px', fontSize: '11px', gap: '4px' }}
-                title="Record cycle payment now"
+                style={{ width: '100%', height: '32px', fontSize: '12px', marginTop: '4px', gap: '6px' }}
               >
-                <CheckCircle2 size={12} color="var(--color-accent)" />
-                Mark Paid
+                <History size={14} />
+                View Payment History
               </button>
             </div>
-
-            <button
-              onClick={() => openHistoryDrawer(item)}
-              className="button-secondary"
-              style={{ width: '100%', height: '32px', fontSize: '12px', marginTop: '4px', gap: '6px' }}
-            >
-              <History size={14} />
-              View Payment History
-            </button>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <div style={{ padding: '48px 24px', textAlign: 'center', background: 'rgba(255, 255, 255, 0.02)', borderRadius: '16px', border: '1px dashed rgba(255, 255, 255, 0.12)' }}>
+          <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#E2E8F0', marginBottom: '6px' }}>No Subscriptions or Recurring Bills</h3>
+          <p style={{ fontSize: '13px', color: '#94A3B8', maxWidth: '420px', margin: '0 auto 16px' }}>
+            Track Netflix, Spotify, gym memberships, rent, and utility bills with automated cycle reminders.
+          </p>
+          <button onClick={openCreateModal} className="button-primary" style={{ margin: '0 auto' }}>
+            <Plus size={16} /> Add First Subscription
+          </button>
+        </div>
+      )}
 
       {/* Create / Edit Subscription Modal */}
       {showModal && (
@@ -266,12 +281,9 @@ export const RecurringPage = () => {
                 <div>
                   <label className="body-sm-strong" style={{ display: 'block', marginBottom: '6px' }}>Category *</label>
                   <select className="text-input" value={category} onChange={(e) => setCategory(e.target.value)} style={{ backgroundColor: 'var(--color-secondary)', color: 'var(--color-foreground)' }}>
-                    <option value="Subscriptions">Subscriptions</option>
-                    <option value="Housing & Utilities">Housing & Utilities</option>
-                    <option value="Health & Medical">Health & Medical</option>
-                    <option value="Entertainment">Entertainment</option>
-                    <option value="Transportation">Transportation</option>
-                    <option value="Food & Dining">Food & Dining</option>
+                    {categoryOptions.map(cat => (
+                      <option key={cat} value={cat}>{cat}</option>
+                    ))}
                   </select>
                 </div>
               </div>

@@ -195,7 +195,7 @@ export const WealthSimulatorPage = () => {
                     className={`font-display ${isPrivacyMaskActive ? 'privacy-masked' : ''}`}
                     style={{ fontSize: '28px', fontWeight: 800, color: '#00FF87', marginTop: '4px' }}
                   >
-                    ₹{(fire.milestones.standardFire.target / 10000000).toFixed(2)} Cr
+                    ₹{((fire?.milestones?.standardFire?.target || 0) / 10000000).toFixed(2)} Cr
                   </div>
                   <div style={{ fontSize: '12px', color: '#94A3B8', marginTop: '4px' }}>
                     Rule of 25 (4% Safe Withdrawal Rate)
@@ -205,27 +205,27 @@ export const WealthSimulatorPage = () => {
                 <div className="glass-card" style={{ padding: '20px' }}>
                   <div style={{ fontSize: '12px', fontWeight: 600, color: '#94A3B8', textTransform: 'uppercase' }}>Years to Freedom</div>
                   <div className="font-display" style={{ fontSize: '28px', fontWeight: 800, color: '#00F0FF', marginTop: '4px' }}>
-                    {fire.yearsToFire} Years
+                    {fire.yearsToFire || 0} Years
                   </div>
                   <div style={{ fontSize: '12px', color: '#00F0FF', marginTop: '4px' }}>
-                    Estimated {new Date(fire.fireDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
+                    Estimated {fire.fireDate ? new Date(fire.fireDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : 'N/A'}
                   </div>
                 </div>
 
                 <div className="glass-card" style={{ padding: '20px' }}>
                   <div style={{ fontSize: '12px', fontWeight: 600, color: '#94A3B8', textTransform: 'uppercase' }}>Current Savings Rate</div>
                   <div className="font-display" style={{ fontSize: '28px', fontWeight: 800, color: '#FFD700', marginTop: '4px' }}>
-                    {fire.savingsRate}%
+                    {fire.savingsRate || 0}%
                   </div>
                   <div style={{ fontSize: '12px', color: '#94A3B8', marginTop: '4px' }}>
-                    Saving ₹{fire.monthlySavings.toLocaleString()}/month
+                    Saving ₹{(fire.monthlySavings || 0).toLocaleString()}/month
                   </div>
                 </div>
 
                 <div className="glass-card" style={{ padding: '20px' }}>
                   <div style={{ fontSize: '12px', fontWeight: 600, color: '#94A3B8', textTransform: 'uppercase' }}>Coast FIRE Status</div>
-                  <div className="font-display" style={{ fontSize: '22px', fontWeight: 800, color: fire.milestones.coastFire.isCoastAchieved ? '#00FF87' : '#FF7D7D', marginTop: '4px' }}>
-                    {fire.milestones.coastFire.isCoastAchieved ? 'Coast Achieved ✓' : `Target: ₹${(fire.milestones.coastFire.target / 100000).toFixed(1)}L`}
+                  <div className="font-display" style={{ fontSize: '22px', fontWeight: 800, color: fire?.milestones?.coastFire?.isCoastAchieved ? '#00FF87' : '#FF7D7D', marginTop: '4px' }}>
+                    {fire?.milestones?.coastFire?.isCoastAchieved ? 'Coast Achieved ✓' : `Target: ₹{((fire?.milestones?.coastFire?.target || 0) / 100000).toFixed(1)}L`}
                   </div>
                   <div style={{ fontSize: '12px', color: '#94A3B8', marginTop: '4px' }}>
                     Self-sustaining compounding to 60
@@ -252,7 +252,7 @@ export const WealthSimulatorPage = () => {
                       className={`font-display ${isPrivacyMaskActive ? 'privacy-masked' : ''}`}
                       style={{ fontSize: '24px', fontWeight: 800, color: '#00F0FF' }}
                     >
-                      ₹{(fire.milestones.leanFire.target / 10000000).toFixed(2)} Cr
+                      ₹{((fire?.milestones?.leanFire?.target || 0) / 10000000).toFixed(2)} Cr
                     </div>
                   </div>
 
@@ -268,7 +268,7 @@ export const WealthSimulatorPage = () => {
                       className={`font-display ${isPrivacyMaskActive ? 'privacy-masked' : ''}`}
                       style={{ fontSize: '24px', fontWeight: 800, color: '#00FF87' }}
                     >
-                      ₹{(fire.milestones.standardFire.target / 10000000).toFixed(2)} Cr
+                      ₹{((fire?.milestones?.standardFire?.target || 0) / 10000000).toFixed(2)} Cr
                     </div>
                   </div>
 
@@ -284,7 +284,7 @@ export const WealthSimulatorPage = () => {
                       className={`font-display ${isPrivacyMaskActive ? 'privacy-masked' : ''}`}
                       style={{ fontSize: '24px', fontWeight: 800, color: '#FFD700' }}
                     >
-                      ₹{(fire.milestones.fatFire.target / 10000000).toFixed(2)} Cr
+                      ₹{((fire?.milestones?.fatFire?.target || 0) / 10000000).toFixed(2)} Cr
                     </div>
                   </div>
                 </div>
