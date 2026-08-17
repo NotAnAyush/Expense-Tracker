@@ -10,7 +10,7 @@ export const PinCard = ({
   category,
   date,
   overlayPill,
-  pillColor = 'mint', // 'mint' | 'gold' | 'amber' | 'violet' | 'emerald' | 'cyan'
+  pillColor = 'mint', // 'mint' | 'gold' | 'amber' | 'violet' | 'emerald' | 'cyan' | 'rose'
   sparklineData,
   radialProgress,
   trendDirection,
@@ -21,22 +21,23 @@ export const PinCard = ({
 }) => {
   const cardId = useId().replace(/:/g, '_');
 
-  // Determine badge styling based on pillColor token
   const getBadgeStyle = () => {
     switch (pillColor) {
       case 'gold':
-        return { bg: 'rgba(255, 215, 0, 0.15)', border: 'rgba(255, 215, 0, 0.4)', text: '#FFD700' };
+        return { bg: 'rgba(255, 215, 0, 0.1)', border: 'rgba(255, 215, 0, 0.25)', text: '#FFD700' };
       case 'amber':
-        return { bg: 'rgba(255, 153, 0, 0.15)', border: 'rgba(255, 153, 0, 0.4)', text: '#FF9900' };
+        return { bg: 'rgba(245, 158, 11, 0.1)', border: 'rgba(245, 158, 11, 0.25)', text: '#F59E0B' };
       case 'violet':
-        return { bg: 'rgba(121, 40, 202, 0.2)', border: 'rgba(121, 40, 202, 0.4)', text: '#9D4EDD' };
+        return { bg: 'rgba(139, 92, 246, 0.12)', border: 'rgba(139, 92, 246, 0.3)', text: '#A78BFA' };
       case 'emerald':
-        return { bg: 'rgba(16, 185, 129, 0.15)', border: 'rgba(16, 185, 129, 0.4)', text: '#10B981' };
+        return { bg: 'rgba(16, 185, 129, 0.1)', border: 'rgba(16, 185, 129, 0.25)', text: '#10B981' };
       case 'cyan':
-        return { bg: 'rgba(0, 240, 255, 0.15)', border: 'rgba(0, 240, 255, 0.4)', text: '#00F0FF' };
+        return { bg: 'rgba(0, 240, 255, 0.1)', border: 'rgba(0, 240, 255, 0.25)', text: '#00F0FF' };
+      case 'rose':
+        return { bg: 'rgba(244, 63, 94, 0.1)', border: 'rgba(244, 63, 94, 0.25)', text: '#FB7185' };
       case 'mint':
       default:
-        return { bg: 'rgba(0, 255, 135, 0.15)', border: 'rgba(0, 255, 135, 0.4)', text: '#00FF87' };
+        return { bg: 'rgba(0, 255, 135, 0.1)', border: 'rgba(0, 255, 135, 0.25)', text: '#00FF87' };
     }
   };
 
@@ -45,197 +46,159 @@ export const PinCard = ({
 
   return (
     <motion.div
-      whileHover={{ y: -4, boxShadow: '0 12px 32px rgba(0,0,0,0.5)' }}
+      whileHover={{ y: -2 }}
+      transition={{ duration: 0.15 }}
       className="glass-card"
       style={{
-        padding: '22px',
+        padding: '18px 20px',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
         position: 'relative',
+        boxSizing: 'border-box',
       }}
     >
-      {/* Top Header Row with Badge & Amount */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '14px' }}>
+      {/* Top Header Row with Title & Badge */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+        <span style={{ fontSize: '12.5px', fontWeight: 600, color: '#94A3B8' }}>
+          {title}
+        </span>
+
         {(overlayPill || category) && (
           <div
             style={{
-              padding: '4px 12px',
+              padding: '2px 8px',
               borderRadius: '999px',
               background: badgeStyle.bg,
               border: `1px solid ${badgeStyle.border}`,
               color: badgeStyle.text,
-              fontSize: '12px',
-              fontWeight: 800,
+              fontSize: '11px',
+              fontWeight: 700,
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '5px',
+              gap: '4px',
               fontFamily: 'var(--font-heading)',
             }}
           >
-            <Zap size={12} />
             {overlayPill || category}
           </div>
         )}
+      </div>
 
-        {/* Dynamic Trend Indicator if available */}
+      {/* Main Numeric Value & Trend */}
+      <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '8px' }}>
+        {amount !== undefined && (
+          <div
+            className="font-display tabular-nums"
+            style={{
+              fontSize: '26px',
+              fontWeight: 800,
+              color: '#FFFFFF',
+              letterSpacing: '-0.5px',
+              lineHeight: 1.1,
+            }}
+          >
+            {currency}{typeof amount === 'number' ? amount.toLocaleString() : amount}
+          </div>
+        )}
+
+        {/* Trend Indicator */}
         {trendPercent !== undefined && (
           <div
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '4px',
-              fontSize: '12px',
+              gap: '3px',
+              fontSize: '11.5px',
               fontWeight: 700,
-              color: trendDirection === 'down' ? '#10B981' : '#FF9900',
-              background: 'rgba(255, 255, 255, 0.04)',
-              padding: '3px 8px',
-              borderRadius: '8px',
+              color: trendDirection === 'down' ? '#10B981' : '#F59E0B',
+              background: trendDirection === 'down' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(245, 158, 11, 0.1)',
+              padding: '2px 6px',
+              borderRadius: '6px',
             }}
           >
-            {trendDirection === 'down' ? <TrendingDown size={14} /> : <TrendingUp size={14} />}
+            {trendDirection === 'down' ? <TrendingDown size={13} /> : <TrendingUp size={13} />}
             {trendPercent}%
           </div>
         )}
       </div>
 
-      {/* Main Title & Numeric Value */}
-      <div style={{ marginBottom: '10px' }}>
-        {title && (
-          <span style={{ fontSize: '13px', fontWeight: 600, color: '#94A3B8', display: 'block', marginBottom: '4px' }}>
-            {title}
-          </span>
-        )}
-
-        {amount !== undefined && (
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
-            <span
-              className="font-display"
-              style={{
-                fontSize: '32px',
-                fontWeight: 800,
-                color: '#F1F5F9',
-                letterSpacing: '-1px',
-                lineHeight: 1.1,
-              }}
-            >
-              {currency}{typeof amount === 'number' ? amount.toLocaleString() : amount}
-            </span>
-          </div>
-        )}
-      </div>
-
-      {/* Continuously Animated Moving Sparkline Chart */}
+      {/* Clean Smooth Sparkline Chart */}
       {sparklineData && Array.isArray(sparklineData) && sparklineData.length > 1 && (
-        <div style={{ width: '100%', height: '42px', margin: '6px 0', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ width: '100%', height: '34px', margin: '4px 0', position: 'relative', overflow: 'hidden' }}>
           <svg width="100%" height="100%" viewBox="0 0 200 40" preserveAspectRatio="none">
             <defs>
               <linearGradient id={`sparkGrad-${cardId}`} x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor={badgeStyle.text} stopOpacity={0.35} />
+                <stop offset="0%" stopColor={badgeStyle.text} stopOpacity={0.25} />
                 <stop offset="100%" stopColor={badgeStyle.text} stopOpacity={0} />
               </linearGradient>
-              <linearGradient id={`lineGlow-${cardId}`} x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor={badgeStyle.text} stopOpacity={0.4} />
-                <stop offset="50%" stopColor="#FFFFFF" stopOpacity={1} />
-                <stop offset="100%" stopColor={badgeStyle.text} stopOpacity={0.4} />
-              </linearGradient>
             </defs>
-            {/* Area path */}
+            {/* Gradient Fill Area */}
             <path
               d={`M 0 40 ${sparklineData.map((d, i) => `L ${(i / (sparklineData.length - 1)) * 200} ${40 - d}`).join(' ')} L 200 40 Z`}
               fill={`url(#sparkGrad-${cardId})`}
             />
-            {/* Base stroke line */}
+            {/* Crisp Solid Line */}
             <path
               d={`M 0 ${40 - sparklineData[0]} ${sparklineData.map((d, i) => `L ${(i / (sparklineData.length - 1)) * 200} ${40 - d}`).join(' ')}`}
               fill="none"
               stroke={badgeStyle.text}
-              strokeWidth="2.5"
+              strokeWidth="2"
               strokeLinecap="round"
-              opacity="0.4"
-            />
-            {/* Constantly Moving Light Pulse Line */}
-            <motion.path
-              d={`M 0 ${40 - sparklineData[0]} ${sparklineData.map((d, i) => `L ${(i / (sparklineData.length - 1)) * 200} ${40 - d}`).join(' ')}`}
-              fill="none"
-              stroke={`url(#lineGlow-${cardId})`}
-              strokeWidth="3"
-              strokeLinecap="round"
-              strokeDasharray="60 140"
-              animate={{ strokeDashoffset: [200, -200] }}
-              transition={{ duration: 2.8, repeat: Infinity, ease: 'linear' }}
+              strokeLinejoin="round"
             />
           </svg>
         </div>
       )}
 
-      {/* Animated Radial / Meter Progress Bar */}
+      {/* Progress Bar if present */}
       {validProgress !== null && (
-        <div style={{ margin: '10px 0' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', fontWeight: 700, color: '#94A3B8', marginBottom: '4px' }}>
-            <span>Utilization Rate</span>
-            <span style={{ color: badgeStyle.text }}>{validProgress}%</span>
-          </div>
-          <div style={{ width: '100%', height: '8px', background: 'rgba(255, 255, 255, 0.08)', borderRadius: '999px', overflow: 'hidden', position: 'relative' }}>
+        <div style={{ margin: '6px 0' }}>
+          <div style={{ width: '100%', height: '5px', background: 'rgba(255, 255, 255, 0.08)', borderRadius: '999px', overflow: 'hidden' }}>
             <motion.div
               initial={{ width: 0 }}
               animate={{ width: `${Math.min(validProgress, 100)}%` }}
-              transition={{ duration: 1, ease: 'easeOut' }}
+              transition={{ duration: 0.8, ease: 'easeOut' }}
               style={{
                 height: '100%',
-                background: validProgress > 85 ? 'linear-gradient(90deg, #FF9900, #F43F5E)' : `linear-gradient(90deg, ${badgeStyle.text}, #00FF87)`,
+                background: validProgress > 90 ? '#F43F5E' : validProgress > 75 ? '#F59E0B' : '#00FF87',
                 borderRadius: '999px',
-                boxShadow: `0 0 10px ${badgeStyle.text}`,
-                position: 'relative',
-                overflow: 'hidden',
               }}
-            >
-              {/* Continuous Light Shimmer Animation across line */}
-              <motion.div
-                animate={{ x: ['-100%', '200%'] }}
-                transition={{ duration: 1.8, repeat: Infinity, ease: 'linear' }}
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  width: '50%',
-                  background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent)',
-                }}
-              />
-            </motion.div>
+            />
           </div>
         </div>
       )}
 
-      {/* Subtitle / Footer Description */}
+      {/* Subtitle Footer */}
       {subtitle && (
-        <p style={{ fontSize: '13px', color: '#94A3B8', marginTop: '4px', lineHeight: 1.4 }}>
+        <p style={{ fontSize: '11.5px', color: '#64748B', marginTop: '4px', lineHeight: 1.35 }}>
           {subtitle}
         </p>
       )}
 
       {children}
 
-      {/* Bottom Date & Action trigger */}
+      {/* Date & Action */}
       {date && (
         <div
           style={{
             display: 'flex',
-            justify: 'space-between',
+            justifyContent: 'space-between',
             alignItems: 'center',
-            marginTop: '16px',
-            paddingTop: '12px',
-            borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+            marginTop: '12px',
+            paddingTop: '10px',
+            borderTop: '1px solid rgba(255, 255, 255, 0.06)',
           }}
         >
-          <span style={{ fontSize: '12px', color: '#64748B' }}>{new Date(date).toLocaleDateString()}</span>
+          <span style={{ fontSize: '11.5px', color: '#64748B' }}>{new Date(date).toLocaleDateString()}</span>
           {actionLabel && (
             <button
               onClick={onAction}
               className="btn-glass-secondary"
-              style={{ height: '32px', padding: '4px 12px', fontSize: '12px', gap: '4px' }}
+              style={{ height: '28px', padding: '2px 10px', fontSize: '11.5px', gap: '3px' }}
             >
               {actionLabel}
-              <ArrowUpRight size={14} />
+              <ArrowUpRight size={13} />
             </button>
           )}
         </div>

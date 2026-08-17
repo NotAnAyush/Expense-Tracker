@@ -11,7 +11,7 @@ export const FinancialHealthCard = ({ healthData }) => {
   const { score = 75, tier = 'Optimized', tierBadge = '💎 Wealth Optimizer', tierDescription = '', pillars = {}, actionableLevers = [] } = healthData;
 
   // Compute SVG Circle properties
-  const radius = 52;
+  const radius = 48;
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference - (Math.min(100, Math.max(0, score)) / 100) * circumference;
 
@@ -20,66 +20,45 @@ export const FinancialHealthCard = ({ healthData }) => {
   if (score >= 85) scoreColor = '#FFD700'; // Sovereign Gold
   else if (score >= 65) scoreColor = '#00FF87'; // Optimized Mint
   else if (score >= 40) scoreColor = '#00F0FF'; // Builder Cyan
-  else scoreColor = '#FF7D7D'; // Novice Coral
+  else scoreColor = '#FB7185'; // Novice Coral
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 15 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4 }}
+    <div
+      className="glass-card"
       style={{
-        padding: '24px 28px',
-        borderRadius: '24px',
-        background: 'linear-gradient(135deg, rgba(16, 24, 40, 0.95) 0%, rgba(10, 14, 26, 0.98) 100%)',
-        border: '1.5px solid rgba(255, 255, 255, 0.09)',
-        boxShadow: '0 12px 40px rgba(0, 0, 0, 0.5)',
+        padding: '22px 24px',
         display: 'flex',
         flexDirection: 'column',
-        gap: '24px',
+        gap: '20px',
         position: 'relative',
-        overflow: 'hidden',
+        boxSizing: 'border-box',
       }}
     >
-      {/* Background Ambient Glow */}
-      <div
-        style={{
-          position: 'absolute',
-          top: '-50px',
-          right: '-50px',
-          width: '220px',
-          height: '220px',
-          borderRadius: '999px',
-          background: `radial-gradient(circle, ${scoreColor}25, transparent 70%)`,
-          filter: 'blur(35px)',
-          pointerEvents: 'none',
-        }}
-      />
-
       {/* Top Header Row */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '12px' }}>
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '3px' }}>
             <span
               style={{
-                fontSize: '11px',
+                fontSize: '10.5px',
                 fontWeight: 800,
                 color: scoreColor,
-                background: `${scoreColor}18`,
-                border: `1px solid ${scoreColor}40`,
-                padding: '3px 10px',
+                background: `${scoreColor}15`,
+                border: `1px solid ${scoreColor}35`,
+                padding: '2px 8px',
                 borderRadius: '999px',
                 textTransform: 'uppercase',
-                letterSpacing: '0.6px',
+                letterSpacing: '0.5px',
               }}
             >
-              FHI Wealth Index
+              FHI Index
             </span>
-            <span style={{ fontSize: '12px', color: '#94A3B8' }}>Deterministic 5-Pillar Score</span>
+            <span style={{ fontSize: '12px', color: '#64748B' }}>5-Pillar Financial Health</span>
           </div>
-          <h2 className="heading-xl" style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <h2 className="heading-lg" style={{ margin: 0 }}>
             Financial Health Index
           </h2>
-          <p style={{ fontSize: '13.5px', color: '#94A3B8', marginTop: '4px', maxWidth: '540px' }}>
+          <p style={{ fontSize: '12.5px', color: '#94A3B8', marginTop: '2px', maxWidth: '520px' }}>
             {tierDescription}
           </p>
         </div>
@@ -87,86 +66,83 @@ export const FinancialHealthCard = ({ healthData }) => {
         {/* Tier Badge Pill */}
         <div
           style={{
-            padding: '8px 16px',
-            borderRadius: '14px',
-            background: 'rgba(255, 255, 255, 0.05)',
-            border: '1px solid rgba(255, 255, 255, 0.12)',
+            padding: '6px 12px',
+            borderRadius: '10px',
+            background: 'rgba(255, 255, 255, 0.04)',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
             display: 'flex',
             alignItems: 'center',
-            gap: '8px',
-            fontSize: '13px',
-            fontWeight: 800,
+            gap: '6px',
+            fontSize: '12px',
+            fontWeight: 700,
             color: '#F8FAFC',
           }}
         >
-          <Award size={16} color={scoreColor} />
+          <Award size={14} color={scoreColor} />
           <span>{tierBadge}</span>
         </div>
       </div>
 
       {/* Center Layout: Radial Meter & 5 Pillar Breakdown */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '32px', alignItems: 'center' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '24px', alignItems: 'center' }}>
         {/* Radial SVG Dial */}
-        <div style={{ position: 'relative', width: '130px', height: '130px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <svg width="130" height="130" style={{ transform: 'rotate(-90deg)' }}>
-            {/* Background Track */}
+        <div style={{ position: 'relative', width: '116px', height: '116px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <svg width="116" height="116" style={{ transform: 'rotate(-90deg)' }}>
             <circle
-              cx="65"
-              cy="65"
+              cx="58"
+              cy="58"
               r={radius}
               fill="transparent"
-              stroke="rgba(255, 255, 255, 0.08)"
-              strokeWidth="10"
+              stroke="rgba(255, 255, 255, 0.07)"
+              strokeWidth="8"
             />
-            {/* Animated Progress Arc */}
             <motion.circle
-              cx="65"
-              cy="65"
+              cx="58"
+              cy="58"
               r={radius}
               fill="transparent"
               stroke={scoreColor}
-              strokeWidth="10"
+              strokeWidth="8"
               strokeDasharray={circumference}
               initial={{ strokeDashoffset: circumference }}
               animate={{ strokeDashoffset }}
-              transition={{ duration: 1, ease: 'easeOut' }}
+              transition={{ duration: 0.8, ease: 'easeOut' }}
               strokeLinecap="round"
-              style={{ filter: `drop-shadow(0 0 8px ${scoreColor}80)` }}
             />
           </svg>
 
-          {/* Center Score Text */}
+          {/* Center Score */}
           <div style={{ position: 'absolute', textAlign: 'center' }} className={isPrivacyMaskActive ? 'privacy-masked' : ''}>
-            <div style={{ fontSize: '34px', fontWeight: 800, color: '#FFFFFF', fontFamily: 'var(--font-display)', lineHeight: 1 }}>
+            <div className="font-display tabular-nums" style={{ fontSize: '30px', fontWeight: 800, color: '#FFFFFF', lineHeight: 1 }}>
               {score}
             </div>
-            <div style={{ fontSize: '11px', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', marginTop: '2px' }}>
-              Out of 100
+            <div style={{ fontSize: '10px', color: '#64748B', fontWeight: 700, textTransform: 'uppercase', marginTop: '2px' }}>
+              / 100
             </div>
           </div>
         </div>
 
         {/* 5-Pillar Score Meters */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           {Object.entries(pillars).map(([key, p]) => {
             const pct = Math.round((p.score / p.max) * 100);
             return (
-              <div key={key} style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12.5px', color: '#94A3B8' }}>
+              <div key={key} style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
                   <span style={{ fontWeight: 600, color: '#E2E8F0' }}>{p.label}</span>
-                  <span style={{ fontWeight: 700, color: pct >= 80 ? '#00FF87' : pct >= 50 ? '#00F0FF' : '#FF7D7D' }}>
-                    {p.score} / {p.max} pts ({pct}%)
+                  <span className="tabular-nums" style={{ fontWeight: 700, color: pct >= 80 ? '#00FF87' : pct >= 50 ? '#00F0FF' : '#FB7185' }}>
+                    {p.score}/{p.max} pts ({pct}%)
                   </span>
                 </div>
-                <div style={{ width: '100%', height: '6px', borderRadius: '999px', background: 'rgba(255, 255, 255, 0.08)', overflow: 'hidden' }}>
+                <div style={{ width: '100%', height: '5px', borderRadius: '999px', background: 'rgba(255, 255, 255, 0.06)', overflow: 'hidden' }}>
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${pct}%` }}
-                    transition={{ duration: 0.8, delay: 0.1 }}
+                    transition={{ duration: 0.6, delay: 0.05 }}
                     style={{
                       height: '100%',
                       borderRadius: '999px',
-                      background: pct >= 80 ? 'linear-gradient(90deg, #00FF87, #60EFFF)' : pct >= 50 ? 'linear-gradient(90deg, #00F0FF, #7000FF)' : 'linear-gradient(90deg, #FF416C, #FF4B2B)',
+                      background: pct >= 80 ? '#00FF87' : pct >= 50 ? '#00F0FF' : '#F43F5E',
                     }}
                   />
                 </div>
@@ -176,41 +152,40 @@ export const FinancialHealthCard = ({ healthData }) => {
         </div>
       </div>
 
-      {/* Actionable Wealth Levers Strip */}
+      {/* Actionable Wealth Levers */}
       {actionableLevers.length > 0 && (
-        <div style={{ borderTop: '1px solid rgba(255, 255, 255, 0.08)', paddingTop: '18px' }}>
-          <div style={{ fontSize: '12px', fontWeight: 800, color: '#00FF87', textTransform: 'uppercase', letterSpacing: '0.6px', marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <Zap size={14} /> Actionable High-Impact Levers
+        <div style={{ borderTop: '1px solid rgba(255, 255, 255, 0.06)', paddingTop: '14px' }}>
+          <div style={{ fontSize: '11px', fontWeight: 800, color: '#00FF87', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '5px' }}>
+            <Zap size={13} /> High-Impact Wealth Levers
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '12px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '10px' }}>
             {actionableLevers.map((lever, idx) => (
-              <motion.div
+              <div
                 key={idx}
-                whileHover={{ scale: 1.02 }}
                 style={{
-                  padding: '12px 16px',
-                  borderRadius: '14px',
-                  background: 'rgba(255, 255, 255, 0.04)',
-                  border: '1px solid rgba(255, 255, 255, 0.08)',
+                  padding: '10px 14px',
+                  borderRadius: '10px',
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  border: '1px solid rgba(255, 255, 255, 0.06)',
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: '4px',
+                  gap: '3px',
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: '13px', fontWeight: 700, color: '#F1F5F9' }}>{lever.title}</span>
-                  <span style={{ fontSize: '11px', fontWeight: 800, padding: '2px 6px', borderRadius: '6px', background: 'rgba(0, 255, 135, 0.15)', color: '#00FF87', border: '1px solid rgba(0, 255, 135, 0.3)' }}>
+                  <span style={{ fontSize: '12px', fontWeight: 700, color: '#F1F5F9' }}>{lever.title}</span>
+                  <span className="tabular-nums" style={{ fontSize: '10.5px', fontWeight: 800, padding: '1px 5px', borderRadius: '4px', background: 'rgba(0, 255, 135, 0.12)', color: '#00FF87' }}>
                     +{lever.potentialGain} pts
                   </span>
                 </div>
-                <p style={{ fontSize: '12px', color: '#94A3B8', margin: 0, lineHeight: 1.4 }}>
+                <p style={{ fontSize: '11.5px', color: '#94A3B8', margin: 0, lineHeight: 1.35 }}>
                   {lever.description}
                 </p>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
       )}
-    </motion.div>
+    </div>
   );
 };

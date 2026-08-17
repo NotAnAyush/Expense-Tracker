@@ -1,6 +1,20 @@
-import React, { useEffect } from 'react';
-import { Search, Plus, Bot, X, Sparkles, Command, Eye, EyeOff, Mic, FileSpreadsheet } from 'lucide-react';
-import { motion } from 'framer-motion';
+import React, { useEffect, useState, useRef } from 'react';
+import { 
+  Search, 
+  Plus, 
+  Bot, 
+  X, 
+  Sparkles, 
+  Command, 
+  Eye, 
+  EyeOff, 
+  Mic, 
+  FileSpreadsheet, 
+  Camera,
+  TrendingUp,
+  ChevronDown
+} from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../../context/AuthContext';
 import { usePrivacy } from '../../context/PrivacyContext';
 
@@ -17,126 +31,62 @@ export const Header = ({
 }) => {
   const { user } = useAuth();
   const { isPrivacyMaskActive, togglePrivacyMask } = usePrivacy();
-  const searchInputRef = React.useRef(null);
+  const searchInputRef = useRef(null);
+  const [quickMenuOpen, setQuickMenuOpen] = useState(false);
+  const menuRef = useRef(null);
 
-  // Global Cmd+K / Ctrl+K keyboard shortcut handling
+  // Global Keyboard Shortcuts (Cmd+K / Ctrl+K and Alt+P)
   useEffect(() => {
     const handleKeyDown = (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
         e.preventDefault();
         searchInputRef.current?.focus();
       }
+      if (e.altKey && (e.key === 'p' || e.key === 'P')) {
+        e.preventDefault();
+        togglePrivacyMask();
+      }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [togglePrivacyMask]);
+
+  // Click outside to close quick menu
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setQuickMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   return (
     <header
       style={{
-        background: 'rgba(10, 13, 20, 0.75)',
+        background: 'rgba(8, 11, 17, 0.85)',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-        padding: '0 24px',
-        height: '76px',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.07)',
+        padding: '0 28px',
+        height: '64px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        gap: '16px',
+        gap: '20px',
         position: 'sticky',
         top: 0,
         zIndex: 40,
         width: '100%',
+        boxSizing: 'border-box',
       }}
     >
-      {/* 1. Branded Logo with Glowing Coin & Sparkle Badge */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flexShrink: 0 }}>
-        <motion.div
-          whileHover={{ scale: 1.06, rotate: 4 }}
-          whileTap={{ scale: 0.95 }}
-          style={{ position: 'relative', cursor: 'pointer' }}
-        >
-          {/* Glowing Aura Ring */}
-          <div
-            style={{
-              position: 'absolute',
-              inset: '-3px',
-              borderRadius: '16px',
-              background: 'linear-gradient(135deg, #00FF87 0%, #FFD700 100%)',
-              opacity: 0.6,
-              filter: 'blur(8px)',
-            }}
-          />
-          <div
-            style={{
-              position: 'relative',
-              width: '44px',
-              height: '44px',
-              borderRadius: '14px',
-              background: '#0F1420',
-              border: '1.5px solid rgba(0, 255, 135, 0.5)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              overflow: 'hidden',
-            }}
-          >
-            <img
-              src="/logo.jpg"
-              alt="Richy Rich Logo"
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-              }}
-            />
-          </div>
-        </motion.div>
-
-        <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <span
-              className="font-display"
-              style={{
-                fontSize: '21px',
-                fontWeight: 800,
-                letterSpacing: '-0.5px',
-                background: 'linear-gradient(135deg, #FFFFFF 30%, #94A3B8 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-              }}
-            >
-              Richy Rich
-            </span>
-            <span
-              style={{
-                fontSize: '10px',
-                fontWeight: 800,
-                background: 'linear-gradient(135deg, #00FF87, #00F0FF)',
-                color: '#050810',
-                padding: '2px 6px',
-                borderRadius: '6px',
-                letterSpacing: '0.4px',
-              }}
-            >
-              v2.4
-            </span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '1px' }}>
-            <Sparkles size={11} color="#FFD700" />
-            <span style={{ fontSize: '11.5px', color: '#64748B', fontWeight: 600 }}>
-              AI Personal Wealth Platform
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* 2. Global Universal Search Input */}
-      <div style={{ flex: 1, maxWidth: '400px' }}>
-        <div style={{ position: 'relative' }}>
+      {/* 1. Left: Universal Search Bar */}
+      <div style={{ flex: 1, maxWidth: '420px' }}>
+        <div style={{ position: 'relative', width: '100%' }}>
           <Search
-            size={16}
+            size={15}
             style={{
               position: 'absolute',
               left: '14px',
@@ -149,23 +99,36 @@ export const Header = ({
           <input
             ref={searchInputRef}
             type="text"
-            placeholder="Search transactions, merchants, #tags, income..."
+            placeholder="Search transactions, merchants, #tags... (Cmd+K)"
             value={searchQuery || ''}
             onChange={(e) => setSearchQuery && setSearchQuery(e.target.value)}
             style={{
               width: '100%',
-              padding: '10px 42px 10px 38px',
+              height: '38px',
+              padding: '0 40px 0 38px',
               borderRadius: '999px',
-              background: 'rgba(255, 255, 255, 0.05)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
+              background: 'rgba(255, 255, 255, 0.04)',
+              border: '1px solid rgba(255, 255, 255, 0.09)',
               color: '#F8FAFC',
               fontSize: '13px',
+              fontFamily: 'var(--font-body)',
               outline: 'none',
-              transition: 'all 0.2s ease',
+              transition: 'all 0.15s ease',
+              boxSizing: 'border-box',
+            }}
+            onFocus={(e) => {
+              e.target.style.borderColor = 'rgba(0, 255, 135, 0.4)';
+              e.target.style.background = 'rgba(255, 255, 255, 0.07)';
+              e.target.style.boxShadow = '0 0 0 3px rgba(0, 255, 135, 0.1)';
+            }}
+            onBlur={(e) => {
+              e.target.style.borderColor = 'rgba(255, 255, 255, 0.09)';
+              e.target.style.background = 'rgba(255, 255, 255, 0.04)';
+              e.target.style.boxShadow = 'none';
             }}
           />
 
-          {/* Cmd + K Badge Pill */}
+          {/* Shortcut Pill / Clear Button */}
           {!searchQuery ? (
             <div
               style={{
@@ -175,252 +138,318 @@ export const Header = ({
                 transform: 'translateY(-50%)',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '3px',
-                background: 'rgba(255, 255, 255, 0.08)',
-                border: '1px solid rgba(255, 255, 255, 0.12)',
-                borderRadius: '8px',
-                padding: '3px 8px',
-                color: '#94A3B8',
-                fontSize: '11px',
+                gap: '2px',
+                background: 'rgba(255, 255, 255, 0.06)',
+                border: '1px solid rgba(255, 255, 255, 0.09)',
+                borderRadius: '5px',
+                padding: '2px 6px',
+                color: '#64748B',
+                fontSize: '10.5px',
                 fontWeight: 600,
                 pointerEvents: 'none',
               }}
             >
-              <Command size={11} /> K
+              <Command size={10} /> K
             </div>
           ) : (
             <button
               onClick={() => setSearchQuery && setSearchQuery('')}
               style={{
                 position: 'absolute',
-                right: '12px',
+                right: '10px',
                 top: '50%',
                 transform: 'translateY(-50%)',
                 background: 'rgba(255, 255, 255, 0.1)',
                 border: 'none',
                 borderRadius: '999px',
-                width: '24px',
-                height: '24px',
+                width: '20px',
+                height: '20px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 color: '#F1F5F9',
                 cursor: 'pointer',
-                transition: 'var(--transition)',
               }}
               title="Clear Search"
             >
-              <X size={14} />
+              <X size={12} />
             </button>
           )}
         </div>
       </div>
 
-      {/* 3. Action Cluster */}
+      {/* 2. Right: Action Cluster & Tools */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
-        {/* Privacy Shield Mode Toggle */}
+        
+        {/* Privacy Mask Toggle */}
         <motion.button
-          whileHover={{ scale: 1.06 }}
-          whileTap={{ scale: 0.94 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           onClick={togglePrivacyMask}
-          title={isPrivacyMaskActive ? 'Privacy Mask ON (Alt+P) — Click to show numbers' : 'Privacy Mask OFF (Alt+P) — Click to hide numbers'}
+          title={isPrivacyMaskActive ? 'Privacy Mask ON (Alt+P) — Click to reveal' : 'Privacy Mask OFF (Alt+P) — Click to hide balances'}
           style={{
-            padding: '8px 12px',
-            borderRadius: '12px',
-            background: isPrivacyMaskActive ? 'rgba(255, 77, 77, 0.15)' : 'rgba(255, 255, 255, 0.05)',
-            border: `1px solid ${isPrivacyMaskActive ? 'rgba(255, 77, 77, 0.4)' : 'rgba(255, 255, 255, 0.1)'}`,
-            color: isPrivacyMaskActive ? '#FF7D7D' : '#94A3B8',
+            height: '36px',
+            padding: '0 11px',
+            borderRadius: '999px',
+            background: isPrivacyMaskActive ? 'rgba(244, 63, 94, 0.15)' : 'rgba(255, 255, 255, 0.04)',
+            border: `1px solid ${isPrivacyMaskActive ? 'rgba(244, 63, 94, 0.4)' : 'rgba(255, 255, 255, 0.08)'}`,
+            color: isPrivacyMaskActive ? '#FB7185' : '#94A3B8',
             fontSize: '12px',
-            fontWeight: 700,
+            fontWeight: 600,
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
-            gap: '5px',
+            gap: '6px',
+            transition: 'var(--transition)',
           }}
         >
           {isPrivacyMaskActive ? <EyeOff size={14} /> : <Eye size={14} />}
-          <span>{isPrivacyMaskActive ? 'Masked' : 'Privacy'}</span>
+          <span className="hidden-mobile">{isPrivacyMaskActive ? 'Masked' : 'Privacy'}</span>
         </motion.button>
 
-        {/* Voice Quick-Log Button */}
+        {/* Quick Tools: Voice Log */}
         {onOpenVoiceLog && (
           <motion.button
-            whileHover={{ scale: 1.06 }}
-            whileTap={{ scale: 0.94 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={onOpenVoiceLog}
             title="Voice Quick-Log ('Paid 450 Uber')"
-            style={{
-              padding: '8px 11px',
-              borderRadius: '12px',
-              background: 'rgba(0, 240, 255, 0.12)',
-              border: '1px solid rgba(0, 240, 255, 0.35)',
-              color: '#00F0FF',
-              fontSize: '12px',
-              fontWeight: 700,
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '5px',
-            }}
+            className="btn-icon-soft"
           >
-            <Mic size={14} />
-            <span>Voice</span>
+            <Mic size={15} color="#00F0FF" />
           </motion.button>
         )}
 
-        {/* Bank Statement CSV Importer Button */}
-        {onOpenBankImport && (
-          <motion.button
-            whileHover={{ scale: 1.06 }}
-            whileTap={{ scale: 0.94 }}
-            onClick={onOpenBankImport}
-            title="Import Bank Statement CSV"
-            style={{
-              padding: '8px 11px',
-              borderRadius: '12px',
-              background: 'rgba(255, 215, 0, 0.12)',
-              border: '1px solid rgba(255, 215, 0, 0.35)',
-              color: '#FFD700',
-              fontSize: '12px',
-              fontWeight: 700,
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '5px',
-            }}
-          >
-            <FileSpreadsheet size={14} />
-            <span>CSV</span>
-          </motion.button>
-        )}
-
-        {/* Receipt Scanner Quick Button */}
+        {/* Quick Tools: Receipt OCR Scan */}
         {onOpenReceiptScan && (
           <motion.button
-            whileHover={{ scale: 1.06 }}
-            whileTap={{ scale: 0.94 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={onOpenReceiptScan}
-            title="Scan Receipt / Invoice"
-            style={{
-              padding: '8px 11px',
-              borderRadius: '12px',
-              background: 'rgba(0, 240, 255, 0.12)',
-              border: '1px solid rgba(0, 240, 255, 0.35)',
-              color: '#00F0FF',
-              fontSize: '12px',
-              fontWeight: 700,
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '5px',
-            }}
+            title="Scan Receipt / Invoice OCR"
+            className="btn-icon-soft"
           >
-            📸 Scan
+            <Camera size={15} color="#A78BFA" />
           </motion.button>
         )}
 
-        {/* Add Income Quick Button */}
-        {onAddIncome && (
+        {/* Quick Tools: Bank Statement CSV */}
+        {onOpenBankImport && (
           <motion.button
-            whileHover={{ scale: 1.06 }}
-            whileTap={{ scale: 0.94 }}
-            onClick={onAddIncome}
-            title="Log Income"
-            style={{
-              padding: '8px 12px',
-              borderRadius: '12px',
-              background: 'rgba(0, 255, 135, 0.12)',
-              border: '1px solid rgba(0, 255, 135, 0.35)',
-              color: '#00FF87',
-              fontSize: '12px',
-              fontWeight: 800,
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '4px',
-            }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={onOpenBankImport}
+            title="Import Bank Statement CSV"
+            className="btn-icon-soft"
           >
-            <Plus size={14} /> Income
+            <FileSpreadsheet size={15} color="#FFD700" />
           </motion.button>
         )}
 
-        {/* Finance Copilot Icon Trigger */}
+        <div style={{ width: '1px', height: '22px', background: 'rgba(255, 255, 255, 0.08)', margin: '0 2px' }} />
+
+        {/* Primary Action Button: + Record with Dropdown */}
+        <div style={{ position: 'relative' }} ref={menuRef}>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={onAddExpense}
+              className="btn-primary-mint"
+              style={{
+                borderTopRightRadius: 0,
+                borderBottomRightRadius: 0,
+                paddingRight: '12px',
+              }}
+            >
+              <Plus size={14} strokeWidth={3} />
+              <span>Expense</span>
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => setQuickMenuOpen(!quickMenuOpen)}
+              className="btn-primary-mint"
+              style={{
+                borderTopLeftRadius: 0,
+                borderBottomLeftRadius: 0,
+                padding: '0 8px',
+                borderLeft: '1px solid rgba(5, 8, 16, 0.2)',
+              }}
+              title="More Actions"
+            >
+              <ChevronDown size={13} strokeWidth={3} />
+            </motion.button>
+          </div>
+
+          {/* Quick Dropdown Menu */}
+          <AnimatePresence>
+            {quickMenuOpen && (
+              <motion.div
+                initial={{ opacity: 0, y: 6, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 6, scale: 0.95 }}
+                transition={{ duration: 0.12 }}
+                style={{
+                  position: 'absolute',
+                  top: 'calc(100% + 6px)',
+                  right: 0,
+                  width: '180px',
+                  background: 'rgba(15, 20, 32, 0.95)',
+                  backdropFilter: 'blur(16px)',
+                  border: '1px solid rgba(255, 255, 255, 0.12)',
+                  borderRadius: '12px',
+                  padding: '6px',
+                  boxShadow: '0 12px 36px rgba(0, 0, 0, 0.6)',
+                  zIndex: 50,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '2px',
+                }}
+              >
+                {onAddIncome && (
+                  <button
+                    onClick={() => {
+                      setQuickMenuOpen(false);
+                      onAddIncome();
+                    }}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      padding: '8px 10px',
+                      borderRadius: '8px',
+                      background: 'transparent',
+                      border: 'none',
+                      color: '#00FF87',
+                      fontSize: '12.5px',
+                      fontWeight: 700,
+                      cursor: 'pointer',
+                      textAlign: 'left',
+                      transition: 'background 0.15s ease',
+                    }}
+                    onMouseEnter={(e) => e.target.style.background = 'rgba(0, 255, 135, 0.1)'}
+                    onMouseLeave={(e) => e.target.style.background = 'transparent'}
+                  >
+                    <Plus size={14} /> + Log Income
+                  </button>
+                )}
+                {onOpenVoiceLog && (
+                  <button
+                    onClick={() => {
+                      setQuickMenuOpen(false);
+                      onOpenVoiceLog();
+                    }}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      padding: '8px 10px',
+                      borderRadius: '8px',
+                      background: 'transparent',
+                      border: 'none',
+                      color: '#00F0FF',
+                      fontSize: '12.5px',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      textAlign: 'left',
+                      transition: 'background 0.15s ease',
+                    }}
+                    onMouseEnter={(e) => e.target.style.background = 'rgba(0, 240, 255, 0.1)'}
+                    onMouseLeave={(e) => e.target.style.background = 'transparent'}
+                  >
+                    <Mic size={14} /> Voice Quick Log
+                  </button>
+                )}
+                {onOpenReceiptScan && (
+                  <button
+                    onClick={() => {
+                      setQuickMenuOpen(false);
+                      onOpenReceiptScan();
+                    }}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      padding: '8px 10px',
+                      borderRadius: '8px',
+                      background: 'transparent',
+                      border: 'none',
+                      color: '#A78BFA',
+                      fontSize: '12.5px',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      textAlign: 'left',
+                      transition: 'background 0.15s ease',
+                    }}
+                    onMouseEnter={(e) => e.target.style.background = 'rgba(167, 139, 250, 0.1)'}
+                    onMouseLeave={(e) => e.target.style.background = 'transparent'}
+                  >
+                    <Camera size={14} /> Scan Receipt OCR
+                  </button>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* AI Copilot Orb Trigger */}
         <motion.button
-          whileHover={{ scale: 1.08, rotate: 5 }}
+          whileHover={{ scale: 1.08 }}
           whileTap={{ scale: 0.95 }}
           onClick={onOpenCopilot}
-          title="Open AI Finance Copilot"
+          title="Open Finance Copilot AI"
           style={{
-            width: '40px',
-            height: '40px',
-            borderRadius: '999px',
-            background: 'rgba(121, 40, 202, 0.2)',
-            border: '1px solid rgba(121, 40, 202, 0.4)',
-            color: '#9D4EDD',
+            width: '36px',
+            height: '36px',
+            borderRadius: '10px',
+            background: 'rgba(139, 92, 246, 0.15)',
+            border: '1px solid rgba(139, 92, 246, 0.35)',
+            color: '#A78BFA',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             cursor: 'pointer',
-            boxShadow: '0 0 16px rgba(121, 40, 202, 0.25)',
             position: 'relative',
           }}
         >
-          <Bot size={18} color="#00FF87" />
+          <Bot size={17} color="#00FF87" />
           <span
             style={{
               position: 'absolute',
-              top: '2px',
-              right: '2px',
-              width: '8px',
-              height: '8px',
+              top: '3px',
+              right: '3px',
+              width: '6px',
+              height: '6px',
               borderRadius: '999px',
               background: '#00FF87',
-              boxShadow: '0 0 8px #00FF87',
-              border: '2px solid #0A0D14',
+              boxShadow: '0 0 6px #00FF87',
             }}
           />
         </motion.button>
 
-        {/* Add Expense Button */}
-        <motion.button
-          whileHover={{ scale: 1.04, boxShadow: '0 0 25px rgba(0, 255, 135, 0.5)' }}
-          whileTap={{ scale: 0.96 }}
-          onClick={onAddExpense}
-          className="btn-primary-mint"
-          style={{ padding: '8px 16px', fontSize: '13px' }}
-        >
-          <Plus size={15} strokeWidth={3} />
-          <span>Expense</span>
-        </motion.button>
-
-        {/* User Profile Avatar Trigger */}
+        {/* User Profile Avatar */}
         {onOpenProfile && (
           <motion.button
             whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.95 }}
             onClick={onOpenProfile}
-            title="Open Sovereign Profile"
+            title="Open Profile Settings"
             style={{
-              width: '38px',
-              height: '38px',
-              borderRadius: '12px',
-              background: user?.avatarStyle === 'gradient_mint'
-                ? 'linear-gradient(135deg, #00FF87 0%, #00F0FF 100%)'
-                : user?.avatarStyle === 'gradient_violet'
-                ? 'linear-gradient(135deg, #7928CA 0%, #FF007A 100%)'
-                : user?.avatarStyle === 'gradient_flame'
-                ? 'linear-gradient(135deg, #FF416C 0%, #FF4B2B 100%)'
-                : 'linear-gradient(135deg, #FFD700 0%, #FF8800 100%)',
+              width: '34px',
+              height: '34px',
+              borderRadius: '999px',
+              background: 'linear-gradient(135deg, #00FF87 0%, #FFD700 100%)',
               border: '1.5px solid rgba(255, 255, 255, 0.2)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               fontWeight: 800,
-              color: user?.avatarStyle === 'gradient_violet' || user?.avatarStyle === 'gradient_flame' ? '#FFFFFF' : '#050810',
-              fontSize: '14px',
+              color: '#050810',
+              fontSize: '12px',
               cursor: 'pointer',
-              boxShadow: '0 2px 10px rgba(0, 0, 0, 0.3)',
               overflow: 'hidden',
+              flexShrink: 0,
             }}
           >
             {user?.avatarUrl ? (
@@ -434,6 +463,7 @@ export const Header = ({
             )}
           </motion.button>
         )}
+
       </div>
     </header>
   );

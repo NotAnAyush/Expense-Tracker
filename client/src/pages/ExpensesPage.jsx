@@ -493,14 +493,11 @@ export const ExpensesPage = ({
 
       {/* Ledger Container */}
       <div
-        className="pin-card"
+        className="glass-card"
         style={{
-          background: 'linear-gradient(145deg, rgba(16, 22, 36, 0.95) 0%, rgba(10, 14, 24, 0.98) 100%)',
-          border: '1px solid rgba(255, 255, 255, 0.08)',
           borderRadius: '20px',
           padding: '20px',
           overflowX: 'auto',
-          boxShadow: '0 8px 30px rgba(0, 0, 0, 0.4)',
         }}
       >
         {loading ? (

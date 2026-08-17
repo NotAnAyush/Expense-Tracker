@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Edit2, Trash2, CheckCircle2, History, X } from 'lucide-react';
+import { Plus, Edit2, Trash2, CheckCircle2, History, X, Repeat, Calendar } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { apiFetch, getLocalDateString } from '../api/client';
 import { PinCard } from '../components/UI/PinCard';
+import { usePrivacy } from '../context/PrivacyContext';
 
 export const RecurringPage = ({ categories = [] }) => {
+  const { isPrivacyMaskActive } = usePrivacy();
   const defaultCategoryList = ['Subscriptions', 'Housing & Utilities', 'Health & Medical', 'Entertainment', 'Transportation', 'Food & Dining', 'General'];
   const categoryOptions = categories.length > 0 ? categories.map(c => c.name || c) : defaultCategoryList;
 
@@ -69,7 +72,6 @@ export const RecurringPage = ({ categories = [] }) => {
     setShowModal(true);
   };
 
-  // Autosave draft for new recurring item
   useEffect(() => {
     if (showModal && !editingItem && (title || amount)) {
       try {
@@ -170,18 +172,25 @@ export const RecurringPage = ({ categories = [] }) => {
       return sum + item.amount;
     }, 0);
 
-  if (loading) return <div style={{ padding: '64px', textAlign: 'center', color: 'var(--color-muted-text)' }} className="body-md">Loading Subscriptions Engine...</div>;
+  if (loading) return <div style={{ padding: '64px', textAlign: 'center', color: '#94A3B8' }} className="body-md">Loading Subscriptions Engine...</div>;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '22px' }}>
       {/* Header Bar */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
         <div>
-          <h1 className="heading-xl">Subscriptions & Obligations</h1>
-          <p className="body-sm" style={{ color: 'var(--color-muted-text)' }}>Deterministic calculation of recurring monthly commitments and payment history timeline.</p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '3px' }}>
+            <span className="glass-pill" style={{ color: '#EC4899', borderColor: 'rgba(236, 72, 153, 0.25)' }}>
+              <Repeat size={12} /> Fixed Obligations
+            </span>
+          </div>
+          <h1 className="display-xl" style={{ margin: 0 }}>Subscriptions & Obligations</h1>
+          <p style={{ fontSize: '13px', color: '#94A3B8', marginTop: '2px' }}>
+            Deterministic recurring commitments and payment history timeline.
+          </p>
         </div>
-        <button onClick={openCreateModal} className="button-primary">
-          <Plus size={18} /> Add Subscription
+        <button onClick={openCreateModal} className="btn-primary-mint">
+          <Plus size={15} strokeWidth={3} /> Add Subscription
         </button>
       </div>
 
@@ -190,6 +199,7 @@ export const RecurringPage = ({ categories = [] }) => {
         title="Monthly Recurring Burden"
         amount={totalMonthlyBurden}
         overlayPill={`${recurring.filter(r => r.active !== false).length} Active Subscriptions`}
+        pillColor="violet"
         subtitle="Fixed monthly commitments automatically tracked"
       />
 
@@ -197,63 +207,87 @@ export const RecurringPage = ({ categories = [] }) => {
       {recurring.length > 0 ? (
         <div className="grid-masonry">
           {recurring.map((item) => (
-            <div key={item._id} className="pin-card" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <motion.div
+              key={item._id}
+              whileHover={{ y: -2 }}
+              className="glass-card"
+              style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '12px' }}
+            >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <div>
-                  <h3 className="heading-md">{item.title}</h3>
-                  <span className="body-sm" style={{ color: 'var(--color-muted-text)' }}>{item.category}</span>
+                  <h3 className="heading-md" style={{ margin: 0, color: '#F1F5F9' }}>{item.title}</h3>
+                  <span style={{ fontSize: '12px', color: '#64748B' }}>{item.category}</span>
                 </div>
                 <div style={{ display: 'flex', gap: '4px' }}>
-                  <button onClick={() => openEditModal(item)} className="button-icon-circular" style={{ width: '32px', height: '32px' }} title="Edit Subscription">
-                    <Edit2 size={14} />
+                  <button
+                    onClick={() => openEditModal(item)}
+                    style={{ width: '28px', height: '28px', borderRadius: '6px', background: 'rgba(255, 255, 255, 0.04)', border: '1px solid rgba(255, 255, 255, 0.08)', color: '#94A3B8', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                    title="Edit Subscription"
+                  >
+                    <Edit2 size={13} />
                   </button>
-                  <button onClick={() => handleDelete(item._id)} className="button-icon-circular" style={{ width: '32px', height: '32px', color: 'var(--color-destructive)' }} title="Delete Subscription">
-                    <Trash2 size={14} />
+                  <button
+                    onClick={() => handleDelete(item._id)}
+                    style={{ width: '28px', height: '28px', borderRadius: '6px', background: 'rgba(244, 63, 94, 0.08)', border: '1px solid rgba(244, 63, 94, 0.2)', color: '#FB7185', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                    title="Delete Subscription"
+                  >
+                    <Trash2 size={13} />
                   </button>
                 </div>
               </div>
 
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-                <div style={{ fontSize: '24px', fontWeight: 700, fontFamily: 'var(--font-heading)', color: 'var(--color-accent)' }}>
+                <div className={`font-display tabular-nums ${isPrivacyMaskActive ? 'privacy-masked' : ''}`} style={{ fontSize: '24px', fontWeight: 800, color: '#00FF87' }}>
                   ₹{(Number(item.amount) || 0).toLocaleString()}
                 </div>
-                <span className="pin-overlay-pill" style={{ backgroundColor: 'var(--color-secondary)', color: 'var(--color-foreground)', borderColor: 'var(--color-border)' }}>
+                <span
+                  style={{
+                    fontSize: '11px',
+                    fontWeight: 700,
+                    padding: '2px 8px',
+                    borderRadius: '999px',
+                    background: item.active !== false ? 'rgba(0, 255, 135, 0.1)' : 'rgba(255, 255, 255, 0.05)',
+                    color: item.active !== false ? '#00FF87' : '#64748B',
+                    border: '1px solid rgba(255, 255, 255, 0.08)',
+                    textTransform: 'capitalize',
+                  }}
+                >
                   {item.active !== false ? item.frequency : 'Paused'}
                 </span>
               </div>
 
-              <div className="body-sm" style={{ borderTop: '1px solid var(--color-border)', paddingTop: '8px', fontSize: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ color: 'var(--color-muted-text)' }}>Next Due: {item.nextOccurrence ? new Date(item.nextOccurrence).toLocaleDateString() : 'N/A'}</span>
+              <div style={{ borderTop: '1px solid rgba(255, 255, 255, 0.06)', paddingTop: '10px', fontSize: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ color: '#64748B' }}>Due: {item.nextOccurrence ? new Date(item.nextOccurrence).toLocaleDateString() : 'N/A'}</span>
                 <button
                   onClick={() => handleMarkPaid(item._id)}
-                  className="button-secondary"
-                  style={{ height: '28px', padding: '2px 10px', fontSize: '11px', gap: '4px' }}
+                  className="btn-glass-secondary"
+                  style={{ height: '26px', padding: '0 8px', fontSize: '11.5px', gap: '4px' }}
                   title="Record cycle payment now"
                 >
-                  <CheckCircle2 size={12} color="var(--color-accent)" />
+                  <CheckCircle2 size={12} color="#00FF87" />
                   Mark Paid
                 </button>
               </div>
 
               <button
                 onClick={() => openHistoryDrawer(item)}
-                className="button-secondary"
-                style={{ width: '100%', height: '32px', fontSize: '12px', marginTop: '4px', gap: '6px' }}
+                className="btn-glass-secondary"
+                style={{ width: '100%', height: '32px', fontSize: '12px', marginTop: '2px', gap: '6px' }}
               >
-                <History size={14} />
-                View Payment History
+                <History size={13} />
+                Payment Timeline
               </button>
-            </div>
+            </motion.div>
           ))}
         </div>
       ) : (
-        <div style={{ padding: '48px 24px', textAlign: 'center', background: 'rgba(255, 255, 255, 0.02)', borderRadius: '16px', border: '1px dashed rgba(255, 255, 255, 0.12)' }}>
+        <div className="glass-card" style={{ padding: '48px 24px', textAlign: 'center' }}>
           <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#E2E8F0', marginBottom: '6px' }}>No Subscriptions or Recurring Bills</h3>
           <p style={{ fontSize: '13px', color: '#94A3B8', maxWidth: '420px', margin: '0 auto 16px' }}>
             Track Netflix, Spotify, gym memberships, rent, and utility bills with automated cycle reminders.
           </p>
-          <button onClick={openCreateModal} className="button-primary" style={{ margin: '0 auto' }}>
-            <Plus size={16} /> Add First Subscription
+          <button onClick={openCreateModal} className="btn-primary-mint" style={{ margin: '0 auto' }}>
+            <Plus size={15} strokeWidth={3} /> Add First Subscription
           </button>
         </div>
       )}
@@ -262,25 +296,25 @@ export const RecurringPage = ({ categories = [] }) => {
       {showModal && (
         <div className="modal-overlay">
           <div className="modal-card">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-              <h3 className="heading-lg">{editingItem ? 'Edit Subscription' : 'Add Subscription'}</h3>
-              <button onClick={() => setShowModal(false)} className="button-icon-circular"><X size={18} /></button>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+              <h3 className="heading-lg" style={{ margin: 0 }}>{editingItem ? 'Edit Subscription' : 'Add Subscription'}</h3>
+              <button onClick={() => setShowModal(false)} style={{ background: 'none', border: 'none', color: '#64748B', cursor: 'pointer' }}><X size={18} /></button>
             </div>
 
             <form onSubmit={handleSaveRecurring}>
-              <div style={{ marginBottom: '16px' }}>
-                <label className="body-sm-strong" style={{ display: 'block', marginBottom: '6px' }}>Title *</label>
-                <input type="text" required className="text-input" placeholder="e.g. Netflix 4K" value={title} onChange={(e) => setTitle(e.target.value)} />
+              <div style={{ marginBottom: '14px' }}>
+                <label className="form-label">Title *</label>
+                <input type="text" required className="glass-input" placeholder="e.g. Netflix 4K" value={title} onChange={(e) => setTitle(e.target.value)} />
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '14px' }}>
                 <div>
-                  <label className="body-sm-strong" style={{ display: 'block', marginBottom: '6px' }}>Amount (₹) *</label>
-                  <input type="number" required min="1" className="text-input" placeholder="649" value={amount} onChange={(e) => setAmount(e.target.value)} />
+                  <label className="form-label">Amount (₹) *</label>
+                  <input type="number" required min="1" className="glass-input" placeholder="649" value={amount} onChange={(e) => setAmount(e.target.value)} />
                 </div>
                 <div>
-                  <label className="body-sm-strong" style={{ display: 'block', marginBottom: '6px' }}>Category *</label>
-                  <select className="text-input" value={category} onChange={(e) => setCategory(e.target.value)} style={{ backgroundColor: 'var(--color-secondary)', color: 'var(--color-foreground)' }}>
+                  <label className="form-label">Category *</label>
+                  <select className="glass-input select-field" value={category} onChange={(e) => setCategory(e.target.value)}>
                     {categoryOptions.map(cat => (
                       <option key={cat} value={cat}>{cat}</option>
                     ))}
@@ -288,10 +322,10 @@ export const RecurringPage = ({ categories = [] }) => {
                 </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '14px' }}>
                 <div>
-                  <label className="body-sm-strong" style={{ display: 'block', marginBottom: '6px' }}>Frequency</label>
-                  <select className="text-input" value={frequency} onChange={(e) => setFrequency(e.target.value)} style={{ backgroundColor: 'var(--color-secondary)', color: 'var(--color-foreground)' }}>
+                  <label className="form-label">Frequency</label>
+                  <select className="glass-input select-field" value={frequency} onChange={(e) => setFrequency(e.target.value)}>
                     <option value="monthly">Monthly</option>
                     <option value="weekly">Weekly</option>
                     <option value="yearly">Yearly</option>
@@ -299,27 +333,27 @@ export const RecurringPage = ({ categories = [] }) => {
                   </select>
                 </div>
                 <div>
-                  <label className="body-sm-strong" style={{ display: 'block', marginBottom: '6px' }}>Next Due Date *</label>
-                  <input type="date" required className="text-input" value={nextOccurrence} onChange={(e) => setNextOccurrence(e.target.value)} />
+                  <label className="form-label">Next Due Date *</label>
+                  <input type="date" required className="glass-input" value={nextOccurrence} onChange={(e) => setNextOccurrence(e.target.value)} />
                 </div>
               </div>
 
               {editingItem && (
-                <div style={{ marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <div style={{ marginBottom: '18px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <input
                     type="checkbox"
                     id="activeCheckbox"
                     checked={active}
                     onChange={(e) => setActive(e.target.checked)}
-                    style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+                    style={{ width: '16px', height: '16px', cursor: 'pointer' }}
                   />
-                  <label htmlFor="activeCheckbox" className="body-sm-strong" style={{ cursor: 'pointer' }}>Active Subscription</label>
+                  <label htmlFor="activeCheckbox" style={{ fontSize: '13px', color: '#F1F5F9', cursor: 'pointer' }}>Active Subscription</label>
                 </div>
               )}
 
-              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
-                <button type="button" onClick={() => setShowModal(false)} className="button-secondary">Cancel</button>
-                <button type="submit" className="button-primary">
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+                <button type="button" onClick={() => setShowModal(false)} className="btn-glass-secondary">Cancel</button>
+                <button type="submit" className="btn-primary-mint">
                   {editingItem ? 'Update Subscription' : 'Save Subscription'}
                 </button>
               </div>
@@ -332,74 +366,74 @@ export const RecurringPage = ({ categories = [] }) => {
       {historyDrawerItem && (
         <div className="modal-overlay">
           <div className="modal-card" style={{ maxWidth: '580px', maxHeight: '85vh', display: 'flex', flexDirection: 'column' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', paddingBottom: '12px', borderBottom: '1px solid var(--color-border)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', paddingBottom: '12px', borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>
               <div>
-                <h3 className="heading-lg">{historyDrawerItem.title}</h3>
-                <span className="body-sm" style={{ color: 'var(--color-muted-text)' }}>Payment History Timeline</span>
+                <h3 className="heading-lg" style={{ margin: 0 }}>{historyDrawerItem.title}</h3>
+                <span style={{ fontSize: '12px', color: '#64748B' }}>Payment History Timeline</span>
               </div>
-              <button onClick={() => setHistoryDrawerItem(null)} className="button-icon-circular"><X size={18} /></button>
+              <button onClick={() => setHistoryDrawerItem(null)} style={{ background: 'none', border: 'none', color: '#64748B', cursor: 'pointer' }}><X size={18} /></button>
             </div>
 
             {historyLoading || !historyData ? (
-              <div style={{ padding: '32px', textAlign: 'center', color: 'var(--color-muted-text)' }} className="body-md">
+              <div style={{ padding: '32px', textAlign: 'center', color: '#64748B' }} className="body-md">
                 Fetching payment timeline...
               </div>
             ) : (
-              <div style={{ overflowY: 'auto', flex: 1, display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div style={{ overflowY: 'auto', flex: 1, display: 'flex', flexDirection: 'column', gap: '14px' }}>
                 {/* Timeline Analytics KPI grid */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
-                  <div style={{ padding: '12px', borderRadius: 'var(--radius-sm)', backgroundColor: 'var(--color-secondary)', border: '1px solid var(--color-border)' }}>
-                    <div className="body-sm" style={{ color: 'var(--color-muted-text)' }}>All-Time Spent</div>
-                    <div style={{ fontSize: '18px', fontWeight: 700, fontFamily: 'var(--font-heading)', color: 'var(--color-foreground)' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
+                  <div style={{ padding: '12px', borderRadius: '10px', background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.06)' }}>
+                    <div style={{ fontSize: '11px', color: '#64748B' }}>All-Time Spent</div>
+                    <div className="font-display tabular-nums" style={{ fontSize: '16px', fontWeight: 800, color: '#F1F5F9', marginTop: '2px' }}>
                       ₹{historyData.totalSpentAllTime.toLocaleString()}
                     </div>
                   </div>
-                  <div style={{ padding: '12px', borderRadius: 'var(--radius-sm)', backgroundColor: 'var(--color-secondary)', border: '1px solid var(--color-border)' }}>
-                    <div className="body-sm" style={{ color: 'var(--color-muted-text)' }}>Cycles Paid</div>
-                    <div style={{ fontSize: '18px', fontWeight: 700, fontFamily: 'var(--font-heading)', color: 'var(--color-foreground)' }}>
+                  <div style={{ padding: '12px', borderRadius: '10px', background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.06)' }}>
+                    <div style={{ fontSize: '11px', color: '#64748B' }}>Cycles Paid</div>
+                    <div className="font-display tabular-nums" style={{ fontSize: '16px', fontWeight: 800, color: '#F1F5F9', marginTop: '2px' }}>
                       {historyData.paymentCount} Cycles
                     </div>
                   </div>
-                  <div style={{ padding: '12px', borderRadius: 'var(--radius-sm)', backgroundColor: 'var(--color-secondary)', border: '1px solid var(--color-border)' }}>
-                    <div className="body-sm" style={{ color: 'var(--color-muted-text)' }}>Status</div>
-                    <span className="pin-overlay-pill" style={{ marginTop: '4px', backgroundColor: historyData.status === 'Overdue' ? 'var(--color-destructive)' : 'var(--color-primary)', color: historyData.status === 'Overdue' ? '#FFFFFF' : 'var(--color-accent)' }}>
+                  <div style={{ padding: '12px', borderRadius: '10px', background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.06)' }}>
+                    <div style={{ fontSize: '11px', color: '#64748B' }}>Status</div>
+                    <span style={{ fontSize: '11px', fontWeight: 700, color: historyData.status === 'Overdue' ? '#FB7185' : '#00FF87', display: 'inline-block', marginTop: '4px' }}>
                       {historyData.status}
                     </span>
                   </div>
                 </div>
 
                 {/* Mark Paid Quick Action */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px', borderRadius: 'var(--radius-sm)', backgroundColor: 'var(--color-secondary)', border: '1px solid var(--color-border)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 14px', borderRadius: '10px', background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.06)' }}>
                   <div>
-                    <div className="body-sm-strong" style={{ color: 'var(--color-foreground)' }}>Current Cycle Due</div>
-                    <div className="body-sm" style={{ color: 'var(--color-muted-text)' }}>Next Due: {new Date(historyData.subscription.nextOccurrence).toLocaleDateString()}</div>
+                    <div style={{ fontSize: '13px', fontWeight: 700, color: '#F1F5F9' }}>Current Cycle Due</div>
+                    <div style={{ fontSize: '11.5px', color: '#64748B' }}>Next Due: {new Date(historyData.subscription.nextOccurrence).toLocaleDateString()}</div>
                   </div>
                   <button
                     onClick={() => handleMarkPaid(historyDrawerItem._id)}
-                    className="button-primary"
-                    style={{ height: '36px', fontSize: '13px' }}
+                    className="btn-primary-mint"
+                    style={{ height: '32px', fontSize: '12px' }}
                   >
-                    <CheckCircle2 size={14} />
-                    Record Paid Cycle
+                    <CheckCircle2 size={13} />
+                    Record Paid
                   </button>
                 </div>
 
                 {/* Linked Transaction Timeline */}
                 <div>
-                  <h4 className="heading-md" style={{ fontSize: '16px', marginBottom: '12px' }}>Chronological Transactions Log</h4>
+                  <h4 className="heading-md" style={{ fontSize: '14px', marginBottom: '10px', color: '#F1F5F9' }}>Chronological Transactions Log</h4>
                   {historyData.history.length === 0 ? (
-                    <div style={{ padding: '24px', textAlign: 'center', color: 'var(--color-muted-text)' }} className="body-sm">
-                      No past payments recorded yet. Click "Record Paid Cycle" to log your first payment.
+                    <div style={{ padding: '20px', textAlign: 'center', color: '#64748B', fontSize: '12.5px' }}>
+                      No past payments recorded yet. Click "Record Paid" to log your first payment.
                     </div>
                   ) : (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                       {historyData.history.map((tx) => (
-                        <div key={tx._id} style={{ padding: '12px 14px', borderRadius: 'var(--radius-sm)', backgroundColor: 'var(--color-secondary)', border: '1px solid var(--color-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <div key={tx._id} style={{ padding: '10px 12px', borderRadius: '8px', background: 'rgba(255, 255, 255, 0.02)', border: '1px solid rgba(255, 255, 255, 0.05)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                           <div>
-                            <div className="body-sm-strong" style={{ color: 'var(--color-foreground)' }}>{tx.title}</div>
-                            <div className="body-sm" style={{ fontSize: '12px', color: 'var(--color-muted-text)' }}>{new Date(tx.date).toLocaleDateString()} | {tx.paymentMethod}</div>
+                            <div style={{ fontSize: '12.5px', fontWeight: 700, color: '#F1F5F9' }}>{tx.title}</div>
+                            <div style={{ fontSize: '11px', color: '#64748B' }}>{new Date(tx.date).toLocaleDateString()} • {tx.paymentMethod}</div>
                           </div>
-                          <div style={{ fontWeight: 700, fontFamily: 'var(--font-heading)', color: 'var(--color-foreground)' }}>
+                          <div className="font-display tabular-nums" style={{ fontWeight: 800, color: '#00FF87', fontSize: '13.5px' }}>
                             ₹{tx.amount.toLocaleString()}
                           </div>
                         </div>

@@ -84,6 +84,19 @@ const MainApp = () => {
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, [activeTab]);
 
+  // Global Keyboard Shortcuts (Alt+N for Quick Expense)
+  useEffect(() => {
+    const handleGlobalShortcuts = (e) => {
+      if (e.altKey && (e.key === 'n' || e.key === 'N')) {
+        e.preventDefault();
+        setPrefilledExpenseData(null);
+        setExpenseModalOpen(true);
+      }
+    };
+    window.addEventListener('keydown', handleGlobalShortcuts);
+    return () => window.removeEventListener('keydown', handleGlobalShortcuts);
+  }, []);
+
   // Online / Offline Connectivity Monitor
   useEffect(() => {
     const handleOnline = () => {
@@ -115,7 +128,7 @@ const MainApp = () => {
 
   if (loading) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--surface-soft)', color: 'var(--mute)' }}>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-obsidian)', color: '#94A3B8' }}>
         Initializing Personal Finance Intelligence Platform...
       </div>
     );
@@ -172,19 +185,19 @@ const MainApp = () => {
             display: 'flex',
             alignItems: 'center',
             gap: '8px',
-            padding: '10px 18px',
+            padding: '8px 16px',
             borderRadius: '999px',
-            fontSize: '13px',
-            fontWeight: 600,
-            background: isOnline ? 'rgba(0, 255, 135, 0.15)' : 'rgba(255, 77, 77, 0.15)',
-            border: `1px solid ${isOnline ? 'rgba(0, 255, 135, 0.4)' : 'rgba(255, 77, 77, 0.4)'}`,
-            color: isOnline ? '#00FF87' : '#FF4D4D',
-            backdropFilter: 'blur(12px)',
+            fontSize: '12.5px',
+            fontWeight: 700,
+            background: isOnline ? 'rgba(0, 255, 135, 0.12)' : 'rgba(244, 63, 94, 0.15)',
+            border: `1px solid ${isOnline ? 'rgba(0, 255, 135, 0.35)' : 'rgba(244, 63, 94, 0.4)'}`,
+            color: isOnline ? '#00FF87' : '#FB7185',
+            backdropFilter: 'blur(16px)',
             boxShadow: '0 8px 30px rgba(0,0,0,0.5)',
           }}
         >
-          {isOnline ? <Wifi size={16} /> : <WifiOff size={16} />}
-          {isOnline ? 'Back Online — All data synced' : 'Working Offline — Drafts protected locally'}
+          {isOnline ? <Wifi size={15} /> : <WifiOff size={15} />}
+          {isOnline ? 'Back Online • Live sync active' : 'Offline Mode • Protected locally'}
         </div>
       )}
 
