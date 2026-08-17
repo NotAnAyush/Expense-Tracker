@@ -11,6 +11,7 @@ export const Header = ({
   onOpenVoiceLog,
   onOpenBankImport,
   onOpenCopilot,
+  onOpenProfile,
   searchQuery,
   setSearchQuery,
 }) => {
@@ -391,6 +392,48 @@ export const Header = ({
           <Plus size={15} strokeWidth={3} />
           <span>Expense</span>
         </motion.button>
+
+        {/* User Profile Avatar Trigger */}
+        {onOpenProfile && (
+          <motion.button
+            whileHover={{ scale: 1.08 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={onOpenProfile}
+            title="Open Sovereign Profile"
+            style={{
+              width: '38px',
+              height: '38px',
+              borderRadius: '12px',
+              background: user?.avatarStyle === 'gradient_mint'
+                ? 'linear-gradient(135deg, #00FF87 0%, #00F0FF 100%)'
+                : user?.avatarStyle === 'gradient_violet'
+                ? 'linear-gradient(135deg, #7928CA 0%, #FF007A 100%)'
+                : user?.avatarStyle === 'gradient_flame'
+                ? 'linear-gradient(135deg, #FF416C 0%, #FF4B2B 100%)'
+                : 'linear-gradient(135deg, #FFD700 0%, #FF8800 100%)',
+              border: '1.5px solid rgba(255, 255, 255, 0.2)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontWeight: 800,
+              color: user?.avatarStyle === 'gradient_violet' || user?.avatarStyle === 'gradient_flame' ? '#FFFFFF' : '#050810',
+              fontSize: '14px',
+              cursor: 'pointer',
+              boxShadow: '0 2px 10px rgba(0, 0, 0, 0.3)',
+              overflow: 'hidden',
+            }}
+          >
+            {user?.avatarUrl ? (
+              <img src={user.avatarUrl} alt={user.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            ) : user?.avatarStyle === 'emoji' ? (
+              user?.avatarEmoji || '👑'
+            ) : user?.name ? (
+              user.name.charAt(0).toUpperCase()
+            ) : (
+              'R'
+            )}
+          </motion.button>
+        )}
       </div>
     </header>
   );

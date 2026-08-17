@@ -4,8 +4,8 @@
     "hash": "a9a2ec40fb0e7ce9e3389662c52bc5a2"
   },
   "D:\\Project\\Expense Tracker\\V2\\client\\src\\App.jsx": {
-    "mtime": 1786900244.2501273,
-    "hash": "f873f59a7bd62b1d401658155cbae9fb"
+    "mtime": 1786957487.803259,
+    "hash": "f2f456cdfebf3ae861199a2fba25e97c"
   },
   "D:\\Project\\Expense Tracker\\V2\\client\\src\\main.jsx": {
     "mtime": 1786527056.004842,
@@ -40,8 +40,8 @@
     "hash": "073705c824c6bb5e3dd1b1ca4299897c"
   },
   "D:\\Project\\Expense Tracker\\V2\\client\\src\\components\\Expenses\\ReceiptScanModal.jsx": {
-    "mtime": 1786900244.254767,
-    "hash": "8fc8d8164368bdeb65f23959e35436a9"
+    "mtime": 1786956770.7332568,
+    "hash": "5278c34bc91b1db956547b1e12d4c21d"
   },
   "D:\\Project\\Expense Tracker\\V2\\client\\src\\components\\Expenses\\VoiceQuickLogModal.jsx": {
     "mtime": 1786900244.254767,
@@ -56,20 +56,20 @@
     "hash": "2f137941c36f60e92b2894929b6a32fe"
   },
   "D:\\Project\\Expense Tracker\\V2\\client\\src\\components\\Shell\\Header.jsx": {
-    "mtime": 1786900244.2567663,
-    "hash": "5cff78148430b8d67571299a68ed0bcb"
+    "mtime": 1786957487.803259,
+    "hash": "81fb7f3574741200fe6f7f6c02eaa607"
   },
   "D:\\Project\\Expense Tracker\\V2\\client\\src\\components\\Shell\\Sidebar.jsx": {
-    "mtime": 1786900244.2577674,
-    "hash": "b2bc4c06dd90c8e26961961c27424904"
+    "mtime": 1786957487.8042605,
+    "hash": "a2230cd6342a30dbde7f8cb63838f292"
   },
   "D:\\Project\\Expense Tracker\\V2\\client\\src\\components\\UI\\PinCard.jsx": {
     "mtime": 1786679469.2571092,
     "hash": "ffbffe2a68e5259d037bc273d2bacf31"
   },
   "D:\\Project\\Expense Tracker\\V2\\client\\src\\context\\AuthContext.jsx": {
-    "mtime": 1786765427.806978,
-    "hash": "509c145cf9f69427070b38e7f6463683"
+    "mtime": 1786957487.8042605,
+    "hash": "0f30b30eb1ca028ee905e5ba63932f33"
   },
   "D:\\Project\\Expense Tracker\\V2\\client\\src\\context\\PrivacyContext.jsx": {
     "mtime": 1786900244.2577674,
@@ -107,13 +107,17 @@
     "mtime": 1786900244.2632859,
     "hash": "ef84f13e029855ebfbb61d235b593ae0"
   },
+  "D:\\Project\\Expense Tracker\\V2\\client\\src\\pages\\ProfilePage.jsx": {
+    "mtime": 1786957487.806338,
+    "hash": "8110d99bbd94997835aac579542cd5e5"
+  },
   "D:\\Project\\Expense Tracker\\V2\\client\\src\\pages\\RecurringPage.jsx": {
     "mtime": 1786772162.6547532,
     "hash": "25e6644b68821d946d715aded8f5ca40"
   },
   "D:\\Project\\Expense Tracker\\V2\\client\\src\\pages\\SettingsPage.jsx": {
-    "mtime": 1786902775.6708786,
-    "hash": "9eef92a215cdcef99d6092b4d5778234"
+    "mtime": 1786905071.830745,
+    "hash": "e7f990a570751c54214aa7ae09589498"
   },
   "D:\\Project\\Expense Tracker\\V2\\client\\src\\pages\\TripVaultPage.jsx": {
     "mtime": 1786900244.2642863,
@@ -124,8 +128,8 @@
     "hash": "3e00514058f7845ffdd8cd478d626ef1"
   },
   "D:\\Project\\Expense Tracker\\V2\\server\\src\\server.js": {
-    "mtime": 1786900244.2882893,
-    "hash": "c43947badf313ab3180d4a91d9324a9d"
+    "mtime": 1786957487.8271918,
+    "hash": "a2d3ee095891d192bc00cc93b1b33564"
   },
   "D:\\Project\\Expense Tracker\\V2\\server\\src\\config\\db.js": {
     "mtime": 1786765427.811912,
@@ -144,8 +148,8 @@
     "hash": "527e826bf66dff77b6c97b1f051d59cc"
   },
   "D:\\Project\\Expense Tracker\\V2\\server\\src\\controllers\\authController.js": {
-    "mtime": 1786765427.8145077,
-    "hash": "9a0f4372c396f8ab0e40187d6258ebde"
+    "mtime": 1786905045.2564368,
+    "hash": "9ab3b79e9645f53d46543bba8cd8d412"
   },
   "D:\\Project\\Expense Tracker\\V2\\server\\src\\controllers\\budgetController.js": {
     "mtime": 1786765427.8145077,
@@ -195,6 +199,10 @@
     "mtime": 1786900244.2812896,
     "hash": "b47f7efc14ecf178e2870027c8e598ad"
   },
+  "D:\\Project\\Expense Tracker\\V2\\server\\src\\controllers\\userController.js": {
+    "mtime": 1786957487.8251846,
+    "hash": "25e25c25defd754712b186f974635a0c"
+  },
   "D:\\Project\\Expense Tracker\\V2\\server\\src\\middleware\\auditLogger.js": {
     "mtime": 1786765427.8175173,
     "hash": "ab66803edfb2e36283f445a229ecdff2"
@@ -204,8 +212,8 @@
     "hash": "983bbc8936eb0b048a3d9e250b42902d"
   },
   "D:\\Project\\Expense Tracker\\V2\\server\\src\\middleware\\errorHandler.js": {
-    "mtime": 1786765427.8175173,
-    "hash": "5355d8183db60fc970fd274cad73b8d5"
+    "mtime": 1786956759.877978,
+    "hash": "413ebf1c4fe3c2f41148757ef3d0cdb4"
   },
   "D:\\Project\\Expense Tracker\\V2\\server\\src\\middleware\\idempotency.js": {
     "mtime": 1786765427.8185165,
@@ -272,8 +280,8 @@
     "hash": "5da217fcd7ef62d37483e70a7e3d0904"
   },
   "D:\\Project\\Expense Tracker\\V2\\server\\src\\models\\User.js": {
-    "mtime": 1786900554.1654887,
-    "hash": "7335f77a82a5045448b587443dff1800"
+    "mtime": 1786957487.8261924,
+    "hash": "a8ddd5fb0a42ed20496ba09c9ad2b8a7"
   },
   "D:\\Project\\Expense Tracker\\V2\\server\\src\\routes\\aiRoutes.js": {
     "mtime": 1786900244.284287,
@@ -343,6 +351,10 @@
     "mtime": 1786900244.2872896,
     "hash": "0a91db3dd3cbd88ecfa62d6f7b6e579d"
   },
+  "D:\\Project\\Expense Tracker\\V2\\server\\src\\routes\\userRoutes.js": {
+    "mtime": 1786957487.8271918,
+    "hash": "1df584dd81c0d3632f8d9a38653d5281"
+  },
   "D:\\Project\\Expense Tracker\\V2\\server\\src\\services\\ai\\aiService.js": {
     "mtime": 1786900244.2892878,
     "hash": "679a32837f25d1161b820787bafbb20e"
@@ -368,8 +380,8 @@
     "hash": "e78aad7c116b19c6a9f3cd001bea319a"
   },
   "D:\\Project\\Expense Tracker\\V2\\server\\src\\services\\ai\\unifiedAIClient.js": {
-    "mtime": 1786902730.3926752,
-    "hash": "8a4cb062860a00f9ce89b9aef451dc15"
+    "mtime": 1786957508.5876856,
+    "hash": "521432eded91ff38bea532aeec728ea5"
   },
   "D:\\Project\\Expense Tracker\\V2\\server\\src\\services\\analytics\\analyticsService.js": {
     "mtime": 1786900244.2917225,
@@ -439,8 +451,12 @@
     "mtime": 1786765427.8272674,
     "hash": "1d8f717b016ec9341b0f5d987a972609"
   },
+  "D:\\Project\\Expense Tracker\\V2\\server\\src\\validators\\userValidator.js": {
+    "mtime": 1786957487.8291924,
+    "hash": "9c906a126b2866f129be09200a2d0009"
+  },
   "D:\\Project\\Expense Tracker\\V2\\server\\tests\\aiProviders.test.js": {
-    "mtime": 1786902783.3153996,
+    "mtime": 1786904168.993023,
     "hash": "810e92869f34771552e3d1f5e234f246"
   },
   "D:\\Project\\Expense Tracker\\V2\\server\\tests\\analytics.test.js": {
@@ -448,8 +464,8 @@
     "hash": "114bb440471eb8397ba27da5cd8f7214"
   },
   "D:\\Project\\Expense Tracker\\V2\\server\\tests\\auth.test.js": {
-    "mtime": 1786765427.8289454,
-    "hash": "55f57971a3718c4dcc81b9e8461bf7ad"
+    "mtime": 1786905139.969354,
+    "hash": "f5d4fc94a158ebddc83c90295fa22667"
   },
   "D:\\Project\\Expense Tracker\\V2\\server\\tests\\budgets.test.js": {
     "mtime": 1786765427.8289454,
@@ -496,8 +512,8 @@
     "hash": "dfe83709b8245192f8b43140f52c0af4"
   },
   "D:\\Project\\Expense Tracker\\V2\\server\\tests\\receiptScan.test.js": {
-    "mtime": 1786900244.3007612,
-    "hash": "61cf12cc4588145e3fefa474bcdbe6c1"
+    "mtime": 1786957487.8296964,
+    "hash": "7105266fa3f720d4d64cdcdf599d7076"
   },
   "D:\\Project\\Expense Tracker\\V2\\server\\tests\\recurring.test.js": {
     "mtime": 1786765427.8307796,
@@ -514,6 +530,10 @@
   "D:\\Project\\Expense Tracker\\V2\\server\\tests\\tripVault.test.js": {
     "mtime": 1786900244.3023396,
     "hash": "f1f8f643c7509c084230e320b8171a89"
+  },
+  "D:\\Project\\Expense Tracker\\V2\\server\\tests\\userProfile.test.js": {
+    "mtime": 1786957487.8307042,
+    "hash": "908a72fa2760b3fa446fb45021b29af2"
   },
   "D:\\Project\\Expense Tracker\\V2\\server\\tests\\validation.test.js": {
     "mtime": 1786765427.8307796,
@@ -563,6 +583,10 @@
     "mtime": 1786900244.248554,
     "hash": "c0b035ac20bab0c091906cec855bf7df"
   },
+  "D:\\Project\\Expense Tracker\\V2\\Documentation\\PROFILE_PAGE_IMPLEMENTATION_PLAN.md": {
+    "mtime": 1786957487.8022547,
+    "hash": "7c2e8e15bcdc964133474c9e4238a382"
+  },
   "D:\\Project\\Expense Tracker\\V2\\Documentation\\PROJECT_STATUS.md": {
     "mtime": 1786900244.2496035,
     "hash": "2604c6cc58f5cec6a5051e27318bfa7a"
@@ -584,7 +608,7 @@
     "hash": "b821883f0f5c6524206cb1f8780ec093"
   },
   "D:\\Project\\Expense Tracker\\V2\\client\\public\\logo.jpg": {
-    "mtime": 1786605771.7296057,
-    "hash": "700feb95bc1697f7eeda76a8d5176e10"
+    "mtime": 1786956421.9872267,
+    "hash": "c2b02d32e34e1a7e0c2563d5d87ab38f"
   }
 }

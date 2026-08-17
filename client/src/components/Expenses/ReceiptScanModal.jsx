@@ -50,7 +50,58 @@ export const ReceiptScanModal = ({ isOpen, onClose, onSaveExpense, categories = 
     }
   };
 
-  const processFile = (file) => {
+  const compressImage = (file, maxDimension = 1600, quality = 0.85) => {
+    return new Promise((resolve) => {
+      if (!file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = () => resolve({ dataUrl: reader.result, mimeType: file.type });
+        reader.onerror = () => resolve({ dataUrl: null, mimeType: file.type });
+        reader.readAsDataURL(file);
+        return;
+      }
+
+      const img = new Image();
+      const objectUrl = URL.createObjectURL(file);
+
+      img.onload = () => {
+        URL.revokeObjectURL(objectUrl);
+        let { width, height } = img;
+
+        if (width > maxDimension || height > maxDimension) {
+          if (width > height) {
+            height = Math.round((height * maxDimension) / width);
+            width = maxDimension;
+          } else {
+            width = Math.round((width * maxDimension) / height);
+            height = maxDimension;
+          }
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+
+        const mimeType = file.type === 'image/png' ? 'image/png' : 'image/jpeg';
+        const dataUrl = canvas.toDataURL(mimeType, quality);
+        resolve({ dataUrl, mimeType });
+      };
+
+      img.onerror = () => {
+        URL.revokeObjectURL(objectUrl);
+        const reader = new FileReader();
+        reader.onload = () => resolve({ dataUrl: reader.result, mimeType: file.type });
+        reader.onerror = () => resolve({ dataUrl: null, mimeType: file.type });
+        reader.readAsDataURL(file);
+      };
+
+      img.src = objectUrl;
+    });
+  };
+
+  const processFile = async (file) => {
     if (!file.type.startsWith('image/') && file.type !== 'application/pdf') {
       setErrorMsg('Please upload an image (JPEG, PNG, WebP) or PDF receipt.');
       return;
@@ -58,12 +109,18 @@ export const ReceiptScanModal = ({ isOpen, onClose, onSaveExpense, categories = 
     setErrorMsg('');
     setSelectedFile(file);
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      setPreviewUrl(reader.result);
-      performOcrScan(reader.result, file.type);
-    };
-    reader.readAsDataURL(file);
+    try {
+      const { dataUrl, mimeType } = await compressImage(file);
+      if (!dataUrl) {
+        setErrorMsg('Failed to read the selected file.');
+        return;
+      }
+      setPreviewUrl(dataUrl);
+      performOcrScan(dataUrl, mimeType);
+    } catch (err) {
+      console.error('Receipt processing error:', err);
+      setErrorMsg('Failed to process image receipt.');
+    }
   };
 
   const performOcrScan = async (base64Data, mimeType) => {
