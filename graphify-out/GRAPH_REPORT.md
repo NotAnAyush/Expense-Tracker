@@ -1,16 +1,16 @@
 # Graph Report - ep  (2026-08-17)
 
 ## Corpus Check
-- 157 files · ~134,334 words
+- 157 files · ~134,774 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1457 nodes · 1875 edges · 113 communities (96 shown, 17 thin omitted)
+- 1459 nodes · 1879 edges · 113 communities (97 shown, 16 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 7 edges (avg confidence: 0.63)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `cc463c37`
+- Built from commit: `3776dbe7`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -36,7 +36,7 @@
 - incomeRoutes.js
 - 🔑 Complete REST API Endpoints Reference
 - scripts
-- unifiedAIClient.js
+- aiProviders.test.js
 - express
 - analyticsService.js
 - Design System Master File
@@ -48,10 +48,10 @@
 - exportAndAudit.test.js
 - client/package.json
 - Expense.js
-- Income.js
+- income.test.js
 - AIService
 - Profile Page & Sovereign Account Hub — Master Implementation Plan
-- aiProviders.test.js
+- userProfile.test.js
 - cashflow.test.js
 - User.js
 - financialHealth.test.js
@@ -61,25 +61,26 @@
 - recurringController.js
 - categoryController.js
 - recurring.test.js
-- statementImport.test.js
-- LocalRagEngine
+- Income.js
+- expenses.test.js
 - db.js
 - 46. TESTING THE AI LAYER
 - recurringRoutes.js
-- auditRoutes.js
-- debtRoutes.js
+- auth.test.js
+- debtPayoff.test.js
 - simulationRoutes.js
 - contextBuilder.js
 - 3. DO NOT BREAK THE ORIGINAL PROJECT ROADMAP
 - AppError
 - aiController.js
-- Budget.js
+- groupRoutes.js
 - expenseRoutes.js
 - geminiClient.js
 - 13. GEMINI RESPONSIBILITIES
 - 9. PHASE 5 — CONNECT FRONTEND TO REAL DATA
 - 🚀 Richy Rich — Strategic Feature Roadmap & Productivity Innovations
 - goalRoutes.js
+- toolRegistry.js
 - Richy Rich v2.2 — Engineering Team Collaboration & Antigravity Manual
 - 6. Mastering Google Antigravity 2.0 & Antigravity IDE
 - budgetRoutes.js
@@ -90,7 +91,6 @@
 - 48. AI QUALITY METRICS
 - 50. DEVELOPMENT CHECKPOINTS
 - 5. Git & GitHub Professional Collaboration Standards
-- analytics.test.js
 - 49. FEATURE PRIORITY — PRESERVE THE ORIGINAL PLAN
 - 61. IMPORTANT: DO NOT OVERBUILD TOO EARLY
 - 6. PHASE 2 — FINANCIAL DATA FOUNDATION
@@ -156,7 +156,7 @@
 ## Hyperedges (group relationships)
 - **Finance AI Platform Core Architecture** — documentation_backend_architecture, plan_revised_master_prompt, design_pinterest_design_pinterest_spec [INFERRED 0.95]
 
-## Communities (113 total, 17 thin omitted)
+## Communities (113 total, 16 thin omitted)
 
 ### Community 0 - "groupController.js"
 Cohesion: 0.09
@@ -232,8 +232,8 @@ Cohesion: 0.14
 Nodes (10): FireSimulatorEngine, app, Expense, { FireSimulatorEngine }, Income, jwt, { MongoMemoryServer }, mongoose (+2 more)
 
 ### Community 16 - "auth.js"
-Cohesion: 0.12
-Nodes (15): jwt, protect(), User, express, { protect }, router, {
+Cohesion: 0.10
+Nodes (19): jwt, protect(), User, express, { protect }, router, {
   suggestCategory,
   getMonthlySummaryAI,
   getSpendingExplanation,
@@ -243,11 +243,11 @@ Nodes (15): jwt, protect(), User, express, { protect }, router, {
   getAIConfig,
   updateAIConfig,
   testConnection,
-}, express (+7 more)
+}, express (+11 more)
 
 ### Community 17 - "userRoutes.js"
-Cohesion: 0.16
-Nodes (10): AppError, express, {
+Cohesion: 0.22
+Nodes (9): express, {
   getProfile,
   updateProfile,
   changePassword,
@@ -256,7 +256,7 @@ Nodes (10): AppError, express, {
   revokeAllOtherSessions,
   resetUserData,
   deleteAccount,
-}, { protect }, router, { updateProfileSchema, changePasswordSchema }, validate, changePasswordSchema (+2 more)
+}, { protect }, router, { updateProfileSchema, changePasswordSchema }, validate, changePasswordSchema, Joi (+1 more)
 
 ### Community 18 - "incomeRoutes.js"
 Cohesion: 0.18
@@ -277,13 +277,13 @@ Nodes (24): 1. Authentication (`/api/auth`), 1. User Model (`User.js`), 2. Refre
 Cohesion: 0.08
 Nodes (24): author, description, keywords, license, name, private, scripts, build (+16 more)
 
-### Community 21 - "unifiedAIClient.js"
-Cohesion: 0.22
-Nodes (7): clientPool, getOpenAIClient(), { GoogleGenerativeAI }, OpenAI, PROVIDER_METADATA, resolveApiKey(), UnifiedAIClient
+### Community 21 - "aiProviders.test.js"
+Cohesion: 0.07
+Nodes (20): LocalRagEngine, clientPool, getOpenAIClient(), { GoogleGenerativeAI }, OpenAI, PROVIDER_METADATA, UnifiedAIClient, app (+12 more)
 
 ### Community 22 - "express"
 Cohesion: 0.18
-Nodes (9): express, express, { getAnalyticsOverview, getCashFlow, getFinancialHealth }, { protect }, router, express, { GroupController }, { protect } (+1 more)
+Nodes (9): express, express, { getAnalyticsOverview, getCashFlow, getFinancialHealth }, { protect }, router, { exportExpenses, exportTaxSummary }, express, { protect } (+1 more)
 
 ### Community 23 - "analyticsService.js"
 Cohesion: 0.20
@@ -329,12 +329,12 @@ Cohesion: 0.07
 Nodes (28): dependencies, framer-motion, lucide-react, react, react-dom, recharts, devDependencies, @types/react (+20 more)
 
 ### Community 32 - "Expense.js"
-Cohesion: 0.17
-Nodes (7): asyncHandler, Expense, expenseSchema, mongoose, AnalyticsService, Expense, ToolRegistry
+Cohesion: 0.14
+Nodes (10): asyncHandler, Expense, expenseSchema, mongoose, app, Expense, { MongoMemoryServer }, mongoose (+2 more)
 
-### Community 33 - "Income.js"
-Cohesion: 0.20
-Nodes (8): incomeSchema, mongoose, app, Income, { MongoMemoryServer }, mongoose, request, User
+### Community 33 - "income.test.js"
+Cohesion: 0.29
+Nodes (6): app, Income, { MongoMemoryServer }, mongoose, request, User
 
 ### Community 34 - "AIService"
 Cohesion: 0.31
@@ -344,21 +344,21 @@ Nodes (4): AIService, extractJson(), getUserAiConfig(), sanitizeUserText()
 Cohesion: 0.22
 Nodes (8): 1. Executive Summary & Goals, 2. Exhaustive Data & Feature Requirements Analysis, 3. UI/UX Architecture & Layout Specification, 4. Technical Architecture & File-by-File Changes, 5. Verification & Test Plan, Backend Changes, Frontend Changes, Profile Page & Sovereign Account Hub — Master Implementation Plan
 
-### Community 36 - "aiProviders.test.js"
-Cohesion: 0.22
-Nodes (8): app, Expense, LocalRagEngine, { MongoMemoryServer }, mongoose, request, UnifiedAIClient, User
+### Community 36 - "userProfile.test.js"
+Cohesion: 0.25
+Nodes (7): app, Expense, { MongoMemoryServer }, mongoose, RefreshToken, request, User
 
 ### Community 37 - "cashflow.test.js"
 Cohesion: 0.22
 Nodes (8): AnalyticsService, app, Expense, Income, { MongoMemoryServer }, mongoose, request, User
 
 ### Community 38 - "User.js"
-Cohesion: 0.04
-Nodes (41): mongoose, userSchema, app, { MongoMemoryServer }, mongoose, request, User, jwt (+33 more)
+Cohesion: 0.22
+Nodes (7): mongoose, userSchema, jwt, { MongoMemoryServer }, mongoose, request, User
 
 ### Community 39 - "financialHealth.test.js"
-Cohesion: 0.22
-Nodes (8): app, Budget, Expense, Goal, Income, { MongoMemoryServer }, mongoose, request
+Cohesion: 0.08
+Nodes (22): budgetSchema, mongoose, app, Budget, Expense, { MongoMemoryServer }, mongoose, request (+14 more)
 
 ### Community 40 - "rateLimiter.js"
 Cohesion: 0.29
@@ -384,9 +384,13 @@ Nodes (5): asyncHandler, { BadRequestError, ConflictError }, Category, categoryS
 Cohesion: 0.29
 Nodes (6): app, Expense, { MongoMemoryServer }, mongoose, RecurringExpense, request
 
-### Community 46 - "statementImport.test.js"
+### Community 46 - "Income.js"
+Cohesion: 0.20
+Nodes (8): incomeSchema, mongoose, app, Expense, Income, { MongoMemoryServer }, mongoose, request
+
+### Community 47 - "expenses.test.js"
 Cohesion: 0.29
-Nodes (6): app, Expense, Income, { MongoMemoryServer }, mongoose, request
+Nodes (6): app, Expense, { MongoMemoryServer }, mongoose, request, User
 
 ### Community 48 - "db.js"
 Cohesion: 0.40
@@ -407,13 +411,13 @@ Nodes (9): { createRecurringSchema, updateRecurringSchema }, express, {
   recordRecurringPayment,
 }, { protect }, router, validate, createRecurringSchema, Joi (+1 more)
 
-### Community 51 - "auditRoutes.js"
-Cohesion: 0.40
-Nodes (4): express, { getAuditLogs }, { protect }, router
+### Community 51 - "auth.test.js"
+Cohesion: 0.33
+Nodes (5): app, { MongoMemoryServer }, mongoose, request, User
 
-### Community 52 - "debtRoutes.js"
-Cohesion: 0.40
-Nodes (4): { DebtController }, express, { protect }, router
+### Community 52 - "debtPayoff.test.js"
+Cohesion: 0.33
+Nodes (5): jwt, { MongoMemoryServer }, mongoose, request, User
 
 ### Community 53 - "simulationRoutes.js"
 Cohesion: 0.40
@@ -427,9 +431,9 @@ Nodes (13): 3. DO NOT BREAK THE ORIGINAL PROJECT ROADMAP, Phase 0, Phase 1, Phas
 Cohesion: 0.29
 Nodes (5): AIService, asyncHandler, { BadRequestError }, UnifiedAIClient, User
 
-### Community 58 - "Budget.js"
-Cohesion: 0.22
-Nodes (7): budgetSchema, mongoose, app, Budget, { MongoMemoryServer }, mongoose, request
+### Community 58 - "groupRoutes.js"
+Cohesion: 0.40
+Nodes (4): express, { GroupController }, { protect }, router
 
 ### Community 59 - "expenseRoutes.js"
 Cohesion: 0.16
@@ -455,6 +459,10 @@ Nodes (10): { createGoalSchema, updateGoalSchema }, express, {
   deleteGoal,
 }, { protect }, router, validate, createGoalSchema, Joi (+2 more)
 
+### Community 66 - "toolRegistry.js"
+Cohesion: 0.40
+Nodes (3): AnalyticsService, Expense, ToolRegistry
+
 ### Community 72 - "Richy Rich v2.2 — Engineering Team Collaboration & Antigravity Manual"
 Cohesion: 0.18
 Nodes (10): 1. Executive Summary & Core Philosophy, 2. Repository Layout & Project Anatomy, 7. Team AI Customizations (`.agents` Workspace), code:mermaid (graph TD), code:block16 (.agents/), code:block2 (Expense-Tracker-V2/), Customization Directory Structure:, Richy Rich v2.2 — Engineering Team Collaboration & Antigravity Manual (+2 more)
@@ -464,13 +472,13 @@ Cohesion: 0.18
 Nodes (11): 6.1. The Three AI Interaction Modalities, 6.2. Planning Mode Workflow, 6.3. Context `@ Mentions` & Slash Commands, 6. Mastering Google Antigravity 2.0 & Antigravity IDE, A. Passive Modality: Antigravity Tab (Autocomplete & Supercomplete), B. Instructive Modality: Inline Command (<kbd>Ctrl</kbd>+<kbd>I</kbd> / <kbd>Cmd</kbd>+<kbd>I</kbd>), C. Collaborative Modality: Agent & Planning Mode, code:mermaid (graph LR) (+3 more)
 
 ### Community 74 - "budgetRoutes.js"
-Cohesion: 0.22
-Nodes (9): { createBudgetSchema, updateBudgetSchema }, express, {
+Cohesion: 0.16
+Nodes (10): AppError, { createBudgetSchema, updateBudgetSchema }, express, {
   getBudgets,
   createBudget,
   updateBudget,
   deleteBudget,
-}, { protect }, router, validate, createBudgetSchema, Joi (+1 more)
+}, { protect }, router, validate, createBudgetSchema (+2 more)
 
 ### Community 80 - "3. Local Development Setup (Zero to Hero)"
 Cohesion: 0.20
@@ -495,10 +503,6 @@ Nodes (8): 50. DEVELOPMENT CHECKPOINTS, CHECKPOINT A, CHECKPOINT B, CHECKPOINT C
 ### Community 87 - "5. Git & GitHub Professional Collaboration Standards"
 Cohesion: 0.25
 Nodes (8): 5.1. Branching Strategy, 5.2. Conventional Commits 1.0, 5.3. Daily Synchronization Workflow, 5.4. Pull Request (PR) Quality Checklist, 5. Git & GitHub Professional Collaboration Standards, code:block12 (<type>(<optional scope>): <short description in present tens), code:bash (# 1. Stash any uncommitted work if needed), Commit Types:
-
-### Community 88 - "analytics.test.js"
-Cohesion: 0.25
-Nodes (7): app, Budget, Expense, { MongoMemoryServer }, mongoose, request, User
 
 ### Community 94 - "49. FEATURE PRIORITY — PRESERVE THE ORIGINAL PLAN"
 Cohesion: 0.29
@@ -599,12 +603,12 @@ Nodes (3): AI-First Personal Finance Intelligence Platform, Build the financial 
 ## Knowledge Gaps
 - **920 isolated node(s):** `name`, `private`, `version`, `type`, `dev` (+915 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **17 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **16 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `express` connect `express` to `goalRoutes.js`, `budgetRoutes.js`, `server.js`, `fxRoutes.js`, `auth.js`, `userRoutes.js`, `incomeRoutes.js`, `auditRoutes.js`, `scripts`, `debtRoutes.js`, `importController.js`, `recurringRoutes.js`, `simulationRoutes.js`, `authRoutes.js`, `expenseRoutes.js`?**
+- **Why does `express` connect `express` to `goalRoutes.js`, `budgetRoutes.js`, `server.js`, `fxRoutes.js`, `auth.js`, `userRoutes.js`, `incomeRoutes.js`, `recurringRoutes.js`, `scripts`, `simulationRoutes.js`, `importController.js`, `authRoutes.js`, `groupRoutes.js`, `expenseRoutes.js`?**
   _High betweenness centrality (0.074) - this node is a cross-community bridge._
 - **Why does `keywords` connect `scripts` to `App.jsx`, `express`?**
   _High betweenness centrality (0.069) - this node is a cross-community bridge._
