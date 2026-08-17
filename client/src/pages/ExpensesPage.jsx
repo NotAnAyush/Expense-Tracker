@@ -14,11 +14,15 @@ import {
   Layers, 
   ShieldCheck, 
   RefreshCw,
-  Mic
+  Mic,
+  QrCode,
+  Smartphone,
+  Zap
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { apiFetch, API_BASE_URL } from '../api/client';
 import { usePrivacy } from '../context/PrivacyContext';
+import UPIPaymentModal from '../components/UPI/UPIPaymentModal';
 
 export const ExpensesPage = ({
   onAddExpense,
@@ -51,6 +55,7 @@ export const ExpensesPage = ({
   const [selectedCategory, setSelectedCategory] = useState('');
   const [onlyTaxDeductible, setOnlyTaxDeductible] = useState(false);
   const [selectedTag, setSelectedTag] = useState('');
+  const [upiModalExpense, setUpiModalExpense] = useState(null);
   const limit = 20;
 
   useEffect(() => {
@@ -557,6 +562,11 @@ export const ExpensesPage = ({
                       <td style={{ padding: '14px 10px' }}>
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', alignItems: 'center' }}>
                           <span style={{ fontSize: '12px', color: '#94A3B8' }}>{e.paymentMethod}</span>
+                          {e.source === 'upi_sync' && (
+                            <span style={{ fontSize: '10px', fontWeight: 800, padding: '2px 6px', borderRadius: '6px', background: 'rgba(99, 102, 241, 0.15)', color: '#818CF8', border: '1px solid rgba(99, 102, 241, 0.3)' }}>
+                              ⚡ {e.upiDetails?.upiApp?.toUpperCase() || 'UPI SYNC'}
+                            </span>
+                          )}
                           {e.isTaxDeductible && (
                             <span style={{ fontSize: '10px', fontWeight: 800, padding: '2px 6px', borderRadius: '6px', background: 'rgba(0, 255, 135, 0.15)', color: '#00FF87', border: '1px solid rgba(0, 255, 135, 0.3)' }}>
                               {e.taxSection || 'Tax Deductible'}
@@ -577,13 +587,22 @@ export const ExpensesPage = ({
                         -₹{e.amount.toLocaleString()}
                       </td>
                       <td style={{ padding: '14px 10px', textAlign: 'right' }}>
-                        <button
-                          onClick={() => handleDeleteExpense(e._id)}
-                          style={{ color: '#FF7D7D', cursor: 'pointer', border: 'none', background: 'rgba(255, 77, 77, 0.1)', padding: '6px', borderRadius: '8px' }}
-                          title="Delete expense"
-                        >
-                          <Trash2 size={14} />
-                        </button>
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '6px' }}>
+                          <button
+                            onClick={() => setUpiModalExpense(e)}
+                            style={{ color: '#818CF8', cursor: 'pointer', border: 'none', background: 'rgba(99, 102, 241, 0.1)', padding: '6px', borderRadius: '8px' }}
+                            title="Pay or settle via GPay / UPI QR"
+                          >
+                            <QrCode size={14} />
+                          </button>
+                          <button
+                            onClick={() => handleDeleteExpense(e._id)}
+                            style={{ color: '#FF7D7D', cursor: 'pointer', border: 'none', background: 'rgba(255, 77, 77, 0.1)', padding: '6px', borderRadius: '8px' }}
+                            title="Delete expense"
+                          >
+                            <Trash2 size={14} />
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))
@@ -697,6 +716,18 @@ export const ExpensesPage = ({
           </>
         )}
       </div>
+
+      {/* UPI Payment Modal */}
+      {upiModalExpense && (
+        <UPIPaymentModal
+          isOpen={!!upiModalExpense}
+          onClose={() => setUpiModalExpense(null)}
+          payeeVpa={upiModalExpense.upiDetails?.vpa || 'merchant@okhdfcbank'}
+          payeeName={upiModalExpense.merchant || upiModalExpense.title}
+          amount={upiModalExpense.amount}
+          note={`Expense Payment: ${upiModalExpense.title}`}
+        />
+      )}
     </div>
   );
 };

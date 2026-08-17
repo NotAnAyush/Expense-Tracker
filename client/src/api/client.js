@@ -107,3 +107,52 @@ export const apiFetch = async (endpoint, options = {}) => {
   }
 };
 
+// ========================
+// UPI & Account Aggregator API Helpers
+// ========================
+export const upiApi = {
+  getLinkedAccounts: () => apiFetch('/integrations/upi/accounts'),
+  initiateAccountLink: (payload) => apiFetch('/integrations/upi/accounts/link-initiate', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  }),
+  verifyAccountOtp: (payload) => apiFetch('/integrations/upi/accounts/verify-otp', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  }),
+  unlinkAccount: (accountId) => apiFetch(`/integrations/upi/accounts/${accountId}`, {
+    method: 'DELETE',
+  }),
+  verifyVpa: (vpa) => apiFetch(`/integrations/upi/verify-vpa?vpa=${encodeURIComponent(vpa)}`),
+  generateUpiIntent: (payload) => apiFetch('/integrations/upi/generate-intent', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  }),
+};
+
+// ========================
+// Confidential Secret Vault API Helpers
+// ========================
+export const vaultApi = {
+  getSecrets: () => apiFetch('/vault/secrets'),
+  getSecretById: (id) => apiFetch(`/vault/secrets/${id}`),
+  createSecret: (payload) => apiFetch('/vault/secrets', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  }),
+  testSecret: (id) => apiFetch(`/vault/secrets/${id}/test`, {
+    method: 'POST',
+  }),
+  rotateSecret: (id, payload) => apiFetch(`/vault/secrets/${id}/rotate`, {
+    method: 'PUT',
+    body: JSON.stringify(payload),
+  }),
+  deleteSecret: (id) => apiFetch(`/vault/secrets/${id}`, {
+    method: 'DELETE',
+  }),
+  purgeVault: () => apiFetch('/vault/purge', {
+    method: 'POST',
+  }),
+};
+
+

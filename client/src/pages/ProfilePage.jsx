@@ -40,6 +40,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { apiFetch, API_BASE_URL } from '../api/client';
 import { useAuth } from '../context/AuthContext';
 import { usePrivacy } from '../context/PrivacyContext';
+import LinkedAccountsCard from '../components/Profile/LinkedAccountsCard';
+import SecretVaultCard from '../components/Vault/SecretVaultCard';
 
 // Preset avatar styles
 const AVATAR_PRESETS = [
@@ -407,6 +409,8 @@ export const ProfilePage = () => {
 
   const tabs = [
     { id: 'identity', label: 'Identity & Persona', icon: User, badge: 'Core' },
+    { id: 'secret_vault', label: 'Secret Vault', icon: Key, badge: 'AES-256' },
+    { id: 'banking_upi', label: 'Linked UPI & Banks', icon: Smartphone, badge: 'Live Sync' },
     { id: 'financial', label: 'Financial Defaults', icon: CreditCard, badge: formData.preferredCurrency },
     { id: 'localization', label: 'Regional & Formats', icon: Globe },
     { id: 'security', label: 'Security & Sessions', icon: Shield, badge: sessions.length ? `${sessions.length} Active` : null },
@@ -938,6 +942,28 @@ export const ProfilePage = () => {
                   placeholder="Automating freedom and compounding wealth with sovereign intelligence."
                 />
               </div>
+            </motion.div>
+          )}
+
+          {/* TAB: CONFIDENTIAL SECRET VAULT */}
+          {activeTab === 'secret_vault' && (
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.25 }}
+            >
+              <SecretVaultCard />
+            </motion.div>
+          )}
+
+          {/* TAB: LINKED UPI & BANK ACCOUNTS */}
+          {activeTab === 'banking_upi' && (
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.25 }}
+            >
+              <LinkedAccountsCard />
             </motion.div>
           )}
 

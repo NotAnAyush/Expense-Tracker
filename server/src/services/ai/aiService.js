@@ -6,6 +6,8 @@ const ToolRegistry = require('./toolRegistry');
 const AICache = require('./aiCache');
 const AnalyticsService = require('../analytics/analyticsService');
 const User = require('../../models/User');
+const SecretVault = require('../../models/SecretVault');
+const { decrypt } = require('../../utils/cryptoVault');
 
 // Prompt Injection Defense Sanitizer
 const sanitizeUserText = (text = '') => {
@@ -28,7 +30,30 @@ const getUserAiConfig = async (userId) => {
   if (!userId) return {};
   try {
     const user = await User.findById(userId).select('aiConfig');
-    return user?.aiConfig || {};
+    const aiConfig = { ...(user?.aiConfig || {}) };
+    const provider = aiConfig.provider || 'gemini';
+
+    // If apiKey is not in aiConfig or is masked, transparently resolve decrypted secret from SecretVault
+    if (!aiConfig.apiKey || aiConfig.apiKey.startsWith('••••') || aiConfig.apiKey.includes('••••')) {
+      const vaultSecret = await SecretVault.findOne({
+        userId,
+        provider,
+        status: 'ACTIVE',
+      }).sort({ isDefault: -1, createdAt: -1 });
+
+      if (vaultSecret && vaultSecret.encryptedValue) {
+        const decryptedKey = decrypt(vaultSecret.encryptedValue, userId);
+        if (decryptedKey) {
+          aiConfig.apiKey = decryptedKey;
+          if (vaultSecret.customBaseUrl) {
+            aiConfig.customBaseUrl = vaultSecret.customBaseUrl;
+          }
+          // Mark secret as used asynchronously
+          SecretVault.updateOne({ _id: vaultSecret._id }, { $set: { lastUsedAt: new Date() } }).exec().catch(() => {});
+        }
+      }
+    }
+    return aiConfig;
   } catch {
     return {};
   }

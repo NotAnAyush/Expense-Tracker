@@ -18,11 +18,12 @@ const auditLogSchema = new mongoose.Schema({
       'USER_REGISTERED', 'USER_LOGIN',
       'EXPORT_REQUESTED',
       'AI_CATEGORIZE', 'AI_COPILOT', 'AI_SUMMARY',
+      'VAULT_SECRET_CREATED', 'VAULT_SECRET_ROTATED', 'VAULT_SECRET_DELETED', 'VAULT_PURGED', 'VAULT_SECRET_TESTED',
     ],
   },
   resourceType: {
     type: String,
-    enum: ['expense', 'budget', 'goal', 'recurring', 'user', 'export', 'ai'],
+    enum: ['expense', 'budget', 'goal', 'recurring', 'user', 'export', 'ai', 'vault'],
   },
   resourceId: {
     type: String,

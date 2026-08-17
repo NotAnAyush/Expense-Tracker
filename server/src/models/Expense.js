@@ -89,8 +89,20 @@ const expenseSchema = new mongoose.Schema({
   },
   source: {
     type: String,
-    enum: ['manual', 'recurring', 'ai_suggested', 'import'],
+    enum: ['manual', 'recurring', 'ai_suggested', 'import', 'upi_sync', 'account_aggregator'],
     default: 'manual',
+  },
+  upiDetails: {
+    vpa: { type: String, trim: true, default: '' },
+    utr: { type: String, trim: true, sparse: true, index: true },
+    upiApp: {
+      type: String,
+      enum: ['gpay', 'phonepe', 'paytm', 'cred', 'bhim', 'amazonpay', 'bank_app', 'other', 'unknown'],
+      default: 'unknown',
+    },
+    bankRefNumber: { type: String, trim: true, default: '' },
+    rawNarrative: { type: String, default: '' },
+    accountMasked: { type: String, default: '' },
   },
 }, {
   timestamps: true,
@@ -98,5 +110,6 @@ const expenseSchema = new mongoose.Schema({
 
 expenseSchema.index({ userId: 1, date: -1 });
 expenseSchema.index({ userId: 1, category: 1 });
+expenseSchema.index({ userId: 1, 'upiDetails.utr': 1 });
 
 module.exports = mongoose.model('Expense', expenseSchema);
