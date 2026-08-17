@@ -1,34 +1,41 @@
 const Category = require('../models/Category');
+const asyncHandler = require('../utils/asyncHandler');
+const { BadRequestError, ConflictError } = require('../utils/errors');
 
-exports.getCategories = async (req, res) => {
-  try {
-    const categories = await Category.find({
-      $or: [{ userId: req.user._id }, { userId: null }, { isDefault: true }],
-      isArchived: false,
-    });
-    res.json(categories);
-  } catch (error) {
-    res.status(500).json({ message: 'Server error fetching categories' });
+exports.getCategories = asyncHandler(async (req, res) => {
+  const categories = await Category.find({
+    $or: [{ userId: req.user._id }, { userId: null }, { isDefault: true }],
+    isArchived: false,
+  });
+  res.json(categories);
+});
+
+exports.createCategory = asyncHandler(async (req, res) => {
+  const { name, icon = 'tag', color = '#3b82f6', type = 'expense' } = req.body;
+  if (!name || !name.trim()) {
+    throw new BadRequestError('Category name is required');
   }
-};
 
-exports.createCategory = async (req, res) => {
-  try {
-    const { name, icon = 'tag', color = '#3b82f6', type = 'expense' } = req.body;
-    if (!name) {
-      return res.status(400).json({ message: 'Category name is required' });
-    }
+  const cleanName = name.trim();
 
-    const category = await Category.create({
-      userId: req.user._id,
-      name,
-      icon,
-      color,
-      type,
-    });
+  // Check if category already exists for this user (case-insensitive)
+  const existing = await Category.findOne({
+    userId: req.user._id,
+    name: { $regex: new RegExp(`^${cleanName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'i') },
+    isArchived: false,
+  });
 
-    res.status(201).json(category);
-  } catch (error) {
-    res.status(500).json({ message: 'Server error creating category' });
+  if (existing) {
+    throw new ConflictError(`Category '${cleanName}' already exists`);
   }
-};
+
+  const category = await Category.create({
+    userId: req.user._id,
+    name: cleanName,
+    icon,
+    color,
+    type,
+  });
+
+  res.status(201).json(category);
+});

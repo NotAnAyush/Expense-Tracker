@@ -43,8 +43,25 @@ export const RecurringPage = ({ categories = [] }) => {
     fetchRecurring();
   }, []);
 
+  const RECURRING_DRAFT_KEY = 'richy_draft_recurring';
+
   const openCreateModal = () => {
     setEditingItem(null);
+    try {
+      const saved = localStorage.getItem(RECURRING_DRAFT_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        setTitle(parsed.title || '');
+        setAmount(parsed.amount || '');
+        setCategory(parsed.category || 'Subscriptions');
+        setFrequency(parsed.frequency || 'monthly');
+        setNextOccurrence(parsed.nextOccurrence || getLocalDateString(new Date()));
+        setActive(parsed.active !== false);
+        setShowModal(true);
+        return;
+      }
+    } catch {}
+
     setTitle('');
     setAmount('');
     setCategory(availableCategories.includes('Subscriptions') ? 'Subscriptions' : availableCategories[0] || 'Subscriptions');
@@ -53,6 +70,18 @@ export const RecurringPage = ({ categories = [] }) => {
     setActive(true);
     setShowModal(true);
   };
+
+  // Autosave draft for new recurring item
+  useEffect(() => {
+    if (showModal && !editingItem && (title || amount)) {
+      try {
+        localStorage.setItem(
+          RECURRING_DRAFT_KEY,
+          JSON.stringify({ title, amount, category, frequency, nextOccurrence, active })
+        );
+      } catch {}
+    }
+  }, [showModal, editingItem, title, amount, category, frequency, nextOccurrence, active]);
 
   const openEditModal = (item) => {
     setEditingItem(item);
@@ -89,6 +118,7 @@ export const RecurringPage = ({ categories = [] }) => {
           method: 'POST',
           body: JSON.stringify(payload),
         });
+        localStorage.removeItem(RECURRING_DRAFT_KEY);
       }
 
       setShowModal(false);

@@ -35,6 +35,30 @@ export const GoalsPage = () => {
     fetchGoals();
   }, []);
 
+  const GOAL_DRAFT_KEY = 'richy_draft_goal';
+
+  const openGoalModal = () => {
+    try {
+      const saved = localStorage.getItem(GOAL_DRAFT_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        setName(parsed.name || '');
+        setTargetAmount(parsed.targetAmount || '');
+        setCurrentAmount(parsed.currentAmount || '');
+        setTargetDate(parsed.targetDate || '');
+      }
+    } catch {}
+    setShowModal(true);
+  };
+
+  useEffect(() => {
+    if (showModal && (name || targetAmount)) {
+      try {
+        localStorage.setItem(GOAL_DRAFT_KEY, JSON.stringify({ name, targetAmount, currentAmount, targetDate }));
+      } catch {}
+    }
+  }, [showModal, name, targetAmount, currentAmount, targetDate]);
+
   const handleCreateGoal = async (e) => {
     e.preventDefault();
     if (!name || !targetAmount || !targetDate) return;
@@ -43,6 +67,7 @@ export const GoalsPage = () => {
         method: 'POST',
         body: JSON.stringify({ name, targetAmount: Number(targetAmount), currentAmount: Number(currentAmount || 0), targetDate }),
       });
+      localStorage.removeItem(GOAL_DRAFT_KEY);
       setShowModal(false);
       setName('');
       setTargetAmount('');
@@ -63,7 +88,7 @@ export const GoalsPage = () => {
           <h1 className="heading-xl">Savings Goals Trajectory</h1>
           <p className="body-sm" style={{ color: 'var(--color-muted-text)' }}>Track target dates, progress percentages, and required monthly contributions.</p>
         </div>
-        <button onClick={() => setShowModal(true)} className="button-primary">
+        <button onClick={openGoalModal} className="button-primary">
           <Plus size={18} /> Add Goal
         </button>
       </div>

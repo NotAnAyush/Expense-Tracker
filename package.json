@@ -1,0 +1,30 @@
+{
+  "name": "richy-rich-v2-workspace",
+  "version": "2.2.0",
+  "description": "Richy Rich — AI-First Personal Finance Intelligence Platform (Workspace Root)",
+  "private": true,
+  "scripts": {
+    "setup": "node scripts/setup-git-hooks.cjs && npm run install:all",
+    "install:all": "npm --prefix server install && npm --prefix client install",
+    "install:ci": "npm --prefix server ci && npm --prefix client ci",
+    "dev:server": "npm --prefix server run dev",
+    "dev:client": "npm --prefix client run dev",
+    "test": "npm --prefix server test",
+    "test:server": "npm --prefix server test",
+    "build": "npm --prefix client run build",
+    "build:client": "npm --prefix client run build",
+    "setup:hooks": "node scripts/setup-git-hooks.cjs"
+  },
+  "keywords": [
+    "personal-finance",
+    "expense-tracker",
+    "ai-copilot",
+    "gemini",
+    "react",
+    "nodejs",
+    "express",
+    "mongodb"
+  ],
+  "author": "Richy Rich Core Team",
+  "license": "ISC"
+}

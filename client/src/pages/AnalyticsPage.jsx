@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Sparkles, AlertOctagon } from 'lucide-react';
+import { Sparkles, AlertOctagon, TrendingUp, TrendingDown, Zap, ArrowUpRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { apiFetch } from '../api/client';
+import { FinancialHealthCard } from '../components/Dashboard/FinancialHealthCard';
 
 export const AnalyticsPage = () => {
   const [data, setData] = useState(null);
@@ -28,83 +30,155 @@ export const AnalyticsPage = () => {
   }, []);
 
   if (loading || !data) {
-    return <div style={{ padding: '64px', textAlign: 'center', color: 'var(--color-muted-text)' }} className="body-md">Computing Financial Analytics Engine...</div>;
+    return (
+      <div style={{ padding: '64px', textAlign: 'center', color: '#94A3B8' }}>
+        <motion.div animate={{ opacity: [0.5, 1, 0.5] }} transition={{ repeat: Infinity, duration: 1.5 }}>
+          <Sparkles size={32} color="#00FF87" style={{ marginBottom: '12px' }} />
+          <div>Computing Financial Analytics Engine & AI Deltas...</div>
+        </motion.div>
+      </div>
+    );
   }
 
-  const { monthlyComparison, categoryBreakdown, anomalies } = data;
+  const { monthlyComparison, categoryBreakdown, anomalies, financialHealth } = data;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
       <div>
-        <h1 className="heading-xl">Analytics Engine</h1>
-        <p className="body-sm" style={{ color: 'var(--color-muted-text)' }}>Statistical MoM comparison, category change deltas, and statistical anomaly detection.</p>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+          <span className="glass-pill" style={{ color: '#00FF87', borderColor: 'rgba(0, 255, 135, 0.3)' }}>
+            <Zap size={12} /> Deep Analytics Engine
+          </span>
+        </div>
+        <h1 className="display-xl">Analytics & MoM Deltas</h1>
+        <p style={{ fontSize: '14px', color: '#94A3B8', marginTop: '4px' }}>
+          Statistical month-over-month comparison, category shift deltas, and automated anomaly detection.
+        </p>
       </div>
+
+      {/* Financial Health Index 5-Pillar Scorecard */}
+      {financialHealth && (
+        <FinancialHealthCard healthData={financialHealth} />
+      )}
 
       {/* AI Spending Explanation Banner */}
       {explanation && (
-        <div className="pin-card-large">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
-            <Sparkles size={22} color="var(--color-accent)" />
-            <h3 className="heading-lg">"Why Did My Spending Change?" AI Rationale</h3>
+        <motion.div
+          whileHover={{ scale: 1.01 }}
+          className="glass-card"
+          style={{
+            padding: '24px 28px',
+            background: 'linear-gradient(135deg, rgba(121, 40, 202, 0.2) 0%, rgba(10, 13, 20, 0.85) 100%)',
+            border: '1px solid rgba(121, 40, 202, 0.35)',
+            boxShadow: 'var(--shadow-glow-violet)',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
+            <Sparkles size={20} color="#00FF87" />
+            <h3 className="heading-lg" style={{ color: '#F1F5F9' }}>
+              "Why Did My Spending Change?" AI Rationale
+            </h3>
           </div>
-          <p className="body-md" style={{ fontSize: '18px', color: 'var(--color-foreground)', lineHeight: 1.5 }}>
+          <p style={{ fontSize: '17px', color: '#F1F5F9', lineHeight: 1.6, fontWeight: 500 }}>
             "{explanation.explanation}"
           </p>
-        </div>
+        </motion.div>
       )}
 
-      {/* MoM Category Deltas */}
-      <div className="pin-card" style={{ padding: '24px' }}>
-        <h3 className="heading-md" style={{ marginBottom: '16px' }}>Month-Over-Month Category Changes</h3>
-        <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '15px' }}>
-          <thead>
-            <tr style={{ borderBottom: '1px solid var(--color-border)', color: 'var(--color-muted-text)', fontSize: '14px' }}>
-              <th style={{ padding: '12px 8px' }}>Category</th>
-              <th style={{ padding: '12px 8px' }}>Current Month</th>
-              <th style={{ padding: '12px 8px' }}>Previous Month</th>
-              <th style={{ padding: '12px 8px', textAlign: 'right' }}>Change Delta</th>
-            </tr>
-          </thead>
-          <tbody>
-            {monthlyComparison.categoryDeltas.map((cat, i) => (
-              <tr key={i} style={{ borderBottom: '1px solid var(--color-border)' }}>
-                <td style={{ padding: '14px 8px' }} className="body-strong">{cat.category}</td>
-                <td style={{ padding: '14px 8px' }}>₹{cat.currentAmount.toLocaleString()}</td>
-                <td style={{ padding: '14px 8px', color: 'var(--color-muted-text)' }} className="body-sm">₹{cat.previousAmount.toLocaleString()}</td>
-                <td style={{ padding: '14px 8px', textAlign: 'right', fontWeight: 700, fontFamily: 'var(--font-heading)', color: cat.diff > 0 ? 'var(--color-destructive)' : 'var(--color-accent)' }}>
-                  {cat.diff > 0 ? `+₹${cat.diff.toLocaleString()}` : `-₹${Math.abs(cat.diff).toLocaleString()}`} ({cat.changePercent}%)
-                </td>
+      {/* MoM Category Deltas Table Card */}
+      <div className="glass-card" style={{ padding: '24px' }}>
+        <h3 className="heading-md" style={{ color: '#F1F5F9', marginBottom: '16px' }}>
+          Month-Over-Month Category Changes
+        </h3>
+        <div style={{ overflowX: 'auto' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '14px' }}>
+            <thead>
+              <tr style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.08)', color: '#94A3B8', fontSize: '13px' }}>
+                <th style={{ padding: '12px 12px' }}>Category</th>
+                <th style={{ padding: '12px 12px' }}>Current Month</th>
+                <th style={{ padding: '12px 12px' }}>Previous Month</th>
+                <th style={{ padding: '12px 12px', textAlign: 'right' }}>Change Delta</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {monthlyComparison.categoryDeltas.map((cat, i) => (
+                <tr
+                  key={i}
+                  style={{
+                    borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
+                    transition: 'var(--transition)',
+                  }}
+                >
+                  <td style={{ padding: '14px 12px', fontWeight: 700, color: '#F1F5F9' }}>
+                    {cat.category}
+                  </td>
+                  <td style={{ padding: '14px 12px', color: '#F1F5F9', fontWeight: 600 }}>
+                    ₹{cat.currentAmount.toLocaleString()}
+                  </td>
+                  <td style={{ padding: '14px 12px', color: '#94A3B8' }}>
+                    ₹{cat.previousAmount.toLocaleString()}
+                  </td>
+                  <td
+                    style={{
+                      padding: '14px 12px',
+                      textAlign: 'right',
+                      fontWeight: 800,
+                      fontFamily: 'var(--font-display)',
+                      color: cat.diff > 0 ? '#F43F5E' : '#00FF87',
+                    }}
+                  >
+                    {cat.diff > 0 ? `+₹${cat.diff.toLocaleString()}` : `-₹${Math.abs(cat.diff).toLocaleString()}`} ({cat.changePercent}%)
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      {/* Flagged Anomalies */}
-      <div className="pin-card" style={{ padding: '24px' }}>
+      {/* Flagged Anomalies Card */}
+      <div className="glass-card" style={{ padding: '24px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
-          <AlertOctagon size={22} color="var(--color-destructive)" />
-          <h3 className="heading-md">Statistical Anomaly Detection</h3>
+          <AlertOctagon size={20} color="#FF007A" />
+          <h3 className="heading-md" style={{ color: '#F1F5F9' }}>
+            Statistical Anomaly Detection
+          </h3>
         </div>
 
         {anomalies.anomalies.length > 0 ? (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {anomalies.anomalies.map((anom, i) => (
-              <div key={i} style={{ padding: '14px 16px', borderRadius: 'var(--radius-sm)', backgroundColor: 'var(--color-secondary)', border: '1px solid var(--color-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <motion.div
+                key={i}
+                whileHover={{ x: 4 }}
+                style={{
+                  padding: '16px',
+                  borderRadius: '16px',
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
+                  display: 'flex',
+                  justify: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
                 <div>
-                  <div className="body-strong" style={{ color: 'var(--color-foreground)' }}>{anom.title}</div>
-                  <div className="body-sm" style={{ marginTop: '2px', color: 'var(--color-muted-text)' }}>{anom.reason}</div>
+                  <div style={{ fontWeight: 700, color: '#F1F5F9', fontSize: '15px' }}>{anom.title}</div>
+                  <div style={{ fontSize: '13px', color: '#94A3B8', marginTop: '2px' }}>{anom.reason}</div>
                 </div>
                 <div style={{ textAlign: 'right' }}>
-                  <div style={{ fontWeight: 700, color: 'var(--color-foreground)', fontSize: '18px', fontFamily: 'var(--font-heading)' }}>₹{anom.amount.toLocaleString()}</div>
-                  <span className="pin-overlay-pill" style={{ fontSize: '11px', backgroundColor: 'var(--color-primary)', color: 'var(--color-destructive)', borderColor: 'var(--color-border)' }}>{anom.deviationFactor}x Std Dev</span>
+                  <div className="font-display" style={{ fontWeight: 800, color: '#F43F5E', fontSize: '18px' }}>
+                    ₹{anom.amount.toLocaleString()}
+                  </div>
+                  <span className="glass-pill" style={{ color: '#FF007A', borderColor: 'rgba(255, 0, 122, 0.3)', fontSize: '11px' }}>
+                    {anom.deviationFactor}x Std Dev
+                  </span>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         ) : (
-          <div style={{ padding: '24px', textAlign: 'center', color: 'var(--color-muted-text)' }} className="body-sm">
-            No statistical transaction anomalies flagged.
+          <div style={{ padding: '32px', textAlign: 'center', color: '#94A3B8', fontSize: '14px' }}>
+            🛡️ All transaction patterns match historical standard distribution.
           </div>
         )}
       </div>

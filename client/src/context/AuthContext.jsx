@@ -33,14 +33,23 @@ export const AuthProvider = ({ children }) => {
     loadUser();
   }, [token]);
 
+  const saveAuthTokens = (data) => {
+    if (data.token) {
+      localStorage.setItem('token', data.token);
+      setToken(data.token);
+    }
+    if (data.refreshToken) {
+      localStorage.setItem('refreshToken', data.refreshToken);
+    }
+    setUser(data);
+  };
+
   const login = async (email, password) => {
     const data = await apiFetch('/auth/login', {
       method: 'POST',
       body: JSON.stringify({ email, password }),
     });
-    localStorage.setItem('token', data.token);
-    setToken(data.token);
-    setUser(data);
+    saveAuthTokens(data);
     return data;
   };
 
@@ -49,9 +58,7 @@ export const AuthProvider = ({ children }) => {
       method: 'POST',
       body: JSON.stringify({ name, email, password, preferredCurrency }),
     });
-    localStorage.setItem('token', data.token);
-    setToken(data.token);
-    setUser(data);
+    saveAuthTokens(data);
     return data;
   };
 
@@ -60,20 +67,54 @@ export const AuthProvider = ({ children }) => {
       method: 'POST',
       body: JSON.stringify({ forceRefresh: false }),
     });
-    localStorage.setItem('token', data.token);
-    setToken(data.token);
-    setUser(data);
+    saveAuthTokens(data);
     return data;
   };
 
-  const logout = () => {
+  const logout = async () => {
+    const refreshToken = localStorage.getItem('refreshToken');
+    if (refreshToken) {
+      try {
+        await apiFetch('/auth/logout', {
+          method: 'POST',
+          body: JSON.stringify({ refreshToken }),
+        });
+      } catch (e) {
+        // Ignore network errors on logout
+      }
+    }
     localStorage.removeItem('token');
+    localStorage.removeItem('refreshToken');
     setToken(null);
     setUser(null);
   };
 
+  const refreshUser = async () => {
+    if (token) {
+      try {
+        const userData = await apiFetch('/auth/me');
+        setUser(userData);
+        return userData;
+      } catch (err) {
+        console.error('Failed to refresh user:', err);
+      }
+    }
+    return null;
+  };
+
+  const updateUserProfile = async (updates) => {
+    const data = await apiFetch('/users/profile', {
+      method: 'PUT',
+      body: JSON.stringify(updates),
+    });
+    if (data.user) {
+      setUser((prev) => ({ ...prev, ...data.user }));
+    }
+    return data;
+  };
+
   return (
-    <AuthContext.Provider value={{ user, token, loading, login, register, loginDemo, logout }}>
+    <AuthContext.Provider value={{ user, setUser, token, loading, login, register, loginDemo, logout, refreshUser, updateUserProfile }}>
       {children}
     </AuthContext.Provider>
   );

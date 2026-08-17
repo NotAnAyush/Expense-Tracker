@@ -1,4 +1,6 @@
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = (typeof window !== 'undefined' && window.location.hostname === 'localhost' && window.location.port === '5173')
+  ? '/api'
+  : (import.meta.env?.VITE_API_URL || 'http://localhost:5000/api');
 
 export const getLocalDateString = (date = new Date()) => {
   const d = new Date(date);
@@ -18,24 +20,80 @@ export const apiFetch = async (endpoint, options = {}) => {
     ...options.headers,
   };
 
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-    ...options,
-    headers,
-  });
+  try {
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+      ...options,
+      headers,
+    });
 
-  const data = await response.json().catch(() => ({}));
+    const data = await response.json().catch(() => ({}));
 
-  if (!response.ok) {
-    if (response.status === 401) {
-      // Trigger global session expired event
+    // If 401 Unauthorized and not already retried or calling auth endpoints, attempt token refresh
+    if (response.status === 401 && !options._retry && !endpoint.includes('/auth/')) {
+      const storedRefreshToken = localStorage.getItem('refreshToken');
+
+      if (storedRefreshToken) {
+        try {
+          const refreshRes = await fetch(`${API_BASE_URL}/auth/refresh`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ refreshToken: storedRefreshToken }),
+          });
+
+          if (refreshRes.ok) {
+            const refreshData = await refreshRes.json();
+            localStorage.setItem('token', refreshData.token);
+            if (refreshData.refreshToken) {
+              localStorage.setItem('refreshToken', refreshData.refreshToken);
+            }
+
+            // Retry the original failed request with the new access token
+            return apiFetch(endpoint, {
+              ...options,
+              _retry: true,
+              headers: {
+                ...options.headers,
+                Authorization: `Bearer ${refreshData.token}`,
+              },
+            });
+          }
+        } catch (refreshErr) {
+          console.error('[Auth Refresh Error]', refreshErr);
+        }
+      }
+
+      // If refresh failed or no refresh token, trigger global logout
+      localStorage.removeItem('token');
+      localStorage.removeItem('refreshToken');
       window.dispatchEvent(new CustomEvent('auth:unauthorized'));
     }
-    const error = new Error(data.message || 'API request failed');
-    error.status = response.status;
-    error.data = data;
+
+    if (!response.ok) {
+      let errorMessage = 'API request failed';
+      if (data.error?.details && Array.isArray(data.error.details) && data.error.details.length > 0) {
+        errorMessage = data.error.details.map((d) => d.message).join(' • ');
+      } else if (data.message) {
+        errorMessage = data.message;
+      } else if (data.error?.message) {
+        errorMessage = data.error.message;
+      } else if (response.status === 429) {
+        errorMessage = 'Too many requests. Please wait a moment before trying again.';
+      } else if (response.status === 500) {
+        errorMessage = 'Internal server error. Please try again.';
+      }
+
+      const error = new Error(errorMessage);
+      error.status = response.status;
+      error.data = data;
+      throw error;
+    }
+
+    return data;
+  } catch (error) {
+    if (error.name === 'TypeError' && String(error.message).toLowerCase().includes('fetch')) {
+      error.message = 'Unable to connect to backend server. Please verify the server is running on port 5000.';
+    }
     throw error;
   }
-
-  return data;
 };
 
