@@ -859,14 +859,116 @@ body::before {
   }
 }
 
-@media (max-width: 900px) {
-  .main-content {
-    padding: 20px 16px 48px 16px;
-  }
-  .display-xl {
-    font-size: 30px;
-  }
-  .grid-kpi {
-    grid-template-columns: 1fr;
+/* ==========================================================================
+   Universal Form Input Styles
+   ========================================================================== */
+.input-field {
+  width: 100%;
+  height: 44px;
+  padding: 0 16px;
+  background: rgba(12, 17, 28, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-main);
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  outline: none;
+  box-sizing: border-box;
+  transition: var(--transition);
+}
+
+.input-field:focus {
+  border-color: var(--color-mint);
+  background: rgba(18, 25, 42, 0.95);
+  box-shadow: 0 0 0 3px rgba(0, 255, 135, 0.2), 0 0 16px rgba(0, 255, 135, 0.12);
+}
+
+.input-field::placeholder {
+  color: var(--color-text-subtle);
+  font-size: 13px;
+}
+
+.input-field:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: rgba(8, 11, 18, 0.7);
+}
+
+textarea.input-field {
+  height: auto;
+  min-height: 80px;
+  padding: 12px 16px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+select.input-field, .select-field {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 15px;
+  padding-right: 40px;
+  cursor: pointer;
+}
+
+select.input-field option {
+  background: #0D121F;
+  color: #F1F5F9;
+  padding: 8px 12px;
+}
+
+.form-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  margin-bottom: 6px;
+  letter-spacing: 0.2px;
+}
+
+/* ==========================================================================
+   Profile Hub Layout Grid
+   ========================================================================== */
+.profile-layout-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 24px;
+  align-items: start;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 1280px) {
+  .profile-layout-grid {
+    grid-template-columns: minmax(0, 1fr) 290px;
+    gap: 18px;
   }
 }
+
+@media (max-width: 1024px) {
+  .profile-layout-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+/* ==========================================================================
+   Privacy Shield Mask Mode Utility
+   ========================================================================== */
+.privacy-masked {
+  filter: blur(8px) !important;
+  user-select: none !important;
+  pointer-events: none !important;
+  transition: filter 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.privacy-masked:hover {
+  filter: blur(0px) !important;
+  user-select: auto !important;
+  pointer-events: auto !important;
+}
+
+
+

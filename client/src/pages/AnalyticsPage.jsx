@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Sparkles, TrendingUp, TrendingDown, ArrowUpRight, ShieldCheck, Flame, PieChart, Award } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { apiFetch } from '../api/client';
+import { FinancialHealthCard } from '../components/Dashboard/FinancialHealthCard';
 
 export const AnalyticsPage = () => {
   const [analytics, setAnalytics] = useState(null);
@@ -31,7 +32,7 @@ export const AnalyticsPage = () => {
     );
   }
 
-  const { monthlyComparison, spendingVelocity, categoryBreakdown, monthlySummary } = analytics;
+  const { monthlyComparison, categoryBreakdown, anomalies, financialHealth } = data;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
@@ -42,29 +43,28 @@ export const AnalyticsPage = () => {
         </p>
       </div>
 
-      {/* Top 3 Trajectory Cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px' }}>
-        {/* Month over Month Delta Card */}
-        <div className="glass-card" style={{ padding: '24px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
-            <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--color-text-muted)' }}>Month-over-Month Delta</span>
-            <span
-              style={{
-                padding: '3px 8px',
-                borderRadius: '8px',
-                fontSize: '12px',
-                fontWeight: 700,
-                background: monthlyComparison.isIncrease ? 'rgba(245, 158, 11, 0.15)' : 'rgba(16, 185, 129, 0.15)',
-                border: `1px solid ${monthlyComparison.isIncrease ? 'rgba(245, 158, 11, 0.35)' : 'rgba(16, 185, 129, 0.35)'}`,
-                color: monthlyComparison.isIncrease ? '#FBBF24' : '#00FF87',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '4px',
-              }}
-            >
-              {monthlyComparison.isIncrease ? <TrendingUp size={13} /> : <TrendingDown size={13} />}
-              {monthlyComparison.changePercent}%
-            </span>
+      {/* Financial Health Index 5-Pillar Scorecard */}
+      {financialHealth && (
+        <FinancialHealthCard healthData={financialHealth} />
+      )}
+
+      {/* AI Spending Explanation Banner */}
+      {explanation && (
+        <motion.div
+          whileHover={{ scale: 1.01 }}
+          className="glass-card"
+          style={{
+            padding: '24px 28px',
+            background: 'linear-gradient(135deg, rgba(121, 40, 202, 0.2) 0%, rgba(10, 13, 20, 0.85) 100%)',
+            border: '1px solid rgba(121, 40, 202, 0.35)',
+            boxShadow: 'var(--shadow-glow-violet)',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
+            <Sparkles size={20} color="#00FF87" />
+            <h3 className="heading-lg" style={{ color: '#F1F5F9' }}>
+              "Why Did My Spending Change?" AI Rationale
+            </h3>
           </div>
 
           <div className="font-display" style={{ fontSize: '28px', fontWeight: 800, color: 'var(--color-text-main)', marginBottom: '8px' }}>

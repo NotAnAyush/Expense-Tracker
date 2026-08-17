@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>/ — graphify tree viewer</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f9f9f9;
+      color: #333;
+    }
+    h1 {
+      margin: 20px 0 0 24px;
+      font-size: 2.2rem;
+      font-weight: bold;
+      color: #1e3a56;
+    }
+    .controls {
+      margin: 20px 0 15px 24px;
+    }
+    button {
+      margin-right: 10px;
+      padding: 8px 18px;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: background 0.2s ease-in-out;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    button:active {
+      background: #004085;
+    }
+    #tree-container {
+      width: calc(100vw - 48px); /* Adjust for body margin/padding */
+      height: 85vh;
+      overflow: auto;
+      border-radius: 8px;
+      background: #fff;
+      margin-left: 24px;
+      margin-right: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      border: 1px solid #ddd;
+    }
+    svg {
+      background: #fff;
+      border-radius: 8px;
+      display: block; /* Important for D3 */
+    }
+    .node circle {
+      stroke-width: 2.5px;
+    }
+    .node text { /* Base style for the <text> container */
+      font: 13px 'Segoe UI', sans-serif;
+      paint-order: stroke fill; /* Ensures text is readable over lines */
+      stroke: #fff; /* White halo */
+      stroke-width: 3px; /* Halo thickness */
+      stroke-linejoin: round;
+      stroke-opacity: 0.85; /* Halo opacity */
+    }
+    .link {
+      fill: none;
+      stroke-opacity: 0.7;
+      stroke-width: 2px;
+    }
+  </style>
+</head>
+<body>
+  <h1>/ — Knowledge Graph</h1>
+  <div class="controls">
+    <button onclick="expandAll()">Expand All</button>
+    <button onclick="collapseAll()">Collapse All</button>
+    <button onclick="resetView()">Reset View</button>
+  </div>
+  <div id="tree-container">
+    <svg id="tree-svg" width="6000" height="8000"></svg>
+  </div>
+
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script>
+    const initialJsonData = {"name":"/","total_count":445,"children":[{"name":".agents","total_count":2,"children":[{"name":"rules","total_count":2,"children":[{"name":"codebase-standards.md","total_count":1,"children":[{"name":"Codebase Standards & Architecture Constraints","total_count":1,"children":[]}]},{"name":"graphify.md","total_count":1,"children":[{"name":"Graphify Knowledge Graph Rule","total_count":1,"children":[]}]}]}]},{"name":"client","total_count":51,"children":[{"name":"package.json","total_count":28,"children":[{"name":"@types/react","total_count":1,"children":[]},{"name":"@types/react","total_count":1,"children":[]},{"name":"@types/react-dom","total_count":1,"children":[]},{"name":"@types/react-dom","total_count":1,"children":[]},{"name":"@vitejs/plugin-react","total_count":1,"children":[]},{"name":"@vitejs/plugin-react","total_count":1,"children":[]},{"name":"build","total_count":1,"children":[]},{"name":"dependencies","total_count":1,"children":[]},{"name":"dev","total_count":1,"children":[]},{"name":"devDependencies","total_count":1,"children":[]},{"name":"framer-motion","total_count":1,"children":[]},{"name":"framer-motion","total_count":1,"children":[]},{"name":"lucide-react","total_count":1,"children":[]},{"name":"lucide-react","total_count":1,"children":[]},{"name":"name","total_count":1,"children":[]},{"name":"preview","total_count":1,"children":[]},{"name":"private","total_count":1,"children":[]},{"name":"react","total_count":1,"children":[]},{"name":"react","total_count":1,"children":[]},{"name":"react-dom","total_count":1,"children":[]},{"name":"react-dom","total_count":1,"children":[]},{"name":"recharts","total_count":1,"children":[]},{"name":"recharts","total_count":1,"children":[]},{"name":"scripts","total_count":1,"children":[]},{"name":"type","total_count":1,"children":[]},{"name":"version","total_count":1,"children":[]},{"name":"vite","total_count":1,"children":[]},{"name":"vite","total_count":1,"children":[]}]},{"name":"src","total_count":22,"children":[{"name":"api","total_count":2,"children":[{"name":"client.js","total_count":2,"children":[{"name":"apiFetch()","total_count":1,"children":[]},{"name":"getLocalDateString()","total_count":1,"children":[]}]}]},{"name":"App.jsx","total_count":2,"children":[{"name":"App()","total_count":1,"children":[]},{"name":"MainApp()","total_count":1,"children":[]}]},{"name":"components","total_count":5,"children":[{"name":"Copilot","total_count":1,"children":[{"name":"CopilotDrawer.jsx","total_count":1,"children":[{"name":"CopilotDrawer()","total_count":1,"children":[]}]}]},{"name":"Expenses","total_count":1,"children":[{"name":"ExpenseFormModal.jsx","total_count":1,"children":[{"name":"ExpenseFormModal()","total_count":1,"children":[]}]}]},{"name":"Shell","total_count":2,"children":[{"name":"Header.jsx","total_count":1,"children":[{"name":"Header()","total_count":1,"children":[]}]},{"name":"Sidebar.jsx","total_count":1,"children":[{"name":"Sidebar()","total_count":1,"children":[]}]}]},{"name":"UI","total_count":1,"children":[{"name":"PinCard.jsx","total_count":1,"children":[{"name":"PinCard()","total_count":1,"children":[]}]}]}]},{"name":"context","total_count":3,"children":[{"name":"AuthContext.jsx","total_count":3,"children":[{"name":"AuthContext","total_count":1,"children":[]},{"name":"AuthProvider()","total_count":1,"children":[]},{"name":"useAuth()","total_count":1,"children":[]}]}]},{"name":"pages","total_count":9,"children":[{"name":"AnalyticsPage.jsx","total_count":1,"children":[{"name":"AnalyticsPage()","total_count":1,"children":[]}]},{"name":"AuthPage.jsx","total_count":1,"children":[{"name":"AuthPage()","total_count":1,"children":[]}]},{"name":"BudgetsPage.jsx","total_count":1,"children":[{"name":"BudgetsPage()","total_count":1,"children":[]}]},{"name":"DashboardPage.jsx","total_count":3,"children":[{"name":"CATEGORY_META","total_count":1,"children":[]},{"name":"DashboardPage()","total_count":1,"children":[]},{"name":"DEFAULT_COLORS","total_count":1,"children":[]}]},{"name":"ExpensesPage.jsx","total_count":1,"children":[{"name":"ExpensesPage()","total_count":1,"children":[]}]},{"name":"GoalsPage.jsx","total_count":1,"children":[{"name":"GoalsPage()","total_count":1,"children":[]}]},{"name":"RecurringPage.jsx","total_count":1,"children":[{"name":"RecurringPage()","total_count":1,"children":[]}]}]},{"name":"main.jsx","total_count":1,"children":[]}]},{"name":"vite.config.js","total_count":1,"children":[]}]},{"name":"Design","total_count":1,"children":[{"name":"pinterest","total_count":1,"children":[{"name":"DESIGN.md","total_count":1,"children":[{"name":"Pinterest Style UI & Masonry Design System","total_count":1,"children":[]}]}]}]},{"name":"design-system","total_count":1,"children":[{"name":"expense-tracker","total_count":1,"children":[{"name":"MASTER.md","total_count":1,"children":[{"name":"Design System Master Tokens & Styling Guide","total_count":1,"children":[]}]}]}]},{"name":"Documentation","total_count":1,"children":[{"name":"BACKEND.md","total_count":1,"children":[{"name":"Backend Architecture & API Specs","total_count":1,"children":[]}]}]},{"name":"package.json","total_count":26,"children":[{"name":"ai-copilot","total_count":1,"children":[]},{"name":"author","total_count":1,"children":[]},{"name":"build","total_count":1,"children":[]},{"name":"build:client","total_count":1,"children":[]},{"name":"description","total_count":1,"children":[]},{"name":"dev:client","total_count":1,"children":[]},{"name":"dev:server","total_count":1,"children":[]},{"name":"expense-tracker","total_count":1,"children":[]},{"name":"express","total_count":1,"children":[]},{"name":"gemini","total_count":1,"children":[]},{"name":"install:all","total_count":1,"children":[]},{"name":"install:ci","total_count":1,"children":[]},{"name":"keywords","total_count":1,"children":[]},{"name":"license","total_count":1,"children":[]},{"name":"mongodb","total_count":1,"children":[]},{"name":"name","total_count":1,"children":[]},{"name":"nodejs","total_count":1,"children":[]},{"name":"personal-finance","total_count":1,"children":[]},{"name":"private","total_count":1,"children":[]},{"name":"react","total_count":1,"children":[]},{"name":"scripts","total_count":1,"children":[]},{"name":"setup","total_count":1,"children":[]},{"name":"setup:hooks","total_count":1,"children":[]},{"name":"test","total_count":1,"children":[]},{"name":"test:server","total_count":1,"children":[]},{"name":"version","total_count":1,"children":[]}]},{"name":"Plan","total_count":1,"children":[{"name":"Revised Master Antigravity Prompt \u2014 AI-First Personal Finance Intelligence Platform.md","total_count":1,"children":[{"name":"AI-First Personal Finance Intelligence Platform Plan","total_count":1,"children":[]}]}]},{"name":"scripts","total_count":6,"children":[{"name":"setup-git-hooks.cjs","total_count":6,"children":[{"name":"fs","total_count":1,"children":[]},{"name":"gitDir","total_count":1,"children":[]},{"name":"hooksDir","total_count":1,"children":[]},{"name":"path","total_count":1,"children":[]},{"name":"postMergeFile","total_count":1,"children":[]},{"name":"repoRoot","total_count":1,"children":[]}]}]},{"name":"server","total_count":354,"children":[{"name":"package.json","total_count":43,"children":[{"name":"@google/generative-ai","total_count":1,"children":[]},{"name":"@google/generative-ai","total_count":1,"children":[]},{"name":"bcryptjs","total_count":1,"children":[]},{"name":"bcryptjs","total_count":1,"children":[]},{"name":"compression","total_count":1,"children":[]},{"name":"compression","total_count":1,"children":[]},{"name":"cors","total_count":1,"children":[]},{"name":"cors","total_count":1,"children":[]},{"name":"dependencies","total_count":1,"children":[]},{"name":"description","total_count":1,"children":[]},{"name":"dev","total_count":1,"children":[]},{"name":"devDependencies","total_count":1,"children":[]},{"name":"dotenv","total_count":1,"children":[]},{"name":"dotenv","total_count":1,"children":[]},{"name":"express","total_count":1,"children":[]},{"name":"express","total_count":1,"children":[]},{"name":"express-rate-limit","total_count":1,"children":[]},{"name":"express-rate-limit","total_count":1,"children":[]},{"name":"express-validator","total_count":1,"children":[]},{"name":"express-validator","total_count":1,"children":[]},{"name":"helmet","total_count":1,"children":[]},{"name":"helmet","total_count":1,"children":[]},{"name":"jest","total_count":1,"children":[]},{"name":"jest","total_count":1,"children":[]},{"name":"joi","total_count":1,"children":[]},{"name":"joi","total_count":1,"children":[]},{"name":"jsonwebtoken","total_count":1,"children":[]},{"name":"jsonwebtoken","total_count":1,"children":[]},{"name":"main","total_count":1,"children":[]},{"name":"mongodb-memory-server","total_count":1,"children":[]},{"name":"mongodb-memory-server","total_count":1,"children":[]},{"name":"mongoose","total_count":1,"children":[]},{"name":"mongoose","total_count":1,"children":[]},{"name":"name","total_count":1,"children":[]},{"name":"nodemon","total_count":1,"children":[]},{"name":"nodemon","total_count":1,"children":[]},{"name":"scripts","total_count":1,"children":[]},{"name":"start","total_count":1,"children":[]},{"name":"supertest","total_count":1,"children":[]},{"name":"supertest","total_count":1,"children":[]},{"name":"test","total_count":1,"children":[]},{"name":"type","total_count":1,"children":[]},{"name":"version","total_count":1,"children":[]}]},{"name":"src","total_count":258,"children":[{"name":"config","total_count":4,"children":[{"name":"db.js","total_count":4,"children":[{"name":"closeDatabase()","total_count":1,"children":[]},{"name":"connectDB()","total_count":1,"children":[]},{"name":"mongoose","total_count":1,"children":[]},{"name":"mongooseOptions","total_count":1,"children":[]}]}]},{"name":"controllers","total_count":40,"children":[{"name":"aiController.js","total_count":3,"children":[{"name":"AIService","total_count":1,"children":[]},{"name":"asyncHandler","total_count":1,"children":[]},{"name":"{ BadRequestError }","total_count":1,"children":[]}]},{"name":"analyticsController.js","total_count":2,"children":[{"name":"AnalyticsService","total_count":1,"children":[]},{"name":"asyncHandler","total_count":1,"children":[]}]},{"name":"auditController.js","total_count":2,"children":[{"name":"asyncHandler","total_count":1,"children":[]},{"name":"AuditLog","total_count":1,"children":[]}]},{"name":"authController.js","total_count":14,"children":[{"name":"asyncHandler","total_count":1,"children":[]},{"name":"bcrypt","total_count":1,"children":[]},{"name":"Budget","total_count":1,"children":[]},{"name":"Category","total_count":1,"children":[]},{"name":"createRefreshToken()","total_count":1,"children":[]},{"name":"crypto","total_count":1,"children":[]},{"name":"Expense","total_count":1,"children":[]},{"name":"generateAccessToken()","total_count":1,"children":[]},{"name":"Goal","total_count":1,"children":[]},{"name":"jwt","total_count":1,"children":[]},{"name":"RecurringExpense","total_count":1,"children":[]},{"name":"RefreshToken","total_count":1,"children":[]},{"name":"User","total_count":1,"children":[]},{"name":"{ BadRequestError, UnauthorizedError }","total_count":1,"children":[]}]},{"name":"budgetController.js","total_count":3,"children":[{"name":"asyncHandler","total_count":1,"children":[]},{"name":"Budget","total_count":1,"children":[]},{"name":"{ NotFoundError, BadRequestError }","total_count":1,"children":[]}]},{"name":"categoryController.js","total_count":3,"children":[{"name":"asyncHandler","total_count":1,"children":[]},{"name":"Category","total_count":1,"children":[]},{"name":"{ BadRequestError, ConflictError }","total_count":1,"children":[]}]},{"name":"expenseController.js","total_count":3,"children":[{"name":"asyncHandler","total_count":1,"children":[]},{"name":"Expense","total_count":1,"children":[]},{"name":"{ NotFoundError, BadRequestError }","total_count":1,"children":[]}]},{"name":"exportController.js","total_count":3,"children":[{"name":"asyncHandler","total_count":1,"children":[]},{"name":"escapeCsvField()","total_count":1,"children":[]},{"name":"Expense","total_count":1,"children":[]}]},{"name":"goalController.js","total_count":3,"children":[{"name":"asyncHandler","total_count":1,"children":[]},{"name":"Goal","total_count":1,"children":[]},{"name":"{ NotFoundError, BadRequestError }","total_count":1,"children":[]}]},{"name":"recurringController.js","total_count":4,"children":[{"name":"asyncHandler","total_count":1,"children":[]},{"name":"Expense","total_count":1,"children":[]},{"name":"RecurringExpense","total_count":1,"children":[]},{"name":"{ NotFoundError, BadRequestError }","total_count":1,"children":[]}]}]},{"name":"middleware","total_count":25,"children":[{"name":"auditLogger.js","total_count":5,"children":[{"name":"AuditLog","total_count":1,"children":[]},{"name":"auditLogger()","total_count":1,"children":[]},{"name":"redactBody()","total_count":1,"children":[]},{"name":"REDACTED_FIELDS","total_count":1,"children":[]},{"name":"resolveAction()","total_count":1,"children":[]}]},{"name":"auth.js","total_count":3,"children":[{"name":"jwt","total_count":1,"children":[]},{"name":"protect()","total_count":1,"children":[]},{"name":"User","total_count":1,"children":[]}]},{"name":"errorHandler.js","total_count":2,"children":[{"name":"errorHandler()","total_count":1,"children":[]},{"name":"{ AppError }","total_count":1,"children":[]}]},{"name":"idempotency.js","total_count":3,"children":[{"name":"cleanupTimer","total_count":1,"children":[]},{"name":"idempotency()","total_count":1,"children":[]},{"name":"idempotencyCache","total_count":1,"children":[]}]},{"name":"rateLimiter.js","total_count":7,"children":[{"name":"aiLimiter","total_count":1,"children":[]},{"name":"authLimiter","total_count":1,"children":[]},{"name":"demoLimiter","total_count":1,"children":[]},{"name":"globalLimiter","total_count":1,"children":[]},{"name":"isTestEnv()","total_count":1,"children":[]},{"name":"rateLimit","total_count":1,"children":[]},{"name":"shouldSkip()","total_count":1,"children":[]}]},{"name":"requestLogger.js","total_count":1,"children":[{"name":"requestLogger()","total_count":1,"children":[]}]},{"name":"sanitize.js","total_count":2,"children":[{"name":"sanitizeInput()","total_count":1,"children":[]},{"name":"sanitizeValue()","total_count":1,"children":[]}]},{"name":"validate.js","total_count":2,"children":[{"name":"AppError","total_count":1,"children":[]},{"name":"validate()","total_count":1,"children":[]}]}]},{"name":"models","total_count":17,"children":[{"name":"AuditLog.js","total_count":3,"children":[{"name":"AUDIT_TTL_DAYS","total_count":1,"children":[]},{"name":"auditLogSchema","total_count":1,"children":[]},{"name":"mongoose","total_count":1,"children":[]}]},{"name":"Budget.js","total_count":2,"children":[{"name":"budgetSchema","total_count":1,"children":[]},{"name":"mongoose","total_count":1,"children":[]}]},{"name":"Category.js","total_count":2,"children":[{"name":"categorySchema","total_count":1,"children":[]},{"name":"mongoose","total_count":1,"children":[]}]},{"name":"Expense.js","total_count":2,"children":[{"name":"expenseSchema","total_count":1,"children":[]},{"name":"mongoose","total_count":1,"children":[]}]},{"name":"Goal.js","total_count":2,"children":[{"name":"goalSchema","total_count":1,"children":[]},{"name":"mongoose","total_count":1,"children":[]}]},{"name":"RecurringExpense.js","total_count":2,"children":[{"name":"mongoose","total_count":1,"children":[]},{"name":"recurringExpenseSchema","total_count":1,"children":[]}]},{"name":"RefreshToken.js","total_count":2,"children":[{"name":"mongoose","total_count":1,"children":[]},{"name":"refreshTokenSchema","total_count":1,"children":[]}]},{"name":"User.js","total_count":2,"children":[{"name":"mongoose","total_count":1,"children":[]},{"name":"userSchema","total_count":1,"children":[]}]}]},{"name":"routes","total_count":51,"children":[{"name":"aiRoutes.js","total_count":4,"children":[{"name":"express","total_count":1,"children":[]},{"name":"router","total_count":1,"children":[]},{"name":"{\n  suggestCategory,\n  getMonthlySummaryAI,\n  getSpendingExplanation,\n  copilotChat,\n  getInsights,\n}","total_count":1,"children":[]},{"name":"{ protect }","total_count":1,"children":[]}]},{"name":"analyticsRoutes.js","total_count":4,"children":[{"name":"express","total_count":1,"children":[]},{"name":"router","total_count":1,"children":[]},{"name":"{ getAnalyticsOverview }","total_count":1,"children":[]},{"name":"{ protect }","total_count":1,"children":[]}]},{"name":"auditRoutes.js","total_count":4,"children":[{"name":"express","total_count":1,"children":[]},{"name":"router","total_count":1,"children":[]},{"name":"{ getAuditLogs }","total_count":1,"children":[]},{"name":"{ protect }","total_count":1,"children":[]}]},{"name":"authRoutes.js","total_count":7,"children":[{"name":"express","total_count":1,"children":[]},{"name":"router","total_count":1,"children":[]},{"name":"validate","total_count":1,"children":[]},{"name":"{\n  registerUser,\n  loginUser,\n  getMe,\n  seedDemoAccount,\n  refreshToken,\n  logoutUser,\n}","total_count":1,"children":[]},{"name":"{ authLimiter, demoLimiter }","total_count":1,"children":[]},{"name":"{ protect }","total_count":1,"children":[]},{"name":"{ registerSchema, loginSchema, refreshTokenSchema }","total_count":1,"children":[]}]},{"name":"budgetRoutes.js","total_count":6,"children":[{"name":"express","total_count":1,"children":[]},{"name":"router","total_count":1,"children":[]},{"name":"validate","total_count":1,"children":[]},{"name":"{\n  getBudgets,\n  createBudget,\n  updateBudget,\n  deleteBudget,\n}","total_count":1,"children":[]},{"name":"{ createBudgetSchema, updateBudgetSchema }","total_count":1,"children":[]},{"name":"{ protect }","total_count":1,"children":[]}]},{"name":"categoryRoutes.js","total_count":4,"children":[{"name":"express","total_count":1,"children":[]},{"name":"router","total_count":1,"children":[]},{"name":"{ getCategories, createCategory }","total_count":1,"children":[]},{"name":"{ protect }","total_count":1,"children":[]}]},{"name":"expenseRoutes.js","total_count":6,"children":[{"name":"express","total_count":1,"children":[]},{"name":"router","total_count":1,"children":[]},{"name":"validate","total_count":1,"children":[]},{"name":"{\n  getExpenses,\n  getExpenseById,\n  createExpense,\n  updateExpense,\n  deleteExpense,\n  getExpenseSummary,\n}","total_count":1,"children":[]},{"name":"{ createExpenseSchema, updateExpenseSchema }","total_count":1,"children":[]},{"name":"{ protect }","total_count":1,"children":[]}]},{"name":"exportRoutes.js","total_count":4,"children":[{"name":"express","total_count":1,"children":[]},{"name":"router","total_count":1,"children":[]},{"name":"{ exportExpenses }","total_count":1,"children":[]},{"name":"{ protect }","total_count":1,"children":[]}]},{"name":"goalRoutes.js","total_count":6,"children":[{"name":"express","total_count":1,"children":[]},{"name":"router","total_count":1,"children":[]},{"name":"validate","total_count":1,"children":[]},{"name":"{\n  getGoals,\n  createGoal,\n  updateGoal,\n  deleteGoal,\n}","total_count":1,"children":[]},{"name":"{ createGoalSchema, updateGoalSchema }","total_count":1,"children":[]},{"name":"{ protect }","total_count":1,"children":[]}]},{"name":"recurringRoutes.js","total_count":6,"children":[{"name":"express","total_count":1,"children":[]},{"name":"router","total_count":1,"children":[]},{"name":"validate","total_count":1,"children":[]},{"name":"{\n  getRecurringExpenses,\n  createRecurringExpense,\n  updateRecurringExpense,\n  deleteRecurringExpense,\n  getRecurringHistory,\n  recordRecurringPayment,\n}","total_count":1,"children":[]},{"name":"{ createRecurringSchema, updateRecurringSchema }","total_count":1,"children":[]},{"name":"{ protect }","total_count":1,"children":[]}]}]},{"name":"server.js","total_count":27,"children":[{"name":"aiRoutes","total_count":1,"children":[]},{"name":"analyticsRoutes","total_count":1,"children":[]},{"name":"app","total_count":1,"children":[]},{"name":"auditLogger","total_count":1,"children":[]},{"name":"auditRoutes","total_count":1,"children":[]},{"name":"authRoutes","total_count":1,"children":[]},{"name":"budgetRoutes","total_count":1,"children":[]},{"name":"categoryRoutes","total_count":1,"children":[]},{"name":"compression","total_count":1,"children":[]},{"name":"configuredOrigins","total_count":1,"children":[]},{"name":"cors","total_count":1,"children":[]},{"name":"dotenv","total_count":1,"children":[]},{"name":"errorHandler","total_count":1,"children":[]},{"name":"expenseRoutes","total_count":1,"children":[]},{"name":"exportRoutes","total_count":1,"children":[]},{"name":"express","total_count":1,"children":[]},{"name":"getHealthStatus()","total_count":1,"children":[]},{"name":"goalRoutes","total_count":1,"children":[]},{"name":"helmet","total_count":1,"children":[]},{"name":"idempotency","total_count":1,"children":[]},{"name":"mongoose","total_count":1,"children":[]},{"name":"recurringRoutes","total_count":1,"children":[]},{"name":"requestLogger","total_count":1,"children":[]},{"name":"sanitizeInput","total_count":1,"children":[]},{"name":"{ connectDB, closeDatabase }","total_count":1,"children":[]},{"name":"{ globalLimiter, aiLimiter }","total_count":1,"children":[]},{"name":"{ NotFoundError }","total_count":1,"children":[]}]},{"name":"services","total_count":45,"children":[{"name":"ai","total_count":24,"children":[{"name":"aiService.js","total_count":13,"children":[{"name":".copilotChat()","total_count":1,"children":[]},{"name":".getInsights()","total_count":1,"children":[]},{"name":".getMonthlySummaryAI()","total_count":1,"children":[]},{"name":".getSpendingExplanation()","total_count":1,"children":[]},{"name":".suggestCategory()","total_count":1,"children":[]},{"name":"AIService","total_count":1,"children":[]},{"name":"AnalyticsService","total_count":1,"children":[]},{"name":"Category","total_count":1,"children":[]},{"name":"ContextBuilder","total_count":1,"children":[]},{"name":"IntentRouter","total_count":1,"children":[]},{"name":"sanitizeUserText()","total_count":1,"children":[]},{"name":"ToolRegistry","total_count":1,"children":[]},{"name":"{ getGeminiModel, isAvailable }","total_count":1,"children":[]}]},{"name":"contextBuilder.js","total_count":3,"children":[{"name":".buildFinancialContext()","total_count":1,"children":[]},{"name":"AnalyticsService","total_count":1,"children":[]},{"name":"ContextBuilder","total_count":1,"children":[]}]},{"name":"geminiClient.js","total_count":2,"children":[{"name":"getGeminiModel()","total_count":1,"children":[]},{"name":"{ GoogleGenerativeAI }","total_count":1,"children":[]}]},{"name":"intentRouter.js","total_count":2,"children":[{"name":".classifyIntent()","total_count":1,"children":[]},{"name":"IntentRouter","total_count":1,"children":[]}]},{"name":"toolRegistry.js","total_count":4,"children":[{"name":".executeTool()","total_count":1,"children":[]},{"name":"AnalyticsService","total_count":1,"children":[]},{"name":"Expense","total_count":1,"children":[]},{"name":"ToolRegistry","total_count":1,"children":[]}]}]},{"name":"analytics","total_count":21,"children":[{"name":"analyticsService.js","total_count":15,"children":[{"name":".getAnomalies()","total_count":1,"children":[]},{"name":".getBudgetUtilization()","total_count":1,"children":[]},{"name":".getCategoryBreakdown()","total_count":1,"children":[]},{"name":".getGoalProgress()","total_count":1,"children":[]},{"name":".getMerchantSummary()","total_count":1,"children":[]},{"name":".getMonthlyComparison()","total_count":1,"children":[]},{"name":".getMonthlySummary()","total_count":1,"children":[]},{"name":".getRecurringExpenseSummary()","total_count":1,"children":[]},{"name":".getSpendingVelocity()","total_count":1,"children":[]},{"name":"AnalyticsService","total_count":1,"children":[]},{"name":"Budget","total_count":1,"children":[]},{"name":"Expense","total_count":1,"children":[]},{"name":"Goal","total_count":1,"children":[]},{"name":"mongoose","total_count":1,"children":[]},{"name":"RecurringExpense","total_count":1,"children":[]}]},{"name":"trendService.js","total_count":6,"children":[{"name":".getCategoryHeatmap()","total_count":1,"children":[]},{"name":".getDailyPattern()","total_count":1,"children":[]},{"name":".getMerchantFrequency()","total_count":1,"children":[]},{"name":".getWeeklyTrend()","total_count":1,"children":[]},{"name":"Expense","total_count":1,"children":[]},{"name":"TrendService","total_count":1,"children":[]}]}]}]},{"name":"utils","total_count":30,"children":[{"name":"AppError.js","total_count":1,"children":[{"name":"{\n  AppError,\n  ValidationError,\n  BadRequestError,\n  NotFoundError,\n  UnauthorizedError,\n  ForbiddenError,\n  ConflictError,\n  TooManyRequestsError,\n}","total_count":1,"children":[]}]},{"name":"asyncHandler.js","total_count":1,"children":[{"name":"asyncHandler()","total_count":1,"children":[]}]},{"name":"errors.js","total_count":24,"children":[{"name":".badRequest()","total_count":1,"children":[]},{"name":".conflict()","total_count":1,"children":[]},{"name":".constructor()","total_count":1,"children":[]},{"name":".constructor()","total_count":1,"children":[]},{"name":".constructor()","total_count":1,"children":[]},{"name":".constructor()","total_count":1,"children":[]},{"name":".constructor()","total_count":1,"children":[]},{"name":".constructor()","total_count":1,"children":[]},{"name":".constructor()","total_count":1,"children":[]},{"name":".constructor()","total_count":1,"children":[]},{"name":".forbidden()","total_count":1,"children":[]},{"name":".internal()","total_count":1,"children":[]},{"name":".notFound()","total_count":1,"children":[]},{"name":".toJSON()","total_count":1,"children":[]},{"name":".tooManyRequests()","total_count":1,"children":[]},{"name":".unauthorized()","total_count":1,"children":[]},{"name":"AppError","total_count":1,"children":[]},{"name":"BadRequestError","total_count":1,"children":[]},{"name":"ConflictError","total_count":1,"children":[]},{"name":"ForbiddenError","total_count":1,"children":[]},{"name":"NotFoundError","total_count":1,"children":[]},{"name":"TooManyRequestsError","total_count":1,"children":[]},{"name":"UnauthorizedError","total_count":1,"children":[]},{"name":"ValidationError","total_count":1,"children":[]}]},{"name":"response.js","total_count":4,"children":[{"name":".error()","total_count":1,"children":[]},{"name":".paginated()","total_count":1,"children":[]},{"name":".success()","total_count":1,"children":[]},{"name":"ApiResponse","total_count":1,"children":[]}]}]},{"name":"validators","total_count":19,"children":[{"name":"authValidator.js","total_count":4,"children":[{"name":"Joi","total_count":1,"children":[]},{"name":"loginSchema","total_count":1,"children":[]},{"name":"refreshTokenSchema","total_count":1,"children":[]},{"name":"registerSchema","total_count":1,"children":[]}]},{"name":"budgetValidator.js","total_count":3,"children":[{"name":"createBudgetSchema","total_count":1,"children":[]},{"name":"Joi","total_count":1,"children":[]},{"name":"updateBudgetSchema","total_count":1,"children":[]}]},{"name":"expenseValidator.js","total_count":5,"children":[{"name":"createExpenseSchema","total_count":1,"children":[]},{"name":"Joi","total_count":1,"children":[]},{"name":"updateExpenseSchema","total_count":1,"children":[]},{"name":"VALID_PAYMENT_METHODS","total_count":1,"children":[]},{"name":"VALID_SOURCES","total_count":1,"children":[]}]},{"name":"goalValidator.js","total_count":4,"children":[{"name":"createGoalSchema","total_count":1,"children":[]},{"name":"Joi","total_count":1,"children":[]},{"name":"updateGoalSchema","total_count":1,"children":[]},{"name":"VALID_GOAL_STATUSES","total_count":1,"children":[]}]},{"name":"recurringValidator.js","total_count":3,"children":[{"name":"createRecurringSchema","total_count":1,"children":[]},{"name":"Joi","total_count":1,"children":[]},{"name":"updateRecurringSchema","total_count":1,"children":[]}]}]}]},{"name":"tests","total_count":53,"children":[{"name":"analytics.test.js","total_count":7,"children":[{"name":"app","total_count":1,"children":[]},{"name":"Budget","total_count":1,"children":[]},{"name":"Expense","total_count":1,"children":[]},{"name":"mongoose","total_count":1,"children":[]},{"name":"request","total_count":1,"children":[]},{"name":"User","total_count":1,"children":[]},{"name":"{ MongoMemoryServer }","total_count":1,"children":[]}]},{"name":"auth.test.js","total_count":5,"children":[{"name":"app","total_count":1,"children":[]},{"name":"mongoose","total_count":1,"children":[]},{"name":"request","total_count":1,"children":[]},{"name":"User","total_count":1,"children":[]},{"name":"{ MongoMemoryServer }","total_count":1,"children":[]}]},{"name":"budgets.test.js","total_count":5,"children":[{"name":"app","total_count":1,"children":[]},{"name":"Budget","total_count":1,"children":[]},{"name":"mongoose","total_count":1,"children":[]},{"name":"request","total_count":1,"children":[]},{"name":"{ MongoMemoryServer }","total_count":1,"children":[]}]},{"name":"expenses.test.js","total_count":6,"children":[{"name":"app","total_count":1,"children":[]},{"name":"Expense","total_count":1,"children":[]},{"name":"mongoose","total_count":1,"children":[]},{"name":"request","total_count":1,"children":[]},{"name":"User","total_count":1,"children":[]},{"name":"{ MongoMemoryServer }","total_count":1,"children":[]}]},{"name":"exportAndAudit.test.js","total_count":6,"children":[{"name":"app","total_count":1,"children":[]},{"name":"AuditLog","total_count":1,"children":[]},{"name":"Expense","total_count":1,"children":[]},{"name":"mongoose","total_count":1,"children":[]},{"name":"request","total_count":1,"children":[]},{"name":"{ MongoMemoryServer }","total_count":1,"children":[]}]},{"name":"goals.test.js","total_count":5,"children":[{"name":"app","total_count":1,"children":[]},{"name":"Goal","total_count":1,"children":[]},{"name":"mongoose","total_count":1,"children":[]},{"name":"request","total_count":1,"children":[]},{"name":"{ MongoMemoryServer }","total_count":1,"children":[]}]},{"name":"patterns.test.js","total_count":9,"children":[{"name":"ApiResponse","total_count":1,"children":[]},{"name":"app","total_count":1,"children":[]},{"name":"asyncHandler","total_count":1,"children":[]},{"name":"json()","total_count":1,"children":[]},{"name":"mongoose","total_count":1,"children":[]},{"name":"request","total_count":1,"children":[]},{"name":"status()","total_count":1,"children":[]},{"name":"{\n  AppError,\n  ValidationError,\n  NotFoundError,\n  UnauthorizedError,\n  ForbiddenError,\n  ConflictError,\n  TooManyRequestsError,\n}","total_count":1,"children":[]},{"name":"{ MongoMemoryServer }","total_count":1,"children":[]}]},{"name":"recurring.test.js","total_count":6,"children":[{"name":"app","total_count":1,"children":[]},{"name":"Expense","total_count":1,"children":[]},{"name":"mongoose","total_count":1,"children":[]},{"name":"RecurringExpense","total_count":1,"children":[]},{"name":"request","total_count":1,"children":[]},{"name":"{ MongoMemoryServer }","total_count":1,"children":[]}]},{"name":"validation.test.js","total_count":4,"children":[{"name":"app","total_count":1,"children":[]},{"name":"mongoose","total_count":1,"children":[]},{"name":"request","total_count":1,"children":[]},{"name":"{ MongoMemoryServer }","total_count":1,"children":[]}]}]}]},{"name":"user manual","total_count":1,"children":[{"name":"TEAM_COLLABORATION_MANUAL.md","total_count":1,"children":[{"name":"Team Collaboration Manual & Git Protocol","total_count":1,"children":[]}]}]},{"name":"joi","total_count":1,"children":[]}]};
+
+    function transformData(jsonData) {
+        // Helper function to recursively build the children structure
+        function processNode(node, parentL1StageName) {
+            let displayName = node.name;
+            // Append total_count if it exists and is not already in the name
+            if (node.total_count !== undefined) {
+                if (!/\(Total Count: \d+\)$/.test(displayName)) {
+                    displayName += ` (Total Count: ${node.total_count})`;
+                }
+            }
+
+            const newNode = { name: displayName };
+
+            if (parentL1StageName === "Root") {
+                 newNode.originalStageName = node.name;
+            } else {
+                newNode.originalStageName = parentL1StageName;
+            }
+
+            if (node.children && node.children.length > 0) {
+                const stageNameToPass = (parentL1StageName === "Root") ? node.name : parentL1StageName;
+                newNode.children = node.children.map(child => processNode(child, stageNameToPass));
+            }
+
+            return newNode;
+        }
+
+        let rootDisplayName = jsonData.name;
+        if (jsonData.total_count !== undefined && !/\(Total Count: \d+\)$/.test(rootDisplayName)) {
+            rootDisplayName += ` (Total Count: ${jsonData.total_count})`;
+        }
+
+        return {
+            name: rootDisplayName,
+            originalStageName: "Root",
+            children: (jsonData.children || []).map(child => processNode(child, "Root"))
+        };
+    }
+
+    const treeData = transformData(initialJsonData);
+
+    // Auto-populated phaseColors: every depth-1 child of the root gets
+    // a stable colour from a bigger palette so all top-level dirs are
+    // distinguishable.
+    const PALETTE = [
+      ["#3498DB","#2980B9","#AED6F1"], ["#2ECC71","#27AE60","#A9DFBF"],
+      ["#E74C3C","#C0392B","#F5B7B1"], ["#9B59B6","#8E44AD","#D7BDE2"],
+      ["#F39C12","#D68910","#FAD7A0"], ["#1ABC9C","#117864","#A2D9CE"],
+      ["#34495E","#1B2631","#ABB2B9"], ["#E67E22","#BA4A00","#F5CBA7"],
+      ["#16A085","#0E6655","#A2D9CE"], ["#D35400","#A04000","#EDBB99"],
+      ["#7F8C8D","#566573","#D5DBDB"], ["#C0392B","#7B241C","#F5B7B1"],
+      ["#2E86C1","#1B4F72","#A9CCE3"], ["#28B463","#196F3D","#A9DFBF"],
+      ["#AF7AC5","#6C3483","#D2B4DE"],
+    ];
+    const phaseColors = { "Root": { fill: "#4A4A4A", stroke: "#333333", collapsedFill: "#6C757D" },
+                          "Default": { fill: "#BDC3C7", stroke: "#95A5A6", collapsedFill: "#ECF0F1" } };
+    (initialJsonData.children || []).forEach((c, i) => {
+      const pal = PALETTE[i % PALETTE.length];
+      phaseColors[c.name] = { fill: pal[0], stroke: pal[1], collapsedFill: pal[2] };
+    });
+
+    const levelSpecificPalettes = {
+      0: { fill: "#4A4A4A", stroke: "#333333", collapsedFill: "#6C757D" },
+      2: { fill: "#6ab04c", stroke: "#508a38", collapsedFill: "#a3d391" },
+      3: { fill: "#f0932b", stroke: "#d0730f", collapsedFill: "#f6c07e" },
+      4: { fill: "#be2edd", stroke: "#a01cb3", collapsedFill: "#e08bf2" },
+      5: { fill: "#00a8ff", stroke: "#007ac1", collapsedFill: "#74d2ff" },
+      6: { fill: "#e55039", stroke: "#c23620", collapsedFill: "#f09a8d" },
+      default: { fill: "#747d8c", stroke: "#57606f", collapsedFill: "#a4b0be" }
+    };
+
+    const svgElement = d3.select("#tree-svg");
+    const initialSvgWidth = +svgElement.attr("width");
+    const initialSvgHeight = +svgElement.attr("height");
+    const margin = { top: 40, right: 120, bottom: 80, left: 450 };
+    let width = initialSvgWidth - margin.left - margin.right;
+    let height = initialSvgHeight - margin.top - margin.bottom;
+    const duration = 500;
+    let nodeCounter = 0;
+    const g = svgElement.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+    const treemap = d3.tree().nodeSize([40, 0]);
+    let rootNode = d3.hierarchy(treeData, d => d.children);
+    rootNode.x0 = 0;
+    rootNode.y0 = 0;
+
+    if (rootNode.children) {
+      rootNode.children.forEach(d_child => {
+        if (d_child.children) { collapseBranch(d_child); }
+      });
+    }
+    updateTree(rootNode);
+
+    function collapseBranch(d) { if (d.children) { d._children = d.children; d._children.forEach(collapseBranch); d.children = null; } }
+    function expandBranch(d) { if (d._children) { d.children = d._children; d._children = null; } if (d.children) { d.children.forEach(expandBranch); } }
+    window.expandAll = () => { expandBranch(rootNode); updateTree(rootNode); };
+    window.collapseAll = () => { if (rootNode.children) { rootNode.children.forEach(collapseBranch); } updateTree(rootNode); };
+    window.resetView = () => { if (rootNode.children) { rootNode.children.forEach(d_child => { if (d_child.children || d_child._children) { collapseBranch(d_child); } }); } if (rootNode._children && !rootNode.children) { rootNode.children = rootNode._children; rootNode._children = null; } updateTree(rootNode); };
+
+    function updateTree(source) {
+      const treeLayoutData = treemap(rootNode);
+      let nodes = treeLayoutData.descendants();
+      let links = treeLayoutData.descendants().slice(1);
+
+      let minX = 0;
+      let maxX = 0;
+      if (nodes.length > 0) {
+        minX = d3.min(nodes, d => d.x);
+        maxX = d3.max(nodes, d => d.x);
+      }
+
+      let neededHeight = Math.max(initialSvgHeight, maxX - minX + margin.top + margin.bottom + 100);
+      svgElement.transition().duration(duration / 2).attr("height", neededHeight);
+      g.transition().duration(duration / 2).attr("transform", `translate(${margin.left},${margin.top - minX + 40})`);
+
+      nodes.forEach(d => { d.y = d.depth * 400; }); // Adjust horizontal separation if needed
+
+      const node = g.selectAll('g.node').data(nodes, d => d.id || (d.id = ++nodeCounter));
+      const nodeEnter = node.enter().append('g')
+        .attr('class', d => "node" + (d.children || d._children ? " node--internal" : " node--leaf") + (d._children ? " _children" : ""))
+        .attr('transform', d => `translate(${source.y0},${source.x0})`)
+        .on('click', (event, d) => { if (d.children) { d._children = d.children; d.children = null; } else if (d._children) { d.children = d._children; d._children = null; } updateTree(d); })
+        .style('cursor', d => (d.children || d._children) ? 'pointer' : 'default');
+
+      nodeEnter.append('circle').attr('r', 1e-6);
+
+      nodeEnter.append('text')
+        .attr('dy', '.35em')
+        .attr('x', d => d.children || d._children ? -14 : 14)
+        .attr('text-anchor', d => d.children || d._children ? 'end' : 'start')
+        .style("fill-opacity", 1e-6)
+        .call(wrapText, 380);
+
+      const nodeUpdate = nodeEnter.merge(node);
+      nodeUpdate.transition().duration(duration)
+        .attr('transform', d => `translate(${d.y},${d.x})`)
+        .attr('class', d => "node" + (d.children ? " node--internal" : " node--leaf") + (d._children ? " node--internal _children" : ""));
+
+      nodeUpdate.select('circle').attr('r', 8.5)
+        .style('fill', d => {
+            let palette;
+            if (d.depth === 0) {
+                palette = levelSpecificPalettes[0];
+            } else if (d.depth === 1) {
+                palette = phaseColors[d.data.originalStageName] || phaseColors.Default;
+            } else {
+                palette = levelSpecificPalettes[d.depth] || levelSpecificPalettes.default;
+            }
+            if (d._children) return palette.collapsedFill;
+            if (d.children) return palette.fill;
+            return "#fff";
+        })
+        .style('stroke', d => {
+            let palette;
+            if (d.depth === 0) {
+                palette = levelSpecificPalettes[0];
+            } else if (d.depth === 1) {
+                palette = phaseColors[d.data.originalStageName] || phaseColors.Default;
+            } else {
+                palette = levelSpecificPalettes[d.depth] || levelSpecificPalettes.default;
+            }
+            return palette.stroke;
+        });
+      nodeUpdate.select('text').style("fill-opacity", 1).call(wrapText, 380);
+
+      const nodeExit = node.exit().transition().duration(duration).attr('transform', d => `translate(${source.y},${source.x})`).remove();
+      nodeExit.select('circle').attr('r', 1e-6);
+      nodeExit.select('text').style('fill-opacity', 1e-6);
+
+      const link = g.selectAll('path.link').data(links, d => d.id);
+      const linkEnter = link.enter().insert('path', "g").attr('class', 'link').attr('d', d => { const o = { x: source.x0, y: source.y0 }; return diagonal(o, o); });
+
+      linkEnter.merge(link).transition().duration(duration).attr('d', d => diagonal(d, d.parent))
+        .style('stroke', d => {
+            const sourceNode = d.parent;
+            if (!sourceNode) return phaseColors.Default.stroke;
+            const l1AncestorName = sourceNode.data.originalStageName;
+            const colorPalette = phaseColors[l1AncestorName] || phaseColors.Default;
+            return colorPalette.stroke;
+        });
+      link.exit().transition().duration(duration).attr('d', d => { const o = { x: source.x, y: source.y }; return diagonal(o, o); }).remove();
+      nodes.forEach(d => { d.x0 = d.x; d.y0 = d.y; });
+    }
+
+    function diagonal(s, d) { return `M ${s.y} ${s.x} C ${(s.y + d.y) / 2} ${s.x}, ${(s.y + d.y) / 2} ${d.x}, ${d.y} ${d.x}`; }
+
+    function wrapText(textElements, maxWidth) {
+        const textPartColors = {
+            name: '#343a40',
+            count: '#0056b3'
+        };
+        const countRegex = /(\s\(Total Count: \d+\))$/;
+
+        textElements.each(function () {
+            const textD3 = d3.select(this);
+            const originalNodeText = textD3.datum().data.name;
+            const x = parseFloat(textD3.attr("x") || 0);
+            const initialDy = textD3.attr("dy");
+            const textAnchor = textD3.attr("text-anchor");
+            const lineHeight = 1.1;
+
+            textD3.text(null);
+
+            let namePart = originalNodeText;
+            let countPartText = "";
+
+            const countMatch = originalNodeText.match(countRegex);
+            if (countMatch && originalNodeText.endsWith(countMatch[0])) {
+                namePart = originalNodeText.substring(0, originalNodeText.length - countMatch[0].length).trim();
+                countPartText = countMatch[0].trim();
+            }
+
+            const tokens = [];
+            namePart.split(/\s+/).filter(Boolean).forEach(word => {
+                tokens.push({ text: word, type: 'name' });
+            });
+            if (countPartText) {
+                tokens.push({ text: countPartText, type: 'count' });
+            }
+
+            if (tokens.length === 0 && originalNodeText) {
+                tokens.push({ text: originalNodeText, type: 'name' });
+            }
+
+            let currentTspan = textD3.append("tspan").attr("x", x).attr("dy", initialDy);
+            if (textAnchor === "end") currentTspan.attr("text-anchor", "end");
+
+            let lineTokens = [];
+
+            for (let i = 0; i < tokens.length; i++) {
+                const tokenObj = tokens[i];
+
+                lineTokens.push(tokenObj);
+                currentTspan.text(lineTokens.map(t => t.text).join(" "));
+
+                if (currentTspan.node().getComputedTextLength() > maxWidth && lineTokens.length > 1) {
+                    lineTokens.pop();
+
+                    currentTspan.text(null);
+                    lineTokens.forEach((prevToken, idx) => {
+                        currentTspan.append("tspan")
+                            .text((idx > 0 ? " " : "") + prevToken.text)
+                            .style("fill", textPartColors[prevToken.type] || textPartColors.name)
+                            .style("font-weight", prevToken.type === 'count' ? "bold" : "normal");
+                    });
+
+                    lineTokens = [tokenObj];
+                    currentTspan = textD3.append("tspan").attr("x", x).attr("dy", lineHeight + "em");
+                    if (textAnchor === "end") currentTspan.attr("text-anchor", "end");
+                }
+            }
+
+            currentTspan.text(null);
+            lineTokens.forEach((token, idx) => {
+                currentTspan.append("tspan")
+                    .text((idx > 0 ? " " : "") + token.text)
+                    .style("fill", textPartColors[token.type] || textPartColors.name)
+                    .style("font-weight", token.type === 'count' ? "bold" : "normal");
+            });
+
+            if (textD3.selectAll("tspan > tspan").empty() && textD3.select("tspan").text().length === 0 && originalNodeText) {
+                let t = textD3.select("tspan");
+                let displayText = originalNodeText;
+                t.text(displayText).style("fill", textPartColors.name);
+                if (t.node() && t.node().getComputedTextLength() > maxWidth && displayText.length > 20) {
+                    let estimatedChars = Math.floor(maxWidth / (t.node().getComputedTextLength()/displayText.length) );
+                    displayText = displayText.substring(0, Math.max(0, estimatedChars - 3)) + "...";
+                    t.text(displayText);
+                }
+            }
+        });
+    }
+  </script>
+</body>
+</html>

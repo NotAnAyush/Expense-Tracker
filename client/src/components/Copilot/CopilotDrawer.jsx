@@ -1,17 +1,33 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { X, Send, Bot, Sparkles, MessageSquare } from 'lucide-react';
+import { X, Send, Bot, Sparkles, Zap, MessageSquare, Trash2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { apiFetch } from '../../api/client';
 
+const MESSAGES_KEY = 'richy_copilot_messages';
+const INPUT_KEY = 'richy_copilot_input';
+
+const DEFAULT_MESSAGE = {
+  sender: 'bot',
+  text: 'Greetings! I am your AI Finance Copilot. I analyze your real-time spend velocity, budget limits, and financial anomalies.',
+  intent: 'GREETING',
+};
+
 export const CopilotDrawer = ({ isOpen, onClose }) => {
-  const [messages, setMessages] = useState([
-    {
-      sender: 'bot',
-      text: 'Greetings! I am your AI Finance Copilot. I analyze your real-time spend velocity, budget limits, and financial anomalies.',
-      intent: 'GREETING',
-    },
-  ]);
-  const [input, setInput] = useState('');
+  const [messages, setMessages] = useState(() => {
+    try {
+      const saved = localStorage.getItem(MESSAGES_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch {}
+    return [DEFAULT_MESSAGE];
+  });
+
+  const [input, setInput] = useState(() => {
+    return localStorage.getItem(INPUT_KEY) || '';
+  });
+
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef(null);
 
@@ -23,6 +39,20 @@ export const CopilotDrawer = ({ isOpen, onClose }) => {
     "Show unusual transactions"
   ];
 
+  // Persist messages whenever updated
+  useEffect(() => {
+    try {
+      localStorage.setItem(MESSAGES_KEY, JSON.stringify(messages));
+    } catch {}
+  }, [messages]);
+
+  // Persist draft input whenever user types
+  useEffect(() => {
+    try {
+      localStorage.setItem(INPUT_KEY, input);
+    } catch {}
+  }, [input]);
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -33,6 +63,11 @@ export const CopilotDrawer = ({ isOpen, onClose }) => {
     }
   }, [messages, isOpen]);
 
+  const handleClearHistory = () => {
+    setMessages([DEFAULT_MESSAGE]);
+    localStorage.removeItem(MESSAGES_KEY);
+  };
+
   if (!isOpen) return null;
 
   const handleSend = async (queryText) => {
@@ -41,7 +76,10 @@ export const CopilotDrawer = ({ isOpen, onClose }) => {
 
     const userMsg = { sender: 'user', text: textToSend };
     setMessages((prev) => [...prev, userMsg]);
-    if (!queryText) setInput('');
+    if (!queryText) {
+      setInput('');
+      localStorage.removeItem(INPUT_KEY);
+    }
     setLoading(true);
 
     try {
@@ -145,25 +183,47 @@ export const CopilotDrawer = ({ isOpen, onClose }) => {
             </div>
           </div>
 
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={onClose}
-            style={{
-              background: 'rgba(255, 255, 255, 0.06)',
-              border: '1px solid var(--border-subtle)',
-              borderRadius: '999px',
-              width: '34px',
-              height: '34px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: 'var(--color-text-muted)',
-              cursor: 'pointer',
-            }}
-          >
-            <X size={17} />
-          </motion.button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <button
+              type="button"
+              onClick={handleClearHistory}
+              title="Clear Conversation History"
+              style={{
+                background: 'rgba(255, 255, 255, 0.06)',
+                border: '1px solid rgba(255, 255, 255, 0.12)',
+                borderRadius: '999px',
+                width: '36px',
+                height: '36px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#94A3B8',
+                cursor: 'pointer',
+              }}
+            >
+              <Trash2 size={16} />
+            </button>
+
+            <motion.button
+              whileHover={{ scale: 1.1, rotate: 90 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={onClose}
+              style={{
+                background: 'rgba(255, 255, 255, 0.06)',
+                border: '1px solid rgba(255, 255, 255, 0.12)',
+                borderRadius: '999px',
+                width: '36px',
+                height: '36px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#F1F5F9',
+                cursor: 'pointer',
+              }}
+            >
+              <X size={18} />
+            </motion.button>
+          </div>
         </div>
 
         {/* Quick Suggestion Strip */}

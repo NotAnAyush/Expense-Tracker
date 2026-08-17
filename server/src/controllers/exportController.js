@@ -83,3 +83,86 @@ exports.exportExpenses = asyncHandler(async (req, res) => {
 
   res.end();
 });
+
+/**
+ * @desc    Export tax-deductible expenses grouped by section
+ * @route   GET /api/export/tax-summary
+ * @access  Private
+ * @query   year (YYYY), format (csv|json)
+ */
+exports.exportTaxSummary = asyncHandler(async (req, res) => {
+  const { year = new Date().getFullYear(), format = 'csv' } = req.query;
+  const targetYear = parseInt(year, 10);
+
+  const startDate = new Date(targetYear, 0, 1);
+  const endDate = new Date(targetYear, 11, 31, 23, 59, 59, 999);
+
+  const query = {
+    userId: req.user._id,
+    date: { $gte: startDate, $lte: endDate },
+    $or: [
+      { isTaxDeductible: true },
+      { taxSection: { $exists: true, $ne: '' } },
+      { tags: { $regex: /(tax|80c|80d|80g|deduct)/i } },
+    ],
+  };
+
+  const expenses = await Expense.find(query).sort({ date: 1 });
+
+  const totalDeductible = expenses.reduce((sum, e) => sum + e.amount, 0);
+
+  if (format === 'json') {
+    const sections = {};
+    expenses.forEach(e => {
+      const section = e.taxSection || 'Standard / General Deductible';
+      if (!sections[section]) sections[section] = { total: 0, items: [] };
+      sections[section].total += e.amount;
+      sections[section].items.push({
+        id: e._id,
+        title: e.title,
+        amount: e.amount,
+        category: e.category,
+        date: e.date ? e.date.toISOString().slice(0, 10) : '',
+        merchant: e.merchant || '',
+        reimbursementStatus: e.reimbursementStatus || 'none',
+        note: e.note || '',
+        tags: e.tags || [],
+      });
+    });
+
+    return res.json({
+      taxYear: targetYear,
+      totalDeductible,
+      itemCount: expenses.length,
+      sections,
+    });
+  }
+
+  // Default: CSV format
+  res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+  res.setHeader('Content-Disposition', `attachment; filename="tax_summary_${targetYear}.csv"`);
+
+  res.write(`Tax Deduction Summary for Year ${targetYear}\n`);
+  res.write(`Total Deductible Expenses,${totalDeductible}\n\n`);
+  res.write('Tax Section,Date,Title,Amount,Category,Merchant,Reimbursement Status,Note\n');
+
+  if (expenses.length === 0) {
+    res.write('No tax-deductible expenses recorded for this financial year.\n');
+  } else {
+    for (const e of expenses) {
+      const row = [
+        escapeCsvField(e.taxSection || 'General Deductible'),
+        e.date ? e.date.toISOString().slice(0, 10) : '',
+        escapeCsvField(e.title),
+        e.amount,
+        escapeCsvField(e.category),
+        escapeCsvField(e.merchant || ''),
+        escapeCsvField(e.reimbursementStatus || 'none'),
+        escapeCsvField(e.note || ''),
+      ].join(',');
+      res.write(row + '\n');
+    }
+  }
+
+  res.end();
+});

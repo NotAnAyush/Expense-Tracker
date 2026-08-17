@@ -17,11 +17,14 @@ const shouldSkip = (req) => {
 
 /**
  * Global API Rate Limiter
- * Generous limits to prevent DDoS while permitting high-frequency multi-widget dashboard refreshes
+ * Generous limits (3,000 req / 15 min in dev, 1,000 in prod) to support modern SPA dashboards
+ * with real-time analytics, Copilot chat, and background refreshes without false-positive blocks.
  */
 const globalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: process.env.NODE_ENV === 'production' ? 2000 : 10000,
+  max: process.env.RATE_LIMIT_GLOBAL_MAX
+    ? parseInt(process.env.RATE_LIMIT_GLOBAL_MAX, 10)
+    : (process.env.NODE_ENV === 'production' ? 1000 : 3000),
   skip: shouldSkip,
   standardHeaders: true,
   legacyHeaders: false,
@@ -35,29 +38,31 @@ const globalLimiter = rateLimit({
 
 /**
  * Auth-Specific Rate Limiter (Login / Register)
- * Prevents brute-force attacks while allowing seamless user and development workflows
+ * 500 req / 15 min in dev, 150 in prod — protects against brute-force while allowing continuous team testing
  */
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: process.env.NODE_ENV === 'production' ? 60 : 1000,
+  max: process.env.RATE_LIMIT_AUTH_MAX
+    ? parseInt(process.env.RATE_LIMIT_AUTH_MAX, 10)
+    : (process.env.NODE_ENV === 'production' ? 150 : 500),
   skip: shouldSkip,
   standardHeaders: true,
   legacyHeaders: false,
   message: {
     error: {
       code: 'AUTH_RATE_LIMIT_EXCEEDED',
-      message: 'Too many authentication attempts. Please try again in 15 minutes.',
+      message: 'Too many authentication attempts. Please try again in a few minutes.',
     },
   },
 });
 
 /**
  * Demo Sandbox Rate Limiter
- * Generous limits to allow exploring the application seamlessly
+ * 500 requests per 15 minutes to allow uninterrupted sandbox exploration
  */
 const demoLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: process.env.NODE_ENV === 'production' ? 120 : 1000,
+  max: 500,
   skip: shouldSkip,
   standardHeaders: true,
   legacyHeaders: false,
@@ -71,11 +76,11 @@ const demoLimiter = rateLimit({
 
 /**
  * AI Endpoint Rate Limiter
- * Protects Gemini API quota
+ * 500 requests per 15 minutes per IP — supports heavy Copilot dialogues and categorization
  */
 const aiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: process.env.NODE_ENV === 'production' ? 100 : 1000,
+  max: 500,
   skip: shouldSkip,
   standardHeaders: true,
   legacyHeaders: false,

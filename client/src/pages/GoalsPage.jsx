@@ -34,6 +34,30 @@ export const GoalsPage = () => {
     fetchGoals();
   }, []);
 
+  const GOAL_DRAFT_KEY = 'richy_draft_goal';
+
+  const openGoalModal = () => {
+    try {
+      const saved = localStorage.getItem(GOAL_DRAFT_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        setName(parsed.name || '');
+        setTargetAmount(parsed.targetAmount || '');
+        setCurrentAmount(parsed.currentAmount || '');
+        setTargetDate(parsed.targetDate || '');
+      }
+    } catch {}
+    setShowModal(true);
+  };
+
+  useEffect(() => {
+    if (showModal && (name || targetAmount)) {
+      try {
+        localStorage.setItem(GOAL_DRAFT_KEY, JSON.stringify({ name, targetAmount, currentAmount, targetDate }));
+      } catch {}
+    }
+  }, [showModal, name, targetAmount, currentAmount, targetDate]);
+
   const handleCreateGoal = async (e) => {
     e.preventDefault();
     if (!name || !targetAmount) return;
@@ -49,7 +73,8 @@ export const GoalsPage = () => {
           category,
         }),
       });
-      setCreateModalOpen(false);
+      localStorage.removeItem(GOAL_DRAFT_KEY);
+      setShowModal(false);
       setName('');
       setTargetAmount('');
       setCurrentAmount('0');
@@ -90,10 +115,8 @@ export const GoalsPage = () => {
             Total Accumulated: ₹{totalSaved.toLocaleString()} of ₹{totalTarget.toLocaleString()} target.
           </p>
         </div>
-
-        <button onClick={() => setCreateModalOpen(true)} className="btn-primary-mint" style={{ height: '40px' }}>
-          <Plus size={16} />
-          Create New Goal
+        <button onClick={openGoalModal} className="button-primary">
+          <Plus size={18} /> Add Goal
         </button>
       </div>
 

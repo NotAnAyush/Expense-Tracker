@@ -56,28 +56,86 @@ export const RecurringPage = ({ categories = [] }) => {
     fetchRecurring();
   }, []);
 
-  const handleCreate = async (e) => {
+  const RECURRING_DRAFT_KEY = 'richy_draft_recurring';
+
+  const openCreateModal = () => {
+    setEditingItem(null);
+    try {
+      const saved = localStorage.getItem(RECURRING_DRAFT_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        setTitle(parsed.title || '');
+        setAmount(parsed.amount || '');
+        setCategory(parsed.category || 'Subscriptions');
+        setFrequency(parsed.frequency || 'monthly');
+        setNextOccurrence(parsed.nextOccurrence || getLocalDateString(new Date()));
+        setActive(parsed.active !== false);
+        setShowModal(true);
+        return;
+      }
+    } catch {}
+
+    setTitle('');
+    setAmount('');
+    setCategory('Subscriptions');
+    setFrequency('monthly');
+    setNextOccurrence(getLocalDateString(new Date()));
+    setActive(true);
+    setShowModal(true);
+  };
+
+  // Autosave draft for new recurring item
+  useEffect(() => {
+    if (showModal && !editingItem && (title || amount)) {
+      try {
+        localStorage.setItem(
+          RECURRING_DRAFT_KEY,
+          JSON.stringify({ title, amount, category, frequency, nextOccurrence, active })
+        );
+      } catch {}
+    }
+  }, [showModal, editingItem, title, amount, category, frequency, nextOccurrence, active]);
+
+  const openEditModal = (item) => {
+    setEditingItem(item);
+    setTitle(item.title);
+    setAmount(item.amount);
+    setCategory(item.category);
+    setFrequency(item.frequency || 'monthly');
+    setNextOccurrence(getLocalDateString(item.nextOccurrence));
+    setActive(item.active !== false);
+    setShowModal(true);
+  };
+
+  const handleSaveRecurring = async (e) => {
     e.preventDefault();
     if (!name || !amount) return;
     setSubmitting(true);
 
     try {
-      await apiFetch('/recurring', {
-        method: 'POST',
-        body: JSON.stringify({
-          name,
-          amount: Number(amount),
-          category,
-          frequency,
-          billingDay: Number(billingDay),
-          merchant,
-          paymentMethod,
-        }),
-      });
-      setModalOpen(false);
-      setName('');
-      setAmount('');
-      setMerchant('');
+      const payload = {
+        title,
+        amount: Number(amount),
+        category,
+        frequency,
+        nextOccurrence,
+        active,
+      };
+
+      if (editingItem) {
+        await apiFetch(`/recurring/${editingItem._id}`, {
+          method: 'PUT',
+          body: JSON.stringify(payload),
+        });
+      } else {
+        await apiFetch('/recurring', {
+          method: 'POST',
+          body: JSON.stringify(payload),
+        });
+        localStorage.removeItem(RECURRING_DRAFT_KEY);
+      }
+
+      setShowModal(false);
       fetchRecurring();
     } catch (err) {
       console.error('Failed to create subscription:', err);

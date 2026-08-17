@@ -18,7 +18,9 @@ const { NotFoundError } = require('./utils/errors');
 
 // Route imports
 const authRoutes = require('./routes/authRoutes');
+const userRoutes = require('./routes/userRoutes');
 const expenseRoutes = require('./routes/expenseRoutes');
+const incomeRoutes = require('./routes/incomeRoutes');
 const budgetRoutes = require('./routes/budgetRoutes');
 const goalRoutes = require('./routes/goalRoutes');
 const recurringRoutes = require('./routes/recurringRoutes');
@@ -27,6 +29,12 @@ const analyticsRoutes = require('./routes/analyticsRoutes');
 const aiRoutes = require('./routes/aiRoutes');
 const auditRoutes = require('./routes/auditRoutes');
 const exportRoutes = require('./routes/exportRoutes');
+const importRoutes = require('./routes/importRoutes');
+const groupRoutes = require('./routes/groupRoutes');
+const debtRoutes = require('./routes/debtRoutes');
+const simulationRoutes = require('./routes/simulationRoutes');
+const tripVaultRoutes = require('./routes/tripVaultRoutes');
+const fxRoutes = require('./routes/fxRoutes');
 
 const app = express();
 
@@ -80,9 +88,9 @@ app.use(cors({
 // 4. Compression — Gzip responses
 app.use(compression());
 
-// 5. Body Parsing — With payload limits
-app.use(express.json({ limit: '1mb' }));
-app.use(express.urlencoded({ extended: true, limit: '1mb' }));
+// 5. Body Parsing — With payload limits (25mb for multimodal receipt scanning & document parsing)
+app.use(express.json({ limit: '25mb' }));
+app.use(express.urlencoded({ extended: true, limit: '25mb' }));
 
 // 6. NoSQL Injection Sanitizer
 app.use(sanitizeInput);
@@ -140,7 +148,9 @@ app.get('/api/health', getHealthStatus);
 // API Routes
 // ========================
 app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
 app.use('/api/expenses', expenseRoutes);
+app.use('/api/income', incomeRoutes);
 app.use('/api/budgets', budgetRoutes);
 app.use('/api/goals', goalRoutes);
 app.use('/api/recurring', recurringRoutes);
@@ -149,6 +159,12 @@ app.use('/api/analytics', analyticsRoutes);
 app.use('/api/ai', aiLimiter, aiRoutes);
 app.use('/api/audit', auditRoutes);
 app.use('/api/export', exportRoutes);
+app.use('/api/import', importRoutes);
+app.use('/api/groups', groupRoutes);
+app.use('/api/debts', debtRoutes);
+app.use('/api/simulations', simulationRoutes);
+app.use('/api/trips', tripVaultRoutes);
+app.use('/api/fx', fxRoutes);
 
 // Global 404 handler for undefined routes
 app.use((req, res, next) => {
