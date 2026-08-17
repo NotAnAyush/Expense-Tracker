@@ -5,9 +5,6 @@ const {
   getMonthlySummaryAI,
   getSpendingExplanation,
   copilotChat,
-  copilotChatStream,
-  scanReceipt,
-  getHealthScore,
   getInsights,
   scanReceipt,
   getAIConfig,
@@ -23,9 +20,6 @@ router.post('/receipt-scan', scanReceipt);
 router.get('/summary', getMonthlySummaryAI);
 router.get('/explanation', getSpendingExplanation);
 router.post('/copilot', copilotChat);
-router.post('/copilot/stream', copilotChatStream);
-router.post('/receipt-scan', scanReceipt);
-router.get('/health-score', getHealthScore);
 router.get('/insights', getInsights);
 
 // AI Multi-Provider Configuration Endpoints

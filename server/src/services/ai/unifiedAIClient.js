@@ -1,21 +1,10 @@
 /**
  * Unified Multi-Provider AI Engine Adapter
- * Highly Optimized with Connection Pooling, Request Timeouts, Structured Schemas, Streaming & Multimodal OCR.
+ * Highly Optimized with Connection Pooling, Request Timeouts & Robust Fallbacks.
  */
 
-let GoogleGenerativeAI;
-try {
-  ({ GoogleGenerativeAI } = require('@google/generative-ai'));
-} catch (e) {
-  // Loaded on-demand
-}
-
-let OpenAI;
-try {
-  OpenAI = require('openai');
-} catch (e) {
-  // Loaded on-demand
-}
+const { GoogleGenerativeAI } = require('@google/generative-ai');
+const OpenAI = require('openai');
 
 const PROVIDER_METADATA = {
   gemini: {
@@ -291,14 +280,6 @@ const PROVIDER_METADATA = {
 const clientPool = new Map();
 
 const getOpenAIClient = (apiKey, baseURL, defaultHeaders = {}) => {
-  if (!OpenAI) {
-    try {
-      OpenAI = require('openai');
-    } catch {
-      throw new Error('OpenAI client library is not available. Please run npm install in the server directory.');
-    }
-  }
-
   const cacheKey = `${apiKey}_${baseURL}`;
   if (clientPool.has(cacheKey)) {
     return clientPool.get(cacheKey);
@@ -351,22 +332,10 @@ class UnifiedAIClient {
       if (!apiKey || apiKey === 'your_gemini_api_key_here') {
         return null;
       }
-      if (!GoogleGenerativeAI) {
-        try {
-          ({ GoogleGenerativeAI } = require('@google/generative-ai'));
-        } catch {
-          return null;
-        }
-      }
       const genAI = new GoogleGenerativeAI(apiKey);
-      const generationConfig = { temperature };
-      if (jsonMode) {
-        generationConfig.responseMimeType = 'application/json';
-      }
-
       const geminiModel = genAI.getGenerativeModel({
         model: modelName,
-        generationConfig,
+        generationConfig: { temperature },
       });
       const fullPrompt = systemPrompt ? `${systemPrompt}\n\n${prompt}` : prompt;
       const result = await geminiModel.generateContent(fullPrompt);
@@ -443,130 +412,6 @@ class UnifiedAIClient {
     }
 
     const response = await client.chat.completions.create(completionParams);
-    return response.choices?.[0]?.message?.content?.trim() || '';
-  }
-
-  /**
-   * Generates Streaming AI completion (Server-Sent Events / Chunk callback)
-   */
-  static async generateStreamingCompletion({ prompt, systemPrompt = '', userConfig = {}, onChunk }) {
-    const provider = userConfig.provider || 'gemini';
-
-    if (provider === 'local_rag') {
-      return null;
-    }
-
-    const meta = PROVIDER_METADATA[provider] || PROVIDER_METADATA.gemini;
-    const apiKey = resolveApiKey(provider, userConfig.apiKey);
-    const modelName = (userConfig.model && userConfig.model.trim()) || meta.defaultModel;
-    const temperature = userConfig.temperature !== undefined ? Math.max(0, Math.min(1, Number(userConfig.temperature))) : 0.2;
-
-    // 1. Google Gemini Streaming
-    if (provider === 'gemini') {
-      if (!apiKey || apiKey === 'your_gemini_api_key_here') return null;
-      if (!GoogleGenerativeAI) {
-        try {
-          ({ GoogleGenerativeAI } = require('@google/generative-ai'));
-        } catch {
-          return null;
-        }
-      }
-      const genAI = new GoogleGenerativeAI(apiKey);
-      const geminiModel = genAI.getGenerativeModel({
-        model: modelName,
-        generationConfig: { temperature },
-      });
-      const fullPrompt = systemPrompt ? `${systemPrompt}\n\n${prompt}` : prompt;
-      const resultStream = await geminiModel.generateContentStream(fullPrompt);
-
-      let fullText = '';
-      for await (const chunk of resultStream.stream) {
-        const chunkText = chunk.text();
-        fullText += chunkText;
-        if (onChunk) onChunk({ token: chunkText, accumulated: fullText });
-      }
-      return fullText.trim();
-    }
-
-    // 2. OpenAI / Groq / DeepSeek Streaming
-    const baseURL = (userConfig.customBaseUrl && userConfig.customBaseUrl.trim()) || meta.baseURL || 'https://api.openai.com/v1';
-    const effectiveKey = apiKey || (provider === 'ollama' ? 'ollama' : 'dummy-key');
-
-    const client = getOpenAIClient(effectiveKey, baseURL);
-    const messages = [];
-    if (systemPrompt) messages.push({ role: 'system', content: systemPrompt });
-    messages.push({ role: 'user', content: prompt });
-
-    const stream = await client.chat.completions.create({
-      model: modelName,
-      messages,
-      temperature,
-      stream: true,
-    });
-
-    let fullText = '';
-    for await (const chunk of stream) {
-      const content = chunk.choices?.[0]?.delta?.content || '';
-      if (content) {
-        fullText += content;
-        if (onChunk) onChunk({ token: content, accumulated: fullText });
-      }
-    }
-    return fullText.trim();
-  }
-
-  /**
-   * Generates Multimodal Vision Completion for Receipts & Invoices (OCR)
-   */
-  static async generateMultimodalCompletion({ prompt, imageBase64, mimeType = 'image/jpeg', userConfig = {} }) {
-    const provider = userConfig.provider || 'gemini';
-    const meta = PROVIDER_METADATA[provider] || PROVIDER_METADATA.gemini;
-    const apiKey = resolveApiKey(provider, userConfig.apiKey);
-    const modelName = (userConfig.model && userConfig.model.trim()) || (provider === 'gemini' ? 'gemini-1.5-flash' : 'gpt-4o-mini');
-
-    // 1. Gemini Vision
-    if (provider === 'gemini' || provider === 'local_rag') {
-      if (!apiKey || apiKey === 'your_gemini_api_key_here') {
-        throw new Error('Gemini API key is required for receipt vision OCR.');
-      }
-      if (!GoogleGenerativeAI) ({ GoogleGenerativeAI } = require('@google/generative-ai'));
-      const genAI = new GoogleGenerativeAI(apiKey);
-      const model = genAI.getGenerativeModel({
-        model: modelName,
-        generationConfig: { responseMimeType: 'application/json' },
-      });
-
-      const imagePart = {
-        inlineData: {
-          data: imageBase64.replace(/^data:image\/[a-z]+;base64,/, ''),
-          mimeType,
-        },
-      };
-
-      const result = await model.generateContent([prompt, imagePart]);
-      return result.response.text().trim();
-    }
-
-    // 2. OpenAI / GPT-4o Vision
-    const baseURL = (userConfig.customBaseUrl && userConfig.customBaseUrl.trim()) || meta.baseURL || 'https://api.openai.com/v1';
-    const client = getOpenAIClient(apiKey, baseURL);
-
-    const imageUrl = imageBase64.startsWith('data:') ? imageBase64 : `data:${mimeType};base64,${imageBase64}`;
-
-    const response = await client.chat.completions.create({
-      model: modelName.includes('gpt-4') ? modelName : 'gpt-4o-mini',
-      messages: [
-        {
-          role: 'user',
-          content: [
-            { type: 'text', text: prompt },
-            { type: 'image_url', image_url: { url: imageUrl } },
-          ],
-        },
-      ],
-      response_format: { type: 'json_object' },
-    });
-
     return response.choices?.[0]?.message?.content?.trim() || '';
   }
 

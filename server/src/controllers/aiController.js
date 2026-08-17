@@ -1,6 +1,5 @@
 const AIService = require('../services/ai/aiService');
 const UnifiedAIClient = require('../services/ai/unifiedAIClient');
-const AnalyticsService = require('../services/analytics/analyticsService');
 const User = require('../models/User');
 const asyncHandler = require('../utils/asyncHandler');
 const { BadRequestError } = require('../utils/errors');
@@ -39,39 +38,6 @@ exports.copilotChat = asyncHandler(async (req, res) => {
   }
   const response = await AIService.copilotChat(req.user._id, message);
   res.json(response);
-});
-
-exports.copilotChatStream = asyncHandler(async (req, res) => {
-  const { message } = req.body;
-  if (!message) {
-    throw new BadRequestError('Message query is required');
-  }
-
-  res.setHeader('Content-Type', 'text/event-stream');
-  res.setHeader('Cache-Control', 'no-cache');
-  res.setHeader('Connection', 'keep-alive');
-  res.flushHeaders?.();
-
-  await AIService.copilotChatStream(req.user._id, message, (chunk) => {
-    res.write(`data: ${JSON.stringify(chunk)}\n\n`);
-  });
-
-  res.write('data: [DONE]\n\n');
-  res.end();
-});
-
-exports.scanReceipt = asyncHandler(async (req, res) => {
-  const { imageBase64, mimeType } = req.body;
-  if (!imageBase64) {
-    throw new BadRequestError('Image base64 payload is required');
-  }
-  const result = await AIService.scanReceipt(req.user._id, imageBase64, mimeType);
-  res.json(result);
-});
-
-exports.getHealthScore = asyncHandler(async (req, res) => {
-  const healthScore = await AnalyticsService.getFinancialHealthScore(req.user._id);
-  res.json(healthScore);
 });
 
 exports.getInsights = asyncHandler(async (req, res) => {

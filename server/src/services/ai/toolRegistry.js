@@ -9,7 +9,7 @@ class ToolRegistry {
   static async executeTool(toolName, userId, params = {}) {
     switch (toolName) {
       case 'getCurrentMonthSummary':
-        return await AnalyticsService.getMonthlySummary(userId, params.year, params.month);
+        return await AnalyticsService.getMonthlySummary(userId);
 
       case 'getCategoryBreakdown':
         return await AnalyticsService.getCategoryBreakdown(userId, params.months || 1);
@@ -31,9 +31,6 @@ class ToolRegistry {
 
       case 'getAnomalies':
         return await AnalyticsService.getAnomalies(userId);
-
-      case 'getFinancialHealthScore':
-        return await AnalyticsService.getFinancialHealthScore(userId);
 
       case 'getRecentExpenses':
         const query = { userId };
