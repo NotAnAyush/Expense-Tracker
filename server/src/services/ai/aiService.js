@@ -3,6 +3,7 @@ const LocalRagEngine = require('./localRagEngine');
 const ContextBuilder = require('./contextBuilder');
 const IntentRouter = require('./intentRouter');
 const ToolRegistry = require('./toolRegistry');
+const AICache = require('./aiCache');
 const AnalyticsService = require('../analytics/analyticsService');
 const User = require('../../models/User');
 
@@ -82,6 +83,10 @@ Return JSON only:
    */
   static async getMonthlySummaryAI(userId) {
     const ctx = await ContextBuilder.buildFinancialContext(userId);
+    const cacheKey = AICache.generateKey(userId, 'summary', `${ctx.totalSpend}:${ctx.daysRemaining}:${ctx.changePercent}`);
+    const cached = AICache.get(cacheKey);
+    if (cached) return cached;
+
     const userConfig = await getUserAiConfig(userId);
 
     try {
@@ -103,18 +108,24 @@ Write a natural, encouraging 2-sentence summary of the user's current month. DO 
       });
 
       if (!rawResponse) {
-        return LocalRagEngine.generateMonthlySummary(ctx);
+        const fallback = LocalRagEngine.generateMonthlySummary(ctx);
+        AICache.set(cacheKey, fallback, 1000 * 60 * 10);
+        return fallback;
       }
 
-      return {
+      const result = {
         summaryText: rawResponse,
         facts: ctx,
         isAiGenerated: true,
         source: userConfig.provider || 'gemini',
       };
+      AICache.set(cacheKey, result, 1000 * 60 * 10);
+      return result;
     } catch (err) {
       console.warn('[AI Summary Fallback]', err.message);
-      return LocalRagEngine.generateMonthlySummary(ctx);
+      const fallback = LocalRagEngine.generateMonthlySummary(ctx);
+      AICache.set(cacheKey, fallback, 1000 * 60 * 10);
+      return fallback;
     }
   }
 
@@ -123,6 +134,10 @@ Write a natural, encouraging 2-sentence summary of the user's current month. DO 
    */
   static async getSpendingExplanation(userId) {
     const comparison = await AnalyticsService.getMonthlyComparison(userId);
+    const cacheKey = AICache.generateKey(userId, 'spending-explanation', `${comparison.currentMonthSpend}:${comparison.previousMonthSpend}`);
+    const cached = AICache.get(cacheKey);
+    if (cached) return cached;
+
     const userConfig = await getUserAiConfig(userId);
 
     try {
@@ -142,18 +157,24 @@ Provide a clear, supportive 2-sentence explanation of why the user's spending ch
       });
 
       if (!rawResponse) {
-        return LocalRagEngine.generateSpendingExplanation(comparison);
+        const fallback = LocalRagEngine.generateSpendingExplanation(comparison);
+        AICache.set(cacheKey, fallback, 1000 * 60 * 10);
+        return fallback;
       }
 
-      return {
+      const result = {
         explanation: rawResponse,
         data: comparison,
         isAiGenerated: true,
         source: userConfig.provider || 'gemini',
       };
+      AICache.set(cacheKey, result, 1000 * 60 * 10);
+      return result;
     } catch (err) {
       console.warn('[AI Spending Explanation Fallback]', err.message);
-      return LocalRagEngine.generateSpendingExplanation(comparison);
+      const fallback = LocalRagEngine.generateSpendingExplanation(comparison);
+      AICache.set(cacheKey, fallback, 1000 * 60 * 10);
+      return fallback;
     }
   }
 
@@ -206,6 +227,10 @@ NEVER hallucinate numbers not present in Grounding Facts.`;
    */
   static async getInsights(userId) {
     const ctx = await ContextBuilder.buildFinancialContext(userId);
+    const cacheKey = AICache.generateKey(userId, 'insights', `${ctx.totalSpend}:${ctx.budgetOverCount}:${ctx.anomaliesCount}`);
+    const cached = AICache.get(cacheKey);
+    if (cached) return cached;
+
     const insights = [];
 
     // 1. Month-over-Month Insight
@@ -264,7 +289,9 @@ NEVER hallucinate numbers not present in Grounding Facts.`;
       });
     }
 
-    return insights.sort((a, b) => b.score - a.score).slice(0, 4);
+    const sorted = insights.sort((a, b) => b.score - a.score).slice(0, 4);
+    AICache.set(cacheKey, sorted, 1000 * 60 * 10);
+    return sorted;
   }
 
   /**

@@ -17,7 +17,7 @@ import {
   Mic
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { apiFetch } from '../api/client';
+import { apiFetch, API_BASE_URL } from '../api/client';
 import { usePrivacy } from '../context/PrivacyContext';
 
 export const ExpensesPage = ({
@@ -187,7 +187,7 @@ export const ExpensesPage = ({
     try {
       const year = new Date().getFullYear();
       const token = localStorage.getItem('token');
-      const res = await fetch(`/api/export/tax-summary?year=${year}&format=csv`, {
+      const res = await fetch(`${API_BASE_URL}/export/tax-summary?year=${year}&format=csv`, {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
       const blob = await res.blob();
