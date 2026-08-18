@@ -14,15 +14,19 @@ import {
   Sliders,
   Users,
   TrendingDown,
-  Plane
+  Plane,
+  Palette
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useAuth } from '../../context/AuthContext';
+import { useCustomization } from '../../context/CustomizationContext';
 
 export const Sidebar = ({ activeTab, setActiveTab, onOpenCopilot }) => {
   const { user, logout } = useAuth();
+  const { activeConfig } = useCustomization();
+  const modules = activeConfig?.modules || {};
 
-  const navGroups = [
+  const rawNavGroups = [
     {
       group: 'Core Ledger',
       items: [
@@ -52,42 +56,48 @@ export const Sidebar = ({ activeTab, setActiveTab, onOpenCopilot }) => {
     {
       group: 'Wealth & Planning',
       items: [
-        { 
+        ...(modules.fireSimulator !== false ? [{ 
           id: 'fire', 
           label: 'FIRE Simulator', 
           icon: Flame, 
           badge: { text: 'Monte Carlo', type: 'ai' } 
-        },
+        }] : []),
         { 
           id: 'goals', 
           label: 'Savings Goals', 
           icon: Target 
         },
-        { 
+        ...(modules.debtOptimizer !== false ? [{ 
           id: 'debts', 
           label: 'Debt Payoff', 
           icon: TrendingDown 
-        },
-        { 
+        }] : []),
+        ...(modules.groupSplitting !== false ? [{ 
           id: 'splits', 
           label: 'Group Ledgers', 
           icon: Users 
-        },
-        { 
+        }] : []),
+        ...(modules.travelFxVaults !== false ? [{ 
           id: 'trips', 
           label: 'Travel & FX', 
           icon: Plane 
-        },
+        }] : []),
       ]
     },
     {
-      group: 'Intelligence',
+      group: 'Intelligence & Studio',
       items: [
-        { 
+        ...(modules.aiCopilot !== false || modules.lifestyleHabits !== false ? [{ 
           id: 'analytics', 
           label: 'Analytics Engine', 
           icon: Sparkles, 
           badge: { text: 'AI', type: 'ai' } 
+        }] : []),
+        { 
+          id: 'customization', 
+          label: 'Customization Studio', 
+          icon: Palette,
+          badge: { text: 'STUDIO', type: 'live' } 
         },
         { 
           id: 'settings', 
@@ -97,6 +107,9 @@ export const Sidebar = ({ activeTab, setActiveTab, onOpenCopilot }) => {
       ]
     }
   ];
+
+  // Filter out empty groups if all items in a group were toggled off
+  const navGroups = rawNavGroups.filter((g) => g.items.length > 0);
 
   return (
     <aside

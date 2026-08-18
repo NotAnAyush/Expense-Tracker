@@ -12,6 +12,11 @@ import { BankStatementModal } from './components/Expenses/BankStatementModal';
 import { TransactionDetailModal } from './components/Expenses/TransactionDetailModal';
 import { EcommerceSyncModal } from './components/Expenses/EcommerceSyncModal';
 
+import { CustomizationProvider } from './context/CustomizationContext';
+import { DeviceCapabilityProvider } from './context/DeviceCapabilityContext';
+import { StagedConfirmationBar } from './components/Customization/StagedConfirmationBar';
+import { PwaInstallPrompt } from './components/Shell/PwaInstallPrompt';
+
 import { DashboardPage } from './pages/DashboardPage';
 import { ExpensesPage } from './pages/ExpensesPage';
 import { WealthSimulatorPage } from './pages/WealthSimulatorPage';
@@ -22,13 +27,14 @@ import { BudgetsPage } from './pages/BudgetsPage';
 import { GoalsPage } from './pages/GoalsPage';
 import { RecurringPage } from './pages/RecurringPage';
 import { AnalyticsPage } from './pages/AnalyticsPage';
+import { CustomizationPage } from './pages/CustomizationPage';
 import { SettingsPage } from './pages/SettingsPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { AuthPage } from './pages/AuthPage';
 import { apiFetch } from './api/client';
 import { WifiOff, Wifi } from 'lucide-react';
 
-const VALID_TABS = ['dashboard', 'expenses', 'fire', 'trips', 'splits', 'debts', 'budgets', 'goals', 'recurring', 'analytics', 'settings', 'profile'];
+const VALID_TABS = ['dashboard', 'expenses', 'fire', 'trips', 'splits', 'debts', 'budgets', 'goals', 'recurring', 'analytics', 'customization', 'settings', 'profile'];
 
 const getInitialTab = () => {
   const hash = window.location.hash.replace('#', '').trim();
@@ -307,10 +313,14 @@ const MainApp = () => {
           {activeTab === 'goals' && <GoalsPage key={refreshKey} />}
           {activeTab === 'recurring' && <RecurringPage key={refreshKey} categories={categories} />}
           {activeTab === 'analytics' && <AnalyticsPage key={refreshKey} />}
+          {activeTab === 'customization' && <CustomizationPage key={refreshKey} />}
           {activeTab === 'settings' && <SettingsPage key={refreshKey} />}
           {activeTab === 'profile' && <ProfilePage key={refreshKey} />}
         </main>
       </div>
+
+      <StagedConfirmationBar />
+      <PwaInstallPrompt />
 
       <CopilotDrawer
         isOpen={copilotOpen}
@@ -387,7 +397,11 @@ export default function App() {
   return (
     <AuthProvider>
       <PrivacyProvider>
-        <MainApp />
+        <CustomizationProvider>
+          <DeviceCapabilityProvider>
+            <MainApp />
+          </DeviceCapabilityProvider>
+        </CustomizationProvider>
       </PrivacyProvider>
     </AuthProvider>
   );

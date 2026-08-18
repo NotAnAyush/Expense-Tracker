@@ -24,7 +24,9 @@ import { motion } from 'framer-motion';
 import { apiFetch } from '../api/client';
 import { PinCard } from '../components/UI/PinCard';
 import { FinancialHealthCard } from '../components/Dashboard/FinancialHealthCard';
+import { HabitNudgesCard } from '../components/Dashboard/HabitNudgesCard';
 import { usePrivacy } from '../context/PrivacyContext';
+import { useCustomization } from '../context/CustomizationContext';
 
 // Vibrant Category Colors & Emojis Map
 const CATEGORY_META = {
@@ -51,6 +53,9 @@ export const DashboardPage = ({
   onOpenTransactionDetail,
 }) => {
   const { isPrivacyMaskActive } = usePrivacy();
+  const { activeConfig } = useCustomization();
+  const modules = activeConfig?.modules || {};
+
   const [data, setData] = useState(null);
   const [aiSummary, setAiSummary] = useState(null);
   const [insights, setInsights] = useState([]);
@@ -300,7 +305,7 @@ export const DashboardPage = ({
       </div>
 
       {/* 3. AI SUMMARY WEATHER REPORT BANNER */}
-      {aiSummary && (
+      {modules.aiCopilot !== false && aiSummary && (
         <motion.div
           whileHover={{ y: -1 }}
           transition={{ duration: 0.15 }}
@@ -468,8 +473,13 @@ export const DashboardPage = ({
         </div>
       </div>
 
+      {/* 4.5 LIFESTYLE & HABIT LEARNING NUDGES */}
+      {modules.lifestyleHabits !== false && (
+        <HabitNudgesCard expenses={data.recentExpenses || []} incomes={[]} />
+      )}
+
       {/* 5. PRIORITIZED ANOMALY & RADAR INSIGHTS */}
-      {insights.length > 0 && (
+      {modules.aiCopilot !== false && insights.length > 0 && (
         <div className="glass-card" style={{ padding: '20px 24px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
             <div>

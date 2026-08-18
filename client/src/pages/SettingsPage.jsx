@@ -31,6 +31,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { apiFetch } from '../api/client';
 import { useAuth } from '../context/AuthContext';
+import DevicePerformanceCard from '../components/Settings/DevicePerformanceCard';
 
 const DRAFT_KEY = 'richy_draft_ai_config';
 
@@ -471,6 +472,9 @@ export const SettingsPage = () => {
 
       {/* Main Grid Layout */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '28px' }}>
+        {/* SECTION 0: Device Hardware & AI Capability Scanner */}
+        <DevicePerformanceCard />
+
         {/* SECTION 1: AI Provider Selection Grid */}
         <div
           style={{

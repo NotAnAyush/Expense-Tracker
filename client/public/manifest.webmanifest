@@ -1,0 +1,71 @@
+{
+  "name": "Richy Rich — Sovereign Wealth & Expense Tracker",
+  "short_name": "Richy Rich",
+  "description": "Sovereign AI-powered wealth tracking, receipt OCR vision, and stochastic FIRE simulation.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#080B11",
+  "background_color": "#080B11",
+  "categories": ["finance", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "/logo.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Log Expense",
+      "short_name": "New Expense",
+      "description": "Quickly record a new transaction",
+      "url": "/#expenses",
+      "icons": [{ "src": "/logo.jpg", "sizes": "192x192" }]
+    },
+    {
+      "name": "Scan Receipt",
+      "short_name": "Scan Receipt",
+      "description": "Instant OCR receipt scanning",
+      "url": "/#expenses",
+      "icons": [{ "src": "/logo.jpg", "sizes": "192x192" }]
+    },
+    {
+      "name": "FIRE Simulator",
+      "short_name": "FIRE Sim",
+      "description": "Monte Carlo wealth projection",
+      "url": "/#fire",
+      "icons": [{ "src": "/logo.jpg", "sizes": "192x192" }]
+    },
+    {
+      "name": "Customization Studio",
+      "short_name": "Studio",
+      "description": "Modular feature flags & theme studio",
+      "url": "/#customization",
+      "icons": [{ "src": "/logo.jpg", "sizes": "192x192" }]
+    }
+  ],
+  "share_target": {
+    "action": "/#receipt-share",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "files": [
+        {
+          "name": "receipt",
+          "accept": ["image/*", "application/pdf"]
+        }
+      ]
+    }
+  }
+}

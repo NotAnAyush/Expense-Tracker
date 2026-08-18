@@ -241,3 +241,63 @@ exports.deleteAccount = asyncHandler(async (req, res) => {
 
   res.json({ message: 'Your account and all associated financial data have been permanently erased.' });
 });
+
+// @desc    Get user modular customization, themes, and dashboard configuration
+// @route   GET /api/users/customization
+exports.getCustomization = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id).select('customization');
+  if (!user) {
+    throw new NotFoundError('User not found');
+  }
+
+  res.json({
+    customization: user.customization || {},
+  });
+});
+
+// @desc    Update user modular customization, themes, and dashboard configuration
+// @route   PUT /api/users/customization
+exports.updateCustomization = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+  if (!user) {
+    throw new NotFoundError('User not found');
+  }
+
+  const { modules, theme, dashboardLayout, regional } = req.body;
+
+  if (modules && typeof modules === 'object') {
+    user.customization.modules = {
+      ...user.customization.modules,
+      ...modules,
+    };
+  }
+
+  if (theme && typeof theme === 'object') {
+    user.customization.theme = {
+      ...user.customization.theme,
+      ...theme,
+    };
+  }
+
+  if (Array.isArray(dashboardLayout)) {
+    user.customization.dashboardLayout = dashboardLayout;
+  }
+
+  if (regional && typeof regional === 'object') {
+    user.customization.regional = {
+      ...user.customization.regional,
+      ...regional,
+    };
+    if (regional.currency) {
+      user.preferredCurrency = regional.currency;
+    }
+  }
+
+  await user.save();
+
+  res.json({
+    message: 'Customization configuration synced successfully',
+    customization: user.customization,
+  });
+});
+

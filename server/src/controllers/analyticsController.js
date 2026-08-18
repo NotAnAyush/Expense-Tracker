@@ -59,3 +59,18 @@ exports.getFinancialHealth = asyncHandler(async (req, res) => {
   const result = await AnalyticsService.getFinancialHealthIndex(req.user._id, targetYear, targetMonth);
   res.json(result);
 });
+
+const LifestyleHabitEngine = require('../services/analytics/lifestyleHabitEngine');
+const Expense = require('../models/Expense');
+const Income = require('../models/Income');
+
+exports.getHabitProfile = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+  const [expenses, incomes] = await Promise.all([
+    Expense.find({ userId }).sort({ date: -1 }).limit(500).lean(),
+    Income.find({ userId }).sort({ date: -1 }).limit(100).lean(),
+  ]);
+
+  const profile = LifestyleHabitEngine.generateHabitProfile(expenses, incomes);
+  res.json(profile);
+});

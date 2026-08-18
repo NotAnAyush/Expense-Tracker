@@ -40,27 +40,54 @@ Use this interactive board in Obsidian or during Antigravity pair-programming se
 - [x] Rule-of-25 FIRE Retirement Year Sandbox
 - [x] Multi-Currency Real-Time Foreign Exchange (FX) Engine
 - [x] Travel Trip Budget Vaults with local currency tracking
+- [x] Baidu Unlimited-OCR & Specialized SLM Research & Benchmark (`[[LOCAL_UNLIMITED_OCR_AND_SLM_BILL_PARSING_RESEARCH]]`)
+- [x] Architecture Decision Record ADR-006 Logged (`[[ADR-006-Local-Unlimited-OCR-and-SLM-Fallback-Pipeline]]`)
+- [x] Local Financial SLM Intelligence & Fallback Research (`[[LOCAL_FINANCIAL_SLM_INTELLIGENCE_AND_FALLBACK_RESEARCH]]`)
+- [x] Architecture Decision Record ADR-007 Logged (`[[ADR-007-Local-Financial-SLM-Intelligence-and-Fallback-Architecture]]`)
+- [x] Local Lifestyle & Habit Learning Engine and Sovereign PWA Research (`[[LOCAL_LIFESTYLE_HABIT_LEARNING_AND_SOVEREIGN_WEBAPP_ARCHITECTURE]]`)
+- [x] Architecture Decision Record ADR-008 Logged (`[[ADR-008-Local-Lifestyle-Habit-Learning-and-PWA-Architecture]]`)
+- [x] Adaptive Device Hardware Profiling & Capability Optimization Research (`[[ADAPTIVE_DEVICE_HARDWARE_PROFILING_AND_CAPABILITY_OPTIMIZATION_RESEARCH]]`)
+- [x] Architecture Decision Record ADR-009 Logged (`[[ADR-009-Adaptive-Device-Hardware-Profiling-and-Feature-Optimization]]`)
+- [x] Modular Feature Flags, Memento State Snapshot & Customization Hub Research (`[[MODULAR_FEATURE_FLAG_ENGINE_AND_STATE_SNAPSHOT_CUSTOMIZATION_HUB_RESEARCH]]`)
+- [x] Architecture Decision Record ADR-010 Logged (`[[ADR-010-Modular-Feature-Flags-State-Snapshot-Backup-and-Customization-Hub]]`)
 
 ---
 
-## 🟡 In Progress / Active Sprints
+## 🟡 In Progress / Active Sprints (Phases 5 & 6)
 
-- [ ] Connect Obsidian Vault directly to Antigravity (`[[obsidian_grounding]]`)
-- [ ] Profile Page UI/UX polish & comprehensive avatar/theme customization
-- [ ] Export reports to PDF / Excel with formatted summary graphics
+### Phase 5: Sovereign Customization, Staged Toggles & Adaptive Hardware Profiler
+- [x] Implement `CustomizationContext.jsx` & `StagedConfirmationBar.jsx` for atomic feature toggling
+- [x] Build 5-studio `CustomizationPage.jsx` (Feature Modules, Visual Studio, Dashboard Grid, Currency, Snapshots)
+- [x] Implement `deviceCapabilityProfiler.js` & `DeviceCapabilityContext.jsx` with settings card
+- [x] Update `Sidebar.jsx` and `DashboardPage.jsx` for self-aware dynamic grid re-flow (`grid-auto-flow: dense`)
+- [x] Connect backend `/api/users/customization` endpoint in `User.js` model & `server.js`
+
+### Phase 6: On-Device Lifestyle Habit Learning & Sovereign PWA Transition
+- [x] Implement `lifestyleHabitEngine.js` for on-device behavioral financial profiling ($C_v$, $\lambda$, $\mathcal{L}_{\text{inf}}$)
+- [x] Scaffold PWA assets: `manifest.webmanifest`, `sw.js` (Multi-tier caching & BackgroundSync `sync-expenses`)
+- [x] Implement WebAuthn biometric passkeys (`webAuthnLock.js`) and Web Share Target for direct receipt ingestion
+- [x] Build `HabitNudgesCard.jsx` and `PwaInstallPrompt.jsx` components
 
 ---
 
-## ⚪ Backlog / Future Enhancements
+## ⚪ Backlog / Future Enhancements (Phases 7, 8 & 9)
 
-### Phase 5: Stock Market, Verified Schemes & Passive Income Engine
+### Phase 7: Local Sovereign OCR & Multi-Tier AI Fallback Pipeline
+- [ ] Containerize Local Python OCR Sidecar (`server/services/ocr-sidecar/` with Baidu Unlimited-OCR 3B + GBNF)
+- [ ] Implement `localSlmClient.js` client for Ollama / local host Qwen2.5-1.5B
+- [ ] Implement `localOcrService.js` adapter and integrate into `unifiedAIClient.js` 3-tier cascade
+- [ ] In-Browser WebGPU AI execution via `@mlc-ai/web-llm`
+
+### Phase 8: Stock Market, Verified Schemes & Passive Income Ecosystem
 - [ ] Real-time broker WebSocket integration (`Zerodha`, `Dhan`, `Alpaca`, `Polygon.io`)
-- [ ] Real-time Government Bond (T-Bills, SGBs) & Highest Bank FD yield scraper
-- [ ] Automated Scam & Ponzi Shield (`regulatoryBody` & `unrealistic_yield` red flag detector)
+- [ ] Real-time Government Bond (T-Bills, SGBs) & Highest Bank FD yield scraper (`schemeRadarService.js`)
+- [ ] Automated Scam & Ponzi Shield (`scamShieldEngine.js` red flag detector)
 - [ ] Technical (RSI, EMA, VWAP) & Fundamental (DCF, Piotroski, Altman) quantitative engine
 - [ ] Dividend Aristocrat & DRIP compounding cash flow calendar (`/passive-income`)
 - [ ] Surplus Cash Flow auto-sweeping to liquid / arbitrage mutual funds
 - [ ] Debt Avalanche vs Investment Yield Arbitrage Solver
-- [ ] Webhook integration for real-time bank SMS notifications
-- [ ] Mobile PWA offline caching with IndexedDB synchronization
-- [ ] Family multi-user sub-account permissions
+
+### Phase 9: Family Multi-User Ledgers, Bank SMS Webhooks & Enterprise Exports
+- [ ] Family multi-user sub-account permissions & shared family vault budgets (`FamilyVault.js`)
+- [ ] Bank SMS Webhook parser (`smsParserEngine.js`) for automated background ingestion
+- [ ] Vector PDF & styled Excel report export generator (`reportExportEngine.js`)

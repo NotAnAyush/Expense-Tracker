@@ -179,6 +179,38 @@ const userSchema = new mongoose.Schema({
       default: true,
     },
   },
+  customization: {
+    modules: {
+      aiCopilot: { type: Boolean, default: true },
+      receiptOcr: { type: Boolean, default: true },
+      fireSimulator: { type: Boolean, default: true },
+      debtOptimizer: { type: Boolean, default: true },
+      groupSplitting: { type: Boolean, default: true },
+      travelFxVaults: { type: Boolean, default: true },
+      lifestyleHabits: { type: Boolean, default: true },
+      voiceLogging: { type: Boolean, default: true },
+      bankCsvImport: { type: Boolean, default: true },
+      advancedTax: { type: Boolean, default: true },
+      deluxeVisuals: { type: Boolean, default: true },
+    },
+    theme: {
+      themeId: { type: String, default: 'midnight-obsidian' },
+      accentColor: { type: String, default: '#00FF87' },
+      glassmorphismOpacity: { type: Number, default: 0.72 },
+      fontScale: { type: Number, default: 100 },
+      borderRadius: { type: String, default: '16px' },
+    },
+    dashboardLayout: [{
+      id: { type: String },
+      visible: { type: Boolean, default: true },
+      order: { type: Number, default: 0 },
+    }],
+    regional: {
+      currency: { type: String, default: '₹' },
+      numberFormat: { type: String, enum: ['INDIAN_LAKHS_CRORES', 'INTERNATIONAL_MILLIONS'], default: 'INDIAN_LAKHS_CRORES' },
+      fiscalYearStart: { type: String, enum: ['april', 'january'], default: 'april' },
+    },
+  },
 }, {
   timestamps: true,
 });

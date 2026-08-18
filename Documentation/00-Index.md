@@ -83,6 +83,9 @@ graph TD
 - **[[Blockchain-and-Emerging-Tech-Ecosystem]]** — Web3, Merkle audits, zk-SNARKs, and Edge AI ecosystem (`[[BLOCKCHAIN_AND_FUTURE_TECH_FEATURE_PLAN]]`).
 - **[[Cash-Flow-Velocity-Engine]]** — Math formulas for net cash flow, savings rate %, daily burn rate, and runway.
 - **[[AI-Copilot-and-OCR-Engine]]** — Multimodal Gemini 2.5 Flash receipt scanner & deterministic RAG context injection.
+- **[[Adaptive-Device-Capability-Profiler]]** — Dynamic client hardware scanning (WebGPU, RAM, CPU) and tiered feature scaling (`[[ADAPTIVE_DEVICE_HARDWARE_PROFILING_AND_CAPABILITY_OPTIMIZATION_RESEARCH]]`).
+- **[[Customization-Hub-and-Feature-Flag-Engine]]** — Modular feature toggling, pre-sync Memento snapshots, and self-aware layout re-formatting (`[[MODULAR_FEATURE_FLAG_ENGINE_AND_STATE_SNAPSHOT_CUSTOMIZATION_HUB_RESEARCH]]`).
+- **[[Lifestyle-and-Habit-Learning-Engine]]** — 100% on-device behavioral profiling, payday euphoria curves, and lifestyle inflation metrics (`[[LOCAL_LIFESTYLE_HABIT_LEARNING_AND_SOVEREIGN_WEBAPP_ARCHITECTURE]]`).
 - **[[Minimum-Cash-Flow-Graph-Solver]]** — Greedy graph reduction for split bills ($O(N^2) \to N-1$) + NPCI UPI Intent QR generation.
 - **[[Monte-Carlo-and-FIRE-Simulator]]** — 1,000-run stochastic wealth simulation ($P_{10}, P_{50}, P_{90}$) and Rule-of-25 FIRE math.
 - **[[Multi-Currency-FX-Engine]]** — Real-time currency exchange rates and travel trip budget vaults.
@@ -93,6 +96,11 @@ graph TD
 - **[[ADR-003-Client-Side-Encrypted-Vault]]** — Zero-knowledge AES-256-GCM client-side encryption for `SecretVault`.
 - **[[ADR-004-Dual-Token-JWT-Rotation]]** — Dual-token authentication with cryptographic refresh rotation.
 - **[[ADR-005-No-Framework-CSS-System]]** — Why bespoke Vanilla CSS variables were chosen over Tailwind utility bloat.
+- **[[ADR-006-Local-Unlimited-OCR-and-SLM-Fallback-Pipeline]]** — 2-stage offline sovereign bill parsing using Baidu Unlimited-OCR and Qwen2.5 SLM (`[[LOCAL_UNLIMITED_OCR_AND_SLM_BILL_PARSING_RESEARCH]]`).
+- **[[ADR-007-Local-Financial-SLM-Intelligence-and-Fallback-Architecture]]** — Sovereign Local SLM (Qwen2.5-1.5B/WebLLM) for spending explanations and zero-outage API fallback (`[[LOCAL_FINANCIAL_SLM_INTELLIGENCE_AND_FALLBACK_RESEARCH]]`).
+- **[[ADR-008-Local-Lifestyle-Habit-Learning-and-PWA-Architecture]]** — On-device behavioral finance habit engine and full-stack PWA web app transition (`[[LOCAL_LIFESTYLE_HABIT_LEARNING_AND_SOVEREIGN_WEBAPP_ARCHITECTURE]]`).
+- **[[ADR-009-Adaptive-Device-Hardware-Profiling-and-Feature-Optimization]]** — Real-time client hardware inspection and tiered feature allocation (`[[ADAPTIVE_DEVICE_HARDWARE_PROFILING_AND_CAPABILITY_OPTIMIZATION_RESEARCH]]`).
+- **[[ADR-010-Modular-Feature-Flags-State-Snapshot-Backup-and-Customization-Hub]]** — Staged feature flag configuration, automated pre-sync Memento snapshots, and self-aware dynamic layouts (`[[MODULAR_FEATURE_FLAG_ENGINE_AND_STATE_SNAPSHOT_CUSTOMIZATION_HUB_RESEARCH]]`).
 
 ### 5. 📋 Sprint Execution & Health (`05-Tasks/`)
 - **[[Project-Kanban]]** — Interactive task checklist for human + Antigravity pair programming.
