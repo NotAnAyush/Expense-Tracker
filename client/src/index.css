@@ -1370,6 +1370,101 @@ textarea.glass-input, textarea.input-field {
 }
 
 /* ==========================================================================
+   Digital Bill & Tax Invoice Ticket Component
+   ========================================================================== */
+.digital-bill-card {
+  background: #060912;
+  background-image: radial-gradient(rgba(0, 240, 255, 0.04) 1px, transparent 1px);
+  background-size: 14px 14px;
+  border: 1.5px solid rgba(0, 240, 255, 0.25);
+  border-radius: 18px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.digital-bill-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #00FF87, #00F0FF, #8B5CF6);
+}
+
+.digital-bill-header {
+  padding: 18px 22px 14px 22px;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.12);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.digital-bill-dashed-divider {
+  border-top: 1px dashed rgba(255, 255, 255, 0.12);
+  margin: 12px 0;
+  position: relative;
+}
+
+.digital-bill-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.digital-bill-table th {
+  padding: 8px 12px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #94A3B8;
+  font-weight: 700;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.digital-bill-table td {
+  padding: 10px 12px;
+  font-size: 12.5px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.digital-bill-table tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.digital-tax-summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 0;
+  font-size: 12.5px;
+}
+
+.barcode-strip {
+  height: 24px;
+  background: repeating-linear-gradient(
+    90deg,
+    #F1F5F9 0px,
+    #F1F5F9 2px,
+    transparent 2px,
+    transparent 4px,
+    #F1F5F9 4px,
+    #F1F5F9 7px,
+    transparent 7px,
+    transparent 9px,
+    #F1F5F9 9px,
+    #F1F5F9 12px,
+    transparent 12px,
+    transparent 15px
+  );
+  opacity: 0.5;
+  border-radius: 3px;
+}
+
+
+/* ==========================================================================
    Responsive Breakpoints
    ========================================================================== */
 @media (max-width: 950px) {

@@ -30,3 +30,9 @@ scratch/
 .obsidian/
 Expense Tracker/
 
+
+
+
+
+# Ignore Smart Environment folder
+.smart-env

@@ -23,10 +23,17 @@ import {
   RefreshCw,
   ShoppingBag,
   Store,
-  DollarSign
+  Receipt,
+  FileText,
+  BadgeCheck,
+  MapPin,
+  Utensils,
+  CheckCircle2,
+  FolderOpen
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { apiFetch } from '../../api/client';
+import { resolveDigitalBill, CATEGORY_ARCHETYPES } from '../../utils/digitalBillResolver';
 
 const MOTIVE_CONFIG = {
   Need: { label: 'Essential Need', icon: '🛡️', color: '#00FF87', bg: 'rgba(0, 255, 135, 0.12)', border: 'rgba(0, 255, 135, 0.3)' },
@@ -60,7 +67,9 @@ export const TransactionDetailModal = ({
   onPayUPI,
   onDuplicate,
   onUpdateMotive,
+  onUpdateCategory,
 }) => {
+  const [activeViewTab, setActiveViewTab] = useState('bill'); // 'bill' or 'motive'
   const [copiedUtr, setCopiedUtr] = useState(false);
   const [copiedGstin, setCopiedGstin] = useState(false);
   const [copiedSlip, setCopiedSlip] = useState(false);
@@ -68,6 +77,9 @@ export const TransactionDetailModal = ({
   const [updatingMotive, setUpdatingMotive] = useState(false);
 
   if (!isOpen || !transaction) return null;
+
+  // Resolve comprehensive digital bill representation
+  const bill = resolveDigitalBill(transaction);
 
   const {
     _id,
@@ -77,13 +89,11 @@ export const TransactionDetailModal = ({
     merchant = '',
     source = 'manual',
     date,
-    paymentMethod = 'Card',
+    paymentMethod = 'UPI',
     note = '',
     tags = [],
-    splits = [],
     isTaxDeductible = false,
     taxSection = '',
-    reimbursementStatus = 'none',
     upiDetails,
     receiptDetails,
     ecommercePlatform = 'none',
@@ -91,37 +101,49 @@ export const TransactionDetailModal = ({
     motiveInsight = '',
   } = transaction;
 
-  const lineItems = receiptDetails?.lineItems || [];
   const motiveInfo = MOTIVE_CONFIG[selectedMotive] || MOTIVE_CONFIG.Need;
   const platformInfo = PLATFORM_ICONS[ecommercePlatform] || null;
 
   const handleCopyUtr = () => {
-    if (!upiDetails?.utr) return;
-    navigator.clipboard.writeText(upiDetails.utr);
+    if (!bill.payment.utr && !upiDetails?.utr) return;
+    navigator.clipboard.writeText(bill.payment.utr || upiDetails?.utr);
     setCopiedUtr(true);
     setTimeout(() => setCopiedUtr(false), 2000);
   };
 
   const handleCopyGstin = () => {
-    if (!receiptDetails?.gstin) return;
-    navigator.clipboard.writeText(receiptDetails.gstin);
+    if (!bill.merchant.gstin || bill.merchant.gstin.startsWith('UNREGISTERED')) return;
+    navigator.clipboard.writeText(bill.merchant.gstin);
     setCopiedGstin(true);
     setTimeout(() => setCopiedGstin(false), 2000);
   };
 
   const handleCopySlip = () => {
+    const itemsFormatted = bill.items
+      .map((item, idx) => `  ${idx + 1}. ${item.name} (${item.subCategory}) x${item.quantity} @ ₹${item.unitPrice} = ₹${item.price}`)
+      .join('\n');
+
     const slipText = `
-🧾 FINANCIAL TRANSACTION SLIP
-━━━━━━━━━━━━━━━━━━━━━━━━━━
-Title: ${title}
-Amount: ₹${Number(amount).toLocaleString()} (${isIncome ? 'Income' : 'Expense'})
-Category: ${category}
-Merchant / Vendor: ${merchant || 'N/A'}
-Date: ${new Date(date).toLocaleDateString()}
-Motive: ${selectedMotive} (${motiveInfo.label})
-Payment Method: ${paymentMethod}
-${upiDetails?.utr ? `UTR: ${upiDetails.utr}\n` : ''}${receiptDetails?.gstin ? `GSTIN: ${receiptDetails.gstin}\n` : ''}${lineItems.length > 0 ? `Line Items:\n${lineItems.map(i => ` • ${i.name} (x${i.quantity}) - ₹${i.price}`).join('\n')}\n` : ''}━━━━━━━━━━━━━━━━━━━━━━━━━━
-Generated via Richy Expense Tracker
+🧾 DIGITAL TAX INVOICE & FINANCIAL SLIP
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Merchant: ${bill.merchant.displayName}
+Location: ${bill.merchant.location}
+${bill.merchant.hasGstin ? `GSTIN: ${bill.merchant.gstin}\n` : ''}Bill No: #${bill.invoice.number} | Token: #${bill.invoice.token}
+Date & Time: ${bill.invoice.date} at ${bill.invoice.time}
+Category: ${bill.categorization.hierarchy}
+Spending Motive: ${selectedMotive} (${motiveInfo.label})
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ITEMIZED PRODUCT MATRIX:
+${itemsFormatted}
+────────────────────────────────────
+Pre-tax Subtotal: ₹${bill.tax.subtotal.toFixed(2)}
+Central GST (CGST ${bill.tax.cgstRate}%): ₹${bill.tax.cgstAmount.toFixed(2)}
+State GST (SGST ${bill.tax.sgstRate}%): ₹${bill.tax.sgstAmount.toFixed(2)}
+${bill.tax.deliveryFee > 0 ? `Delivery Fee: ₹${bill.tax.deliveryFee.toFixed(2)}\n` : ''}${bill.tax.platformFee > 0 ? `Platform Fee: ₹${bill.tax.platformFee.toFixed(2)}\n` : ''}${bill.tax.discount > 0 ? `Discount: -₹${bill.tax.discount.toFixed(2)}\n` : ''}────────────────────────────────────
+TOTAL AMOUNT PAID: ₹${bill.tax.grandTotal.toFixed(2)} (${isIncome ? 'Credit' : 'Debit'})
+Payment Method: ${bill.payment.method} ${bill.payment.utr ? `| UTR: ${bill.payment.utr}` : ''}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Generated via Richy Personal Financial OS
     `.trim();
 
     navigator.clipboard.writeText(slipText);
@@ -159,7 +181,7 @@ Generated via Richy Expense Tracker
           className="glass-card"
           style={{
             width: '100%',
-            maxWidth: '680px',
+            maxWidth: '720px',
             maxHeight: '92vh',
             display: 'flex',
             flexDirection: 'column',
@@ -173,7 +195,7 @@ Generated via Richy Expense Tracker
           {/* Header Bar */}
           <div
             style={{
-              padding: '18px 24px',
+              padding: '16px 22px',
               borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
               display: 'flex',
               alignItems: 'center',
@@ -186,8 +208,8 @@ Generated via Richy Expense Tracker
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
               <div
                 style={{
-                  width: '40px',
-                  height: '40px',
+                  width: '38px',
+                  height: '38px',
                   borderRadius: '12px',
                   background: isIncome ? 'rgba(0, 255, 135, 0.15)' : 'rgba(0, 240, 255, 0.15)',
                   border: isIncome ? '1.5px solid #00FF87' : '1.5px solid #00F0FF',
@@ -197,29 +219,84 @@ Generated via Richy Expense Tracker
                   fontSize: '18px',
                 }}
               >
-                {platformInfo ? platformInfo.icon : isIncome ? <ArrowDownLeft size={20} color="#00FF87" /> : <Store size={20} color="#00F0FF" />}
+                {platformInfo ? platformInfo.icon : bill.merchant.icon || <Receipt size={18} color="#00F0FF" />}
               </div>
               <div>
-                <h3 style={{ margin: 0, fontSize: '17px', fontWeight: 800, color: '#F1F5F9', fontFamily: 'var(--font-heading)' }}>
-                  Transaction Intelligence
+                <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 800, color: '#F1F5F9', fontFamily: 'var(--font-heading)' }}>
+                  {bill.merchant.displayName}
                 </h3>
-                <span style={{ fontSize: '12px', color: '#94A3B8' }}>
-                  Deep financial motive, taxes, itemization & forensic details
-                </span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11.5px', color: '#94A3B8' }}>
+                  <span>{bill.categorization.hierarchy}</span>
+                  <span>•</span>
+                  <span style={{ color: '#00FF87', fontWeight: 700 }}>#{bill.invoice.number}</span>
+                </div>
               </div>
             </div>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              {/* Dual Tab Switcher */}
+              <div
+                style={{
+                  display: 'flex',
+                  background: 'rgba(0,0,0,0.4)',
+                  padding: '3px',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(255,255,255,0.08)'
+                }}
+              >
+                <button
+                  type="button"
+                  onClick={() => setActiveViewTab('bill')}
+                  style={{
+                    padding: '4px 10px',
+                    fontSize: '11.5px',
+                    fontWeight: 700,
+                    borderRadius: '6px',
+                    border: 'none',
+                    cursor: 'pointer',
+                    background: activeViewTab === 'bill' ? '#00F0FF' : 'transparent',
+                    color: activeViewTab === 'bill' ? '#050810' : '#94A3B8',
+                    transition: 'all 0.15s ease',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px'
+                  }}
+                >
+                  <FileText size={12} /> Digital Bill
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveViewTab('motive')}
+                  style={{
+                    padding: '4px 10px',
+                    fontSize: '11.5px',
+                    fontWeight: 700,
+                    borderRadius: '6px',
+                    border: 'none',
+                    cursor: 'pointer',
+                    background: activeViewTab === 'motive' ? '#00FF87' : 'transparent',
+                    color: activeViewTab === 'motive' ? '#050810' : '#94A3B8',
+                    transition: 'all 0.15s ease',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px'
+                  }}
+                >
+                  <Sparkles size={12} /> Motive & Intel
+                </button>
+              </div>
+
               <button
                 type="button"
                 onClick={handleCopySlip}
-                title="Copy Financial Slip"
+                title="Copy Full Formatted Slip"
                 className="btn-glass-secondary"
-                style={{ height: '32px', padding: '0 10px', fontSize: '11.5px', gap: '5px' }}
+                style={{ height: '30px', padding: '0 8px', fontSize: '11px', gap: '4px' }}
               >
-                {copiedSlip ? <CheckCheck size={13} color="#00FF87" /> : <Copy size={13} />}
+                {copiedSlip ? <CheckCheck size={12} color="#00FF87" /> : <Copy size={12} />}
                 <span>{copiedSlip ? 'Copied' : 'Slip'}</span>
               </button>
+              
               <button
                 onClick={onClose}
                 style={{
@@ -228,392 +305,445 @@ Generated via Richy Expense Tracker
                   color: '#94A3B8',
                   cursor: 'pointer',
                   padding: '6px',
-                  borderRadius: '10px',
+                  borderRadius: '8px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}
               >
-                <X size={18} />
+                <X size={16} />
               </button>
             </div>
           </div>
 
           {/* Modal Body */}
-          <div style={{ padding: '22px 24px', overflowY: 'auto', flex: 1, display: 'flex', flexDirection: 'column', gap: '18px' }}>
-            
-            {/* 1. HERO FINANCIAL CARD */}
-            <div
-              style={{
-                padding: '20px',
-                borderRadius: '18px',
-                background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(10, 14, 24, 0.7) 100%)',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                flexWrap: 'wrap',
-                gap: '14px',
-              }}
-            >
-              <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-                  <span
-                    style={{
-                      padding: '3px 10px',
-                      borderRadius: '999px',
-                      fontSize: '11.5px',
-                      fontWeight: 700,
-                      background: isIncome ? 'rgba(0, 255, 135, 0.15)' : 'rgba(255, 77, 77, 0.15)',
-                      color: isIncome ? '#00FF87' : '#FF7D7D',
-                      border: isIncome ? '1px solid rgba(0, 255, 135, 0.3)' : '1px solid rgba(255, 77, 77, 0.3)',
-                    }}
-                  >
-                    {isIncome ? '+ Credit Inflow' : '- Debit Outflow'}
-                  </span>
-                  <span
-                    style={{
-                      padding: '3px 10px',
-                      borderRadius: '999px',
-                      fontSize: '11.5px',
-                      fontWeight: 600,
-                      background: 'rgba(255, 255, 255, 0.05)',
-                      color: '#E2E8F0',
-                      border: '1px solid rgba(255, 255, 255, 0.1)',
-                    }}
-                  >
-                    {category}
-                  </span>
-                  {source === 'ecommerce_sync' && (
-                    <span style={{ fontSize: '11.5px', color: platformInfo?.color || '#00F0FF', fontWeight: 700 }}>
-                      {platformInfo?.icon} {platformInfo?.label || 'E-Commerce Sync'}
+          <div style={{ padding: '18px 22px', overflowY: 'auto', flex: 1, display: 'flex', flexDirection: 'column', gap: '16px' }}>
+
+            {/* TAB 1: AUTHENTIC DETAILED DIGITAL BILL / TAX INVOICE TICKET */}
+            {activeViewTab === 'bill' && (
+              <div className="digital-bill-card">
+                {/* 1. Merchant & Invoice Header */}
+                <div className="digital-bill-header">
+                  <div style={{ flex: 1, minWidth: '240px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '2px' }}>
+                      <span style={{ fontSize: '16px' }}>{bill.merchant.icon}</span>
+                      <h4 style={{ margin: 0, fontSize: '17px', fontWeight: 900, color: '#FFFFFF', letterSpacing: '-0.3px' }}>
+                        {bill.merchant.displayName}
+                      </h4>
+                      <BadgeCheck size={16} color="#00FF87" />
+                    </div>
+                    <div style={{ fontSize: '11.5px', color: '#94A3B8', marginBottom: '4px' }}>
+                      {bill.merchant.subtitle}
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '11px', color: '#64748B' }}>
+                      <MapPin size={11} color="#00F0FF" />
+                      <span>{bill.merchant.location}</span>
+                    </div>
+                  </div>
+
+                  <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '2px' }}>
+                    <span style={{ fontSize: '10px', fontWeight: 800, color: '#00FF87', background: 'rgba(0, 255, 135, 0.1)', padding: '2px 8px', borderRadius: '4px', letterSpacing: '0.6px' }}>
+                      TAX INVOICE
                     </span>
-                  )}
-                  {source === 'upi_sync' && (
-                    <span style={{ fontSize: '11px', color: '#818CF8', fontWeight: 700 }}>
-                      ⚡ UPI SYNC
-                    </span>
-                  )}
-                </div>
-
-                <h2 style={{ margin: '4px 0', fontSize: '20px', fontWeight: 800, color: '#F8FAFC', fontFamily: 'var(--font-heading)' }}>
-                  {title}
-                </h2>
-                {merchant && (
-                  <div style={{ fontSize: '13px', color: '#94A3B8', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <Building size={14} /> <span>Vendor / Merchant: <strong>{merchant}</strong></span>
-                  </div>
-                )}
-              </div>
-
-              <div style={{ textAlign: 'right' }}>
-                <div
-                  className="font-display"
-                  style={{
-                    fontSize: '28px',
-                    fontWeight: 900,
-                    color: isIncome ? '#00FF87' : '#FF7D7D',
-                    letterSpacing: '-0.5px',
-                  }}
-                >
-                  {isIncome ? '+' : '-'}₹{Number(amount).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
-                </div>
-                <div style={{ fontSize: '12px', color: '#94A3B8', marginTop: '4px' }}>
-                  {new Date(date).toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}
-                  {receiptDetails?.time ? ` at ${receiptDetails.time}` : ''}
-                </div>
-              </div>
-            </div>
-
-            {/* 2. AI MOTIVE & INTENT REASONING ENGINE */}
-            {!isIncome && (
-              <div
-                style={{
-                  padding: '16px',
-                  borderRadius: '16px',
-                  background: 'linear-gradient(135deg, rgba(0, 240, 255, 0.06) 0%, rgba(0, 255, 135, 0.03) 100%)',
-                  border: '1px solid rgba(0, 240, 255, 0.2)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '12px',
-                }}
-              >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <Sparkles size={16} color="#00F0FF" />
-                    <span style={{ fontSize: '13px', fontWeight: 800, color: '#F1F5F9', textTransform: 'uppercase', letterSpacing: '0.4px' }}>
-                      Spending Motive & Intent
-                    </span>
-                  </div>
-
-                  {/* Motive Chip */}
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '6px',
-                      padding: '4px 12px',
-                      borderRadius: '999px',
-                      background: motiveInfo.bg,
-                      border: `1px solid ${motiveInfo.border}`,
-                      color: motiveInfo.color,
-                      fontSize: '12px',
-                      fontWeight: 800,
-                    }}
-                  >
-                    <span>{motiveInfo.icon}</span>
-                    <span>{motiveInfo.label}</span>
+                    <div style={{ fontSize: '13px', fontWeight: 800, color: '#F1F5F9', fontFamily: 'monospace' }}>
+                      INV #{bill.invoice.number}
+                    </div>
+                    <div style={{ fontSize: '11px', color: '#94A3B8' }}>
+                      Token #{bill.invoice.token} • {bill.invoice.date} {bill.invoice.time}
+                    </div>
                   </div>
                 </div>
 
-                <p style={{ fontSize: '12.5px', color: '#CBD5E1', lineHeight: 1.45, margin: 0 }}>
-                  {motiveInsight || `This transaction has been classified as an ${motiveInfo.label.toLowerCase()} based on merchant profile and item analysis.`}
-                </p>
-
-                {/* Quick Motive Selector */}
-                <div>
-                  <span style={{ fontSize: '11px', color: '#94A3B8', display: 'block', marginBottom: '6px' }}>
-                    Adjust / Customize Motive:
-                  </span>
-                  <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-                    {Object.keys(MOTIVE_CONFIG).map((mKey) => {
-                      const cfg = MOTIVE_CONFIG[mKey];
-                      const isSelected = selectedMotive === mKey;
-                      return (
-                        <button
-                          key={mKey}
-                          type="button"
-                          onClick={() => handleMotiveChange(mKey)}
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '4px',
-                            padding: '4px 10px',
-                            borderRadius: '8px',
-                            fontSize: '11.5px',
-                            fontWeight: isSelected ? 800 : 500,
-                            background: isSelected ? cfg.bg : 'rgba(255, 255, 255, 0.03)',
-                            border: isSelected ? `1.5px solid ${cfg.color}` : '1px solid rgba(255, 255, 255, 0.08)',
-                            color: isSelected ? cfg.color : '#94A3B8',
-                            cursor: 'pointer',
-                            transition: 'all 0.15s ease',
-                          }}
-                        >
-                          <span>{cfg.icon}</span>
-                          <span>{cfg.label}</span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* 3. ITEMIZATION & LINE ITEMS MATRIX (If present) */}
-            {lineItems.length > 0 && (
-              <div
-                style={{
-                  border: '1px solid rgba(255, 255, 255, 0.08)',
-                  borderRadius: '16px',
-                  overflow: 'hidden',
-                  background: 'rgba(0,0,0,0.25)',
-                }}
-              >
+                {/* 2. GSTIN & Tax Status Pill Bar */}
                 <div
                   style={{
-                    padding: '10px 14px',
-                    borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+                    padding: '8px 22px',
+                    background: 'rgba(0, 240, 255, 0.03)',
+                    borderBottom: '1px dashed rgba(255, 255, 255, 0.08)',
                     display: 'flex',
-                    alignItems: 'center',
                     justifyContent: 'space-between',
-                    background: 'rgba(255, 255, 255, 0.02)',
+                    alignItems: 'center',
+                    flexWrap: 'wrap',
+                    gap: '8px',
+                    fontSize: '11.5px'
                   }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12.5px', fontWeight: 700, color: '#F1F5F9' }}>
-                    <Layers size={14} color="#00F0FF" />
-                    <span>Itemized Products & Quantities ({lineItems.length} items)</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <span style={{ color: '#94A3B8', fontWeight: 600 }}>Merchant GSTIN:</span>
+                    <strong style={{ color: '#00F0FF', letterSpacing: '0.6px', fontFamily: 'monospace' }}>
+                      {bill.merchant.gstin}
+                    </strong>
+                    {bill.merchant.hasGstin && (
+                      <button
+                        type="button"
+                        onClick={handleCopyGstin}
+                        style={{ background: 'none', border: 'none', color: '#00F0FF', cursor: 'pointer', padding: 0 }}
+                        title="Copy GSTIN"
+                      >
+                        {copiedGstin ? <CheckCheck size={12} color="#00FF87" /> : <Copy size={12} />}
+                      </button>
+                    )}
                   </div>
-                  <span style={{ fontSize: '11.5px', color: '#00FF87', fontWeight: 700 }}>
-                    Subtotal: ₹{receiptDetails?.subtotal ? receiptDetails.subtotal.toLocaleString() : amount.toLocaleString()}
-                  </span>
+
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <span style={{ padding: '2px 8px', borderRadius: '4px', background: 'rgba(0, 255, 135, 0.1)', color: '#00FF87', fontWeight: 700, fontSize: '10.5px' }}>
+                      GST COMPLIANT (5%)
+                    </span>
+                    <span style={{ padding: '2px 8px', borderRadius: '4px', background: 'rgba(129, 140, 248, 0.1)', color: '#818CF8', fontWeight: 700, fontSize: '10.5px' }}>
+                      {bill.payment.method}
+                    </span>
+                  </div>
                 </div>
 
-                <div style={{ maxHeight: '180px', overflowY: 'auto' }}>
-                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12.5px', textAlign: 'left' }}>
+                {/* 3. Detailed Itemized Products Table */}
+                <div style={{ padding: '4px 10px', overflowX: 'auto' }}>
+                  <table className="digital-bill-table">
                     <thead>
-                      <tr style={{ color: '#94A3B8', borderBottom: '1px solid rgba(255, 255, 255, 0.04)', fontSize: '11px', textTransform: 'uppercase' }}>
-                        <th style={{ padding: '8px 12px' }}>Product</th>
-                        <th style={{ padding: '8px 8px', textAlign: 'center' }}>Qty</th>
-                        <th style={{ padding: '8px 8px', textAlign: 'right' }}>Unit Rate</th>
-                        <th style={{ padding: '8px 12px', textAlign: 'right' }}>Total</th>
+                      <tr>
+                        <th style={{ width: '32px', textAlign: 'center' }}>#</th>
+                        <th>Item Description</th>
+                        <th style={{ width: '170px' }}>Subcategory</th>
+                        <th style={{ width: '60px', textAlign: 'center' }}>Qty</th>
+                        <th style={{ width: '90px', textAlign: 'right' }}>Unit Rate</th>
+                        <th style={{ width: '100px', textAlign: 'right' }}>Amount</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {lineItems.map((item, idx) => (
-                        <tr key={idx} style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.03)' }}>
-                          <td style={{ padding: '8px 12px', color: '#F1F5F9', fontWeight: 600 }}>{item.name}</td>
-                          <td style={{ padding: '8px 8px', textAlign: 'center', color: '#00F0FF', fontWeight: 700 }}>x{item.quantity}</td>
-                          <td style={{ padding: '8px 8px', textAlign: 'right', color: '#94A3B8' }}>₹{Number(item.unitPrice || item.price).toLocaleString()}</td>
-                          <td style={{ padding: '8px 12px', textAlign: 'right', color: '#00FF87', fontWeight: 700 }}>₹{Number(item.price).toLocaleString()}</td>
+                      {bill.items.map((item, idx) => (
+                        <tr key={idx}>
+                          <td style={{ textAlign: 'center', color: '#64748B', fontFamily: 'monospace', fontSize: '11px' }}>
+                            {idx + 1}
+                          </td>
+                          <td>
+                            <div style={{ fontWeight: 700, color: '#F1F5F9' }}>
+                              {item.name}
+                            </div>
+                          </td>
+                          <td>
+                            <span
+                              style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '4px',
+                                padding: '2px 8px',
+                                borderRadius: '6px',
+                                fontSize: '11px',
+                                fontWeight: 700,
+                                background: 'rgba(255, 255, 255, 0.04)',
+                                border: `1px solid ${item.badgeColor || 'rgba(255,255,255,0.1)'}`,
+                                color: item.badgeColor || '#F1F5F9'
+                              }}
+                            >
+                              <span>{item.emoji}</span>
+                              <span>{item.subCategory}</span>
+                            </span>
+                          </td>
+                          <td style={{ textAlign: 'center', fontWeight: 800, color: '#00F0FF', fontFamily: 'monospace' }}>
+                            x{item.quantity}
+                          </td>
+                          <td style={{ textAlign: 'right', color: '#94A3B8', fontFamily: 'monospace' }}>
+                            ₹{Number(item.unitPrice).toFixed(2)}
+                          </td>
+                          <td style={{ textAlign: 'right', fontWeight: 800, color: '#00FF87', fontFamily: 'monospace' }}>
+                            ₹{Number(item.price).toFixed(2)}
+                          </td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
                 </div>
-              </div>
-            )}
 
-            {/* 4. GST & TAX BREAKDOWN */}
-            {receiptDetails && (receiptDetails.gstin || receiptDetails.taxAmount > 0 || receiptDetails.deliveryFee > 0) && (
-              <div
-                style={{
-                  padding: '14px 16px',
-                  borderRadius: '16px',
-                  background: 'rgba(255, 255, 255, 0.02)',
-                  border: '1px solid rgba(255, 255, 255, 0.08)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '10px',
-                }}
-              >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div className="digital-bill-dashed-divider" />
+
+                {/* 4. Complete Tax & Financial Decomposition Box */}
+                <div style={{ padding: '0 22px 14px 22px', display: 'flex', justifyContent: 'flex-end' }}>
+                  <div style={{ width: '100%', maxWidth: '340px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                    <div className="digital-tax-summary-row">
+                      <span style={{ color: '#94A3B8' }}>Pre-tax Subtotal (Taxable Value):</span>
+                      <strong style={{ color: '#F1F5F9', fontFamily: 'monospace' }}>₹{bill.tax.subtotal.toFixed(2)}</strong>
+                    </div>
+                    
+                    {bill.tax.cgstAmount > 0 && (
+                      <div className="digital-tax-summary-row">
+                        <span style={{ color: '#94A3B8' }}>Central GST (CGST {bill.tax.cgstRate}%):</span>
+                        <strong style={{ color: '#00F0FF', fontFamily: 'monospace' }}>+₹{bill.tax.cgstAmount.toFixed(2)}</strong>
+                      </div>
+                    )}
+
+                    {bill.tax.sgstAmount > 0 && (
+                      <div className="digital-tax-summary-row">
+                        <span style={{ color: '#94A3B8' }}>State GST (SGST {bill.tax.sgstRate}%):</span>
+                        <strong style={{ color: '#00F0FF', fontFamily: 'monospace' }}>+₹{bill.tax.sgstAmount.toFixed(2)}</strong>
+                      </div>
+                    )}
+
+                    {bill.tax.deliveryFee > 0 && (
+                      <div className="digital-tax-summary-row">
+                        <span style={{ color: '#94A3B8' }}>Delivery / Shipping:</span>
+                        <strong style={{ color: '#F1F5F9', fontFamily: 'monospace' }}>+₹{bill.tax.deliveryFee.toFixed(2)}</strong>
+                      </div>
+                    )}
+
+                    {bill.tax.platformFee > 0 && (
+                      <div className="digital-tax-summary-row">
+                        <span style={{ color: '#94A3B8' }}>Platform & Packaging Fee:</span>
+                        <strong style={{ color: '#F1F5F9', fontFamily: 'monospace' }}>+₹{bill.tax.platformFee.toFixed(2)}</strong>
+                      </div>
+                    )}
+
+                    {bill.tax.discount > 0 && (
+                      <div className="digital-tax-summary-row">
+                        <span style={{ color: '#FB7185' }}>Coupon & Merchant Discount:</span>
+                        <strong style={{ color: '#FB7185', fontFamily: 'monospace' }}>-₹{bill.tax.discount.toFixed(2)}</strong>
+                      </div>
+                    )}
+
+                    <div style={{ height: '1px', background: 'rgba(255, 255, 255, 0.12)', margin: '6px 0' }} />
+
+                    <div className="digital-tax-summary-row" style={{ fontSize: '15px' }}>
+                      <span style={{ fontWeight: 800, color: '#FFFFFF' }}>GRAND TOTAL PAID:</span>
+                      <strong style={{ fontSize: '18px', fontWeight: 900, color: isIncome ? '#00FF87' : '#00FF87', fontFamily: 'monospace' }}>
+                        ₹{bill.tax.grandTotal.toFixed(2)}
+                      </strong>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 5. Barcode & Verification Strip */}
+                <div
+                  style={{
+                    padding: '12px 22px',
+                    background: 'rgba(0, 0, 0, 0.4)',
+                    borderTop: '1px dashed rgba(255, 255, 255, 0.08)',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    flexWrap: 'wrap',
+                    gap: '12px'
+                  }}
+                >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <Percent size={15} color="#00F0FF" />
-                    <span style={{ fontSize: '12.5px', fontWeight: 700, color: '#F1F5F9' }}>Tax & Charges Breakdown</span>
+                    <CheckCircle2 size={16} color="#00FF87" />
+                    <div>
+                      <div style={{ fontSize: '11px', fontWeight: 800, color: '#F1F5F9' }}>
+                        VERIFIED DIGITAL TAX RECORD
+                      </div>
+                      <div style={{ fontSize: '10px', color: '#64748B' }}>
+                        Secured via Richy Double-Entry Cryptographic Ledger
+                      </div>
+                    </div>
                   </div>
-                  {receiptDetails.gstin && (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <span style={{ fontSize: '11px', color: '#94A3B8' }}>GSTIN:</span>
-                      <strong style={{ fontSize: '11.5px', color: '#00FF87', letterSpacing: '0.5px' }}>{receiptDetails.gstin}</strong>
-                      <button
-                        type="button"
-                        onClick={handleCopyGstin}
-                        style={{ background: 'none', border: 'none', color: '#00F0FF', cursor: 'pointer', padding: '2px' }}
-                      >
-                        {copiedGstin ? <CheckCheck size={12} color="#00FF87" /> : <Copy size={12} />}
-                      </button>
-                    </div>
-                  )}
-                </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))', gap: '8px', fontSize: '11.5px' }}>
-                  {receiptDetails.subtotal > 0 && (
-                    <div style={{ background: 'rgba(255, 255, 255, 0.03)', padding: '6px 10px', borderRadius: '8px' }}>
-                      <span style={{ color: '#94A3B8', display: 'block' }}>Pre-tax Subtotal</span>
-                      <strong style={{ color: '#F1F5F9' }}>₹{receiptDetails.subtotal}</strong>
-                    </div>
-                  )}
-                  {receiptDetails.cgst?.amount > 0 && (
-                    <div style={{ background: 'rgba(255, 255, 255, 0.03)', padding: '6px 10px', borderRadius: '8px' }}>
-                      <span style={{ color: '#94A3B8', display: 'block' }}>CGST ({receiptDetails.cgst.rate}%)</span>
-                      <strong style={{ color: '#00F0FF' }}>₹{receiptDetails.cgst.amount}</strong>
-                    </div>
-                  )}
-                  {receiptDetails.sgst?.amount > 0 && (
-                    <div style={{ background: 'rgba(255, 255, 255, 0.03)', padding: '6px 10px', borderRadius: '8px' }}>
-                      <span style={{ color: '#94A3B8', display: 'block' }}>SGST ({receiptDetails.sgst.rate}%)</span>
-                      <strong style={{ color: '#00F0FF' }}>₹{receiptDetails.sgst.amount}</strong>
-                    </div>
-                  )}
-                  {receiptDetails.deliveryFee > 0 && (
-                    <div style={{ background: 'rgba(255, 255, 255, 0.03)', padding: '6px 10px', borderRadius: '8px' }}>
-                      <span style={{ color: '#94A3B8', display: 'block' }}>Delivery Fee</span>
-                      <strong style={{ color: '#F1F5F9' }}>₹{receiptDetails.deliveryFee}</strong>
-                    </div>
-                  )}
-                  {receiptDetails.platformFee > 0 && (
-                    <div style={{ background: 'rgba(255, 255, 255, 0.03)', padding: '6px 10px', borderRadius: '8px' }}>
-                      <span style={{ color: '#94A3B8', display: 'block' }}>Platform Fee</span>
-                      <strong style={{ color: '#F1F5F9' }}>₹{receiptDetails.platformFee}</strong>
-                    </div>
-                  )}
-                  {receiptDetails.discount > 0 && (
-                    <div style={{ background: 'rgba(244, 63, 94, 0.1)', padding: '6px 10px', borderRadius: '8px' }}>
-                      <span style={{ color: '#FB7185', display: 'block' }}>Discount</span>
-                      <strong style={{ color: '#FB7185' }}>-₹{receiptDetails.discount}</strong>
-                    </div>
-                  )}
+                  <div style={{ width: '120px' }}>
+                    <div className="barcode-strip" />
+                  </div>
                 </div>
               </div>
             )}
 
-            {/* 5. PAYMENT & FORENSICS */}
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-                gap: '12px',
-                fontSize: '12.5px',
-              }}
-            >
-              {/* Payment Method & UTR */}
-              <div style={{ padding: '12px 14px', borderRadius: '12px', background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.06)' }}>
-                <span style={{ color: '#94A3B8', fontSize: '11px', textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
-                  Payment Method
-                </span>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#F1F5F9', fontWeight: 700 }}>
-                  <CreditCard size={15} color="#00F0FF" />
-                  <span>{paymentMethod}</span>
-                  {upiDetails?.upiApp && (
-                    <span style={{ fontSize: '10.5px', padding: '2px 6px', borderRadius: '4px', background: 'rgba(99, 102, 241, 0.2)', color: '#818CF8' }}>
-                      {upiDetails.upiApp.toUpperCase()}
-                    </span>
-                  )}
-                </div>
-                {upiDetails?.utr && (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '6px', fontSize: '11.5px' }}>
-                    <span style={{ color: '#94A3B8' }}>UTR:</span>
-                    <strong style={{ color: '#818CF8' }}>{upiDetails.utr}</strong>
-                    <button
-                      type="button"
-                      onClick={handleCopyUtr}
-                      style={{ background: 'none', border: 'none', color: '#818CF8', cursor: 'pointer', padding: 0 }}
-                    >
-                      {copiedUtr ? <CheckCheck size={11} color="#00FF87" /> : <Copy size={11} />}
-                    </button>
-                  </div>
-                )}
-              </div>
+            {/* TAB 2: SPENDING MOTIVE & FINANCIAL INTELLIGENCE */}
+            {activeViewTab === 'motive' && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                
+                {/* 1. High-Precision Motive Card */}
+                {!isIncome && (
+                  <div
+                    style={{
+                      padding: '16px 18px',
+                      borderRadius: '16px',
+                      background: 'linear-gradient(135deg, rgba(0, 240, 255, 0.06) 0%, rgba(0, 255, 135, 0.03) 100%)',
+                      border: '1px solid rgba(0, 240, 255, 0.2)',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '12px',
+                    }}
+                  >
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <Sparkles size={16} color="#00F0FF" />
+                        <span style={{ fontSize: '13px', fontWeight: 800, color: '#F1F5F9', textTransform: 'uppercase', letterSpacing: '0.4px' }}>
+                          Spending Motive & Psychological Intent
+                        </span>
+                      </div>
 
-              {/* Tax Deduction Status */}
-              <div style={{ padding: '12px 14px', borderRadius: '12px', background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.06)' }}>
-                <span style={{ color: '#94A3B8', fontSize: '11px', textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
-                  Tax Claim Status
-                </span>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: isTaxDeductible ? '#00FF87' : '#94A3B8', fontWeight: 700 }}>
-                  <ShieldCheck size={15} />
-                  <span>{isTaxDeductible ? `Eligible (${taxSection || 'Section 80C'})` : 'Standard / Non-Deductible'}</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Notes & Tags */}
-            {(note || tags.length > 0) && (
-              <div style={{ padding: '12px 14px', borderRadius: '12px', background: 'rgba(255, 255, 255, 0.02)', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
-                {note && (
-                  <p style={{ margin: '0 0 8px 0', fontSize: '12.5px', color: '#CBD5E1', lineHeight: 1.4 }}>
-                    📝 {note}
-                  </p>
-                )}
-                {tags.length > 0 && (
-                  <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-                    {tags.map((t, idx) => (
-                      <span
-                        key={idx}
+                      {/* Motive Chip */}
+                      <div
                         style={{
-                          fontSize: '11px',
-                          color: '#00F0FF',
-                          background: 'rgba(0, 240, 255, 0.08)',
-                          border: '1px solid rgba(0, 240, 255, 0.2)',
-                          padding: '2px 8px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '6px',
+                          padding: '4px 12px',
                           borderRadius: '999px',
+                          background: motiveInfo.bg,
+                          border: `1px solid ${motiveInfo.border}`,
+                          color: motiveInfo.color,
+                          fontSize: '12px',
+                          fontWeight: 800,
                         }}
                       >
-                        #{t}
+                        <span>{motiveInfo.icon}</span>
+                        <span>{motiveInfo.label}</span>
+                      </div>
+                    </div>
+
+                    <p style={{ fontSize: '13px', color: '#CBD5E1', lineHeight: 1.5, margin: 0 }}>
+                      {motiveInsight || `This transaction has been classified as an ${motiveInfo.label.toLowerCase()} based on merchant profile (${bill.merchant.displayName}) and itemized dish/goods breakdown.`}
+                    </p>
+
+                    {/* Quick Motive Selector */}
+                    <div>
+                      <span style={{ fontSize: '11px', color: '#94A3B8', display: 'block', marginBottom: '6px' }}>
+                        Adjust Motive Classification:
                       </span>
-                    ))}
+                      <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                        {Object.keys(MOTIVE_CONFIG).map((mKey) => {
+                          const cfg = MOTIVE_CONFIG[mKey];
+                          const isSelected = selectedMotive === mKey;
+                          return (
+                            <button
+                              key={mKey}
+                              type="button"
+                              onClick={() => handleMotiveChange(mKey)}
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '4px',
+                                padding: '4px 10px',
+                                borderRadius: '8px',
+                                fontSize: '11.5px',
+                                fontWeight: isSelected ? 800 : 500,
+                                background: isSelected ? cfg.bg : 'rgba(255, 255, 255, 0.03)',
+                                border: isSelected ? `1.5px solid ${cfg.color}` : '1px solid rgba(255, 255, 255, 0.08)',
+                                color: isSelected ? cfg.color : '#94A3B8',
+                                cursor: 'pointer',
+                                transition: 'all 0.15s ease',
+                              }}
+                            >
+                              <span>{cfg.icon}</span>
+                              <span>{cfg.label}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
                   </div>
                 )}
+
+                {/* 2. Categorization & Hierarchy Details */}
+                <div
+                  style={{
+                    padding: '16px 18px',
+                    borderRadius: '16px',
+                    background: 'rgba(255, 255, 255, 0.02)',
+                    border: '1px solid rgba(255, 255, 255, 0.08)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '10px'
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <FolderOpen size={16} color="#A78BFA" />
+                    <span style={{ fontSize: '13px', fontWeight: 800, color: '#F1F5F9' }}>
+                      Category Hierarchy & Taxonomy
+                    </span>
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '10px' }}>
+                    <div style={{ padding: '10px 12px', borderRadius: '10px', background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.06)' }}>
+                      <span style={{ fontSize: '10.5px', color: '#94A3B8', textTransform: 'uppercase', display: 'block' }}>Primary Category</span>
+                      <div style={{ fontSize: '13px', fontWeight: 700, color: '#F1F5F9', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <span>{bill.categorization.emoji}</span>
+                        <span>{bill.categorization.primary}</span>
+                      </div>
+                    </div>
+
+                    <div style={{ padding: '10px 12px', borderRadius: '10px', background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.06)' }}>
+                      <span style={{ fontSize: '10.5px', color: '#94A3B8', textTransform: 'uppercase', display: 'block' }}>Granular Subcategory</span>
+                      <div style={{ fontSize: '13px', fontWeight: 700, color: bill.categorization.color || '#00FF87', marginTop: '2px' }}>
+                        {bill.categorization.subCategory}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 3. Forensic Payment & Tax Status */}
+                <div
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+                    gap: '12px',
+                    fontSize: '12.5px',
+                  }}
+                >
+                  <div style={{ padding: '12px 14px', borderRadius: '12px', background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.06)' }}>
+                    <span style={{ color: '#94A3B8', fontSize: '11px', textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
+                      Payment Method & UTR
+                    </span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#F1F5F9', fontWeight: 700 }}>
+                      <CreditCard size={15} color="#00F0FF" />
+                      <span>{bill.payment.method}</span>
+                      {upiDetails?.upiApp && (
+                        <span style={{ fontSize: '10.5px', padding: '2px 6px', borderRadius: '4px', background: 'rgba(99, 102, 241, 0.2)', color: '#818CF8' }}>
+                          {upiDetails.upiApp.toUpperCase()}
+                        </span>
+                      )}
+                    </div>
+                    {bill.payment.utr && (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '6px', fontSize: '11.5px' }}>
+                        <span style={{ color: '#94A3B8' }}>UTR:</span>
+                        <strong style={{ color: '#818CF8' }}>{bill.payment.utr}</strong>
+                        <button
+                          type="button"
+                          onClick={handleCopyUtr}
+                          style={{ background: 'none', border: 'none', color: '#818CF8', cursor: 'pointer', padding: 0 }}
+                        >
+                          {copiedUtr ? <CheckCheck size={11} color="#00FF87" /> : <Copy size={11} />}
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
+                  <div style={{ padding: '12px 14px', borderRadius: '12px', background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.06)' }}>
+                    <span style={{ color: '#94A3B8', fontSize: '11px', textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
+                      Tax Deduction Status
+                    </span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: isTaxDeductible ? '#00FF87' : '#94A3B8', fontWeight: 700 }}>
+                      <ShieldCheck size={15} />
+                      <span>{isTaxDeductible ? `Eligible (${taxSection || 'Section 80C'})` : 'Standard / Non-Deductible'}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Notes & Tags */}
+                {(note || tags.length > 0) && (
+                  <div style={{ padding: '12px 14px', borderRadius: '12px', background: 'rgba(255, 255, 255, 0.02)', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
+                    {note && (
+                      <p style={{ margin: '0 0 8px 0', fontSize: '12.5px', color: '#CBD5E1', lineHeight: 1.4 }}>
+                        📝 {note}
+                      </p>
+                    )}
+                    {tags.length > 0 && (
+                      <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                        {tags.map((t, idx) => (
+                          <span
+                            key={idx}
+                            style={{
+                              fontSize: '11px',
+                              color: '#00F0FF',
+                              background: 'rgba(0, 240, 255, 0.08)',
+                              border: '1px solid rgba(0, 240, 255, 0.2)',
+                              padding: '2px 8px',
+                              borderRadius: '999px',
+                            }}
+                          >
+                            #{t}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+
               </div>
             )}
 
@@ -622,11 +752,11 @@ Generated via Richy Expense Tracker
           {/* Modal Action Bar */}
           <div
             style={{
-              padding: '14px 24px',
+              padding: '14px 22px',
               borderTop: '1px solid rgba(255, 255, 255, 0.08)',
               display: 'flex',
               gap: '10px',
-              background: 'rgba(10, 14, 24, 0.8)',
+              background: 'rgba(10, 14, 24, 0.95)',
             }}
           >
             {onPayUPI && !isIncome && (
