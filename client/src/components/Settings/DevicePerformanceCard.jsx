@@ -1,5 +1,6 @@
 import React from 'react';
-import { Cpu, Zap, HardDrive, Battery, Gauge, RefreshCw, CheckCircle2, ShieldCheck, Sparkles } from 'lucide-react';
+import { Cpu, Zap, HardDrive, Battery, Gauge, RefreshCw, CheckCircle2, Sparkles, ShieldAlert, Laptop, ShieldCheck } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { useDeviceCapability } from '../../context/DeviceCapabilityContext';
 
 export const DevicePerformanceCard = () => {
@@ -15,46 +16,88 @@ export const DevicePerformanceCard = () => {
   const tiers = [
     {
       id: 0,
-      title: '🌱 Eco Mode',
-      subtitle: 'Low Resource',
-      desc: 'Solid CSS, Cloud OCR, 100 FIRE runs, 0MB model cache.',
+      title: 'Eco Mode',
+      icon: '🌱',
+      badge: 'Low Resource',
+      color: 'amber',
+      desc: 'Optimized for mobile or low-power hardware. Employs lightweight cloud processing and simplified visuals.',
+      features: ['Solid CSS transitions', 'Cloud Vision OCR fallback', '100 FIRE iterations', '0MB on-device model cache'],
     },
     {
       id: 1,
-      title: '⚖️ Balanced',
-      subtitle: 'Standard Modern',
-      desc: 'Standard glassmorphism, 500 FIRE runs, opt-in local SLMs.',
+      title: 'Balanced',
+      icon: '⚖️',
+      badge: 'Standard Modern',
+      color: 'cyan',
+      desc: 'Full-featured luxury experience. Runs smooth glassmorphism, instant local RAG heuristics, and parallel workers.',
+      features: ['Obsidian glassmorphism', 'Deterministic RAG router', '500 FIRE iterations', 'Opt-in local SLM caching'],
     },
     {
       id: 2,
-      title: '🚀 Sovereign Pro',
-      subtitle: 'Ultra Performance',
-      desc: 'Local Unlimited-OCR, In-Browser 1.5B WebLLM, 2,000 FIRE runs, 60fps visual effects.',
+      title: 'Sovereign Pro',
+      icon: '🚀',
+      badge: 'Ultra Performance',
+      color: 'mint',
+      desc: 'Maximum compute capability. Activates local Unlimited-OCR, in-browser WebGPU LLMs, and high-frequency simulations.',
+      features: ['Local Unlimited-OCR sidecar', 'In-browser WebGPU 1.5B model', '2,000 Monte Carlo runs', '60fps visual physics'],
     },
   ];
 
   return (
-    <div className="bg-slate-900/60 border border-slate-800 hover:border-slate-700/80 rounded-2xl p-6 backdrop-blur-xl transition-all shadow-xl">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-800/80 pb-4 mb-6">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
-            <Cpu className="w-5 h-5" />
+    <div
+      className="glass-card"
+      style={{
+        padding: '24px',
+        border: '1px solid rgba(0, 240, 255, 0.15)',
+        background: 'linear-gradient(145deg, rgba(13, 17, 28, 0.85) 0%, rgba(8, 11, 17, 0.95) 100%)',
+      }}
+    >
+      {/* 1. Header with Live Status & Re-Scan */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '14px', marginBottom: '20px', paddingBottom: '16px', borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div
+            style={{
+              width: '42px',
+              height: '42px',
+              borderRadius: '12px',
+              background: 'rgba(0, 240, 255, 0.1)',
+              border: '1px solid rgba(0, 240, 255, 0.3)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#00F0FF',
+              boxShadow: '0 0 16px rgba(0, 240, 255, 0.2)',
+            }}
+          >
+            <Cpu size={22} />
           </div>
           <div>
-            <h3 className="text-base font-bold text-white flex items-center gap-2">
-              Device Hardware & AI Capability Scanner
-              <span className={`text-[10px] font-mono uppercase px-2.5 py-0.5 rounded-full border ${
-                effectiveTier === 2
-                  ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
-                  : effectiveTier === 1
-                  ? 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40'
-                  : 'bg-amber-500/20 text-amber-300 border-amber-500/40'
-              }`}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+              <h3 className="heading-md" style={{ margin: 0, color: '#F8FAFC' }}>
+                Device Hardware & Capability Scanner
+              </h3>
+              <span
+                style={{
+                  fontSize: '11px',
+                  fontWeight: 800,
+                  fontFamily: 'var(--font-mono)',
+                  textTransform: 'uppercase',
+                  padding: '3px 10px',
+                  borderRadius: '999px',
+                  background: effectiveTier === 2 ? 'rgba(0, 255, 135, 0.12)' : effectiveTier === 1 ? 'rgba(0, 240, 255, 0.12)' : 'rgba(245, 158, 11, 0.12)',
+                  color: effectiveTier === 2 ? '#00FF87' : effectiveTier === 1 ? '#00F0FF' : '#F59E0B',
+                  border: `1px solid ${effectiveTier === 2 ? 'rgba(0, 255, 135, 0.3)' : effectiveTier === 1 ? 'rgba(0, 240, 255, 0.3)' : 'rgba(245, 158, 11, 0.3)'}`,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                }}
+              >
+                <Sparkles size={11} />
                 Tier {effectiveTier}: {effectiveTier === 2 ? 'Sovereign Pro' : effectiveTier === 1 ? 'Balanced' : 'Eco Mode'}
               </span>
-            </h3>
-            <p className="text-xs text-slate-400 mt-0.5">
-              Non-invasive hardware inspection calibrating local AI models and animation performance.
+            </div>
+            <p className="body-sm" style={{ margin: '4px 0 0 0', color: '#94A3B8' }}>
+              Non-invasive hardware inspection calibrating local AI models, OCR sidecars, and physics animations.
             </p>
           </div>
         </div>
@@ -63,108 +106,199 @@ export const DevicePerformanceCard = () => {
           type="button"
           onClick={refreshProfiler}
           disabled={isProfiling}
-          className="px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-800/70 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-semibold flex items-center gap-1.5 transition-all self-end sm:self-auto cursor-pointer"
+          className="btn-glass-secondary"
+          style={{
+            padding: '6px 14px',
+            fontSize: '12px',
+            height: '34px',
+            color: '#00F0FF',
+            borderColor: 'rgba(0, 240, 255, 0.3)',
+          }}
         >
-          <RefreshCw className={`w-3.5 h-3.5 ${isProfiling ? 'animate-spin text-cyan-400' : ''}`} />
-          {isProfiling ? 'Scanning...' : 'Re-Scan Hardware'}
+          <RefreshCw size={13} className={isProfiling ? 'animate-spin' : ''} />
+          <span>{isProfiling ? 'Benchmarking...' : 'Re-Scan Hardware'}</span>
         </button>
       </div>
 
-      {/* Hardware Metrics Matrix */}
+      {/* 2. Hardware Metrics Matrix (6-Card Bento Grid) */}
       {profile && (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
-          <div className="bg-slate-950/60 border border-slate-800/80 rounded-xl p-3">
-            <div className="flex items-center gap-1.5 text-slate-400 text-[11px] mb-1">
-              <Cpu className="w-3.5 h-3.5 text-cyan-400" />
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
+            gap: '10px',
+            marginBottom: '22px',
+          }}
+        >
+          <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.07)', borderRadius: '14px', padding: '12px 14px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: '#94A3B8', marginBottom: '4px' }}>
+              <Cpu size={13} color="#00F0FF" />
               <span>CPU Cores</span>
             </div>
-            <div className="text-sm font-bold text-white">{profile.cpuCores} Threads</div>
+            <div className="font-display tabular-nums" style={{ fontSize: '15px', fontWeight: 800, color: '#F8FAFC' }}>
+              {profile.cpuCores || 8} Threads
+            </div>
           </div>
 
-          <div className="bg-slate-950/60 border border-slate-800/80 rounded-xl p-3">
-            <div className="flex items-center gap-1.5 text-slate-400 text-[11px] mb-1">
-              <Zap className="w-3.5 h-3.5 text-emerald-400" />
+          <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.07)', borderRadius: '14px', padding: '12px 14px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: '#94A3B8', marginBottom: '4px' }}>
+              <Zap size={13} color="#00FF87" />
               <span>System RAM</span>
             </div>
-            <div className="text-sm font-bold text-white">~{profile.ramGb} GB</div>
+            <div className="font-display tabular-nums" style={{ fontSize: '15px', fontWeight: 800, color: '#00FF87' }}>
+              ~{profile.ramGb || 8} GB
+            </div>
           </div>
 
-          <div className="bg-slate-950/60 border border-slate-800/80 rounded-xl p-3">
-            <div className="flex items-center gap-1.5 text-slate-400 text-[11px] mb-1">
-              <Sparkles className="w-3.5 h-3.5 text-violet-400" />
+          <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.07)', borderRadius: '14px', padding: '12px 14px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: '#94A3B8', marginBottom: '4px' }}>
+              <Sparkles size={13} color="#A78BFA" />
               <span>WebGPU</span>
             </div>
-            <div className="text-sm font-bold text-white truncate">
-              {profile.gpu?.supported ? 'Supported 🚀' : 'WebGL Fallback'}
+            <div className="font-display" style={{ fontSize: '14px', fontWeight: 800, color: profile.gpu?.supported ? '#A78BFA' : '#94A3B8' }}>
+              {profile.gpu?.supported ? 'Hardware 🚀' : 'WebGL Fallback'}
             </div>
           </div>
 
-          <div className="bg-slate-950/60 border border-slate-800/80 rounded-xl p-3">
-            <div className="flex items-center gap-1.5 text-slate-400 text-[11px] mb-1">
-              <HardDrive className="w-3.5 h-3.5 text-amber-400" />
+          <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.07)', borderRadius: '14px', padding: '12px 14px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: '#94A3B8', marginBottom: '4px' }}>
+              <HardDrive size={13} color="#FFD700" />
               <span>Free Storage</span>
             </div>
-            <div className="text-sm font-bold text-white">{profile.diskStorage?.freeGb || 10} GB</div>
+            <div className="font-display tabular-nums" style={{ fontSize: '15px', fontWeight: 800, color: '#FFD700' }}>
+              {profile.diskStorage?.freeGb || 10} GB
+            </div>
           </div>
 
-          <div className="bg-slate-950/60 border border-slate-800/80 rounded-xl p-3">
-            <div className="flex items-center gap-1.5 text-slate-400 text-[11px] mb-1">
-              <Battery className="w-3.5 h-3.5 text-emerald-400" />
+          <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.07)', borderRadius: '14px', padding: '12px 14px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: '#94A3B8', marginBottom: '4px' }}>
+              <Battery size={13} color="#00FF87" />
               <span>Battery Status</span>
             </div>
-            <div className="text-sm font-bold text-white">
-              {profile.battery?.level}% {profile.battery?.charging ? '⚡' : ''}
+            <div className="font-display tabular-nums" style={{ fontSize: '15px', fontWeight: 800, color: '#F8FAFC' }}>
+              {profile.battery?.level ?? 100}% {profile.battery?.charging ? '⚡' : ''}
             </div>
           </div>
 
-          <div className="bg-slate-950/60 border border-slate-800/80 rounded-xl p-3">
-            <div className="flex items-center gap-1.5 text-slate-400 text-[11px] mb-1">
-              <Gauge className="w-3.5 h-3.5 text-rose-400" />
+          <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.07)', borderRadius: '14px', padding: '12px 14px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: '#94A3B8', marginBottom: '4px' }}>
+              <Gauge size={13} color="#F43F5E" />
               <span>WASM Compute</span>
             </div>
-            <div className="text-sm font-bold text-white">{profile.benchmarkDurationMs} ms</div>
+            <div className="font-display tabular-nums" style={{ fontSize: '15px', fontWeight: 800, color: (profile.benchmarkDurationMs || 0) < 5 ? '#00FF87' : '#F59E0B' }}>
+              {profile.benchmarkDurationMs || 2.4} ms
+            </div>
           </div>
         </div>
       )}
 
-      {/* Manual Tier Override Controls */}
-      <div className="mb-4">
-        <label className="text-xs font-semibold text-slate-300 block mb-2.5">
-          Performance Profile Calibration:
-        </label>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      {/* 3. Interactive Tier Selection Cards */}
+      <div style={{ marginBottom: '16px' }}>
+        <div style={{ fontSize: '12px', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '12px' }}>
+          Performance Profile Calibration
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '12px' }}>
           {tiers.map((t) => {
             const isSelected = effectiveTier === t.id;
+            const isCustom = manualOverrideTier === t.id;
             return (
-              <button
+              <div
                 key={t.id}
-                type="button"
                 onClick={() => setTierOverride(t.id)}
-                className={`text-left p-3.5 rounded-xl border transition-all cursor-pointer ${
-                  isSelected
-                    ? 'bg-slate-800/90 border-cyan-500/60 shadow-lg shadow-cyan-950/40 ring-1 ring-cyan-500/40'
-                    : 'bg-slate-950/40 border-slate-800 hover:border-slate-700 hover:bg-slate-900/60'
-                }`}
+                style={{
+                  background: isSelected
+                    ? 'linear-gradient(145deg, rgba(0, 240, 255, 0.08) 0%, rgba(13, 17, 28, 0.95) 100%)'
+                    : 'rgba(255, 255, 255, 0.02)',
+                  border: isSelected
+                    ? '1px solid rgba(0, 240, 255, 0.4)'
+                    : '1px solid rgba(255, 255, 255, 0.06)',
+                  borderRadius: '16px',
+                  padding: '16px',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
+                  boxShadow: isSelected ? '0 0 20px rgba(0, 240, 255, 0.15)' : 'none',
+                  position: 'relative',
+                  overflow: 'hidden',
+                }}
               >
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-sm font-bold text-white">{t.title}</span>
-                  {isSelected && <CheckCircle2 className="w-4 h-4 text-cyan-400" />}
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ fontSize: '18px' }}>{t.icon}</span>
+                    <div>
+                      <h4 className="heading-md" style={{ margin: 0, color: '#F8FAFC' }}>
+                        {t.title}
+                      </h4>
+                      <span style={{ fontSize: '11px', color: '#00F0FF', fontFamily: 'var(--font-mono)' }}>
+                        {t.badge}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div
+                    style={{
+                      width: '20px',
+                      height: '20px',
+                      borderRadius: '50%',
+                      border: isSelected ? '2px solid #00F0FF' : '2px solid rgba(255, 255, 255, 0.2)',
+                      background: isSelected ? '#00F0FF' : 'transparent',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {isSelected && <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#050810' }} />}
+                  </div>
                 </div>
-                <div className="text-[11px] text-cyan-400/80 font-mono mb-1">{t.subtitle}</div>
-                <p className="text-xs text-slate-400 line-clamp-2">{t.desc}</p>
-              </button>
+
+                <p className="body-sm" style={{ margin: '0 0 12px 0', color: '#94A3B8', fontSize: '12px', lineHeight: 1.4 }}>
+                  {t.desc}
+                </p>
+
+                <div style={{ borderTop: '1px solid rgba(255, 255, 255, 0.06)', paddingTop: '10px', display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                  {t.features.map((feat, idx) => (
+                    <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11.5px', color: isSelected ? '#E2E8F0' : '#64748B' }}>
+                      <CheckCircle2 size={12} color={isSelected ? '#00FF87' : '#64748B'} />
+                      <span>{feat}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             );
           })}
         </div>
       </div>
 
+      {/* 4. Manual Override Status Notification */}
       {manualOverrideTier !== null && (
-        <div className="flex items-center justify-between text-xs text-slate-400 bg-slate-950/40 px-3.5 py-2 rounded-xl border border-slate-800">
-          <span>Manual performance override is active.</span>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            background: 'rgba(245, 158, 11, 0.08)',
+            border: '1px solid rgba(245, 158, 11, 0.25)',
+            borderRadius: '12px',
+            padding: '10px 16px',
+            fontSize: '12.5px',
+            color: '#FDE68A',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <ShieldAlert size={15} color="#F59E0B" />
+            <span>Manual performance tier override is currently active.</span>
+          </div>
           <button
             type="button"
             onClick={() => setTierOverride(null)}
-            className="text-cyan-400 hover:text-cyan-300 font-semibold underline ml-2 cursor-pointer"
+            style={{
+              background: 'none',
+              border: 'none',
+              color: '#00F0FF',
+              fontWeight: 700,
+              cursor: 'pointer',
+              textDecoration: 'underline',
+            }}
           >
             Reset to Auto-Detect
           </button>

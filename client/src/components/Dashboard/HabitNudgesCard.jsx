@@ -34,9 +34,8 @@ export const HabitNudgesCard = ({ expenses = [], incomes = [] }) => {
 
   if (loading && !profile) {
     return (
-      <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-5 backdrop-blur-xl animate-pulse">
-        <div className="h-4 w-36 bg-slate-800 rounded mb-3" />
-        <div className="h-10 w-full bg-slate-800/60 rounded-xl" />
+      <div className="glass-card" style={{ padding: '20px', minHeight: '160px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ color: '#94A3B8', fontSize: '12.5px' }}>Synthesizing on-device habit metrics...</div>
       </div>
     );
   }
@@ -47,87 +46,118 @@ export const HabitNudgesCard = ({ expenses = [], incomes = [] }) => {
   const euphoria = profile?.euphoria || { hasEuphoriaSpike: false };
 
   return (
-    <div className="bg-slate-900/60 border border-slate-800 hover:border-slate-700/80 rounded-2xl p-5 backdrop-blur-xl transition-all shadow-xl flex flex-col justify-between">
+    <div
+      className="glass-card"
+      style={{
+        padding: '22px',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        border: '1px solid rgba(0, 255, 135, 0.2)',
+        background: 'linear-gradient(145deg, rgba(0, 255, 135, 0.03) 0%, rgba(13, 17, 28, 0.85) 100%)',
+      }}
+    >
       <div>
         {/* Header */}
-        <div className="flex items-center justify-between mb-3 border-b border-slate-800/80 pb-3">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
-              <Activity className="w-4 h-4" />
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px', paddingBottom: '10px', borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div
+              style={{
+                width: '36px',
+                height: '36px',
+                borderRadius: '10px',
+                background: 'rgba(0, 255, 135, 0.12)',
+                border: '1px solid rgba(0, 255, 135, 0.3)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#00FF87',
+              }}
+            >
+              <Activity size={18} />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <h3 className="heading-md" style={{ margin: 0, color: '#F8FAFC' }}>
                 Lifestyle & Habit Intelligence
-                <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                  On-Device AI
-                </span>
               </h3>
+              <span style={{ fontSize: '10.5px', fontWeight: 800, fontFamily: 'var(--font-mono)', color: '#00FF87', textTransform: 'uppercase' }}>
+                On-Device Mathematical Profiling
+              </span>
             </div>
           </div>
 
-          <div className="flex items-center gap-1 text-xs font-mono font-bold text-emerald-400">
-            <span>Score: {score}/100</span>
+          <div
+            style={{
+              padding: '4px 10px',
+              borderRadius: '999px',
+              background: 'rgba(0, 255, 135, 0.12)',
+              border: '1px solid rgba(0, 255, 135, 0.3)',
+              color: '#00FF87',
+              fontSize: '12px',
+              fontWeight: 800,
+              fontFamily: 'var(--font-mono)',
+            }}
+          >
+            Score: {score}/100
           </div>
         </div>
 
         {/* Behavioral Metrics Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 mb-4">
-          <div className="bg-slate-950/60 border border-slate-800/80 rounded-xl p-2.5">
-            <div className="text-[10px] text-slate-400 flex items-center gap-1 mb-0.5">
-              <Clock className="w-3 h-3 text-cyan-400" />
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '8px', marginBottom: '14px' }}>
+          <div style={{ background: 'rgba(255, 255, 255, 0.02)', border: '1px solid rgba(255, 255, 255, 0.06)', borderRadius: '10px', padding: '10px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '10.5px', color: '#94A3B8', marginBottom: '3px' }}>
+              <Clock size={12} color="#00F0FF" />
               <span>Income Rhythm</span>
             </div>
-            <div className="text-xs font-bold text-white truncate">
-              {cadence.cadenceType === 'SALARIED_FIXED' ? 'Salaried Fixed' : cadence.cadenceType === 'IRREGULAR_GIG' ? 'Gig / Variable' : 'Semi-Regular'}
+            <div style={{ fontSize: '12.5px', fontWeight: 700, color: '#F8FAFC', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              {cadence.cadenceType === 'SALARIED_FIXED' ? 'Salaried Fixed' : cadence.cadenceType === 'IRREGULAR_GIG' ? 'Gig Variable' : 'Semi-Regular'}
             </div>
           </div>
 
-          <div className="bg-slate-950/60 border border-slate-800/80 rounded-xl p-2.5">
-            <div className="text-[10px] text-slate-400 flex items-center gap-1 mb-0.5">
-              <Moon className="w-3 h-3 text-violet-400" />
+          <div style={{ background: 'rgba(255, 255, 255, 0.02)', border: '1px solid rgba(255, 255, 255, 0.06)', borderRadius: '10px', padding: '10px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '10.5px', color: '#94A3B8', marginBottom: '3px' }}>
+              <Moon size={12} color="#A78BFA" />
               <span>Late-Night Leaks</span>
             </div>
-            <div className="text-xs font-bold text-white">
-              {lateNight.isHighRisk ? `${Math.round(lateNight.impulseRatio * 100)}% (High)` : 'Low / Guarded'}
+            <div style={{ fontSize: '12.5px', fontWeight: 700, color: '#F8FAFC' }}>
+              {lateNight.isHighRisk ? `${Math.round(lateNight.impulseRatio * 100)}% (High)` : 'Guarded 🛡️'}
             </div>
           </div>
 
-          <div className="bg-slate-950/60 border border-slate-800/80 rounded-xl p-2.5 col-span-2 sm:col-span-1">
-            <div className="text-[10px] text-slate-400 flex items-center gap-1 mb-0.5">
-              <Zap className="w-3 h-3 text-amber-400" />
-              <span>Payday Spike</span>
+          <div style={{ background: 'rgba(255, 255, 255, 0.02)', border: '1px solid rgba(255, 255, 255, 0.06)', borderRadius: '10px', padding: '10px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '10.5px', color: '#94A3B8', marginBottom: '3px' }}>
+              <Zap size={12} color="#FFD700" />
+              <span>Payday Surge</span>
             </div>
-            <div className="text-xs font-bold text-white">
-              {euphoria.hasEuphoriaSpike ? 'Surge Detected ⚡' : 'Controlled 🛡️'}
+            <div style={{ fontSize: '12.5px', fontWeight: 700, color: '#F8FAFC' }}>
+              {euphoria.hasEuphoriaSpike ? 'Surge Active ⚡' : 'Controlled 🛡️'}
             </div>
           </div>
         </div>
 
         {/* Nudges List */}
-        <div className="space-y-2">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           {(profile?.nudges || []).map((nudge) => (
             <div
               key={nudge.id}
-              className={`p-2.5 rounded-xl border text-xs flex items-start gap-2.5 ${
-                nudge.type === 'critical' || nudge.type === 'alert'
-                  ? 'bg-rose-950/30 border-rose-500/30 text-rose-200'
-                  : nudge.type === 'warning'
-                  ? 'bg-amber-950/30 border-amber-500/30 text-amber-200'
-                  : 'bg-emerald-950/30 border-emerald-500/30 text-emerald-200'
-              }`}
+              style={{
+                padding: '10px 14px',
+                borderRadius: '10px',
+                background: nudge.type === 'critical' ? 'rgba(244, 63, 94, 0.08)' : nudge.type === 'warning' ? 'rgba(245, 158, 11, 0.08)' : 'rgba(0, 255, 135, 0.06)',
+                border: nudge.type === 'critical' ? '1px solid rgba(244, 63, 94, 0.25)' : nudge.type === 'warning' ? '1px solid rgba(245, 158, 11, 0.25)' : '1px solid rgba(0, 255, 135, 0.25)',
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: '10px',
+                fontSize: '12px',
+                color: nudge.type === 'critical' ? '#FECDD3' : nudge.type === 'warning' ? '#FDE68A' : '#D1FAE5',
+              }}
             >
-              <div className="mt-0.5 shrink-0">
-                {nudge.type === 'critical' || nudge.type === 'alert' ? (
-                  <AlertCircle className="w-3.5 h-3.5 text-rose-400" />
-                ) : nudge.type === 'warning' ? (
-                  <Zap className="w-3.5 h-3.5 text-amber-400" />
-                ) : (
-                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                )}
+              <div style={{ marginTop: '2px', flexShrink: 0 }}>
+                {nudge.type === 'critical' ? <AlertCircle size={14} color="#F43F5E" /> : <Sparkles size={14} color="#00FF87" />}
               </div>
-              <div className="flex-1 leading-snug">
-                <span className="font-bold block mb-0.5">{nudge.title}</span>
-                <span className="text-[11px] opacity-90">{nudge.text}</span>
+              <div style={{ flex: 1 }}>
+                <strong style={{ display: 'block', marginBottom: '1px' }}>{nudge.title}</strong>
+                <span style={{ fontSize: '11.5px', opacity: 0.9 }}>{nudge.message}</span>
               </div>
             </div>
           ))}

@@ -15,6 +15,12 @@ import {
   Lock,
   ArrowRight,
   TrendingUp,
+  Wallet,
+  Eye,
+  Calendar,
+  Sparkles,
+  ChevronRight,
+  X
 } from 'lucide-react';
 import { apiFetch } from '../api/client';
 
@@ -39,7 +45,7 @@ export const FamilyVaultPage = () => {
     name: '',
     email: '',
     role: 'CONTRIBUTOR',
-    monthlySpendingLimit: 0,
+    monthlySpendingLimit: 15000,
   });
   const [expenseForm, setExpenseForm] = useState({
     title: '',
@@ -124,186 +130,281 @@ export const FamilyVaultPage = () => {
     }
   };
 
+  const getRoleIcon = (role) => {
+    switch (role) {
+      case 'OWNER':
+        return <Crown size={13} color="#FFD700" />;
+      case 'ADMIN':
+        return <Shield size={13} color="#00F0FF" />;
+      case 'CONTRIBUTOR':
+        return <Wallet size={13} color="#00FF87" />;
+      default:
+        return <Eye size={13} color="#94A3B8" />;
+    }
+  };
+
   return (
-    <div className="space-y-6 pb-12">
-      {/* 1. Header Banner */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-800 pb-5">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '22px', paddingBottom: '70px' }}>
+      {/* 1. HERO HEADER */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '14px' }}>
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight flex items-center gap-3">
-            Family Multi-User Vaults
-            <span className="text-xs font-mono uppercase px-2.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
-              Shared Household RBAC
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '3px' }}>
+            <span className="animate-live-dot" />
+            <span style={{ fontSize: '11px', fontWeight: 800, color: '#00F0FF', textTransform: 'uppercase', letterSpacing: '0.6px' }}>
+              Multi-User RBAC Ledgers • Privacy Sovereign
             </span>
+          </div>
+          <h1 className="display-xl" style={{ margin: 0 }}>
+            Family & Household Vaults
           </h1>
-          <p className="text-slate-400 text-sm mt-1">
-            Manage shared household groceries, rent, and utilities collectively while keeping personal private ledgers strictly isolated.
+          <p className="body-sm" style={{ margin: '4px 0 0 0', color: '#94A3B8' }}>
+            Manage shared household groceries, utilities, and rent collectively while personal private ledgers stay strictly isolated.
           </p>
         </div>
 
         <button
           type="button"
           onClick={() => setShowCreateModal(true)}
-          className="px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-teal-500 hover:from-cyan-400 hover:to-teal-400 text-slate-950 font-bold text-xs flex items-center gap-2 shadow-lg shadow-cyan-500/20 cursor-pointer self-start md:self-auto"
+          className="btn-primary-mint"
+          style={{ height: '38px', padding: '0 18px', fontSize: '13px' }}
         >
-          <Plus className="w-4 h-4" />
-          Create Family Vault
+          <Plus size={15} />
+          <span>Create Family Vault</span>
         </button>
       </div>
 
-      {/* 2. Main Vault Workspace */}
-      {vaults.length === 0 && !loading ? (
-        <div className="bg-slate-900/60 border border-slate-800 rounded-3xl p-10 text-center backdrop-blur-xl shadow-xl max-w-lg mx-auto">
-          <div className="w-16 h-16 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 mx-auto mb-4">
-            <Home className="w-8 h-8" />
-          </div>
-          <h3 className="text-lg font-bold text-white mb-2">No Family Vaults Created Yet</h3>
-          <p className="text-xs text-slate-400 mb-6 leading-relaxed">
-            Create a family household pool to invite your spouse, parents, or siblings. Track shared groceries, utility bills, and rent seamlessly.
-          </p>
-          <button
-            type="button"
-            onClick={() => setShowCreateModal(true)}
-            className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-teal-500 text-slate-950 font-bold text-xs cursor-pointer shadow-lg shadow-cyan-500/20"
-          >
-            Create Your First Family Ledger
-          </button>
+      {/* 2. VAULT SWITCHER RIBBON */}
+      {vaults.length > 0 && (
+        <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '4px' }}>
+          {vaults.map((v) => {
+            const isSelected = activeVault?._id === v._id;
+            return (
+              <button
+                key={v._id}
+                type="button"
+                onClick={() => selectVault(v)}
+                className={`filter-chip ${isSelected ? 'filter-chip-active' : ''}`}
+                style={{ height: '36px' }}
+              >
+                <Home size={14} />
+                <span>{v.name}</span>
+                <span style={{ fontSize: '11px', opacity: 0.8, marginLeft: '4px' }}>({v.members?.length || 1} members)</span>
+              </button>
+            );
+          })}
         </div>
-      ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left Column: Vault Details & Members */}
-          <div className="lg:col-span-1 space-y-5">
-            {/* Vault Card */}
-            <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-5 backdrop-blur-xl shadow-xl">
-              <div className="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-9 h-9 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
-                    <Home className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-bold text-white">{activeVault?.name}</h3>
-                    <div className="text-[10px] text-slate-400">{activeVault?.currency} Shared Currency</div>
-                  </div>
-                </div>
+      )}
 
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
-                  {activeVault?.members?.length || 1} Members
+      {/* 3. ACTIVE VAULT MAIN STUDIO */}
+      {activeVault ? (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          {/* 4-CARD BENTO KPI GRID */}
+          <div className="grid-kpi">
+            <div className="glass-card" style={{ padding: '18px 20px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                <span className="body-sm" style={{ color: '#94A3B8' }}>Pooled Monthly Spend</span>
+                <span style={{ padding: '2px 8px', borderRadius: '999px', fontSize: '10px', fontWeight: 800, background: 'rgba(244, 63, 94, 0.12)', color: '#F43F5E', border: '1px solid rgba(244, 63, 94, 0.3)' }}>
+                  Outflow
                 </span>
               </div>
+              <div className="display-lg font-display tabular-nums" style={{ color: '#F8FAFC', margin: 0 }}>
+                {activeVault.currency || '₹'}{(vaultSummary?.totalPooledSpend || 0).toLocaleString()}
+              </div>
+              <span className="body-xs" style={{ color: '#64748B', display: 'block', marginTop: '4px' }}>
+                Across {activeVault.sharedExpenses?.length || 0} pooled bills
+              </span>
+            </div>
 
-              <p className="text-xs text-slate-400 mb-4">{activeVault?.description}</p>
+            <div className="glass-card" style={{ padding: '18px 20px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                <span className="body-sm" style={{ color: '#94A3B8' }}>Active Members</span>
+                <span style={{ padding: '2px 8px', borderRadius: '999px', fontSize: '10px', fontWeight: 800, background: 'rgba(0, 240, 255, 0.12)', color: '#00F0FF', border: '1px solid rgba(0, 240, 255, 0.3)' }}>
+                  RBAC
+                </span>
+              </div>
+              <div className="display-lg font-display tabular-nums" style={{ color: '#00F0FF', margin: 0 }}>
+                {activeVault.members?.length || 1} Members
+              </div>
+              <span className="body-xs" style={{ color: '#64748B', display: 'block', marginTop: '4px' }}>
+                {activeVault.members?.filter(m => m.role === 'OWNER' || m.role === 'ADMIN').length || 1} Admins & Owners
+              </span>
+            </div>
 
-              <div className="flex gap-2">
-                <button
-                  type="button"
-                  onClick={() => setShowAddExpenseModal(true)}
-                  className="flex-1 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-teal-500 text-slate-950 font-bold text-xs flex items-center justify-center gap-1.5 shadow-lg shadow-cyan-500/20 cursor-pointer"
-                >
-                  <Receipt className="w-3.5 h-3.5" />
-                  Log Shared Bill
-                </button>
+            <div className="glass-card" style={{ padding: '18px 20px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                <span className="body-sm" style={{ color: '#94A3B8' }}>Top Category</span>
+                <span style={{ padding: '2px 8px', borderRadius: '999px', fontSize: '10px', fontWeight: 800, background: 'rgba(0, 255, 135, 0.12)', color: '#00FF87', border: '1px solid rgba(0, 255, 135, 0.3)' }}>
+                  Primary
+                </span>
+              </div>
+              <div className="display-lg font-display" style={{ color: '#00FF87', margin: 0, fontSize: '20px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                {vaultSummary?.topCategory || 'Groceries'}
+              </div>
+              <span className="body-xs" style={{ color: '#64748B', display: 'block', marginTop: '4px' }}>
+                Highest shared household expense
+              </span>
+            </div>
+
+            <div className="glass-card" style={{ padding: '18px 20px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                <span className="body-sm" style={{ color: '#94A3B8' }}>Ledger Privacy</span>
+                <span style={{ padding: '2px 8px', borderRadius: '999px', fontSize: '10px', fontWeight: 800, background: 'rgba(139, 92, 246, 0.12)', color: '#A78BFA', border: '1px solid rgba(139, 92, 246, 0.3)' }}>
+                  Encrypted
+                </span>
+              </div>
+              <div className="display-lg font-display" style={{ color: '#A78BFA', margin: 0, fontSize: '20px' }}>
+                100% Isolated
+              </div>
+              <span className="body-xs" style={{ color: '#64748B', display: 'block', marginTop: '4px' }}>
+                Private accounts strictly hidden
+              </span>
+            </div>
+          </div>
+
+          {/* 2-COLUMN MAIN CONTENT: MEMBERS ROSTER & SHARED LEDGER */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '18px' }}>
+            {/* Left: Member Roster & Role Matrix */}
+            <div className="glass-card" style={{ padding: '24px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', paddingBottom: '12px', borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>
+                <div>
+                  <h3 className="heading-md" style={{ margin: 0, color: '#F8FAFC' }}>
+                    Household Members & Roles
+                  </h3>
+                  <span className="body-xs" style={{ color: '#94A3B8' }}>RBAC permissions and limits</span>
+                </div>
+
                 <button
                   type="button"
                   onClick={() => setShowAddMemberModal(true)}
-                  className="py-2 px-3 rounded-xl border border-slate-700 bg-slate-800/80 hover:bg-slate-700 text-slate-200 text-xs font-semibold flex items-center gap-1.5 cursor-pointer"
+                  className="btn-glass-secondary"
+                  style={{ height: '32px', padding: '0 12px', fontSize: '12px', color: '#00F0FF', borderColor: 'rgba(0, 240, 255, 0.3)' }}
                 >
-                  <UserPlus className="w-3.5 h-3.5" />
-                  Invite
+                  <UserPlus size={13} />
+                  <span>+ Invite Member</span>
                 </button>
               </div>
-            </div>
 
-            {/* Family Members List */}
-            <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-5 backdrop-blur-xl shadow-xl">
-              <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">
-                Household Members & Roles
-              </h3>
-
-              <div className="space-y-2.5">
-                {activeVault?.members?.map((m) => (
-                  <div key={m._id || m.email} className="flex items-center justify-between p-2.5 rounded-xl bg-slate-950/60 border border-slate-800/80">
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-xs font-bold text-cyan-400">
-                        {m.name.charAt(0).toUpperCase()}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                {activeVault.members?.map((m) => (
+                  <div
+                    key={m.email || m.userId}
+                    style={{
+                      padding: '12px 14px',
+                      borderRadius: '12px',
+                      background: 'rgba(255, 255, 255, 0.02)',
+                      border: '1px solid rgba(255, 255, 255, 0.06)',
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <div
+                        style={{
+                          width: '36px',
+                          height: '36px',
+                          borderRadius: '50%',
+                          background: 'linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(0, 255, 135, 0.2))',
+                          border: '1px solid rgba(255, 255, 255, 0.1)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '13px',
+                          fontWeight: 800,
+                          color: '#FFFFFF',
+                        }}
+                      >
+                        {m.name?.[0] || 'U'}
                       </div>
                       <div>
-                        <div className="text-xs font-bold text-white flex items-center gap-1.5">
-                          {m.name}
-                          {m.role === 'OWNER' && <Crown className="w-3 h-3 text-amber-400" />}
-                        </div>
-                        <div className="text-[10px] text-slate-400 truncate max-w-[140px]">{m.email}</div>
+                        <div style={{ fontSize: '13px', fontWeight: 700, color: '#F8FAFC' }}>{m.name || 'Member'}</div>
+                        <div style={{ fontSize: '11px', color: '#94A3B8' }}>{m.email}</div>
                       </div>
                     </div>
 
-                    <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-full border ${
-                      m.role === 'OWNER'
-                        ? 'bg-amber-500/10 text-amber-300 border-amber-500/30'
-                        : m.role === 'ADMIN'
-                        ? 'bg-cyan-500/10 text-cyan-300 border-cyan-500/30'
-                        : 'bg-slate-800 text-slate-300 border-slate-700'
-                    }`}>
-                      {m.role}
-                    </span>
+                    <div style={{ textAlign: 'right' }}>
+                      <span
+                        style={{
+                          fontSize: '10.5px',
+                          fontWeight: 800,
+                          fontFamily: 'var(--font-mono)',
+                          padding: '2px 8px',
+                          borderRadius: '6px',
+                          background: m.role === 'OWNER' ? 'rgba(255, 215, 0, 0.12)' : m.role === 'ADMIN' ? 'rgba(0, 240, 255, 0.12)' : 'rgba(0, 255, 135, 0.12)',
+                          color: m.role === 'OWNER' ? '#FFD700' : m.role === 'ADMIN' ? '#00F0FF' : '#00FF87',
+                          border: `1px solid ${m.role === 'OWNER' ? 'rgba(255, 215, 0, 0.3)' : m.role === 'ADMIN' ? 'rgba(0, 240, 255, 0.3)' : 'rgba(0, 255, 135, 0.3)'}`,
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '4px',
+                        }}
+                      >
+                        {getRoleIcon(m.role)}
+                        {m.role}
+                      </span>
+                      {m.monthlySpendingLimit > 0 && (
+                        <div className="font-mono tabular-nums" style={{ fontSize: '10.5px', color: '#64748B', marginTop: '2px' }}>
+                          Limit: ₹{m.monthlySpendingLimit?.toLocaleString()}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 ))}
               </div>
             </div>
-          </div>
 
-          {/* Right Column: Shared Spending Analytics & Ledger */}
-          <div className="lg:col-span-2 space-y-5">
-            {/* Top Metrics Row */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-              <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-4 backdrop-blur-xl">
-                <div className="text-[11px] text-slate-400 mb-1">Total Household Spend</div>
-                <div className="text-xl font-extrabold font-mono text-white">
-                  {activeVault?.currency}{vaultSummary?.totalSharedSpend?.toLocaleString() || 0}
+            {/* Right: Shared Family Ledger & Quick Add */}
+            <div className="glass-card" style={{ padding: '24px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', paddingBottom: '12px', borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>
+                <div>
+                  <h3 className="heading-md" style={{ margin: 0, color: '#F8FAFC' }}>
+                    Shared Household Ledger
+                  </h3>
+                  <span className="body-xs" style={{ color: '#94A3B8' }}>Pooled grocery, rent, and utility bills</span>
                 </div>
+
+                <button
+                  type="button"
+                  onClick={() => setShowAddExpenseModal(true)}
+                  className="btn-primary-mint"
+                  style={{ height: '32px', padding: '0 14px', fontSize: '12px' }}
+                >
+                  <Plus size={13} />
+                  <span>+ Log Shared Bill</span>
+                </button>
               </div>
 
-              <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-4 backdrop-blur-xl">
-                <div className="text-[11px] text-slate-400 mb-1">Shared Bill Count</div>
-                <div className="text-xl font-extrabold font-mono text-cyan-400">
-                  {activeVault?.sharedExpenses?.length || 0}
-                </div>
-              </div>
-
-              <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-4 backdrop-blur-xl col-span-2 sm:col-span-1">
-                <div className="text-[11px] text-slate-400 mb-1">Privacy Isolation</div>
-                <div className="text-xs font-bold text-emerald-400 flex items-center gap-1.5 mt-1">
-                  <Shield className="w-3.5 h-3.5" />
-                  Private Ledgers 100% Guarded
-                </div>
-              </div>
-            </div>
-
-            {/* Recent Shared Expenses Table */}
-            <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-5 backdrop-blur-xl shadow-xl">
-              <h3 className="text-sm font-bold text-white flex items-center gap-2 border-b border-slate-800 pb-3 mb-3">
-                <Receipt className="w-4 h-4 text-cyan-400" />
-                Recent Shared Household Transactions
-              </h3>
-
-              {activeVault?.sharedExpenses?.length === 0 ? (
-                <div className="text-center py-8 text-xs text-slate-500">
-                  No shared bills logged yet. Click "Log Shared Bill" to record an expense.
+              {activeVault.sharedExpenses?.length === 0 ? (
+                <div style={{ textAlign: 'center', padding: '40px 0', color: '#64748B', fontSize: '13px' }}>
+                  No shared expenses logged yet in this vault. Click "+ Log Shared Bill" to start.
                 </div>
               ) : (
-                <div className="divide-y divide-slate-800/60 font-mono text-xs">
-                  {activeVault?.sharedExpenses?.slice(-10).reverse().map((exp, idx) => (
-                    <div key={idx} className="py-2.5 flex items-center justify-between">
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', maxHeight: '380px', overflowY: 'auto' }}>
+                  {activeVault.sharedExpenses?.map((exp, idx) => (
+                    <div
+                      key={exp._id || idx}
+                      style={{
+                        padding: '12px 14px',
+                        borderRadius: '12px',
+                        background: 'rgba(255, 255, 255, 0.02)',
+                        border: '1px solid rgba(255, 255, 255, 0.06)',
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                      }}
+                    >
                       <div>
-                        <div className="font-bold text-white font-sans">{exp.title}</div>
-                        <div className="text-[10px] text-slate-400 font-sans">
-                          {exp.category} • Paid by <span className="text-cyan-300 font-semibold">{exp.paidByMemberName}</span>
+                        <div style={{ fontSize: '13px', fontWeight: 700, color: '#F8FAFC' }}>{exp.title}</div>
+                        <div style={{ fontSize: '11px', color: '#94A3B8', display: 'flex', alignItems: 'center', gap: '6px', marginTop: '2px' }}>
+                          <span style={{ padding: '1px 6px', borderRadius: '4px', background: 'rgba(255, 255, 255, 0.06)', color: '#A78BFA' }}>
+                            {exp.category}
+                          </span>
+                          <span>•</span>
+                          <span>{new Date(exp.date).toLocaleDateString()}</span>
                         </div>
                       </div>
-                      <div className="text-right">
-                        <div className="font-bold text-rose-400">
-                          -{activeVault?.currency}{exp.amount.toLocaleString()}
-                        </div>
-                        <div className="text-[10px] text-slate-500">
-                          {new Date(exp.date).toISOString().split('T')[0]}
-                        </div>
+
+                      <div className="font-display tabular-nums" style={{ fontSize: '15px', fontWeight: 800, color: '#F43F5E' }}>
+                        -{activeVault.currency || '₹'}{Number(exp.amount)?.toLocaleString()}
                       </div>
                     </div>
                   ))}
@@ -312,218 +413,206 @@ export const FamilyVaultPage = () => {
             </div>
           </div>
         </div>
+      ) : (
+        <div className="glass-card" style={{ padding: '60px 20px', textAlign: 'center' }}>
+          <Home size={36} color="#00F0FF" style={{ margin: '0 auto 12px auto', opacity: 0.8 }} />
+          <h3 className="heading-lg" style={{ color: '#F8FAFC', marginBottom: '6px' }}>No Family Vaults Created Yet</h3>
+          <p className="body-sm" style={{ color: '#94A3B8', maxWidth: '440px', margin: '0 auto 20px auto' }}>
+            Set up a household vault to manage pooled rent, groceries, and domestic expenses with your family while preserving 100% private ledger isolation.
+          </p>
+          <button
+            type="button"
+            onClick={() => setShowCreateModal(true)}
+            className="btn-primary-mint"
+            style={{ height: '38px', padding: '0 20px' }}
+          >
+            <Plus size={15} />
+            <span>Create First Family Vault</span>
+          </button>
+        </div>
       )}
 
       {/* CREATE VAULT MODAL */}
-      <AnimatePresence>
-        {showCreateModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
-            <motion.div
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
-              className="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-md w-full shadow-2xl space-y-4"
-            >
-              <h3 className="text-base font-bold text-white flex items-center gap-2">
-                <Home className="w-4 h-4 text-cyan-400" />
-                Create New Family Household Vault
-              </h3>
+      {showCreateModal && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0, 0, 0, 0.75)', backdropFilter: 'blur(8px)', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+          <div className="glass-card" style={{ width: '100%', maxWidth: '440px', padding: '24px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+              <h3 className="heading-md" style={{ margin: 0, color: '#F8FAFC' }}>Create Household Vault</h3>
+              <button type="button" onClick={() => setShowCreateModal(false)} className="btn-icon-soft">
+                <X size={15} />
+              </button>
+            </div>
 
-              <form onSubmit={handleCreateVault} className="space-y-3.5">
-                <div>
-                  <label className="text-xs text-slate-400 block mb-1">Household Name</label>
-                  <input
-                    type="text"
-                    required
-                    value={createForm.name}
-                    onChange={(e) => setCreateForm({ ...createForm, name: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white"
-                  />
-                </div>
+            <form onSubmit={handleCreateVault} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              <div>
+                <label className="body-xs" style={{ color: '#94A3B8', display: 'block', marginBottom: '4px' }}>Vault Name</label>
+                <input
+                  type="text"
+                  required
+                  value={createForm.name}
+                  onChange={(e) => setCreateForm({ ...createForm, name: e.target.value })}
+                  style={{ width: '100%', padding: '8px 12px', background: 'rgba(0, 0, 0, 0.4)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '10px', color: '#FFFFFF', fontSize: '13px' }}
+                />
+              </div>
 
-                <div>
-                  <label className="text-xs text-slate-400 block mb-1">Description</label>
-                  <input
-                    type="text"
-                    value={createForm.description}
-                    onChange={(e) => setCreateForm({ ...createForm, description: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white"
-                  />
-                </div>
+              <div>
+                <label className="body-xs" style={{ color: '#94A3B8', display: 'block', marginBottom: '4px' }}>Description</label>
+                <input
+                  type="text"
+                  value={createForm.description}
+                  onChange={(e) => setCreateForm({ ...createForm, description: e.target.value })}
+                  style={{ width: '100%', padding: '8px 12px', background: 'rgba(0, 0, 0, 0.4)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '10px', color: '#FFFFFF', fontSize: '13px' }}
+                />
+              </div>
 
-                <div className="flex gap-2 pt-2">
-                  <button
-                    type="button"
-                    onClick={() => setShowCreateModal(false)}
-                    className="flex-1 py-2 rounded-xl border border-slate-700 bg-slate-800 text-slate-300 text-xs font-semibold cursor-pointer"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    className="flex-1 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-teal-500 text-slate-950 font-bold text-xs shadow-lg shadow-cyan-500/20 cursor-pointer"
-                  >
-                    Create Vault
-                  </button>
-                </div>
-              </form>
-            </motion.div>
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: '10px' }}>
+                <button type="button" onClick={() => setShowCreateModal(false)} className="btn-glass-secondary">
+                  Cancel
+                </button>
+                <button type="submit" className="btn-primary-mint">
+                  Create Vault
+                </button>
+              </div>
+            </form>
           </div>
-        )}
-      </AnimatePresence>
+        </div>
+      )}
 
       {/* ADD MEMBER MODAL */}
-      <AnimatePresence>
-        {showAddMemberModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
-            <motion.div
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
-              className="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-md w-full shadow-2xl space-y-4"
-            >
-              <h3 className="text-base font-bold text-white flex items-center gap-2">
-                <UserPlus className="w-4 h-4 text-cyan-400" />
-                Invite Family Member
-              </h3>
+      {showAddMemberModal && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0, 0, 0, 0.75)', backdropFilter: 'blur(8px)', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+          <div className="glass-card" style={{ width: '100%', maxWidth: '440px', padding: '24px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+              <h3 className="heading-md" style={{ margin: 0, color: '#F8FAFC' }}>Invite Family Member</h3>
+              <button type="button" onClick={() => setShowAddMemberModal(false)} className="btn-icon-soft">
+                <X size={15} />
+              </button>
+            </div>
 
-              <form onSubmit={handleAddMember} className="space-y-3.5">
-                <div>
-                  <label className="text-xs text-slate-400 block mb-1">Member Name</label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="e.g. Priya Sharma"
-                    value={memberForm.name}
-                    onChange={(e) => setMemberForm({ ...memberForm, name: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white"
-                  />
-                </div>
+            <form onSubmit={handleAddMember} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              <div>
+                <label className="body-xs" style={{ color: '#94A3B8', display: 'block', marginBottom: '4px' }}>Member Name</label>
+                <input
+                  type="text"
+                  required
+                  value={memberForm.name}
+                  onChange={(e) => setMemberForm({ ...memberForm, name: e.target.value })}
+                  style={{ width: '100%', padding: '8px 12px', background: 'rgba(0, 0, 0, 0.4)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '10px', color: '#FFFFFF', fontSize: '13px' }}
+                />
+              </div>
 
-                <div>
-                  <label className="text-xs text-slate-400 block mb-1">Email Address</label>
-                  <input
-                    type="email"
-                    required
-                    placeholder="priya@example.com"
-                    value={memberForm.email}
-                    onChange={(e) => setMemberForm({ ...memberForm, email: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white"
-                  />
-                </div>
+              <div>
+                <label className="body-xs" style={{ color: '#94A3B8', display: 'block', marginBottom: '4px' }}>Email Address</label>
+                <input
+                  type="email"
+                  required
+                  value={memberForm.email}
+                  onChange={(e) => setMemberForm({ ...memberForm, email: e.target.value })}
+                  style={{ width: '100%', padding: '8px 12px', background: 'rgba(0, 0, 0, 0.4)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '10px', color: '#FFFFFF', fontSize: '13px' }}
+                />
+              </div>
 
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
                 <div>
-                  <label className="text-xs text-slate-400 block mb-1">Role</label>
+                  <label className="body-xs" style={{ color: '#94A3B8', display: 'block', marginBottom: '4px' }}>Role</label>
                   <select
                     value={memberForm.role}
                     onChange={(e) => setMemberForm({ ...memberForm, role: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white"
+                    style={{ width: '100%', padding: '8px 12px', background: 'rgba(10, 14, 24, 0.95)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '10px', color: '#FFFFFF', fontSize: '13px' }}
                   >
-                    <option value="ADMIN">ADMIN (Can invite members and create budgets)</option>
-                    <option value="CONTRIBUTOR">CONTRIBUTOR (Can log shared expenses)</option>
-                    <option value="VIEWER">VIEWER (Read-only aggregate analytics)</option>
+                    <option value="CONTRIBUTOR">Contributor</option>
+                    <option value="ADMIN">Admin</option>
+                    <option value="VIEWER">Viewer</option>
                   </select>
                 </div>
-
-                <div className="flex gap-2 pt-2">
-                  <button
-                    type="button"
-                    onClick={() => setShowAddMemberModal(false)}
-                    className="flex-1 py-2 rounded-xl border border-slate-700 bg-slate-800 text-slate-300 text-xs font-semibold cursor-pointer"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    className="flex-1 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-teal-500 text-slate-950 font-bold text-xs shadow-lg shadow-cyan-500/20 cursor-pointer"
-                  >
-                    Add Member
-                  </button>
-                </div>
-              </form>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
-
-      {/* ADD EXPENSE MODAL */}
-      <AnimatePresence>
-        {showAddExpenseModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
-            <motion.div
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
-              className="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-md w-full shadow-2xl space-y-4"
-            >
-              <h3 className="text-base font-bold text-white flex items-center gap-2">
-                <Receipt className="w-4 h-4 text-cyan-400" />
-                Log Shared Household Expense
-              </h3>
-
-              <form onSubmit={handleAddExpense} className="space-y-3.5">
                 <div>
-                  <label className="text-xs text-slate-400 block mb-1">Expense Description</label>
+                  <label className="body-xs" style={{ color: '#94A3B8', display: 'block', marginBottom: '4px' }}>Monthly Limit (₹)</label>
                   <input
-                    type="text"
-                    required
-                    placeholder="e.g. Monthly Electricity Bill"
-                    value={expenseForm.title}
-                    onChange={(e) => setExpenseForm({ ...expenseForm, title: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white"
+                    type="number"
+                    value={memberForm.monthlySpendingLimit}
+                    onChange={(e) => setMemberForm({ ...memberForm, monthlySpendingLimit: Number(e.target.value) })}
+                    style={{ width: '100%', padding: '8px 12px', background: 'rgba(0, 0, 0, 0.4)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '10px', color: '#FFFFFF', fontSize: '13px' }}
                   />
                 </div>
+              </div>
 
-                <div className="grid grid-cols-2 gap-2">
-                  <div>
-                    <label className="text-xs text-slate-400 block mb-1">Amount ({activeVault?.currency})</label>
-                    <input
-                      type="number"
-                      required
-                      min="1"
-                      value={expenseForm.amount}
-                      onChange={(e) => setExpenseForm({ ...expenseForm, amount: e.target.value })}
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="text-xs text-slate-400 block mb-1">Category</label>
-                    <select
-                      value={expenseForm.category}
-                      onChange={(e) => setExpenseForm({ ...expenseForm, category: e.target.value })}
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white"
-                    >
-                      <option value="Groceries & Supermarket">Groceries</option>
-                      <option value="Housing & Utilities">Housing & Utilities</option>
-                      <option value="Food & Dining">Food & Dining</option>
-                      <option value="Transportation">Transportation</option>
-                      <option value="Health & Medical">Health & Medical</option>
-                      <option value="General & Miscellaneous">General</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div className="flex gap-2 pt-2">
-                  <button
-                    type="button"
-                    onClick={() => setShowAddExpenseModal(false)}
-                    className="flex-1 py-2 rounded-xl border border-slate-700 bg-slate-800 text-slate-300 text-xs font-semibold cursor-pointer"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    className="flex-1 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-teal-500 text-slate-950 font-bold text-xs shadow-lg shadow-cyan-500/20 cursor-pointer"
-                  >
-                    Record Expense
-                  </button>
-                </div>
-              </form>
-            </motion.div>
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: '10px' }}>
+                <button type="button" onClick={() => setShowAddMemberModal(false)} className="btn-glass-secondary">
+                  Cancel
+                </button>
+                <button type="submit" className="btn-primary-mint">
+                  Add Member
+                </button>
+              </div>
+            </form>
           </div>
-        )}
-      </AnimatePresence>
+        </div>
+      )}
+
+      {/* ADD EXPENSE MODAL */}
+      {showAddExpenseModal && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0, 0, 0, 0.75)', backdropFilter: 'blur(8px)', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+          <div className="glass-card" style={{ width: '100%', maxWidth: '440px', padding: '24px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+              <h3 className="heading-md" style={{ margin: 0, color: '#F8FAFC' }}>Log Shared Household Bill</h3>
+              <button type="button" onClick={() => setShowAddExpenseModal(false)} className="btn-icon-soft">
+                <X size={15} />
+              </button>
+            </div>
+
+            <form onSubmit={handleAddExpense} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              <div>
+                <label className="body-xs" style={{ color: '#94A3B8', display: 'block', marginBottom: '4px' }}>Bill Title</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Monthly Grocery Bill - BigBasket"
+                  value={expenseForm.title}
+                  onChange={(e) => setExpenseForm({ ...expenseForm, title: e.target.value })}
+                  style={{ width: '100%', padding: '8px 12px', background: 'rgba(0, 0, 0, 0.4)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '10px', color: '#FFFFFF', fontSize: '13px' }}
+                />
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                <div>
+                  <label className="body-xs" style={{ color: '#94A3B8', display: 'block', marginBottom: '4px' }}>Amount ({activeVault?.currency || '₹'})</label>
+                  <input
+                    type="number"
+                    required
+                    placeholder="2500"
+                    value={expenseForm.amount}
+                    onChange={(e) => setExpenseForm({ ...expenseForm, amount: e.target.value })}
+                    style={{ width: '100%', padding: '8px 12px', background: 'rgba(0, 0, 0, 0.4)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '10px', color: '#FFFFFF', fontSize: '13px' }}
+                  />
+                </div>
+                <div>
+                  <label className="body-xs" style={{ color: '#94A3B8', display: 'block', marginBottom: '4px' }}>Category</label>
+                  <select
+                    value={expenseForm.category}
+                    onChange={(e) => setExpenseForm({ ...expenseForm, category: e.target.value })}
+                    style={{ width: '100%', padding: '8px 12px', background: 'rgba(10, 14, 24, 0.95)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '10px', color: '#FFFFFF', fontSize: '13px' }}
+                  >
+                    <option value="Groceries & Supermarket">Groceries</option>
+                    <option value="Housing & Rent">Housing & Rent</option>
+                    <option value="Utilities & Bills">Utilities & Bills</option>
+                    <option value="Healthcare & Pharmacy">Healthcare</option>
+                    <option value="Home Maintenance">Maintenance</option>
+                  </select>
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: '10px' }}>
+                <button type="button" onClick={() => setShowAddExpenseModal(false)} className="btn-glass-secondary">
+                  Cancel
+                </button>
+                <button type="submit" className="btn-primary-mint">
+                  Log Expense
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

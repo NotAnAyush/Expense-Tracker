@@ -10,7 +10,9 @@ import {
   ArrowUpRight, 
   ArrowDownLeft, 
   CheckSquare, 
-  Square 
+  Square,
+  MessageSquare,
+  Sparkles
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { apiFetch } from '../../api/client';
@@ -167,20 +169,18 @@ export const BankStatementModal = ({ isOpen, onClose, onImportComplete, categori
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
+          className="glass-card"
           style={{
             width: '100%',
             maxWidth: '860px',
             maxHeight: '90vh',
-            background: 'linear-gradient(135deg, rgba(16, 22, 38, 0.98) 0%, rgba(10, 14, 24, 0.98) 100%)',
-            border: '1.5px solid rgba(0, 255, 135, 0.3)',
-            borderRadius: '24px',
             padding: '28px',
-            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 255, 135, 0.15)',
+            border: '1px solid rgba(0, 255, 135, 0.25)',
+            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 255, 135, 0.15)',
             display: 'flex',
             flexDirection: 'column',
             gap: '20px',
             overflowY: 'auto',
-            position: 'relative',
           }}
         >
           {/* Header Row */}
@@ -191,7 +191,7 @@ export const BankStatementModal = ({ isOpen, onClose, onImportComplete, categori
                   width: '42px',
                   height: '42px',
                   borderRadius: '12px',
-                  background: 'rgba(0, 255, 135, 0.15)',
+                  background: 'rgba(0, 255, 135, 0.12)',
                   border: '1px solid rgba(0, 255, 135, 0.3)',
                   display: 'flex',
                   alignItems: 'center',
@@ -202,68 +202,42 @@ export const BankStatementModal = ({ isOpen, onClose, onImportComplete, categori
                 <FileSpreadsheet size={22} />
               </div>
               <div>
-                <h2 className="heading-lg" style={{ margin: 0 }}>
-                  Bank Statement Batch Importer
+                <h2 className="heading-lg" style={{ margin: 0, color: '#F8FAFC' }}>
+                  Bank Statement & SMS Ingestion Engine
                 </h2>
-                <p style={{ fontSize: '13px', color: '#94A3B8', marginTop: '2px' }}>
-                  Smart CSV Parser with column auto-mapper and duplicate deduplication signature.
+                <p className="body-sm" style={{ margin: '2px 0 0 0', color: '#94A3B8' }}>
+                  Smart CSV parser and deterministic regex engine for Indian bank SMS alerts.
                 </p>
               </div>
             </div>
 
             <button
+              type="button"
               onClick={onClose}
-              style={{
-                background: 'rgba(255, 255, 255, 0.08)',
-                border: 'none',
-                borderRadius: '999px',
-                width: '32px',
-                height: '32px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: '#94A3B8',
-                cursor: 'pointer',
-              }}
+              className="btn-icon-soft"
             >
               <X size={16} />
             </button>
           </div>
 
-          {/* Mode Switcher */}
+          {/* Mode Switcher Filter Chips */}
           {!previewData && (
-            <div style={{ display: 'flex', gap: '8px', background: 'rgba(255, 255, 255, 0.05)', padding: '4px', borderRadius: '12px', width: 'fit-content' }}>
+            <div style={{ display: 'flex', gap: '8px' }}>
               <button
                 type="button"
                 onClick={() => setImportMode('CSV')}
-                style={{
-                  padding: '6px 14px',
-                  borderRadius: '8px',
-                  fontSize: '12px',
-                  fontWeight: 700,
-                  border: 'none',
-                  cursor: 'pointer',
-                  background: importMode === 'CSV' ? '#00FF87' : 'transparent',
-                  color: importMode === 'CSV' ? '#050810' : '#94A3B8',
-                }}
+                className={`filter-chip ${importMode === 'CSV' ? 'filter-chip-active' : ''}`}
               >
-                Bank Statement CSV
+                <FileSpreadsheet size={13} />
+                <span>Bank Statement CSV</span>
               </button>
               <button
                 type="button"
                 onClick={() => setImportMode('SMS')}
-                style={{
-                  padding: '6px 14px',
-                  borderRadius: '8px',
-                  fontSize: '12px',
-                  fontWeight: 700,
-                  border: 'none',
-                  cursor: 'pointer',
-                  background: importMode === 'SMS' ? '#00FF87' : 'transparent',
-                  color: importMode === 'SMS' ? '#050810' : '#94A3B8',
-                }}
+                className={`filter-chip ${importMode === 'SMS' ? 'filter-chip-active' : ''}`}
               >
-                Instant Bank SMS Paste
+                <MessageSquare size={13} />
+                <span>Instant Bank SMS Paste</span>
               </button>
             </div>
           )}
@@ -272,14 +246,13 @@ export const BankStatementModal = ({ isOpen, onClose, onImportComplete, categori
           {!previewData && importMode === 'CSV' && (
             <div
               onClick={() => fileInputRef.current?.click()}
+              className="glass-card-interactive"
               style={{
-                border: '2px dashed rgba(0, 255, 135, 0.4)',
+                border: '2px dashed rgba(0, 255, 135, 0.35)',
                 borderRadius: '18px',
                 padding: '40px 20px',
                 textAlign: 'center',
-                background: 'rgba(0, 255, 135, 0.03)',
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
+                background: 'rgba(0, 255, 135, 0.02)',
               }}
             >
               <input
@@ -290,11 +263,11 @@ export const BankStatementModal = ({ isOpen, onClose, onImportComplete, categori
                 style={{ display: 'none' }}
               />
               <Upload size={36} color="#00FF87" style={{ margin: '0 auto 12px' }} />
-              <div style={{ fontSize: '16px', fontWeight: 700, color: '#F1F5F9' }}>
+              <div className="heading-md" style={{ color: '#F8FAFC' }}>
                 Click or Drop your Bank Statement CSV here
               </div>
-              <div style={{ fontSize: '13px', color: '#94A3B8', marginTop: '6px' }}>
-                Supports HDFC, SBI, ICICI, Axis, Chase, Amex, and generic 5-column CSV formats
+              <div className="body-sm" style={{ color: '#94A3B8', marginTop: '6px' }}>
+                Supports HDFC, SBI, ICICI, Axis, Kotak, Chase, Amex, and standard 5-column CSV statements
               </div>
             </div>
           )}
@@ -302,18 +275,17 @@ export const BankStatementModal = ({ isOpen, onClose, onImportComplete, categori
           {/* Instant SMS Paste Box */}
           {!previewData && importMode === 'SMS' && (
             <div
+              className="glass-card"
               style={{
-                border: '1.5px solid rgba(0, 255, 135, 0.3)',
-                borderRadius: '18px',
                 padding: '20px',
-                background: 'rgba(0, 255, 135, 0.02)',
                 display: 'flex',
                 flexDirection: 'column',
                 gap: '12px',
+                border: '1px solid rgba(0, 240, 255, 0.25)',
               }}
             >
-              <label style={{ fontSize: '13px', color: '#94A3B8', fontWeight: 600 }}>
-                Paste your Bank Transaction SMS alert (HDFC, SBI, ICICI, Axis, Kotak, PayTM, PhonePe):
+              <label className="body-sm" style={{ color: '#E2E8F0', fontWeight: 600 }}>
+                Paste bank transaction SMS alert (HDFC, SBI, ICICI, Axis, Kotak, PayTM, PhonePe, UPI):
               </label>
               <textarea
                 rows={4}
@@ -322,228 +294,173 @@ export const BankStatementModal = ({ isOpen, onClose, onImportComplete, categori
                 placeholder="e.g. Sent Rs.1,500.00 from HDFC Bank A/C *1234 to ZOMATO on 18-08-26. UPI Ref: 423589201938"
                 style={{
                   width: '100%',
-                  background: 'rgba(5, 8, 16, 0.8)',
+                  background: 'rgba(0, 0, 0, 0.5)',
                   border: '1px solid rgba(255, 255, 255, 0.1)',
                   borderRadius: '12px',
                   padding: '12px',
                   color: '#FFF',
                   fontSize: '13px',
-                  fontFamily: 'monospace',
+                  fontFamily: 'var(--font-mono)',
+                  resize: 'none',
                 }}
               />
               <button
                 type="button"
                 onClick={handleParseSms}
-                style={{
-                  padding: '10px 18px',
-                  borderRadius: '12px',
-                  background: '#00FF87',
-                  color: '#050810',
-                  fontWeight: 700,
-                  fontSize: '13px',
-                  border: 'none',
-                  cursor: 'pointer',
-                  alignSelf: 'flex-start',
-                }}
+                disabled={loading || !smsInput.trim()}
+                className="btn-primary-mint"
+                style={{ alignSelf: 'flex-start', height: '36px', padding: '0 18px' }}
               >
-                Parse & Stage SMS Transaction
+                <Sparkles size={14} />
+                <span>{loading ? 'Parsing SMS...' : 'Parse & Stage SMS Transaction'}</span>
               </button>
             </div>
           )}
 
           {/* Loading Indicator */}
           {loading && (
-            <div style={{ padding: '30px', textAlign: 'center', color: '#00FF87' }}>
-              <RefreshCw size={24} className="animate-spin" style={{ margin: '0 auto 10px' }} />
-              <div>Analyzing columns and checking duplicate signatures...</div>
+            <div style={{ textAlign: 'center', padding: '30px 0' }}>
+              <RefreshCw size={24} color="#00FF87" className="animate-spin" style={{ margin: '0 auto 10px' }} />
+              <div className="body-sm" style={{ color: '#94A3B8' }}>Parsing statement records and computing hashes...</div>
             </div>
           )}
 
-          {/* Error Banner */}
+          {/* Error Message */}
           {errorMsg && (
             <div
               style={{
                 padding: '12px 16px',
                 borderRadius: '12px',
-                background: 'rgba(255, 77, 77, 0.15)',
-                border: '1px solid rgba(255, 77, 77, 0.3)',
-                color: '#FF7D7D',
-                fontSize: '13px',
+                background: 'rgba(244, 63, 94, 0.08)',
+                border: '1px solid rgba(244, 63, 94, 0.3)',
+                color: '#FECDD3',
+                fontSize: '12.5px',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '8px',
               }}
             >
-              <AlertTriangle size={16} />
+              <AlertTriangle size={15} color="#F43F5E" />
               <span>{errorMsg}</span>
             </div>
           )}
 
-          {/* Staged Transactions Review Table */}
-          {previewData && transactions.length > 0 && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-              {/* Summary Metric Strip */}
+          {/* Preview State Table */}
+          {previewData && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              {/* Summary Metrics Banner */}
               <div
                 style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  padding: '12px 18px',
-                  borderRadius: '14px',
-                  background: 'rgba(255, 255, 255, 0.04)',
-                  border: '1px solid rgba(255, 255, 255, 0.08)',
-                  fontSize: '13px',
-                  color: '#94A3B8',
-                  flexWrap: 'wrap',
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
                   gap: '10px',
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <span>Parsed: <strong>{previewData.parsedCount} items</strong></span>
-                  <span>•</span>
-                  <span>Duplicates Flagged: <strong style={{ color: previewData.duplicateCount > 0 ? '#FFD700' : '#00FF87' }}>{previewData.duplicateCount}</strong></span>
-                  <span>•</span>
-                  <span>Selected for Import: <strong style={{ color: '#00FF87' }}>{selectedCount}</strong></span>
+                <div style={{ background: 'rgba(255, 255, 255, 0.02)', border: '1px solid rgba(255, 255, 255, 0.06)', borderRadius: '12px', padding: '10px 14px' }}>
+                  <span style={{ fontSize: '11px', color: '#94A3B8' }}>Parsed Count</span>
+                  <div className="font-display tabular-nums" style={{ fontSize: '16px', fontWeight: 800, color: '#F8FAFC' }}>
+                    {previewData.summary?.totalParsed || transactions.length}
+                  </div>
                 </div>
 
-                <div style={{ display: 'flex', gap: '8px' }}>
-                  <button
-                    onClick={toggleSelectAll}
-                    className="btn-glass-secondary"
-                    style={{ fontSize: '12px', padding: '6px 12px' }}
-                  >
-                    {transactions.every(t => t.selected) ? 'Deselect All' : 'Select All'}
-                  </button>
+                <div style={{ background: 'rgba(255, 255, 255, 0.02)', border: '1px solid rgba(255, 255, 255, 0.06)', borderRadius: '12px', padding: '10px 14px' }}>
+                  <span style={{ fontSize: '11px', color: '#94A3B8' }}>Total Debits</span>
+                  <div className="font-display tabular-nums" style={{ fontSize: '16px', fontWeight: 800, color: '#F43F5E' }}>
+                    ₹{Number(previewData.summary?.totalDebits || 0).toLocaleString()}
+                  </div>
+                </div>
 
-                  <button
-                    onClick={() => {
-                      setPreviewData(null);
-                      setTransactions([]);
-                      setCsvContent('');
-                    }}
-                    className="btn-glass-secondary"
-                    style={{ fontSize: '12px', padding: '6px 12px' }}
-                  >
-                    Upload New CSV
-                  </button>
+                <div style={{ background: 'rgba(255, 255, 255, 0.02)', border: '1px solid rgba(255, 255, 255, 0.06)', borderRadius: '12px', padding: '10px 14px' }}>
+                  <span style={{ fontSize: '11px', color: '#94A3B8' }}>Total Credits</span>
+                  <div className="font-display tabular-nums" style={{ fontSize: '16px', fontWeight: 800, color: '#00FF87' }}>
+                    ₹{Number(previewData.summary?.totalCredits || 0).toLocaleString()}
+                  </div>
                 </div>
               </div>
 
-              {/* Transactions List */}
-              <div style={{ maxHeight: '340px', overflowY: 'auto', borderRadius: '14px', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '13px' }}>
-                  <thead>
-                    <tr style={{ background: 'rgba(255, 255, 255, 0.04)', borderBottom: '1px solid rgba(255, 255, 255, 0.08)', color: '#94A3B8', fontSize: '12px' }}>
-                      <th style={{ padding: '10px', width: '36px' }}></th>
-                      <th style={{ padding: '10px' }}>Date</th>
-                      <th style={{ padding: '10px' }}>Description</th>
-                      <th style={{ padding: '10px' }}>Category</th>
-                      <th style={{ padding: '10px' }}>Type</th>
-                      <th style={{ padding: '10px', textAlign: 'right' }}>Amount</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {transactions.map((t) => (
-                      <tr
-                        key={t.id}
+              {/* Staged Transactions Table */}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <button
+                  type="button"
+                  onClick={toggleSelectAll}
+                  style={{ background: 'none', border: 'none', color: '#00F0FF', fontSize: '12px', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
+                >
+                  {transactions.every(t => t.selected) ? <CheckSquare size={15} /> : <Square size={15} />}
+                  <span>{transactions.every(t => t.selected) ? 'Deselect All' : 'Select All'} ({selectedCount} chosen)</span>
+                </button>
+              </div>
+
+              <div style={{ maxHeight: '280px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                {transactions.map((tx) => (
+                  <div
+                    key={tx.id}
+                    onClick={() => toggleTransaction(tx.id)}
+                    style={{
+                      padding: '10px 14px',
+                      borderRadius: '10px',
+                      background: tx.selected ? 'rgba(0, 255, 135, 0.04)' : 'rgba(255, 255, 255, 0.015)',
+                      border: tx.selected ? '1px solid rgba(0, 255, 135, 0.25)' : '1px solid rgba(255, 255, 255, 0.05)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <div style={{ color: tx.selected ? '#00FF87' : '#64748B' }}>
+                        {tx.selected ? <CheckSquare size={16} /> : <Square size={16} />}
+                      </div>
+                      <div>
+                        <div style={{ fontSize: '13px', fontWeight: 700, color: '#F8FAFC' }}>{tx.title}</div>
+                        <div style={{ fontSize: '11px', color: '#94A3B8' }}>{tx.date} • {tx.paymentMethod}</div>
+                      </div>
+                    </div>
+
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <select
+                        value={tx.category}
+                        onClick={(e) => e.stopPropagation()}
+                        onChange={(e) => handleCategoryChange(tx.id, e.target.value)}
                         style={{
-                          borderBottom: '1px solid rgba(255, 255, 255, 0.04)',
-                          background: t.selected ? 'rgba(0, 255, 135, 0.03)' : 'transparent',
-                          opacity: t.isDuplicate && !t.selected ? 0.5 : 1,
+                          background: 'rgba(10, 14, 24, 0.95)',
+                          border: '1px solid rgba(255, 255, 255, 0.1)',
+                          borderRadius: '8px',
+                          padding: '4px 8px',
+                          color: '#00FF87',
+                          fontSize: '11.5px',
                         }}
                       >
-                        <td style={{ padding: '10px' }}>
-                          <button
-                            onClick={() => toggleTransaction(t.id)}
-                            style={{ background: 'none', border: 'none', color: t.selected ? '#00FF87' : '#64748B', cursor: 'pointer', padding: 0 }}
-                          >
-                            {t.selected ? <CheckSquare size={16} /> : <Square size={16} />}
-                          </button>
-                        </td>
-                        <td style={{ padding: '10px', color: '#94A3B8', whiteSpace: 'nowrap' }}>
-                          {new Date(t.date).toLocaleDateString()}
-                        </td>
-                        <td style={{ padding: '10px' }}>
-                          <div style={{ fontWeight: 600, color: '#F1F5F9' }}>{t.title}</div>
-                          {t.isDuplicate && (
-                            <span style={{ fontSize: '10.5px', fontWeight: 800, padding: '2px 6px', borderRadius: '4px', background: 'rgba(255, 215, 0, 0.15)', color: '#FFD700', border: '1px solid rgba(255, 215, 0, 0.3)' }}>
-                              Duplicate Signature
-                            </span>
-                          )}
-                        </td>
-                        <td style={{ padding: '10px' }}>
-                          <select
-                            value={t.category}
-                            onChange={(e) => handleCategoryChange(t.id, e.target.value)}
-                            style={{
-                              background: 'rgba(15, 20, 32, 0.9)',
-                              border: '1px solid rgba(255, 255, 255, 0.12)',
-                              borderRadius: '8px',
-                              color: '#F8FAFC',
-                              fontSize: '12px',
-                              padding: '4px 8px',
-                              outline: 'none',
-                            }}
-                          >
-                            {categoryOptions.map(cat => (
-                              <option key={cat} value={cat}>{cat}</option>
-                            ))}
-                          </select>
-                        </td>
-                        <td style={{ padding: '10px' }}>
-                          <span
-                            style={{
-                              fontSize: '11px',
-                              fontWeight: 800,
-                              padding: '3px 8px',
-                              borderRadius: '6px',
-                              background: t.type === 'income' ? 'rgba(0, 255, 135, 0.15)' : 'rgba(255, 77, 77, 0.15)',
-                              color: t.type === 'income' ? '#00FF87' : '#FF7D7D',
-                              border: `1px solid ${t.type === 'income' ? 'rgba(0, 255, 135, 0.3)' : 'rgba(255, 77, 77, 0.3)'}`,
-                            }}
-                          >
-                            {t.type === 'income' ? '+ Income' : '- Expense'}
-                          </span>
-                        </td>
-                        <td style={{ padding: '10px', textAlign: 'right', fontWeight: 800, color: t.type === 'income' ? '#00FF87' : '#FF7D7D', fontFamily: 'var(--font-display)' }}>
-                          {t.type === 'income' ? '+' : '-'}₹{t.amount.toLocaleString()}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                        {categoryOptions.map(cat => (
+                          <option key={cat} value={cat}>{cat}</option>
+                        ))}
+                      </select>
+
+                      <div className="font-display tabular-nums" style={{ fontSize: '14px', fontWeight: 800, color: tx.type === 'income' ? '#00FF87' : '#F43F5E', minWidth: '80px', textAlign: 'right' }}>
+                        {tx.type === 'income' ? '+' : '-'}₹{Number(tx.amount)?.toLocaleString()}
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
 
-              {/* Bottom Action Commit Bar */}
-              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '10px' }}>
+              {/* Commit Actions */}
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', paddingTop: '10px', borderTop: '1px solid rgba(255, 255, 255, 0.08)' }}>
                 <button
-                  onClick={onClose}
+                  type="button"
+                  onClick={() => { setPreviewData(null); setTransactions([]); }}
                   className="btn-glass-secondary"
-                  style={{ padding: '10px 20px' }}
                 >
-                  Cancel
+                  Reset Preview
                 </button>
-
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                <button
+                  type="button"
                   onClick={handleCommit}
-                  disabled={selectedCount === 0 || importing}
+                  disabled={importing || selectedCount === 0}
                   className="btn-primary-mint"
-                  style={{ padding: '10px 24px', opacity: (selectedCount === 0 || importing) ? 0.5 : 1 }}
                 >
-                  {importing ? (
-                    <>
-                      <RefreshCw size={16} className="animate-spin" />
-                      Importing {selectedCount} Records...
-                    </>
-                  ) : (
-                    <>
-                      <Check size={16} />
-                      Commit {selectedCount} Records to Ledger
-                    </>
-                  )}
-                </motion.button>
+                  <Check size={14} />
+                  <span>{importing ? 'Committing to Ledger...' : `Commit ${selectedCount} Transactions`}</span>
+                </button>
               </div>
             </div>
           )}
@@ -552,3 +469,5 @@ export const BankStatementModal = ({ isOpen, onClose, onImportComplete, categori
     </AnimatePresence>
   );
 };
+
+export default BankStatementModal;
