@@ -249,18 +249,21 @@ body::before {
 .text-gradient-mint {
   background: var(--grad-mint-gold);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .text-gradient-gold {
   background: var(--grad-gold-warm);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .text-gradient-violet {
   background: var(--grad-violet-pink);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -845,6 +848,7 @@ textarea.glass-input, textarea.input-field {
 .text-gradient-mint {
   background: var(--grad-mint-cyan);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
