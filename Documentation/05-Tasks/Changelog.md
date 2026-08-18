@@ -12,6 +12,16 @@ last_updated: 2026-08-17
 
 ---
 
+## `v3.4.0` — Quantitative Stock Market, Scheme Radar & Scam Shield (2026-08-18)
+- **Stock Market & Passive Wealth Studio (`PassiveIncomePage.jsx`)**: Real-time market ticker (Nifty 50, Sensex, Reliance, TCS, Apple, Nvidia), interactive tabs, and visual financial analytics.
+- **Verified Sovereign Scheme Radar (`schemeRadarService.js`)**: Real-time comparator for RBI Treasury Bills (91D, 182D, 364D), Sovereign Gold Bonds (SGBs), Post Office SCSS/SSY/PPF, and Bank Fixed Deposits.
+- **Automated Scam & Ponzi Shield (`scamShieldEngine.js`)**: Algorithmic red flag detection engine ($\mathcal{S}_{\text{risk}}$) evaluating guaranteed unrealistic yields ($>18\%$), MLM pyramid downlines, and regulatory compliance.
+- **Institutional Quantitative Valuation Suite (`quantitativeEngine.js`)**: Two-stage Discounted Cash Flow (DCF) fair value calculation, 9-point Piotroski F-Score, and Altman Z-Score bankruptcy prediction.
+- **Debt vs. Investment Arbitrage Solver (`arbitrageSolver.js`)**: Compares guaranteed post-tax debt interest savings against risk-adjusted equity hurdles to recommend optimal surplus cash allocation.
+- **Test Suite Expansion**: Added `market.test.js` — **31 test suites, 213/213 tests passing (0 failures)**.
+
+---
+
 ## `v3.3.0` — Local Sovereign OCR & Multi-Tier AI Fallback Cascade (2026-08-18)
 - **Local Baidu Unlimited-OCR (3B MoE VLM) Sidecar (`server/services/ocr-sidecar/`)**: Containerized Python FastAPI microservice (`main.py`, `Dockerfile`, `requirements.txt`) with strict JSON schema parsing and PaddleOCR fallback.
 - **Node.js Local OCR Adapter (`localOcrService.js`)**: Probes sidecar health on port 8001 and delegates receipt scans with automatic fallback to Tier 3 Local Heuristic receipt parsing.

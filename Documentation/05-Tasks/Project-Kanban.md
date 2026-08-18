@@ -81,13 +81,14 @@ Use this interactive board in Obsidian or during Antigravity pair-programming se
 ---
 
 ### Phase 8: Stock Market, Verified Schemes & Passive Income Ecosystem
-- [ ] Real-time broker WebSocket integration (`Zerodha`, `Dhan`, `Alpaca`, `Polygon.io`)
-- [ ] Real-time Government Bond (T-Bills, SGBs) & Highest Bank FD yield scraper (`schemeRadarService.js`)
-- [ ] Automated Scam & Ponzi Shield (`scamShieldEngine.js` red flag detector)
-- [ ] Technical (RSI, EMA, VWAP) & Fundamental (DCF, Piotroski, Altman) quantitative engine
-- [ ] Dividend Aristocrat & DRIP compounding cash flow calendar (`/passive-income`)
-- [ ] Surplus Cash Flow auto-sweeping to liquid / arbitrage mutual funds
-- [ ] Debt Avalanche vs Investment Yield Arbitrage Solver
+- [x] Real-time broker WebSocket integration (`Zerodha`, `Dhan`, `Alpaca`, `Polygon.io`) with `brokerClient.js`
+- [x] Real-time Government Bond (T-Bills, SGBs) & Highest Bank FD yield comparator (`schemeRadarService.js`)
+- [x] Automated Scam & Ponzi Shield (`scamShieldEngine.js` red flag detector)
+- [x] Quantitative Valuation Suite (`quantitativeEngine.js` DCF, Piotroski F-Score, Altman Z-Score)
+- [x] Debt Prepayment vs Investment Arbitrage Solver (`arbitrageSolver.js`)
+- [x] Stock Market & Passive Income Studio UI (`PassiveIncomePage.jsx`)
+
+---
 
 ### Phase 9: Family Multi-User Ledgers, Bank SMS Webhooks & Enterprise Exports
 - [ ] Family multi-user sub-account permissions & shared family vault budgets (`FamilyVault.js`)

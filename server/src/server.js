@@ -38,6 +38,7 @@ const fxRoutes = require('./routes/fxRoutes');
 const upiIntegrationRoutes = require('./routes/upiIntegrationRoutes');
 const vaultRoutes = require('./routes/vaultRoutes');
 const ecommerceRoutes = require('./routes/ecommerceRoutes');
+const marketRoutes = require('./routes/marketRoutes');
 
 const app = express();
 
@@ -171,6 +172,7 @@ app.use('/api/fx', fxRoutes);
 app.use('/api/integrations/upi', upiIntegrationRoutes);
 app.use('/api/vault', vaultRoutes);
 app.use('/api/ecommerce', ecommerceRoutes);
+app.use('/api/market', marketRoutes);
 
 // Global 404 handler for undefined routes
 app.use((req, res, next) => {

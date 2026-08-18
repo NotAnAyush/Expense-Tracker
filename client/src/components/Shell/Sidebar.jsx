@@ -14,6 +14,7 @@ import {
   Sliders,
   Users,
   TrendingDown,
+  TrendingUp,
   Plane,
   Palette
 } from 'lucide-react';
@@ -62,6 +63,12 @@ export const Sidebar = ({ activeTab, setActiveTab, onOpenCopilot }) => {
           icon: Flame, 
           badge: { text: 'Monte Carlo', type: 'ai' } 
         }] : []),
+        { 
+          id: 'market', 
+          label: 'Market & Yields', 
+          icon: TrendingUp, 
+          badge: { text: 'Radar', type: 'ai' } 
+        },
         { 
           id: 'goals', 
           label: 'Savings Goals', 
