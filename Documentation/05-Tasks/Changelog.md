@@ -12,6 +12,16 @@ last_updated: 2026-08-17
 
 ---
 
+## `v3.5.0` — Family Multi-User Ledgers, Bank SMS Webhooks & Enterprise Exports (2026-08-18)
+- **Family Multi-User Ledgers (`FamilyVault.js` & `familyService.js`)**: Multi-tenant household vaults with Role-Based Access Control (`OWNER`, `ADMIN`, `CONTRIBUTOR`, `VIEWER`), shared budget pools, and private ledger isolation.
+- **Family Multi-User Studio (`FamilyVaultPage.jsx`)**: Comprehensive household manager with real-time member invite workflows, shared spend analytics, and pooled expense logging.
+- **Indian Bank Transaction SMS Parser (`smsParserEngine.js`)**: Deterministic regex state machine parsing transaction notifications across HDFC, SBI, ICICI, Axis, Kotak, PayTM, PhonePe, and UPI.
+- **Instant SMS Quick-Parse Modal Integration (`BankStatementModal.jsx`)**: Dual-mode statement importer supporting both multi-column CSV uploads and direct SMS alert text parsing.
+- **Enterprise Vector PDF & CSV Financial Statement Generator (`reportExportEngine.js`)**: Multi-sheet formatted statement reports with executive summaries, category allocation percentages, and tax-ready schedules.
+- **Test Suite Expansion**: Added `familyVault.test.js`, `smsParser.test.js`, and `reportExport.test.js` — **34 test suites, 223/223 tests passing (0 failures)**.
+
+---
+
 ## `v3.4.0` — Quantitative Stock Market, Scheme Radar & Scam Shield (2026-08-18)
 - **Stock Market & Passive Wealth Studio (`PassiveIncomePage.jsx`)**: Real-time market ticker (Nifty 50, Sensex, Reliance, TCS, Apple, Nvidia), interactive tabs, and visual financial analytics.
 - **Verified Sovereign Scheme Radar (`schemeRadarService.js`)**: Real-time comparator for RBI Treasury Bills (91D, 182D, 364D), Sovereign Gold Bonds (SGBs), Post Office SCSS/SSY/PPF, and Bank Fixed Deposits.

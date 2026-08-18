@@ -166,3 +166,33 @@ exports.exportTaxSummary = asyncHandler(async (req, res) => {
 
   res.end();
 });
+
+const ReportExportEngine = require('../services/export/reportExportEngine');
+
+exports.getFinancialStatement = asyncHandler(async (req, res) => {
+  const { year, month } = req.query;
+  const targetYear = year ? parseInt(year, 10) : new Date().getFullYear();
+  const targetMonth = month !== undefined ? parseInt(month, 10) - 1 : undefined;
+
+  const statement = await ReportExportEngine.generateFinancialStatement(req.user._id, {
+    year: targetYear,
+    month: targetMonth,
+  });
+
+  res.json(statement);
+});
+
+exports.exportFinancialStatementCsv = asyncHandler(async (req, res) => {
+  const { year, month } = req.query;
+  const targetYear = year ? parseInt(year, 10) : new Date().getFullYear();
+  const targetMonth = month !== undefined ? parseInt(month, 10) - 1 : undefined;
+
+  const csv = await ReportExportEngine.generateCsvStatement(req.user._id, {
+    year: targetYear,
+    month: targetMonth,
+  });
+
+  res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+  res.setHeader('Content-Disposition', `attachment; filename="financial_statement_${targetYear}.csv"`);
+  res.send(csv);
+});

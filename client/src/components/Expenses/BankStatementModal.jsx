@@ -18,6 +18,8 @@ import { apiFetch } from '../../api/client';
 export const BankStatementModal = ({ isOpen, onClose, onImportComplete, categories = [] }) => {
   const [csvContent, setCsvContent] = useState('');
   const [fileName, setFileName] = useState('');
+  const [importMode, setImportMode] = useState('CSV'); // 'CSV' | 'SMS'
+  const [smsInput, setSmsInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [previewData, setPreviewData] = useState(null);
   const [transactions, setTransactions] = useState([]);
@@ -27,6 +29,42 @@ export const BankStatementModal = ({ isOpen, onClose, onImportComplete, categori
 
   const defaultCategories = ['Food & Dining', 'Transportation', 'Housing & Utilities', 'Entertainment', 'Shopping', 'Health & Medical', 'Subscriptions', 'Salary', 'Freelance', 'Investments', 'Other'];
   const categoryOptions = categories.length > 0 ? categories.map(c => c.name || c) : defaultCategories;
+
+  const handleParseSms = async () => {
+    if (!smsInput.trim()) return;
+    try {
+      setLoading(true);
+      setErrorMsg('');
+      const res = await apiFetch('/import/sms-parse', {
+        method: 'POST',
+        body: JSON.stringify({ smsText: smsInput }),
+      });
+      const parsedTx = {
+        id: `sms-${Date.now()}`,
+        date: res.date || new Date().toISOString().split('T')[0],
+        title: `${res.merchant || res.bank} (${res.refNumber || 'SMS'})`,
+        amount: res.amount,
+        type: res.type === 'CREDIT' ? 'income' : 'expense',
+        category: res.category || 'General & Miscellaneous',
+        merchant: res.merchant,
+        paymentMethod: res.bank === 'UPI' ? 'UPI' : 'Bank Transfer',
+        selected: true,
+      };
+      setTransactions([parsedTx]);
+      setPreviewData({
+        summary: {
+          totalParsed: 1,
+          totalDebits: res.type === 'DEBIT' ? res.amount : 0,
+          totalCredits: res.type === 'CREDIT' ? res.amount : 0,
+          duplicatesFound: 0,
+        },
+      });
+    } catch (err) {
+      setErrorMsg(err.message || 'Failed to parse SMS transaction.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
@@ -192,8 +230,46 @@ export const BankStatementModal = ({ isOpen, onClose, onImportComplete, categori
             </button>
           </div>
 
-          {/* Upload Dropzone */}
+          {/* Mode Switcher */}
           {!previewData && (
+            <div style={{ display: 'flex', gap: '8px', background: 'rgba(255, 255, 255, 0.05)', padding: '4px', borderRadius: '12px', width: 'fit-content' }}>
+              <button
+                type="button"
+                onClick={() => setImportMode('CSV')}
+                style={{
+                  padding: '6px 14px',
+                  borderRadius: '8px',
+                  fontSize: '12px',
+                  fontWeight: 700,
+                  border: 'none',
+                  cursor: 'pointer',
+                  background: importMode === 'CSV' ? '#00FF87' : 'transparent',
+                  color: importMode === 'CSV' ? '#050810' : '#94A3B8',
+                }}
+              >
+                Bank Statement CSV
+              </button>
+              <button
+                type="button"
+                onClick={() => setImportMode('SMS')}
+                style={{
+                  padding: '6px 14px',
+                  borderRadius: '8px',
+                  fontSize: '12px',
+                  fontWeight: 700,
+                  border: 'none',
+                  cursor: 'pointer',
+                  background: importMode === 'SMS' ? '#00FF87' : 'transparent',
+                  color: importMode === 'SMS' ? '#050810' : '#94A3B8',
+                }}
+              >
+                Instant Bank SMS Paste
+              </button>
+            </div>
+          )}
+
+          {/* Upload Dropzone for CSV */}
+          {!previewData && importMode === 'CSV' && (
             <div
               onClick={() => fileInputRef.current?.click()}
               style={{
@@ -220,6 +296,58 @@ export const BankStatementModal = ({ isOpen, onClose, onImportComplete, categori
               <div style={{ fontSize: '13px', color: '#94A3B8', marginTop: '6px' }}>
                 Supports HDFC, SBI, ICICI, Axis, Chase, Amex, and generic 5-column CSV formats
               </div>
+            </div>
+          )}
+
+          {/* Instant SMS Paste Box */}
+          {!previewData && importMode === 'SMS' && (
+            <div
+              style={{
+                border: '1.5px solid rgba(0, 255, 135, 0.3)',
+                borderRadius: '18px',
+                padding: '20px',
+                background: 'rgba(0, 255, 135, 0.02)',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '12px',
+              }}
+            >
+              <label style={{ fontSize: '13px', color: '#94A3B8', fontWeight: 600 }}>
+                Paste your Bank Transaction SMS alert (HDFC, SBI, ICICI, Axis, Kotak, PayTM, PhonePe):
+              </label>
+              <textarea
+                rows={4}
+                value={smsInput}
+                onChange={(e) => setSmsInput(e.target.value)}
+                placeholder="e.g. Sent Rs.1,500.00 from HDFC Bank A/C *1234 to ZOMATO on 18-08-26. UPI Ref: 423589201938"
+                style={{
+                  width: '100%',
+                  background: 'rgba(5, 8, 16, 0.8)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: '12px',
+                  padding: '12px',
+                  color: '#FFF',
+                  fontSize: '13px',
+                  fontFamily: 'monospace',
+                }}
+              />
+              <button
+                type="button"
+                onClick={handleParseSms}
+                style={{
+                  padding: '10px 18px',
+                  borderRadius: '12px',
+                  background: '#00FF87',
+                  color: '#050810',
+                  fontWeight: 700,
+                  fontSize: '13px',
+                  border: 'none',
+                  cursor: 'pointer',
+                  alignSelf: 'flex-start',
+                }}
+              >
+                Parse & Stage SMS Transaction
+              </button>
             </div>
           )}
 

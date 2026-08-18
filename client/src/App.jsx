@@ -28,6 +28,7 @@ import { GoalsPage } from './pages/GoalsPage';
 import { RecurringPage } from './pages/RecurringPage';
 import { AnalyticsPage } from './pages/AnalyticsPage';
 import { PassiveIncomePage } from './pages/PassiveIncomePage';
+import { FamilyVaultPage } from './pages/FamilyVaultPage';
 import { CustomizationPage } from './pages/CustomizationPage';
 import { SettingsPage } from './pages/SettingsPage';
 import { ProfilePage } from './pages/ProfilePage';
@@ -35,7 +36,7 @@ import { AuthPage } from './pages/AuthPage';
 import { apiFetch } from './api/client';
 import { WifiOff, Wifi } from 'lucide-react';
 
-const VALID_TABS = ['dashboard', 'expenses', 'fire', 'market', 'trips', 'splits', 'debts', 'budgets', 'goals', 'recurring', 'analytics', 'customization', 'settings', 'profile'];
+const VALID_TABS = ['dashboard', 'expenses', 'fire', 'market', 'family', 'trips', 'splits', 'debts', 'budgets', 'goals', 'recurring', 'analytics', 'customization', 'settings', 'profile'];
 
 const getInitialTab = () => {
   const hash = window.location.hash.replace('#', '').trim();
@@ -308,6 +309,7 @@ const MainApp = () => {
           )}
           {activeTab === 'fire' && <WealthSimulatorPage key={refreshKey} />}
           {activeTab === 'market' && <PassiveIncomePage key={refreshKey} />}
+          {activeTab === 'family' && <FamilyVaultPage key={refreshKey} />}
           {activeTab === 'trips' && <TripVaultPage key={refreshKey} />}
           {activeTab === 'splits' && <GroupSplitPage key={refreshKey} />}
           {activeTab === 'debts' && <DebtPayoffPage key={refreshKey} />}

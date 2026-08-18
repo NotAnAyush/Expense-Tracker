@@ -83,6 +83,7 @@ graph TD
 - **[[Blockchain-and-Emerging-Tech-Ecosystem]]** — Web3, Merkle audits, zk-SNARKs, and Edge AI ecosystem (`[[BLOCKCHAIN_AND_FUTURE_TECH_FEATURE_PLAN]]`).
 - **[[Cash-Flow-Velocity-Engine]]** — Math formulas for net cash flow, savings rate %, daily burn rate, and runway.
 - **[[AI-Copilot-and-OCR-Engine]]** — Multimodal Gemini 2.5 Flash receipt scanner & deterministic RAG context injection.
+- **[[Family-Multi-User-Ledgers-and-Enterprise-Exports]]** — Multi-tenant household vaults, regex SMS bank webhook parser, and vector PDF/Excel financial statements (`[[FAMILY_MULTI_USER_LEDGERS_SMS_WEBHOOKS_AND_ENTERPRISE_EXPORTS_RESEARCH]]`).
 - **[[Stock-Market-and-Passive-Income-Ecosystem]]** — Real-time broker feeds, verified sovereign T-Bill/SGB/FD radars, DCF valuations, and automated Ponzi/scam shield (`[[STOCK_MARKET_VERIFIED_SCHEMES_AND_PASSIVE_INCOME_RESEARCH]]`).
 - **[[Adaptive-Device-Capability-Profiler]]** — Dynamic client hardware scanning (WebGPU, RAM, CPU) and tiered feature scaling (`[[ADAPTIVE_DEVICE_HARDWARE_PROFILING_AND_CAPABILITY_OPTIMIZATION_RESEARCH]]`).
 - **[[Customization-Hub-and-Feature-Flag-Engine]]** — Modular feature toggling, pre-sync Memento snapshots, and self-aware layout re-formatting (`[[MODULAR_FEATURE_FLAG_ENGINE_AND_STATE_SNAPSHOT_CUSTOMIZATION_HUB_RESEARCH]]`).
@@ -103,6 +104,7 @@ graph TD
 - **[[ADR-009-Adaptive-Device-Hardware-Profiling-and-Feature-Optimization]]** — Real-time client hardware inspection and tiered feature allocation (`[[ADAPTIVE_DEVICE_HARDWARE_PROFILING_AND_CAPABILITY_OPTIMIZATION_RESEARCH]]`).
 - **[[ADR-010-Modular-Feature-Flags-State-Snapshot-Backup-and-Customization-Hub]]** — Staged feature flag configuration, automated pre-sync Memento snapshots, and self-aware dynamic layouts (`[[MODULAR_FEATURE_FLAG_ENGINE_AND_STATE_SNAPSHOT_CUSTOMIZATION_HUB_RESEARCH]]`).
 - **[[ADR-011-Stock-Market-Verified-Schemes-and-Quantitative-Passive-Income-Ecosystem]]** — Quantitative stock valuations, verified sovereign scheme radars, and algorithmic scam shield (`[[STOCK_MARKET_VERIFIED_SCHEMES_AND_PASSIVE_INCOME_RESEARCH]]`).
+- **[[ADR-012-Family-Multi-User-Ledgers-SMS-Webhooks-and-Enterprise-Exports]]** — Multi-user household vaults, regex SMS parser, and audit-ready vector PDF/Excel statements (`[[FAMILY_MULTI_USER_LEDGERS_SMS_WEBHOOKS_AND_ENTERPRISE_EXPORTS_RESEARCH]]`).
 
 ### 5. 📋 Sprint Execution & Health (`05-Tasks/`)
 - **[[Project-Kanban]]** — Interactive task checklist for human + Antigravity pair programming.

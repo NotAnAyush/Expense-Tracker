@@ -91,6 +91,6 @@ Use this interactive board in Obsidian or during Antigravity pair-programming se
 ---
 
 ### Phase 9: Family Multi-User Ledgers, Bank SMS Webhooks & Enterprise Exports
-- [ ] Family multi-user sub-account permissions & shared family vault budgets (`FamilyVault.js`)
-- [ ] Bank SMS Webhook parser (`smsParserEngine.js`) for automated background ingestion
-- [ ] Vector PDF & styled Excel report export generator (`reportExportEngine.js`)
+- [x] Family multi-user sub-account permissions & shared family vault budgets (`FamilyVault.js`, `familyService.js`, `FamilyVaultPage.jsx`)
+- [x] Bank SMS Webhook parser (`smsParserEngine.js`) for automated background ingestion and instant SMS paste
+- [x] Vector PDF & styled Excel report export generator (`reportExportEngine.js`) for institutional-grade financial statements

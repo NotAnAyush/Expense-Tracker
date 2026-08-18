@@ -16,7 +16,8 @@ import {
   TrendingDown,
   TrendingUp,
   Plane,
-  Palette
+  Palette,
+  Home
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useAuth } from '../../context/AuthContext';
@@ -68,6 +69,12 @@ export const Sidebar = ({ activeTab, setActiveTab, onOpenCopilot }) => {
           label: 'Market & Yields', 
           icon: TrendingUp, 
           badge: { text: 'Radar', type: 'ai' } 
+        },
+        { 
+          id: 'family', 
+          label: 'Family Vaults', 
+          icon: Home, 
+          badge: { text: 'Multi-User', type: 'ai' } 
         },
         { 
           id: 'goals', 
