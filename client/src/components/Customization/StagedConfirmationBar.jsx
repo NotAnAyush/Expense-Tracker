@@ -1,23 +1,26 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShieldCheck, RotateCcw, Check, Sparkles, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { ShieldCheck, RotateCcw, Check, Sparkles, CheckCircle2, AlertTriangle } from 'lucide-react';
 import { useCustomization } from '../../context/CustomizationContext';
 
 export const StagedConfirmationBar = () => {
   const { isDirty, isApplying, discardStagedChanges, confirmAndApplyChanges } = useCustomization();
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
+  const [isToastError, setIsToastError] = useState(false);
 
   const handleConfirm = async () => {
     try {
       const result = await confirmAndApplyChanges();
       if (result.success) {
+        setIsToastError(false);
         setToastMessage('Changes applied & pre-sync snapshot secured in Vault!');
         setShowToast(true);
         setTimeout(() => setShowToast(false), 4000);
       }
     } catch (err) {
-      setToastMessage('Failed to apply changes. Reverted to previous state.');
+      setIsToastError(true);
+      setToastMessage(err.message || 'Failed to apply changes. Reverted to previous state.');
       setShowToast(true);
       setTimeout(() => setShowToast(false), 4000);
     }
@@ -25,16 +28,34 @@ export const StagedConfirmationBar = () => {
 
   return (
     <>
-      {/* Success / Alert Toast Notification */}
+      {/* Toast Notification */}
       <AnimatePresence>
         {showToast && (
           <motion.div
             initial={{ y: -50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -50, opacity: 0 }}
-            className="fixed top-6 left-1/2 -translate-x-1/2 z-[100] bg-emerald-950/90 border border-emerald-500/50 text-emerald-300 text-xs font-semibold px-4 py-2.5 rounded-xl shadow-2xl backdrop-blur-xl flex items-center gap-2"
+            style={{
+              position: 'fixed',
+              top: '24px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              zIndex: 9999,
+              background: isToastError ? 'rgba(30, 10, 15, 0.95)' : 'rgba(6, 28, 20, 0.95)',
+              border: isToastError ? '1px solid rgba(244, 63, 94, 0.5)' : '1px solid rgba(0, 255, 135, 0.5)',
+              color: isToastError ? '#FECDD3' : '#00FF87',
+              fontSize: '12.5px',
+              fontWeight: 700,
+              padding: '10px 18px',
+              borderRadius: '14px',
+              boxShadow: isToastError ? '0 12px 36px rgba(244, 63, 94, 0.3)' : '0 12px 36px rgba(0, 255, 135, 0.25)',
+              backdropFilter: 'blur(16px)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+            }}
           >
-            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+            {isToastError ? <AlertTriangle size={15} color="#F43F5E" /> : <CheckCircle2 size={15} color="#00FF87" />}
             <span>{toastMessage}</span>
           </motion.div>
         )}
@@ -44,53 +65,101 @@ export const StagedConfirmationBar = () => {
       <AnimatePresence>
         {isDirty && (
           <motion.div
-            initial={{ y: 100, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 100, opacity: 0 }}
-            transition={{ type: 'spring', stiffness: 350, damping: 25 }}
-            className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[92%] max-w-2xl bg-slate-900/95 backdrop-blur-2xl border border-emerald-500/40 shadow-2xl shadow-emerald-950/60 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4"
+            initial={{ y: 80, opacity: 0, scale: 0.96 }}
+            animate={{ y: 0, opacity: 1, scale: 1 }}
+            exit={{ y: 80, opacity: 0, scale: 0.96 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 28 }}
+            style={{
+              position: 'fixed',
+              bottom: '24px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              zIndex: 9000,
+              width: '92%',
+              maxWidth: '680px',
+              background: 'linear-gradient(135deg, rgba(13, 17, 28, 0.96) 0%, rgba(8, 11, 17, 0.98) 100%)',
+              backdropFilter: 'blur(24px)',
+              border: '1.5px solid rgba(0, 255, 135, 0.4)',
+              boxShadow: '0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 255, 135, 0.2)',
+              borderRadius: '20px',
+              padding: '14px 20px',
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '16px',
+            }}
           >
-            <div className="flex items-center gap-3 text-left">
-              <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0">
-                <Sparkles className="w-5 h-5 animate-pulse" />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', textAlign: 'left' }}>
+              <div
+                style={{
+                  width: '40px',
+                  height: '40px',
+                  borderRadius: '12px',
+                  background: 'rgba(0, 255, 135, 0.12)',
+                  border: '1px solid rgba(0, 255, 135, 0.3)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#00FF87',
+                  flexShrink: 0,
+                }}
+              >
+                <Sparkles size={20} className="animate-pulse" />
               </div>
               <div>
-                <h4 className="text-sm font-bold text-white flex items-center gap-2">
-                  Unapplied Customization Changes
-                  <span className="text-[10px] uppercase font-mono px-2 py-0.5 bg-amber-500/20 text-amber-300 border border-amber-500/30 rounded-full">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <h4 style={{ margin: 0, fontSize: '13.5px', fontWeight: 800, color: '#F8FAFC' }}>
+                    Unapplied Customization Changes
+                  </h4>
+                  <span
+                    style={{
+                      fontSize: '10px',
+                      fontWeight: 800,
+                      fontFamily: 'var(--font-mono)',
+                      textTransform: 'uppercase',
+                      padding: '1px 7px',
+                      background: 'rgba(255, 215, 0, 0.15)',
+                      color: '#FFD700',
+                      border: '1px solid rgba(255, 215, 0, 0.3)',
+                      borderRadius: '999px',
+                    }}
+                  >
                     Draft
                   </span>
-                </h4>
-                <p className="text-xs text-slate-400 flex items-center gap-1.5 mt-0.5">
-                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                </div>
+                <p style={{ margin: '3px 0 0 0', fontSize: '11.5px', color: '#94A3B8', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  <ShieldCheck size={13} color="#00FF87" />
                   Auto-snapshot backup will be created in your vault before applying.
                 </p>
               </div>
             </div>
 
-            <div className="flex items-center gap-2.5 w-full sm:w-auto">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
               <button
                 type="button"
                 onClick={discardStagedChanges}
                 disabled={isApplying}
-                className="flex-1 sm:flex-none px-4 py-2.5 rounded-xl border border-slate-700 bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-semibold flex items-center justify-center gap-1.5 transition-all"
+                className="btn-glass-secondary"
+                style={{ height: '36px', padding: '0 16px', fontSize: '12.5px' }}
               >
-                <RotateCcw className="w-3.5 h-3.5" />
-                Discard
+                <RotateCcw size={13} />
+                <span>Discard</span>
               </button>
 
               <button
                 type="button"
                 onClick={handleConfirm}
                 disabled={isApplying}
-                className="flex-1 sm:flex-none px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 text-xs font-bold flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 transition-all active:scale-95 cursor-pointer"
+                className="btn-primary-mint"
+                style={{ height: '36px', padding: '0 20px', fontSize: '12.5px' }}
               >
                 {isApplying ? (
-                  <div className="w-4 h-4 border-2 border-slate-950 border-t-transparent rounded-full animate-spin" />
+                  <div className="w-3.5 h-3.5 border-2 border-slate-950 border-t-transparent rounded-full animate-spin" />
                 ) : (
-                  <Check className="w-4 h-4" />
+                  <Check size={14} />
                 )}
-                Confirm Changes
+                <span>Confirm Changes</span>
               </button>
             </div>
           </motion.div>
