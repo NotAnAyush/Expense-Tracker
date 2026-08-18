@@ -12,10 +12,21 @@ const { Debt } = require('../src/models/Debt');
 const { TripVault } = require('../src/models/TripVault');
 const { Group } = require('../src/models/Group');
 
+const os = require('os');
+const path = require('path');
+const fs = require('fs');
+
 let mongoServer;
+let tempDbDir;
 
 beforeAll(async () => {
-  mongoServer = await MongoMemoryServer.create();
+  tempDbDir = fs.mkdtempSync(path.join(os.tmpdir(), 'mongo-auth-test-'));
+  mongoServer = await MongoMemoryServer.create({
+    instance: {
+      dbPath: tempDbDir,
+      storageEngine: 'ephemeralForTest',
+    },
+  });
   const mongoUri = mongoServer.getUri();
   await mongoose.connect(mongoUri);
 });
@@ -25,10 +36,17 @@ afterAll(async () => {
   if (mongoServer) {
     await mongoServer.stop();
   }
+  if (tempDbDir && fs.existsSync(tempDbDir)) {
+    try {
+      fs.rmSync(tempDbDir, { recursive: true, force: true });
+    } catch (_) {}
+  }
 });
 
 afterEach(async () => {
-  await User.deleteMany({});
+  if (mongoose.connection.readyState === 1) {
+    await User.deleteMany({});
+  }
 });
 
 describe('Auth Endpoints', () => {
