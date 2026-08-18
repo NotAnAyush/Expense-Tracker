@@ -37,6 +37,7 @@ const tripVaultRoutes = require('./routes/tripVaultRoutes');
 const fxRoutes = require('./routes/fxRoutes');
 const upiIntegrationRoutes = require('./routes/upiIntegrationRoutes');
 const vaultRoutes = require('./routes/vaultRoutes');
+const ecommerceRoutes = require('./routes/ecommerceRoutes');
 
 const app = express();
 
@@ -169,6 +170,7 @@ app.use('/api/trips', tripVaultRoutes);
 app.use('/api/fx', fxRoutes);
 app.use('/api/integrations/upi', upiIntegrationRoutes);
 app.use('/api/vault', vaultRoutes);
+app.use('/api/ecommerce', ecommerceRoutes);
 
 // Global 404 handler for undefined routes
 app.use((req, res, next) => {

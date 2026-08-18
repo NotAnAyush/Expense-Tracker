@@ -30,6 +30,8 @@ export const ExpensesPage = ({
   onOpenReceiptScan,
   onOpenVoiceLog,
   onOpenBankImport,
+  onOpenEcommerceSync,
+  onOpenTransactionDetail,
   externalSearch = '',
   onClearExternalSearch,
   categories = []
@@ -354,6 +356,27 @@ export const ExpensesPage = ({
                     <Camera size={15} /> Scan Receipt
                   </button>
                 )}
+
+                {onOpenEcommerceSync && (
+                  <button
+                    onClick={onOpenEcommerceSync}
+                    style={{
+                      padding: '9px 14px',
+                      borderRadius: '12px',
+                      background: 'rgba(255, 153, 0, 0.12)',
+                      border: '1px solid rgba(255, 153, 0, 0.35)',
+                      color: '#FF9900',
+                      fontWeight: 700,
+                      fontSize: '13px',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                    }}
+                  >
+                    🛍️ E-Commerce Sync
+                  </button>
+                )}
               </>
             )}
 
@@ -526,11 +549,28 @@ export const ExpensesPage = ({
                 {activeMode === 'expenses' ? (
                   /* Expenses Rows */
                   expenses.map((e) => (
-                    <tr key={e._id} style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.04)' }}>
+                    <tr
+                      key={e._id}
+                      onClick={() => onOpenTransactionDetail && onOpenTransactionDetail(e, false)}
+                      className="interactive-transaction-row"
+                      style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.04)', cursor: 'pointer' }}
+                    >
                       <td style={{ padding: '14px 10px' }}>
-                        <div style={{ fontWeight: 700, color: '#F1F5F9' }}>{e.title}</div>
+                        <div style={{ fontWeight: 700, color: '#F1F5F9', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <span>{e.title}</span>
+                          {e.source === 'ecommerce_sync' && (
+                            <span style={{ fontSize: '10px', padding: '1px 6px', borderRadius: '4px', background: 'rgba(255, 153, 0, 0.15)', color: '#FF9900', border: '1px solid rgba(255, 153, 0, 0.3)' }}>
+                              {e.ecommercePlatform?.toUpperCase() || 'E-COM'}
+                            </span>
+                          )}
+                        </div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '2px', fontSize: '12px', color: '#94A3B8' }}>
                           {e.merchant && <span>{e.merchant}</span>}
+                          {e.receiptDetails?.lineItems?.length > 0 && (
+                            <span style={{ color: '#00FF87', display: 'flex', alignItems: 'center', gap: '3px' }}>
+                              <Layers size={11} /> {e.receiptDetails.lineItems.length} items
+                            </span>
+                          )}
                           {e.splits && e.splits.length > 0 && (
                             <span style={{ color: '#00F0FF', display: 'flex', alignItems: 'center', gap: '3px' }}>
                               <Layers size={11} /> {e.splits.length} splits
@@ -559,6 +599,21 @@ export const ExpensesPage = ({
                       <td style={{ padding: '14px 10px' }}>
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', alignItems: 'center' }}>
                           <span style={{ fontSize: '12px', color: '#94A3B8' }}>{e.paymentMethod}</span>
+                          {e.motive && (
+                            <span
+                              style={{
+                                fontSize: '10px',
+                                fontWeight: 800,
+                                padding: '2px 6px',
+                                borderRadius: '6px',
+                                background: e.motive === 'Need' ? 'rgba(0, 255, 135, 0.12)' : e.motive === 'Impulse' ? 'rgba(245, 158, 11, 0.12)' : 'rgba(0, 240, 255, 0.12)',
+                                color: e.motive === 'Need' ? '#00FF87' : e.motive === 'Impulse' ? '#F59E0B' : '#00F0FF',
+                                border: `1px solid ${e.motive === 'Need' ? 'rgba(0, 255, 135, 0.3)' : e.motive === 'Impulse' ? 'rgba(245, 158, 11, 0.3)' : 'rgba(0, 240, 255, 0.3)'}`,
+                              }}
+                            >
+                              {e.motive.toUpperCase()}
+                            </span>
+                          )}
                           {e.source === 'upi_sync' && (
                             <span style={{ fontSize: '10px', fontWeight: 800, padding: '2px 6px', borderRadius: '6px', background: 'rgba(99, 102, 241, 0.15)', color: '#818CF8', border: '1px solid rgba(99, 102, 241, 0.3)' }}>
                               ⚡ {e.upiDetails?.upiApp?.toUpperCase() || 'UPI SYNC'}
@@ -572,7 +627,10 @@ export const ExpensesPage = ({
                           {(e.tags || []).map((t) => (
                             <span
                               key={t}
-                              onClick={() => setSelectedTag(t)}
+                              onClick={(evt) => {
+                                evt.stopPropagation();
+                                setSelectedTag(t);
+                              }}
                               style={{ fontSize: '10.5px', color: '#00F0FF', cursor: 'pointer', background: 'rgba(0, 240, 255, 0.08)', padding: '1px 5px', borderRadius: '4px' }}
                             >
                               #{t}
@@ -586,14 +644,20 @@ export const ExpensesPage = ({
                       <td style={{ padding: '14px 10px', textAlign: 'right' }}>
                         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '6px' }}>
                           <button
-                            onClick={() => setUpiModalExpense(e)}
+                            onClick={(evt) => {
+                              evt.stopPropagation();
+                              setUpiModalExpense(e);
+                            }}
                             style={{ color: '#818CF8', cursor: 'pointer', border: 'none', background: 'rgba(99, 102, 241, 0.1)', padding: '6px', borderRadius: '8px' }}
                             title="Pay or settle via GPay / UPI QR"
                           >
                             <QrCode size={14} />
                           </button>
                           <button
-                            onClick={() => handleDeleteExpense(e._id)}
+                            onClick={(evt) => {
+                              evt.stopPropagation();
+                              handleDeleteExpense(e._id);
+                            }}
                             style={{ color: '#FF7D7D', cursor: 'pointer', border: 'none', background: 'rgba(255, 77, 77, 0.1)', padding: '6px', borderRadius: '8px' }}
                             title="Delete expense"
                           >
@@ -606,7 +670,12 @@ export const ExpensesPage = ({
                 ) : (
                   /* Incomes Rows */
                   incomes.map((i) => (
-                    <tr key={i._id} style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.04)' }}>
+                    <tr
+                      key={i._id}
+                      onClick={() => onOpenTransactionDetail && onOpenTransactionDetail(i, true)}
+                      className="interactive-transaction-row"
+                      style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.04)', cursor: 'pointer' }}
+                    >
                       <td style={{ padding: '14px 10px' }}>
                         <div style={{ fontWeight: 700, color: '#F1F5F9' }}>{i.title}</div>
                         {i.source && <div style={{ fontSize: '12px', color: '#94A3B8' }}>{i.source}</div>}
@@ -639,7 +708,10 @@ export const ExpensesPage = ({
                           {(i.tags || []).map((t) => (
                             <span
                               key={t}
-                              onClick={() => setSelectedTag(t)}
+                              onClick={(evt) => {
+                                evt.stopPropagation();
+                                setSelectedTag(t);
+                              }}
                               style={{ fontSize: '10.5px', color: '#00FF87', cursor: 'pointer', background: 'rgba(0, 255, 135, 0.08)', padding: '1px 5px', borderRadius: '4px' }}
                             >
                               #{t}
@@ -652,7 +724,10 @@ export const ExpensesPage = ({
                       </td>
                       <td style={{ padding: '14px 10px', textAlign: 'right' }}>
                         <button
-                          onClick={() => handleDeleteIncome(i._id)}
+                          onClick={(evt) => {
+                            evt.stopPropagation();
+                            handleDeleteIncome(i._id);
+                          }}
                           style={{ color: '#FF7D7D', cursor: 'pointer', border: 'none', background: 'rgba(255, 77, 77, 0.1)', padding: '6px', borderRadius: '8px' }}
                           title="Delete income"
                         >

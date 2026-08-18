@@ -1117,6 +1117,255 @@ textarea.glass-input, textarea.input-field {
 }
 
 /* ==========================================================================
+   Multimodal Receipt Scanner 2.0 & Vision OCR Luxury Styling
+   ========================================================================== */
+@keyframes scanLaserSweep {
+  0% {
+    top: 0%;
+    opacity: 0.9;
+  }
+  50% {
+    top: 96%;
+    opacity: 1;
+  }
+  100% {
+    top: 0%;
+    opacity: 0.9;
+  }
+}
+
+@keyframes laserGlowPulse {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.8), 0 0 30px rgba(0, 255, 135, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(0, 240, 255, 1), 0 0 45px rgba(0, 255, 135, 0.7);
+  }
+}
+
+@keyframes hudReticlePulse {
+  0%, 100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+}
+
+@keyframes ocrStepGlow {
+  0%, 100% {
+    border-color: rgba(0, 240, 255, 0.3);
+  }
+  50% {
+    border-color: rgba(0, 255, 135, 0.8);
+    box-shadow: 0 0 15px rgba(0, 255, 135, 0.25);
+  }
+}
+
+.scanner-laser-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  border-radius: 14px;
+}
+
+.scanner-laser-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent 0%, #00F0FF 20%, #00FF87 50%, #00F0FF 80%, transparent 100%);
+  box-shadow: 0 0 18px rgba(0, 240, 255, 0.9), 0 0 35px rgba(0, 255, 135, 0.6);
+  animation: scanLaserSweep 2.4s ease-in-out infinite, laserGlowPulse 1.8s ease-in-out infinite;
+  z-index: 10;
+}
+
+.scanner-laser-trail {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: linear-gradient(to bottom, rgba(0, 240, 255, 0.15) 0%, rgba(0, 255, 135, 0.05) 50%, transparent 100%);
+  transform: translateY(-100%);
+}
+
+.scanner-reticle-corner {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border: 2.5px solid #00F0FF;
+  pointer-events: none;
+  z-index: 12;
+  animation: hudReticlePulse 2s ease-in-out infinite;
+}
+
+.reticle-tl {
+  top: 10px;
+  left: 10px;
+  border-right: none;
+  border-bottom: none;
+  border-top-left-radius: 6px;
+}
+
+.reticle-tr {
+  top: 10px;
+  right: 10px;
+  border-left: none;
+  border-bottom: none;
+  border-top-right-radius: 6px;
+}
+
+.reticle-bl {
+  bottom: 10px;
+  left: 10px;
+  border-right: none;
+  border-top: none;
+  border-bottom-left-radius: 6px;
+}
+
+.reticle-br {
+  bottom: 10px;
+  right: 10px;
+  border-left: none;
+  border-top: none;
+  border-bottom-right-radius: 6px;
+}
+
+.receipt-inspector-viewport {
+  background: #030508;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 380px;
+  user-select: none;
+  transition: all 0.2s ease;
+}
+
+.receipt-control-pill {
+  background: rgba(10, 14, 24, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border-radius: 999px;
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+}
+
+.receipt-control-btn {
+  background: transparent;
+  border: none;
+  color: #94A3B8;
+  padding: 5px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.receipt-control-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #FFFFFF;
+}
+
+.receipt-control-btn.active {
+  background: rgba(0, 240, 255, 0.18);
+  color: #00F0FF;
+}
+
+.receipt-tab-button {
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 12.5px;
+  font-weight: 700;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #94A3B8;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  transition: all 0.2s ease;
+}
+
+.receipt-tab-button:hover {
+  color: #F1F5F9;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.receipt-tab-button.active {
+  background: rgba(0, 240, 255, 0.12);
+  border-color: rgba(0, 240, 255, 0.35);
+  color: #00F0FF;
+  box-shadow: 0 0 16px rgba(0, 240, 255, 0.15);
+}
+
+.receipt-grid-input {
+  background: rgba(15, 20, 32, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 6px 10px;
+  color: #F1F5F9;
+  font-size: 12.5px;
+  width: 100%;
+  transition: all 0.2s ease;
+}
+
+.receipt-grid-input:focus {
+  outline: none;
+  border-color: #00F0FF;
+  background: rgba(15, 20, 32, 0.95);
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+}
+
+.tax-metric-chip {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 10px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tax-metric-chip.highlight {
+  background: rgba(0, 255, 135, 0.06);
+  border-color: rgba(0, 255, 135, 0.25);
+}
+
+.interactive-transaction-row {
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.interactive-transaction-row:hover {
+  background: rgba(0, 240, 255, 0.04) !important;
+  box-shadow: inset 2px 0 0 #00F0FF;
+}
+
+.interactive-transaction-row:active {
+  background: rgba(0, 240, 255, 0.08) !important;
+}
+
+.platform-sync-card {
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.platform-sync-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+
+/* ==========================================================================
    Responsive Breakpoints
    ========================================================================== */
 @media (max-width: 950px) {
@@ -1141,4 +1390,6 @@ textarea.glass-input, textarea.input-field {
     font-size: 20px;
   }
 }
+
+
 

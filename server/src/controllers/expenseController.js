@@ -126,6 +126,10 @@ exports.createExpense = asyncHandler(async (req, res) => {
     taxSection,
     reimbursementStatus,
     source,
+    motive,
+    motiveInsight,
+    ecommercePlatform,
+    receiptDetails,
   } = req.body;
 
   if (!title || amount === undefined || !category) {
@@ -148,6 +152,10 @@ exports.createExpense = asyncHandler(async (req, res) => {
     taxSection: taxSection || '',
     reimbursementStatus: reimbursementStatus || 'none',
     source: source || 'manual',
+    motive: motive || 'Need',
+    motiveInsight: motiveInsight || '',
+    ecommercePlatform: ecommercePlatform || 'none',
+    receiptDetails: receiptDetails || undefined,
   });
 
   res.status(201).json(expense);
@@ -174,6 +182,10 @@ exports.updateExpense = asyncHandler(async (req, res) => {
     isTaxDeductible,
     taxSection,
     reimbursementStatus,
+    motive,
+    motiveInsight,
+    ecommercePlatform,
+    receiptDetails,
   } = req.body;
 
   if (title !== undefined) expense.title = title;
@@ -188,6 +200,10 @@ exports.updateExpense = asyncHandler(async (req, res) => {
   if (isTaxDeductible !== undefined) expense.isTaxDeductible = Boolean(isTaxDeductible);
   if (taxSection !== undefined) expense.taxSection = taxSection;
   if (reimbursementStatus !== undefined) expense.reimbursementStatus = reimbursementStatus;
+  if (motive !== undefined) expense.motive = motive;
+  if (motiveInsight !== undefined) expense.motiveInsight = motiveInsight;
+  if (ecommercePlatform !== undefined) expense.ecommercePlatform = ecommercePlatform;
+  if (receiptDetails !== undefined) expense.receiptDetails = receiptDetails;
 
   const updatedExpense = await expense.save();
   res.json(updatedExpense);

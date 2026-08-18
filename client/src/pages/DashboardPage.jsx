@@ -47,6 +47,8 @@ export const DashboardPage = ({
   onOpenReceiptScan,
   onOpenVoiceLog,
   onOpenBankImport,
+  onOpenEcommerceSync,
+  onOpenTransactionDetail,
 }) => {
   const { isPrivacyMaskActive } = usePrivacy();
   const [data, setData] = useState(null);
@@ -190,30 +192,63 @@ export const DashboardPage = ({
           </h1>
         </div>
 
-        {/* Top Right Quick Summary Pill */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '12px',
-            background: 'rgba(255, 255, 255, 0.03)',
-            border: '1px solid rgba(255, 255, 255, 0.08)',
-            borderRadius: '999px',
-            padding: '6px 14px',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12.5px' }}>
-            <span style={{ color: '#94A3B8' }}>Savings Rate:</span>
-            <span className="tabular-nums" style={{ fontWeight: 800, color: (cashFlowSummary.savingsRate || 0) >= 20 ? '#00FF87' : '#FFD700' }}>
-              {cashFlowSummary.savingsRate || 0}%
-            </span>
-          </div>
-          <div style={{ width: '1px', height: '14px', background: 'rgba(255, 255, 255, 0.1)' }} />
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12.5px' }}>
-            <span style={{ color: '#94A3B8' }}>Cycle:</span>
-            <span style={{ fontWeight: 700, color: '#F1F5F9' }}>
-              {daysRemaining} days left
-            </span>
+        {/* Top Right Quick Actions & Summary */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+          {onOpenReceiptScan && (
+            <button
+              type="button"
+              onClick={onOpenReceiptScan}
+              className="btn-glass-secondary"
+              style={{ padding: '6px 12px', fontSize: '12px', color: '#00F0FF', borderColor: 'rgba(0, 240, 255, 0.3)' }}
+            >
+              📸 Scan Receipt
+            </button>
+          )}
+          {onOpenEcommerceSync && (
+            <button
+              type="button"
+              onClick={onOpenEcommerceSync}
+              className="btn-glass-secondary"
+              style={{ padding: '6px 12px', fontSize: '12px', color: '#FF9900', borderColor: 'rgba(255, 153, 0, 0.3)' }}
+            >
+              🛍️ E-Commerce Sync
+            </button>
+          )}
+          {onAddExpense && (
+            <button
+              type="button"
+              onClick={onAddExpense}
+              className="btn-primary-mint"
+              style={{ padding: '6px 14px', fontSize: '12px', height: '32px' }}
+            >
+              + Expense
+            </button>
+          )}
+
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+              background: 'rgba(255, 255, 255, 0.03)',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              borderRadius: '999px',
+              padding: '6px 14px',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12.5px' }}>
+              <span style={{ color: '#94A3B8' }}>Savings Rate:</span>
+              <span className="tabular-nums" style={{ fontWeight: 800, color: (cashFlowSummary.savingsRate || 0) >= 20 ? '#00FF87' : '#FFD700' }}>
+                {cashFlowSummary.savingsRate || 0}%
+              </span>
+            </div>
+            <div style={{ width: '1px', height: '14px', background: 'rgba(255, 255, 255, 0.1)' }} />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12.5px' }}>
+              <span style={{ color: '#94A3B8' }}>Cycle:</span>
+              <span style={{ fontWeight: 700, color: '#F1F5F9' }}>
+                {daysRemaining} days left
+              </span>
+            </div>
           </div>
         </div>
       </div>

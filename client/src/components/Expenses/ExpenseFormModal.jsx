@@ -88,6 +88,10 @@ export const ExpenseFormModal = ({ isOpen, onClose, onSave, onOpenReceiptScan, c
         if (initialData.tags) setTags(initialData.tags);
         if (initialData.isTaxDeductible) setIsTaxDeductible(initialData.isTaxDeductible);
         if (initialData.taxSection) setTaxSection(initialData.taxSection);
+        if (initialData.splits && initialData.splits.length > 0) {
+          setSplits(initialData.splits);
+          setEnableSplits(true);
+        }
         setHasDraftRestored(true);
         return;
       }
@@ -219,6 +223,7 @@ export const ExpenseFormModal = ({ isOpen, onClose, onSave, onOpenReceiptScan, c
         taxSection: isTaxDeductible ? taxSection : '',
         reimbursementStatus,
         splits: enableSplits && splits.length > 0 ? splits.filter(s => s.amount > 0) : [],
+        receiptDetails: initialData?.receiptDetails || undefined,
       };
 
       await onSave(payload);

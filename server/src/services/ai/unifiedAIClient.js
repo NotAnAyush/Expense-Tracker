@@ -479,21 +479,57 @@ class UnifiedAIClient {
     const provider = userConfig.provider || 'gemini';
     const effectiveKey = resolveApiKey(provider, userConfig.apiKey);
 
-    const prompt = `You are an expert financial receipt and invoice OCR parser.
-Analyze this receipt image and extract the key transactional details.
+    const prompt = `You are an expert financial receipt, tax invoice, and e-commerce order OCR engine.
+Analyze this receipt or invoice image with maximum precision and extract all key transactional, tax, line-item, and merchant details.
+
 Return ONLY a valid, single JSON object adhering strictly to this schema:
 {
-  "merchant": string (The name of the store, business, or service provider),
-  "amount": number (The final total amount paid),
+  "merchant": string (The clean business/store/platform name, e.g. "The Rameshwaram Cafe", "Amazon India", "Flipkart", "Blinkit", "Starbucks"),
+  "merchantAddress": string (Store physical address, branch, or city/state if visible, e.g. "Indiranagar, Bengaluru"),
+  "gstin": string (15-character Indian GST Identification Number or country VAT/Tax ID if visible, e.g. "29ABHFR8210M1ZP", or ""),
+  "phone": string (Merchant phone or contact number if printed, or ""),
+  "invoiceNumber": string (Bill No, Order ID, Invoice Number, e.g. "311086", "408-1234567-8901234"),
+  "tokenNumber": string (Queue Token or Table No if printed, e.g. "136", or ""),
+  "date": string (ISO date "YYYY-MM-DD" if visible, e.g. "2026-08-16", or current date),
+  "time": string (Time of transaction if visible, e.g. "06:37", or ""),
+  "category": string (Must match the most accurate category from: "Food & Dining", "Groceries & Supermarket", "Shopping & E-Commerce", "Electronics & Gadgets", "Clothing & Apparel", "Home & Kitchen", "Transportation & Fuel", "Travel & Lodging", "Health & Medical", "Entertainment & OTT", "Housing & Utilities", "Subscriptions & Software", "Education & Learning", "Beauty & Personal Care", "Gifts & Donations", "Investments & Wealth", "Office & Business", "Vehicle & Maintenance", "General & Miscellaneous"),
+  "subCategory": string (Specific sub-tag, e.g. "South Indian Cafe", "Online Grocery", "Fast Food"),
+  "paymentMethod": string (One of: "UPI", "Card", "Cash", "Net Banking", "Wallet", "COD", "Amazon Pay", "Other"),
+  "paymentRef": string (UTR number, UPI Ref, Card last 4 digits, or transaction ID if visible, or ""),
   "currency": string (e.g. "₹", "$", "€", "£"),
-  "date": string (ISO date "YYYY-MM-DD" if visible, or current date),
-  "category": string (Must be one of: "Food & Dining", "Transportation", "Housing & Utilities", "Entertainment", "Shopping", "Health & Medical", "Subscriptions", "General"),
-  "paymentMethod": string (One of: "Card", "Cash", "UPI", "Bank Transfer", "Other"),
-  "confidence": number (Confidence score between 0.0 and 1.0),
-  "taxAmount": number (Total tax if listed, or 0),
+  "subtotal": number (Pre-tax taxable value of items before taxes and fees, e.g. 319.04),
+  "cgst": {
+    "rate": number (Percentage rate, e.g. 2.5),
+    "amount": number (CGST tax amount in currency, e.g. 7.98)
+  },
+  "sgst": {
+    "rate": number (Percentage rate, e.g. 2.5),
+    "amount": number (SGST tax amount in currency, e.g. 7.98)
+  },
+  "igst": {
+    "rate": number (Percentage rate, e.g. 0),
+    "amount": number (IGST tax amount in currency, e.g. 0)
+  },
+  "taxAmount": number (Total tax sum CGST + SGST + IGST or other VAT, e.g. 15.96),
+  "deliveryFee": number (Delivery / shipping charge if listed, or 0),
+  "platformFee": number (Platform / handling / convenience fee if listed, or 0),
+  "packagingFee": number (Restaurant packaging / box charges if listed, or 0),
+  "discount": number (Discounts, promo coupons, or cashback applied, or 0),
+  "roundOff": number (Rounding adjustment if listed, e.g. 0.00 or -0.04),
+  "amount": number (The final net total amount paid, e.g. 335.00),
   "lineItems": [
-    { "name": string, "price": number }
-  ]
+    {
+      "name": string (Clean description of the product or dish, e.g. "Ghee Pudi Masala Dosa"),
+      "quantity": number (Number of units purchased, e.g. 1, 2, 0.5),
+      "unitPrice": number (Rate or unit cost per item, e.g. 147.62),
+      "price": number (Total cost for this item = quantity * unitPrice or printed amount, e.g. 147.62),
+      "category": string (Optional item-level category, or same as overall category),
+      "hsnCode": string (HSN / SAC tax code if present, or ""),
+      "taxRate": number (Tax rate percentage on this item if printed, e.g. 5)
+    }
+  ],
+  "isECommerce": boolean (true if detected as Amazon, Flipkart, Swiggy, Zomato, Blinkit, Zepto, Myntra, etc.),
+  "confidence": number (Confidence score between 0.0 and 1.0)
 }
 Do not include markdown code block backticks, just raw JSON.`;
 
@@ -577,19 +613,82 @@ Do not include markdown code block backticks, just raw JSON.`;
 
     try {
       const parsed = JSON.parse(cleanText);
+
+      // Extract CGST, SGST, IGST objects or numbers
+      const rawCgst = parsed.cgst || {};
+      const cgst = typeof rawCgst === 'number' 
+        ? { rate: 0, amount: Math.abs(rawCgst) } 
+        : { rate: Number(rawCgst.rate) || 0, amount: Math.abs(Number(rawCgst.amount) || 0) };
+
+      const rawSgst = parsed.sgst || {};
+      const sgst = typeof rawSgst === 'number' 
+        ? { rate: 0, amount: Math.abs(rawSgst) } 
+        : { rate: Number(rawSgst.rate) || 0, amount: Math.abs(Number(rawSgst.amount) || 0) };
+
+      const rawIgst = parsed.igst || {};
+      const igst = typeof rawIgst === 'number' 
+        ? { rate: 0, amount: Math.abs(rawIgst) } 
+        : { rate: Number(rawIgst.rate) || 0, amount: Math.abs(Number(rawIgst.amount) || 0) };
+
+      let taxAmount = Number(parsed.taxAmount) || 0;
+      if (!taxAmount && (cgst.amount || sgst.amount || igst.amount)) {
+        taxAmount = Number((cgst.amount + sgst.amount + igst.amount).toFixed(2));
+      }
+
+      // Line items normalization with quantities and unit costs
+      const lineItems = Array.isArray(parsed.lineItems) ? parsed.lineItems.map(item => {
+        const qty = Math.max(0.001, Number(item.quantity) || 1);
+        const itemPrice = Math.abs(Number(item.price) || 0);
+        const unitPrice = item.unitPrice !== undefined && Number(item.unitPrice) > 0 
+          ? Number(item.unitPrice) 
+          : (itemPrice > 0 ? Number((itemPrice / qty).toFixed(2)) : 0);
+
+        return {
+          name: String(item.name || 'Item').trim(),
+          quantity: qty,
+          unitPrice: unitPrice,
+          price: itemPrice > 0 ? itemPrice : Number((unitPrice * qty).toFixed(2)),
+          category: String(item.category || parsed.category || 'Food & Dining').trim(),
+          hsnCode: String(item.hsnCode || '').trim(),
+          taxRate: Number(item.taxRate) || 0,
+        };
+      }) : [];
+
+      const lineItemsSum = lineItems.reduce((acc, curr) => acc + (curr.price || 0), 0);
+      const subtotal = parsed.subtotal !== undefined && Number(parsed.subtotal) > 0
+        ? Number(parsed.subtotal)
+        : (lineItemsSum > 0 ? Number(lineItemsSum.toFixed(2)) : 0);
+
+      const finalAmount = Math.abs(Number(parsed.amount) || 0) || (subtotal + taxAmount);
+
       return {
         merchant: String(parsed.merchant || 'Store / Merchant').trim(),
-        amount: Math.abs(Number(parsed.amount) || 0),
+        merchantAddress: String(parsed.merchantAddress || '').trim(),
+        gstin: String(parsed.gstin || '').trim().toUpperCase(),
+        phone: String(parsed.phone || '').trim(),
+        invoiceNumber: String(parsed.invoiceNumber || parsed.billNumber || parsed.orderId || '').trim(),
+        tokenNumber: String(parsed.tokenNumber || parsed.token || '').trim(),
+        amount: Number(finalAmount.toFixed(2)),
         currency: parsed.currency || '₹',
         date: parsed.date || new Date().toISOString().slice(0, 10),
+        time: String(parsed.time || '').trim(),
         category: parsed.category || 'Food & Dining',
+        subCategory: String(parsed.subCategory || '').trim(),
         paymentMethod: parsed.paymentMethod || 'UPI',
+        paymentRef: String(parsed.paymentRef || parsed.utr || '').trim(),
         confidence: typeof parsed.confidence === 'number' ? Math.min(1, Math.max(0, parsed.confidence)) : 0.9,
-        taxAmount: Number(parsed.taxAmount) || 0,
-        lineItems: Array.isArray(parsed.lineItems) ? parsed.lineItems.map(item => ({
-          name: String(item.name || 'Item'),
-          price: Math.abs(Number(item.price) || 0),
-        })) : [],
+        subtotal: Number(subtotal.toFixed(2)),
+        cgst,
+        sgst,
+        igst,
+        taxAmount: Number(taxAmount.toFixed(2)),
+        deliveryFee: Math.abs(Number(parsed.deliveryFee) || 0),
+        platformFee: Math.abs(Number(parsed.platformFee) || 0),
+        packagingFee: Math.abs(Number(parsed.packagingFee) || 0),
+        discount: Math.abs(Number(parsed.discount) || 0),
+        roundOff: Number(parsed.roundOff) || 0,
+        lineItems,
+        isECommerce: Boolean(parsed.isECommerce),
       };
     } catch (parseErr) {
       throw new Error(`Failed to parse structured receipt data from AI output: ${parseErr.message}`);

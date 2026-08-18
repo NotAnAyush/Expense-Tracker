@@ -9,6 +9,8 @@ import { IncomeFormModal } from './components/Expenses/IncomeFormModal';
 import { ReceiptScanModal } from './components/Expenses/ReceiptScanModal';
 import { VoiceQuickLogModal } from './components/Expenses/VoiceQuickLogModal';
 import { BankStatementModal } from './components/Expenses/BankStatementModal';
+import { TransactionDetailModal } from './components/Expenses/TransactionDetailModal';
+import { EcommerceSyncModal } from './components/Expenses/EcommerceSyncModal';
 
 import { DashboardPage } from './pages/DashboardPage';
 import { ExpensesPage } from './pages/ExpensesPage';
@@ -49,6 +51,9 @@ const MainApp = () => {
   const [receiptScanModalOpen, setReceiptScanModalOpen] = useState(false);
   const [voiceLogModalOpen, setVoiceLogModalOpen] = useState(false);
   const [bankImportModalOpen, setBankImportModalOpen] = useState(false);
+  const [ecommerceSyncModalOpen, setEcommerceSyncModalOpen] = useState(false);
+  const [selectedTransactionDetail, setSelectedTransactionDetail] = useState(null);
+  const [selectedTransactionIsIncome, setSelectedTransactionIsIncome] = useState(false);
   const [prefilledExpenseData, setPrefilledExpenseData] = useState(null);
   const [refreshKey, setRefreshKey] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
@@ -172,6 +177,42 @@ const MainApp = () => {
     setRefreshKey((prev) => prev + 1);
   };
 
+  const handleOpenTransactionDetail = (tx, isIncome = false) => {
+    setSelectedTransactionDetail(tx);
+    setSelectedTransactionIsIncome(isIncome);
+  };
+
+  const handleUpdateMotive = async (id, newMotive) => {
+    await apiFetch(`/expenses/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify({ motive: newMotive }),
+    });
+    setRefreshKey((prev) => prev + 1);
+  };
+
+  const handleDuplicateExpense = async (tx) => {
+    const clone = { ...tx };
+    delete clone._id;
+    delete clone.createdAt;
+    delete clone.updatedAt;
+    clone.title = `${clone.title} (Copy)`;
+    await handleSaveExpense(clone);
+  };
+
+  const handleDeleteTransactionFromDetail = async (id) => {
+    if (selectedTransactionIsIncome) {
+      await apiFetch(`/income/${id}`, { method: 'DELETE' });
+    } else {
+      await apiFetch(`/expenses/${id}`, { method: 'DELETE' });
+    }
+    setRefreshKey((prev) => prev + 1);
+    setSelectedTransactionDetail(null);
+  };
+
+  const handleExpenseSynced = () => {
+    setRefreshKey((prev) => prev + 1);
+  };
+
   return (
     <div className="app-container">
       {/* Offline / Online Network Alert Pill */}
@@ -236,6 +277,8 @@ const MainApp = () => {
               onOpenReceiptScan={() => setReceiptScanModalOpen(true)}
               onOpenVoiceLog={() => setVoiceLogModalOpen(true)}
               onOpenBankImport={() => setBankImportModalOpen(true)}
+              onOpenEcommerceSync={() => setEcommerceSyncModalOpen(true)}
+              onOpenTransactionDetail={handleOpenTransactionDetail}
             />
           )}
           {activeTab === 'expenses' && (
@@ -249,6 +292,8 @@ const MainApp = () => {
               onOpenReceiptScan={() => setReceiptScanModalOpen(true)}
               onOpenVoiceLog={() => setVoiceLogModalOpen(true)}
               onOpenBankImport={() => setBankImportModalOpen(true)}
+              onOpenEcommerceSync={() => setEcommerceSyncModalOpen(true)}
+              onOpenTransactionDetail={handleOpenTransactionDetail}
               externalSearch={searchQuery}
               onClearExternalSearch={() => setSearchQuery('')}
               categories={categories}
@@ -297,6 +342,8 @@ const MainApp = () => {
         isOpen={receiptScanModalOpen}
         onClose={() => setReceiptScanModalOpen(false)}
         onConfirmScan={handleConfirmScan}
+        onSaveExpense={handleSaveExpense}
+        categories={categories}
       />
 
       <VoiceQuickLogModal
@@ -311,6 +358,26 @@ const MainApp = () => {
         onClose={() => setBankImportModalOpen(false)}
         onImportComplete={handleImportComplete}
         categories={categories}
+      />
+
+      <EcommerceSyncModal
+        isOpen={ecommerceSyncModalOpen}
+        onClose={() => setEcommerceSyncModalOpen(false)}
+        onExpenseSynced={handleExpenseSynced}
+      />
+
+      <TransactionDetailModal
+        isOpen={Boolean(selectedTransactionDetail)}
+        onClose={() => setSelectedTransactionDetail(null)}
+        transaction={selectedTransactionDetail}
+        isIncome={selectedTransactionIsIncome}
+        onEdit={(tx) => {
+          setPrefilledExpenseData(tx);
+          setExpenseModalOpen(true);
+        }}
+        onDelete={handleDeleteTransactionFromDetail}
+        onDuplicate={handleDuplicateExpense}
+        onUpdateMotive={handleUpdateMotive}
       />
     </div>
   );
