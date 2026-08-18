@@ -14,6 +14,7 @@ const auditLogger = require('./middleware/auditLogger');
 const idempotency = require('./middleware/idempotency');
 const { globalLimiter, aiLimiter } = require('./middleware/rateLimiter');
 const errorHandler = require('./middleware/errorHandler');
+const dbConnectionGuard = require('./middleware/dbHealth');
 const { NotFoundError } = require('./utils/errors');
 
 // Route imports
@@ -152,6 +153,7 @@ app.get('/api/health', getHealthStatus);
 // ========================
 // API Routes
 // ========================
+app.use('/api', dbConnectionGuard);
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/expenses', expenseRoutes);
