@@ -1,5 +1,7 @@
 const UnifiedAIClient = require('./unifiedAIClient');
 const LocalRagEngine = require('./localRagEngine');
+const LocalOcrService = require('./localOcrService');
+const LocalSlmClient = require('./localSlmClient');
 const ContextBuilder = require('./contextBuilder');
 const IntentRouter = require('./intentRouter');
 const ToolRegistry = require('./toolRegistry');
@@ -85,6 +87,8 @@ Return JSON only:
       });
 
       if (!rawResponse) {
+        const slmResult = await LocalSlmClient.suggestCategory(cleanTitle, amount, cleanMerchant, validCategories);
+        if (slmResult) return slmResult;
         return LocalRagEngine.categorize(cleanTitle, amount, cleanMerchant, validCategories);
       }
 
@@ -99,6 +103,8 @@ Return JSON only:
       };
     } catch (err) {
       console.warn('[AI Categorization Fallback]', err.message);
+      const slmResult = await LocalSlmClient.suggestCategory(cleanTitle, amount, cleanMerchant, validCategories);
+      if (slmResult) return slmResult;
       return LocalRagEngine.categorize(cleanTitle, amount, cleanMerchant, validCategories);
     }
   }
@@ -231,6 +237,8 @@ NEVER hallucinate numbers not present in Grounding Facts.`;
       });
 
       if (!rawResponse) {
+        const slmAnswer = await LocalSlmClient.copilotChat(routing.intent, toolData, cleanQuery);
+        if (slmAnswer) return slmAnswer;
         return LocalRagEngine.generateCopilotAnswer(routing.intent, toolData, cleanQuery);
       }
 
@@ -243,6 +251,8 @@ NEVER hallucinate numbers not present in Grounding Facts.`;
       };
     } catch (err) {
       console.warn('[AI Copilot Fallback]', err.message);
+      const slmAnswer = await LocalSlmClient.copilotChat(routing.intent, toolData, cleanQuery);
+      if (slmAnswer) return slmAnswer;
       return LocalRagEngine.generateCopilotAnswer(routing.intent, toolData, cleanQuery);
     }
   }
@@ -321,14 +331,20 @@ NEVER hallucinate numbers not present in Grounding Facts.`;
 
   /**
    * INTELLIGENCE 6 — Multimodal Receipt & Invoice Vision OCR
+   * 3-Tier Cascade: Cloud Vision -> Local Unlimited-OCR Sidecar -> Local Heuristic
    */
   static async scanReceipt(imageBase64, mimeType = 'image/jpeg', userId = null) {
-    const userConfig = await getUserAiConfig(userId);
-    return UnifiedAIClient.scanReceipt({
-      imageBase64,
-      mimeType,
-      userConfig,
-    });
+    try {
+      const userConfig = await getUserAiConfig(userId);
+      return await UnifiedAIClient.scanReceipt({
+        imageBase64,
+        mimeType,
+        userConfig,
+      });
+    } catch (err) {
+      console.warn('[Cloud Vision OCR Failed, Invoking Local OCR Tier 2/3]:', err.message);
+      return await LocalOcrService.scanReceipt({ imageBase64, mimeType });
+    }
   }
 }
 

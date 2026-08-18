@@ -73,10 +73,12 @@ Use this interactive board in Obsidian or during Antigravity pair-programming se
 ## ⚪ Backlog / Future Enhancements (Phases 7, 8 & 9)
 
 ### Phase 7: Local Sovereign OCR & Multi-Tier AI Fallback Pipeline
-- [ ] Containerize Local Python OCR Sidecar (`server/services/ocr-sidecar/` with Baidu Unlimited-OCR 3B + GBNF)
-- [ ] Implement `localSlmClient.js` client for Ollama / local host Qwen2.5-1.5B
-- [ ] Implement `localOcrService.js` adapter and integrate into `unifiedAIClient.js` 3-tier cascade
-- [ ] In-Browser WebGPU AI execution via `@mlc-ai/web-llm`
+- [x] Containerize Local Python OCR Sidecar (`server/services/ocr-sidecar/` with Baidu Unlimited-OCR 3B + GBNF)
+- [x] Implement `localSlmClient.js` client for Ollama / local host Qwen2.5-1.5B
+- [x] Implement `localOcrService.js` adapter and integrate into `unifiedAIClient.js` 3-tier cascade
+- [x] In-Browser WebGPU AI execution via `webLlmService.js`
+
+---
 
 ### Phase 8: Stock Market, Verified Schemes & Passive Income Ecosystem
 - [ ] Real-time broker WebSocket integration (`Zerodha`, `Dhan`, `Alpaca`, `Polygon.io`)

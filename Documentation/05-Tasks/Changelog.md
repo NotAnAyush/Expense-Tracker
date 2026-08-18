@@ -12,6 +12,16 @@ last_updated: 2026-08-17
 
 ---
 
+## `v3.3.0` — Local Sovereign OCR & Multi-Tier AI Fallback Cascade (2026-08-18)
+- **Local Baidu Unlimited-OCR (3B MoE VLM) Sidecar (`server/services/ocr-sidecar/`)**: Containerized Python FastAPI microservice (`main.py`, `Dockerfile`, `requirements.txt`) with strict JSON schema parsing and PaddleOCR fallback.
+- **Node.js Local OCR Adapter (`localOcrService.js`)**: Probes sidecar health on port 8001 and delegates receipt scans with automatic fallback to Tier 3 Local Heuristic receipt parsing.
+- **Local Financial SLM Adapter (`localSlmClient.js`)**: Seamlessly routes transactions and Copilot natural language queries to local Ollama host models (`qwen2.5:1.5b` or `phi-3.5-mini`) with zero cloud data transmission.
+- **3-Tier Unified AI Cascade (`aiService.js`)**: Tier 1 (Cloud Frontier AI - Together/Gemini/OpenAI) $\to$ Tier 2 (Local GPU/NPU Unlimited-OCR & Qwen2.5-1.5B) $\to$ Tier 3 (Local Heuristics / Local RAG Engine).
+- **In-Browser WebGPU SLM Service (`webLlmService.js`)**: In-browser client adapter for hardware Tier 2 Pro devices.
+- **Test Suite Expansion**: Added `localOcr.test.js`, `localSlm.test.js`, and `aiCascade.test.js` — **30 test suites, 204/204 tests passing (0 failures)**.
+
+---
+
 ## `v3.2.0` — Sovereign Customization Hub, Habit Intelligence & Full PWA (2026-08-18)
 - **Staged Modular Customization Machine**: Dual-state buffer (`CustomizationContext.jsx`) and floating confirmation bar (`StagedConfirmationBar.jsx`) with automated pre-sync Memento snapshots.
 - **5-Studio Customization Hub (`CustomizationPage.jsx`)**: Feature Modules Suite, Visual Theme Studio, Dashboard Grid Studio, Currency & Regional Engine, and Snapshot Vault.
