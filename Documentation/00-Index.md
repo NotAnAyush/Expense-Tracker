@@ -1,19 +1,17 @@
 ---
-title: Expense Tracker V2 — Master Knowledge Graph & Map of Content (MOC)
+title: Master Knowledge Graph & Obsidian Index
 tags:
   - moc
+  - index
   - architecture
-  - expense-tracker
-  - sovereign-finance
-version: 3.0.0
-last_updated: 2026-08-17
-status: active
+  - master
+version: 3.2.0
+last_updated: 2026-08-18
 ---
 
-# 🧠 Expense Tracker V2 — Master Knowledge Graph & MOC
+# 🧠 Expense Tracker V2 — Sovereign Knowledge Graph (MOC)
 
-> **AI-First Sovereign Personal Finance Intelligence Platform**  
-> *Deterministic Financial Core · Graph-Mapped Codebase · Zero-Hallucination Grounding*
+> **Antigravity AI Instruction**: This Obsidian Knowledge Vault acts as the **Single Source of Truth (SSOT)** for all architectural choices, feature specs, mathematical models, API contracts, and active tasks. Before implementing any major feature, refer to this graph. After implementation, synchronize this graph and document any Architecture Decision Records (ADRs).
 
 ---
 
@@ -21,105 +19,97 @@ status: active
 
 ```mermaid
 graph TD
-    subgraph UI ["🎨 Frontend Experience (client/)"]
-        Pages["[[Page-Directory]] (13 Pages)<br/>(Dashboard, Analytics, DebtPayoff, FIRE, GroupSplit)"]
-        Design["[[Design-Tokens]] & [[Component-Catalog]]"]
-        Shortcuts["[[UX-Flows-and-Shortcuts]]"]
-        State["[[State-Management-and-Contexts]]"]
+    Client["Client (Vite + React 19 + PWA)"] <-->|REST API + JWT| Server["Node.js Express API Server"]
+    Server <-->|Mongoose ODM| MongoDB["MongoDB Atlas / Local"]
+    Server <-->|Real-Time FX| ExchangeAPI["ExchangeRate API (Cached)"]
+    Server <-->|Vision OCR / AI| UnifiedAI["Unified AI Cascade"]
+    Server <-->|Stock Tickers / WebSocket| BrokerWS["Broker WS Hub (Zerodha/Dhan/Polygon)"]
+    Server <-->|Sovereign Schemes| SchemeRadar["RBI T-Bills / SGB / Post-Office Hub"]
+    Server <-->|SMS Webhooks & Fast-Parse| SMSParser["SMS Webhook State Machine Engine"]
+    Server <-->|Enterprise Statements| ExportEngine["Vector PDF & Styled CSV Generator"]
+    
+    UnifiedAI -->|Tier 1: Cloud Frontier| GeminiVision["Gemini 2.5 Flash Vision OCR / GPT-4o-mini"]
+    UnifiedAI -->|Tier 2: Local GPU/NPU| LocalSidecar["Baidu Unlimited-OCR (3B MoE VLM) + Qwen2.5-1.5B (FastAPI :8001)"]
+    UnifiedAI -->|Tier 3: Local Heuristic| LocalHeuristic["Deterministic Regex / RAG Template Fallback"]
+    Client -->|In-Browser WebGPU| WebLLM["WebLLM (Qwen2.5-1.5B In-Browser)"]
+
+    subgraph ClientModules ["Client Modules & Feature Studios"]
+        Dashboard["Dynamic Responsive Dashboard"]
+        SplitLedger["Social Split Ledger & UPI Intent"]
+        DebtSolver["Debt Payoff Simulator (Snowball/Avalanche)"]
+        FireSim["6-Tier FIRE & Monte Carlo Engine"]
+        TripVault["Travel Trip Budget Vaults"]
+        CustomHub["Sovereign Customization Hub (5 Studios)"]
+        MarketStudio["Stock Market & Passive Wealth Studio"]
+        FamilyStudio["Family Multi-User Household Vault"]
     end
 
-    subgraph API ["⚡ Enterprise API & Middleware (server/)"]
-        Security["[[Security-and-Middleware]]<br/>(RateLimiter, AuditLog, Idempotency)"]
-        Contracts["[[API-Contracts]]<br/>(20 Route Modules)"]
-        Env["[[Environment-Variables]]"]
+    subgraph ServerEngines ["Core Algorithmic Engines"]
+        CashFlow["Cash Flow Velocity Engine"]
+        HealthScore["5-Pillar Financial Health Scorecard"]
+        DebtEngine["Minimum Cash Flow Simplifier (O(N^2) -> N-1)"]
+        Amortization["Debt Amortization Engine"]
+        MonteCarloEngine["Institutional Monte Carlo Stochastic Engine (Ito GBM & Jump Diffusion)"]
+        LifestyleHabit["On-Device Lifestyle Habit Learning Engine"]
+        ScamShield["Algorithmic Scam & Ponzi Red-Flag Shield"]
+        QuantitativeVal["Institutional Quantitative Valuation Suite (DCF/Piotroski/Altman)"]
+        ArbitrageEngine["Debt vs Equity Arbitrage Solver"]
+        FamilyVaultEngine["Multi-Tenant Role-Based Ledger Isolation Engine"]
+        SMSStateEngine["Deterministic Regex Transaction SMS Parser"]
+        ReportExportEngine["Vector PDF Financial Statement Generator"]
     end
-
-    subgraph DataEngine ["📊 Financial Data & Intelligence Engines"]
-        Models["[[Database-Models]]<br/>(14 Mongoose Models)"]
-        Engines["[[Services-and-Engines]]<br/>(Analytics, Debt, Group, FX, Import)"]
-        Math["[[Cash-Flow-Velocity-Engine]] & [[Monte-Carlo-and-FIRE-Simulator]]"]
-        AI["[[AI-Copilot-and-OCR-Engine]]<br/>(Gemini Flash OCR & RAG)"]
-    end
-
-    subgraph Governance ["🛡️ Grounding & Project Governance"]
-        SSOT["[[00-Index]] (Master MOC)"]
-        Rules["[[obsidian_grounding]] Rule"]
-        Kanban["[[Project-Kanban]] (Live Tasks)"]
-        ADRs["[[ADR-001-AI-First-Hierarchy]] to [[ADR-005-No-Framework-CSS-System]]"]
-        Troubleshoot["[[Known-Gotchas-and-Troubleshooting]]"]
-    end
-
-    Design --> Pages
-    Pages --> Contracts
-    Contracts --> Security
-    Security --> Engines
-    Engines --> Models
-    AI -.-> Engines
-    SSOT --> Rules
-    Rules --> Kanban
 ```
 
 ---
 
-## 📚 Master Vault Navigation Index
+## 📚 Vault Hierarchy & Map of Content (MOC)
 
-### 1. 🏗️ System Architecture & Contracts (`01-Architecture/`)
-- **[[Database-Models]]** — Comprehensive schemas for all 14 Mongoose models (`User`, `Expense`, `Income`, `Budget`, `Goal`, `Debt`, `Group`, `TripVault`, `SecretVault`, etc.).
-- **[[API-Contracts]]** — Detailed REST API reference covering 20 route modules, HTTP methods, headers, request payloads, and response shapes.
-- **[[Services-and-Engines]]** — Deep-dive into backend service algorithms in `server/src/services/`.
-- **[[Security-and-Middleware]]** — Zero-trust security pipeline: JWT rotation, rate limiting, duplicate hashing, and audit logging.
-- **[[State-Management-and-Contexts]]** — Frontend React context architecture (`AuthContext`, `PrivacyContext`).
-- **[[Environment-Variables]]** — Complete configuration matrix for `server/.env` and `client/.env`.
+### 01. System Architecture (`Documentation/01-Architecture/`)
+- [[System-Overview]] — Full-stack system architecture, deployment topologies, security boundaries, and environment configurations.
+- [[Services-and-Engines]] — Algorithmic design, time complexities, and mathematical formulations for all backend services.
+- [[Database-Schema]] — MongoDB collection models, compound index definitions, TTL caches, and encryption-at-rest specs.
+- [[API-Contracts]] — Comprehensive REST API endpoint definitions, request/response JSON schemas, and error codes.
 
-### 2. 🎨 Design System & UI Components (`02-Design-System/`)
-- **[[Design-Tokens]]** — CSS custom properties, dark/light theme definitions, HSL palettes, glassmorphism tokens, and micro-animation keyframes.
-- **[[Component-Catalog]]** — Reusable component specs: Quick-Loggers, Financial Health Dial, Debt Avalanche Charts, and Modal Dialogs.
-- **[[Page-Directory]]** — Catalog of all 13 frontend pages in `client/src/pages/`.
-- **[[UX-Flows-and-Shortcuts]]** — Keyboard shortcuts (`Alt+P`, `Ctrl+/`), animation physics, and micro-interactions.
+### 02. Research & Deep Benchmarks (`Documentation/`)
+- [[LOCAL_UNLIMITED_OCR_AND_SLM_BILL_PARSING_RESEARCH]] — Comprehensive benchmarks on Baidu Unlimited-OCR (3B MoE VLM) & Qwen2.5-1.5B for local bill extraction.
+- [[LOCAL_FINANCIAL_SLM_INTELLIGENCE_AND_FALLBACK_RESEARCH]] — Benchmarks on on-device Financial SLMs (Qwen2.5, Llama-3.2, SmolLM2) for spending explanations and zero-outage intelligence.
+- [[LOCAL_LIFESTYLE_HABIT_LEARNING_AND_SOVEREIGN_WEBAPP_ARCHITECTURE]] — Research on On-Device Habit Intelligence, Privacy-Preserving Feature Vectors, and PWA Web App Architecture.
+- [[ADAPTIVE_DEVICE_HARDWARE_PROFILING_AND_CAPABILITY_OPTIMIZATION_RESEARCH]] — Non-invasive client-side hardware profiling (RAM, CPU, WebGPU, Battery, WASM benchmark).
+- [[MODULAR_FEATURE_FLAG_ENGINE_AND_STATE_SNAPSHOT_CUSTOMIZATION_HUB_RESEARCH]] — Architecture research on Staged Feature Flags, Atomic Commits, Pre-Sync Memento Snapshots & Customization Hub.
+- [[LOCAL_VOICE_AI_AND_ON_DEMAND_MODULAR_INTELLIGENCE_RESEARCH]] — Master research report on local STT, OCR, SLM, and Embeddings for sovereign on-device intelligence.
 
-### 3. 🚀 Features & Mathematical Engines (`03-Features/`)
-- **[[Feature-Roadmap]]** — Phase 1–4 capabilities matrix.
-- **[[Stock-Market-and-Wealth-Intelligence-Ecosystem]]** — Real-time trading desk, quantitative DCF & TA models, verified bank/govt scheme radars, and passive income compounding (`[[STOCK_MARKET_TRADING_ANALYSIS_AND_GENUINE_SCHEMES_MASTER_PLAN]]`).
-- **[[Blockchain-and-Emerging-Tech-Ecosystem]]** — Web3, Merkle audits, zk-SNARKs, and Edge AI ecosystem (`[[BLOCKCHAIN_AND_FUTURE_TECH_FEATURE_PLAN]]`).
-- **[[Cash-Flow-Velocity-Engine]]** — Math formulas for net cash flow, savings rate %, daily burn rate, and runway.
-- **[[AI-Copilot-and-OCR-Engine]]** — Multimodal Gemini 2.5 Flash receipt scanner & deterministic RAG context injection.
-- **[[Family-Multi-User-Ledgers-and-Enterprise-Exports]]** — Multi-tenant household vaults, regex SMS bank webhook parser, and vector PDF/Excel financial statements (`[[FAMILY_MULTI_USER_LEDGERS_SMS_WEBHOOKS_AND_ENTERPRISE_EXPORTS_RESEARCH]]`).
-- **[[Stock-Market-and-Passive-Income-Ecosystem]]** — Real-time broker feeds, verified sovereign T-Bill/SGB/FD radars, DCF valuations, and automated Ponzi/scam shield (`[[STOCK_MARKET_VERIFIED_SCHEMES_AND_PASSIVE_INCOME_RESEARCH]]`).
-- **[[Adaptive-Device-Capability-Profiler]]** — Dynamic client hardware scanning (WebGPU, RAM, CPU) and tiered feature scaling (`[[ADAPTIVE_DEVICE_HARDWARE_PROFILING_AND_CAPABILITY_OPTIMIZATION_RESEARCH]]`).
-- **[[Customization-Hub-and-Feature-Flag-Engine]]** — Modular feature toggling, pre-sync Memento snapshots, and self-aware layout re-formatting (`[[MODULAR_FEATURE_FLAG_ENGINE_AND_STATE_SNAPSHOT_CUSTOMIZATION_HUB_RESEARCH]]`).
-- **[[Lifestyle-and-Habit-Learning-Engine]]** — 100% on-device behavioral profiling, payday euphoria curves, and lifestyle inflation metrics (`[[LOCAL_LIFESTYLE_HABIT_LEARNING_AND_SOVEREIGN_WEBAPP_ARCHITECTURE]]`).
-- **[[Minimum-Cash-Flow-Graph-Solver]]** — Greedy graph reduction for split bills ($O(N^2) \to N-1$) + NPCI UPI Intent QR generation.
-- **[[Monte-Carlo-and-FIRE-Simulator]]** — 1,000-run stochastic wealth simulation ($P_{10}, P_{50}, P_{90}$) and Rule-of-25 FIRE math.
-- **[[Multi-Currency-FX-Engine]]** — Real-time currency exchange rates and travel trip budget vaults.
+### 03. Core Features Specifications (`Documentation/03-Features/`)
+- [[Multimodal-Receipt-OCR]] — Gemini 2.5 Flash vision parser and structured transaction extractor.
+- [[Cash-Flow-and-Financial-Health]] — Velocity analytics, runway predictor, and 5-Pillar Scorecard.
+- [[Social-Splits-and-UPI-QR]] — Group bill split engine, $O(N^2) \to N-1$ graph reduction, and dynamic NPCI QR generation.
+- [[Debt-Freedom-Payoff-Simulator]] — Snowball vs. Avalanche payoff strategy engine.
+- [[Monte-Carlo-and-FIRE-Simulator]] — Institutional stochastic Monte Carlo engine (Ito GBM, Merton Jump Diffusion, 50k runs) and 6-tier FIRE planner.
+- [[Travel-Vaults-and-Real-Time-FX]] — Multi-currency trip budgets and real-time forex conversions.
+- [[Offline-Mode-and-Privacy-Shield]] — IndexedDB optimistic cache and global `Alt+P` privacy blur shield.
+- [[Customization-Hub-and-Feature-Flag-Engine]] — 5-Studio customization suite, staged toggles, and snapshot rollback.
+- [[Lifestyle-and-Habit-Learning-Engine]] — On-device behavior profiling ($C_v$, $\lambda$, $\mathcal{L}_{\text{inf}}$) and proactive financial nudges.
+- [[Adaptive-Device-Capability-Profiler]] — Automated hardware inspection and dynamic client feature gating.
+- [[Stock-Market-and-Passive-Wealth-Studio]] — Real-time tickers, Sovereign Scheme Radar (T-Bills/SGB/FD), Scam Shield, DCF valuation, and Debt vs. Equity Arbitrage solver.
+- [[Family-Multi-User-Household-Ledgers]] — Multi-tenant household vaults, role-based permissions (`OWNER`, `ADMIN`, `CONTRIBUTOR`, `VIEWER`), and pooled expense budgets.
+- [[Bank-SMS-Webhook-and-Instant-Parser]] — Regex state machine parsing Indian bank transaction SMS alerts across HDFC, SBI, ICICI, Axis, Kotak, PayTM, and UPI.
+- [[Enterprise-Financial-Reports-and-Vector-Exports]] — Executive PDF statements and formatted Excel schedules.
+- [[Local-Voice-AI-and-Modular-Model-Hub]] — Resilient continuous voice recognition, Web Audio visualizer, and on-demand local AI weights studio.
 
-### 4. 🏛️ Architecture Decision Records (`04-ADR/`)
-- **[[ADR-001-AI-First-Hierarchy]]** — Strict dependency hierarchy: *DB $\to$ Analytics $\to$ AI $\to$ User Action*.
-- **[[ADR-002-Graphify-Code-Graph]]** — AST-extracted code knowledge graph for deterministic code navigation.
-- **[[ADR-003-Client-Side-Encrypted-Vault]]** — Zero-knowledge AES-256-GCM client-side encryption for `SecretVault`.
-- **[[ADR-004-Dual-Token-JWT-Rotation]]** — Dual-token authentication with cryptographic refresh rotation.
-- **[[ADR-005-No-Framework-CSS-System]]** — Why bespoke Vanilla CSS variables were chosen over Tailwind utility bloat.
-- **[[ADR-006-Local-Unlimited-OCR-and-SLM-Fallback-Pipeline]]** — 2-stage offline sovereign bill parsing using Baidu Unlimited-OCR and Qwen2.5 SLM (`[[LOCAL_UNLIMITED_OCR_AND_SLM_BILL_PARSING_RESEARCH]]`).
-- **[[ADR-007-Local-Financial-SLM-Intelligence-and-Fallback-Architecture]]** — Sovereign Local SLM (Qwen2.5-1.5B/WebLLM) for spending explanations and zero-outage API fallback (`[[LOCAL_FINANCIAL_SLM_INTELLIGENCE_AND_FALLBACK_RESEARCH]]`).
-- **[[ADR-008-Local-Lifestyle-Habit-Learning-and-PWA-Architecture]]** — On-device behavioral finance habit engine and full-stack PWA web app transition (`[[LOCAL_LIFESTYLE_HABIT_LEARNING_AND_SOVEREIGN_WEBAPP_ARCHITECTURE]]`).
-- **[[ADR-009-Adaptive-Device-Hardware-Profiling-and-Feature-Optimization]]** — Real-time client hardware inspection and tiered feature allocation (`[[ADAPTIVE_DEVICE_HARDWARE_PROFILING_AND_CAPABILITY_OPTIMIZATION_RESEARCH]]`).
-- **[[ADR-010-Modular-Feature-Flags-State-Snapshot-Backup-and-Customization-Hub]]** — Staged feature flag configuration, automated pre-sync Memento snapshots, and self-aware dynamic layouts (`[[MODULAR_FEATURE_FLAG_ENGINE_AND_STATE_SNAPSHOT_CUSTOMIZATION_HUB_RESEARCH]]`).
-- **[[ADR-011-Stock-Market-Verified-Schemes-and-Quantitative-Passive-Income-Ecosystem]]** — Quantitative stock valuations, verified sovereign scheme radars, and algorithmic scam shield (`[[STOCK_MARKET_VERIFIED_SCHEMES_AND_PASSIVE_INCOME_RESEARCH]]`).
-- **[[ADR-012-Family-Multi-User-Ledgers-SMS-Webhooks-and-Enterprise-Exports]]** — Multi-user household vaults, regex SMS parser, and audit-ready vector PDF/Excel statements (`[[FAMILY_MULTI_USER_LEDGERS_SMS_WEBHOOKS_AND_ENTERPRISE_EXPORTS_RESEARCH]]`).
+### 04. Architecture Decision Records (`Documentation/04-ADR/`)
+- [[ADR-001-Dual-Token-JWT-Authentication]] — Accepted. Access token (15m) + Refresh token (7d) in HttpOnly cookies with Redis blacklisting.
+- [[ADR-002-Minimum-Cash-Flow-Graph-Reduction]] — Accepted. Greedy heap algorithm for $O(N \log N)$ debt settlement.
+- [[ADR-003-Multimodal-OCR-Fallback-Cascade]] — Accepted. Multi-tier cascade with Gemini Vision $\to$ Local Unlimited-OCR / Qwen2.5 SLM $\to$ Regex.
+- [[ADR-004-Client-Side-AES-GCM-Encrypted-Vault]] — Accepted. Zero-knowledge PBKDF2 + AES-GCM 256-bit client-side secrets encryption.
+- [[ADR-005-Deterministic-RAG-Financial-Advisor]] — Accepted. Sanitized aggregated financial metrics injected into AI system prompts.
+- [[ADR-006-Local-Unlimited-OCR-and-SLM-Fallback-Pipeline]] — Accepted. Microservice architecture for Baidu Unlimited-OCR 3B MoE VLM and Qwen2.5-1.5B GBNF grammar parser.
+- [[ADR-007-Local-Financial-SLM-Intelligence-and-Fallback-Architecture]] — Accepted. 3-tier fallback architecture: Cloud Frontier $\to$ Local Host SLM (Ollama/llama.cpp) or In-Browser WebGPU (WebLLM) $\to$ Rule Templates.
+- [[ADR-008-Stochastic-Monte-Carlo-and-FIRE-Engine]] — Accepted. Formulated Ito calculus drift correction, Merton Jump Diffusion, 50k runs, and 6-tier FIRE milestones.
+- [[ADR-009-Adaptive-Device-Hardware-Profiling-and-Feature-Optimization]] — Accepted. Client-side hardware profiler classifying Tier 0 (Eco), Tier 1 (Balanced), Tier 2 (Sovereign Pro).
+- [[ADR-010-Modular-Feature-Flags-State-Snapshot-Backup-and-Customization-Hub]] — Accepted. Dual-state buffer, atomic 4-step commit pipeline, and automated pre-sync Memento snapshots.
+- [[ADR-011-Stock-Market-Sovereign-Schemes-and-Valuation-Engine]] — Accepted. Real-time broker WebSockets, RBI T-Bill / SGB radar, Scam Shield, and DCF/Piotroski/Altman valuation.
+- [[ADR-012-Family-Multi-User-Ledgers-and-Bank-SMS-Ingestion]] — Accepted. Multi-tenant household vaults, role-based permissions, bank SMS regex state machine, and vector PDF reports.
+- [[ADR-013-Local-Voice-AI-and-On-Demand-Modular-Intelligence-Hub]] — Accepted. Resilient continuous voice recognition, Web Audio frequency equalizer, and on-demand local AI weights studio.
 
-### 5. 📋 Sprint Execution & Health (`05-Tasks/`)
-- **[[Project-Kanban]]** — Interactive task checklist for human + Antigravity pair programming.
-- **[[Changelog]]** — Semantic release version history (`v1.0.0` to `v3.0.0`).
-- **[[Known-Gotchas-and-Troubleshooting]]** — Port collisions, MongoDB TTL indexing, and Node ESM rules.
-- **[[PROJECT_STATUS]]** — Runtime service health and test suite reports.
-
-### 6. 🎨 Visual Canvases (`Visual-Canvases/`)
-- **`Architecture-Map.canvas`** — Interactive visual node canvas connecting all project layers.
-
----
-
-## 🔍 Anti-Hallucination Grounding Protocol
-
-When Antigravity or any AI agent executes tasks on this codebase:
-1. **Spec Lookup First**: Read the corresponding note in `01-Architecture/`, `02-Design-System/`, or `03-Features/`.
-2. **Deterministic Schemas**: Do not invent new fields or parameters without consulting the spec.
-3. **Keep Graph Fresh**: Run `graphify update .` after making structural code modifications.
+### 05. Tasks, Roadmap & Sprints (`Documentation/05-Tasks/`)
+- [[Project-Kanban]] — Live interactive status board of all sprints, phases, and active Pair-Programming tasks.
+- [[Changelog]] — Production release notes and version history.

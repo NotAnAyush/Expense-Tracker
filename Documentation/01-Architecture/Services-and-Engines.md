@@ -5,8 +5,8 @@ tags:
   - backend
   - services
   - engines
-version: 3.0.0
-last_updated: 2026-08-17
+version: 3.7.0
+last_updated: 2026-08-18
 ---
 
 # ⚙️ Backend Services & Algorithmic Engines
@@ -28,10 +28,12 @@ This document specifies the internal architecture, mathematical calculations, an
   - `getBurnRateAndRunway(userId)`: Calculates daily burn rate and estimated liquidity runway in months.
 
 ### `fireSimulatorEngine.js`
-- **Purpose**: Stochastic Monte Carlo wealth forecasting and FIRE (Financial Independence, Retire Early) retirement calculator.
+- **Purpose**: Institutional-grade Stochastic Monte Carlo wealth forecasting and 6-Tier FIRE (Financial Independence, Retire Early) planning engine.
 - **Key Functions**:
-  - `calculateFireNumber(annualExpenses, swrPercent = 4)`: Returns target nest egg: $\text{Annual Expenses} \times (100 / \text{swrPercent})$.
-  - `simulateMonteCarlo({ currentNetWorth, monthlyContribution, years, meanReturn, stdDev, simulations = 1000 })`: Generates 1,000 randomized return paths and extracts $P_{10}, P_{50}, P_{90}$ wealth trajectories.
+  - `calculateFireMilestones({ monthlyIncome, monthlyExpense, currentSavings, annualReturnPct, inflationPct, customSwrPct, stepUpPct, targetRetirementAge, currentAge })`: Computes full 6-tier milestones (**Lean, Barista, Standard, Chubby, Fat, Coast FIRE**), financial freedom velocity index, savings rate, and exact countdown date.
+  - `calculateWhatIf({ currentMonthlyIncome, currentMonthlyExpense, currentNetWorth, deltaIncome, deltaExpense, deltaOneTime, annualReturnPct, annualStepUpPct, timedEvents })`: Computes month-by-month trajectory with timed capital shocks over a 30-year horizon.
+  - `calculateBlendedAssetMetrics(weights)`: Multi-asset covariance calculation for Equities, Debt, Gold, and Cash portfolios.
+  - `runMonteCarloSimulation({ currentNetWorth, monthlyContribution, annualExpenseWithdrawal, years, expectedReturn, volatility, inflation, runs, model, phase, assetAllocation, stepUpPct, glidePathEnabled, guardrailsEnabled })`: High-performance execution across 1,000 to 50,000 parallel paths supporting Geometric Brownian Motion (GBM) with Ito correction ($-\frac{1}{2}\sigma^2$), Merton Jump Diffusion, and Empirical Historical Bootstrap Resampling (1970–2024). Computes Portfolio Survival Rate, Ruin Probability, VaR 95%, CVaR, Sharpe Ratio, and $P_5$ to $P_{95}$ percentile ribbons.
 
 ### `lifestyleHabitEngine.js` (`server/src/services/analytics/lifestyleHabitEngine.js`)
 - **Purpose**: On-device behavioral finance engine profiling income cadence ($C_v$), payday euphoria decay ($\lambda$), late-night spending biases, and lifestyle inflation ($\mathcal{L}_{\text{inf}}$).
@@ -82,35 +84,23 @@ graph TD
 - **Model**: **Qwen2.5-1.5B-Instruct** (or Llama-3.2-1B/3B).
 - **Purpose**: Generates natural language monthly summaries, "Why Did My Spending Change?" variance explanations, Copilot Q&A, and transaction categorization when cloud APIs are offline or rate-limited (`[[ADR-007-Local-Financial-SLM-Intelligence-and-Fallback-Architecture]]`).
 
-### `localRagEngine.js` & `contextBuilder.js`
-- **Context Injection**: Retrieves sanitized, aggregated user metrics (Total Income, Top 3 Expense Categories, Budget Overruns) and injects them into system instructions.
-- **Guardrail**: Instructs the model to never give legal/tax guarantees and always base advice on the injected context.
-- **Zero-AI Fallback**: Provides deterministic template strings if neither cloud AI nor local SLMs are active.
-
 ---
 
 ## 3. Social & Debt Optimization Engines
 
 ### `debtSimplificationEngine.js` (`server/src/services/group/`)
 - **Algorithm**: Minimum Cash Flow Greedy Graph Solver.
-- **Input**: Array of member balances $\{ \text{memberId}, \text{netBalance} \}$.
-- **Output**: Minimum list of transactions $\{ \text{from}, \text{to}, \text{amount}, \text{upiIntentUrl} \}$.
 - **Complexity**: $O(N \log N)$ sorting + $O(N)$ transfers (at most $N-1$ transfers).
 
 ### `debtAmortizationEngine.js` (`server/src/services/debt/`)
-- **Strategies**:
-  - **Snowball**: Pay minimum on all, accelerate lowest balance first (psychological momentum).
-  - **Avalanche**: Pay minimum on all, accelerate highest interest rate APR first (mathematical optimization).
-- **Output**: Month-by-month payment schedule, total interest paid, debt-free date comparison.
+- **Strategies**: Snowball & Avalanche payoff comparison models with amortized schedules.
 
 ---
 
 ## 4. Ingestion & Foreign Exchange Engines
 
 ### `importService.js` (`server/src/services/import/`)
-- **CSV Bank Ingestion**: Auto-detects column headers for Date, Amount, Description, and Debit/Credit.
-- **Deduplication**: Computes SHA-256 hash of `(userId + date + amount + description)` to reject previously imported rows.
+- **CSV Bank Ingestion**: Auto-detects column headers and performs SHA-256 deduplication.
 
 ### `fxService.js` (`server/src/services/fx/`)
 - **Foreign Exchange Rates**: Real-time currency conversions cached with 1-hour TTL.
-- **Trip Isolation**: Converts foreign trip vault expenses into user base currency automatically.

@@ -5,8 +5,8 @@ tags:
   - api
   - rest
   - contracts
-version: 3.0.0
-last_updated: 2026-08-17
+version: 3.7.0
+last_updated: 2026-08-18
 ---
 
 # ⚡ API Contracts & Endpoint Specification
@@ -49,15 +49,16 @@ Auth Header: `Authorization: Bearer <accessToken>`
 
 ---
 
-## 3. Analytics & Intelligence (`/analytics`, `/simulation`, `/ai`)
+## 3. Analytics, Simulations & AI (`/analytics`, `/simulations`, `/ai`)
 
 | Method | Endpoint | Auth | Request Params / Body | Description |
 | :--- | :--- | :--- | :--- | :--- |
 | `GET` | `/analytics/cashflow` | Yes | `?period=monthly` | Net cash flow, burn rate, runway & savings % |
 | `GET` | `/analytics/health-score` | Yes | - | 5-Pillar Score (0–100) + radial dial breakdown |
-| `POST` | `/simulation/monte-carlo` | Yes | `{ currentNetWorth, monthlySavings, years, returnRate, volatility }` | 1,000-run stochastic simulation ($P_{10}, P_{50}, P_{90}$) |
-| `POST` | `/simulation/fire` | Yes | `{ annualExpenses, swrPercent, currentSavings, returnRate }` | Rule-of-25 FIRE target & retirement year |
-| `POST` | `/ai/ocr-receipt` | Yes | `FormData: file (image)` | Multimodal Gemini receipt OCR structured parsing |
+| `GET` | `/simulations/context` | Yes | - | Baseline financial metrics, 6-tier FIRE targets & initial Monte Carlo |
+| `POST` | `/simulations/what-if` | Yes | `{ currentMonthlyIncome, currentMonthlyExpense, currentNetWorth, deltaIncome, deltaExpense, deltaOneTime, annualReturnPct, annualStepUpPct, timedEvents }` | Multi-scenario compounding projections over 1 to 30 years |
+| `POST` | `/simulations/monte-carlo` | Yes | `{ currentNetWorth, monthlyContribution, annualExpenseWithdrawal, years, expectedReturn, volatility, inflation, runs, model, phase, assetAllocation, stepUpPct, glidePathEnabled, guardrailsEnabled }` | Institutional 1k–50k path simulation ($P_5$ to $P_{95}$, VaR 95%, CVaR, Survival %) |
+| `POST` | `/ai/ocr-receipt` | Yes | `FormData: file (image)` | Multimodal receipt OCR structured parsing |
 | `POST` | `/ai/chat` | Yes | `{ message, conversationHistory }` | Deterministic RAG financial copilot advice |
 
 ---
