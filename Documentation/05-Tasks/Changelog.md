@@ -4,11 +4,47 @@ tags:
   - tasks
   - changelog
   - history
-version: 3.0.0
-last_updated: 2026-08-17
+version: 3.7.0
+last_updated: 2026-08-18
 ---
 
 # 📜 Expense Tracker V2 — Changelog & Version History
+
+---
+
+## `v3.7.0` — Institutional Monte Carlo Stochastic Engine, 6-Tier FIRE Planner & What-If Sandbox (2026-08-18)
+- **Institutional Monte Carlo Stochastic Engine (`fireSimulatorEngine.js`)**:
+  - Implemented Geometric Brownian Motion (GBM) with exact Ito calculus drift correction term ($-\frac{1}{2}\sigma^2$) to eliminate volatility drag bias.
+  - Implemented Merton Jump Diffusion model superimposing Poisson market crash/rally jumps ($\lambda \approx 0.12, \mu_J \approx -18\%$).
+  - Added Empirical Historical Bootstrap Resampling across 55 years of multi-asset historical cycles (1970–2024).
+  - Added Multi-Asset Covariance Allocation (Equity, Debt, Gold, Cash) with Dynamic Age Glidepaths (-0.75% equity/yr into fixed income).
+  - Scaled simulation capacity with typed arrays (`Float64Array`) supporting **1,000, 5,000, 10,000, 25,000, and 50,000 parallel paths**.
+  - Computed institutional risk metrics: Portfolio Survival Rate (%), Ruin Probability (%), Value at Risk (VaR 95%), Conditional VaR (CVaR / Expected Shortfall), Sharpe Ratio, and Average Max Drawdown.
+- **6-Tier Comprehensive FIRE Freedom Planner (`WealthSimulatorPage.jsx`)**:
+  - Expanded milestones into 6 granular tiers: **Barista FIRE (15x)**, **Lean FIRE (20x)**, **Standard FIRE (25x)**, **Chubby FIRE (30x)**, **Fat FIRE (35x)**, and **Coast FIRE**.
+  - Dynamic real-time parameter calibration sliders for income, living expenses, invested net worth, custom SWR (2.5% to 6.0%), expected return, inflation, and annual SIP step-up growth.
+  - Freedom countdown clock with projected financial independence date and target age.
+  - Fixed string interpolation display glitch for Coast FIRE status.
+- **Multi-Variable What-If Scenario Sandbox**:
+  - 1-Click presets for macro life milestones: Career Surge / Promotion, Frugal FIRE Optimization, Home Purchase Downpayment, Sabbatical Gap Year, and Startup ESOP Venture.
+  - Timed capital shock events (injections or outflows triggered at specific future years) with dual-area comparative trajectory visualization over 1 to 30 years.
+- **Executive Quantitative Summary & Interactive Tutorial Modal**:
+  - Added Automated Portfolio Synthesis card breaking down trajectory, sequence-of-returns vulnerability, and top 3 alpha levers.
+  - Added interactive in-app educational guide modal with 4 quantitative theory sub-tabs and institutional pro tips.
+- **Architecture & Knowledge Base Synchronization**:
+  - Documented complete mathematical formulations in `[[Monte-Carlo-and-FIRE-Simulator]]`.
+  - Formalized and accepted `[[ADR-008-Stochastic-Monte-Carlo-and-FIRE-Engine]]`.
+  - Updated API contracts and backend engine specifications.
+  - Verified 100% test pass on `tests/fireSimulation.test.js` and confirmed in live browser.
+
+---
+
+## `v3.6.0` — State-of-the-Art Voice Engine, Web Audio Visualizer & Sovereign Local AI Model Hub (2026-08-18)
+- **Continuous Resilient Voice Engine (`VoiceQuickLogModal.jsx`)**: Resolved 1-second auto-disconnect bug via `continuous: true`, auto-reconnect watchdog, silence debounce, and graceful session lifecycle management.
+- **Live 24-Band Web Audio API Waveform Visualizer**: Integrated real-time `AudioContext` and `AnalyserNode` rendering dynamic glowing cyberpunk equalizer spectrum bars and decibel pulse rings.
+- **Multilingual Accent Switcher**: Added regional accent switcher (`en-IN` Indian English, `en-US`, `en-GB`, `hi-IN` Hindi, `es-ES`, `fr-FR`, `de-DE`, `ja-JP`).
+- **Multi-Entity Financial NLP Parser (`localVoiceAiService.js`)**: Robust natural language extraction for amounts (₹, $, words, decimals, k/lakh), 15+ financial categories, payment methods (UPI, GPay, PhonePe, Cards, Cash), counterparties, and relative dates ("yesterday", "today").
+- **On-Demand Local AI Model Management Studio (`LocalAiModelStudio.jsx`)**: Dedicated 7th studio tab in `CustomizationPage.jsx` allowing users to inspect, benchmark, download on demand, switch active engines, and purge local model weights.
 
 ---
 
@@ -18,79 +54,31 @@ last_updated: 2026-08-17
 - **Indian Bank Transaction SMS Parser (`smsParserEngine.js`)**: Deterministic regex state machine parsing transaction notifications across HDFC, SBI, ICICI, Axis, Kotak, PayTM, PhonePe, and UPI.
 - **Instant SMS Quick-Parse Modal Integration (`BankStatementModal.jsx`)**: Dual-mode statement importer supporting both multi-column CSV uploads and direct SMS alert text parsing.
 - **Enterprise Vector PDF & CSV Financial Statement Generator (`reportExportEngine.js`)**: Multi-sheet formatted statement reports with executive summaries, category allocation percentages, and tax-ready schedules.
-- **Test Suite Expansion**: Added `familyVault.test.js`, `smsParser.test.js`, and `reportExport.test.js` — **34 test suites, 223/223 tests passing (0 failures)**.
 
 ---
 
 ## `v3.4.0` — Quantitative Stock Market, Scheme Radar & Scam Shield (2026-08-18)
 - **Stock Market & Passive Wealth Studio (`PassiveIncomePage.jsx`)**: Real-time market ticker (Nifty 50, Sensex, Reliance, TCS, Apple, Nvidia), interactive tabs, and visual financial analytics.
 - **Verified Sovereign Scheme Radar (`schemeRadarService.js`)**: Real-time comparator for RBI Treasury Bills (91D, 182D, 364D), Sovereign Gold Bonds (SGBs), Post Office SCSS/SSY/PPF, and Bank Fixed Deposits.
-- **Automated Scam & Ponzi Shield (`scamShieldEngine.js`)**: Algorithmic red flag detection engine ($\mathcal{S}_{\text{risk}}$) evaluating guaranteed unrealistic yields ($>18\%$), MLM pyramid downlines, and regulatory compliance.
+- **Automated Scam & Ponzi Shield (`scamShieldEngine.js` red flag detector)**: Algorithmic red flag detection engine ($\mathcal{S}_{\text{risk}}$) evaluating guaranteed unrealistic yields ($>18\%$), MLM pyramid downlines, and regulatory compliance.
 - **Institutional Quantitative Valuation Suite (`quantitativeEngine.js`)**: Two-stage Discounted Cash Flow (DCF) fair value calculation, 9-point Piotroski F-Score, and Altman Z-Score bankruptcy prediction.
-- **Debt vs. Investment Arbitrage Solver (`arbitrageSolver.js`)**: Compares guaranteed post-tax debt interest savings against risk-adjusted equity hurdles to recommend optimal surplus cash allocation.
-- **Test Suite Expansion**: Added `market.test.js` — **31 test suites, 213/213 tests passing (0 failures)**.
 
 ---
 
 ## `v3.3.0` — Local Sovereign OCR & Multi-Tier AI Fallback Cascade (2026-08-18)
-- **Local Baidu Unlimited-OCR (3B MoE VLM) Sidecar (`server/services/ocr-sidecar/`)**: Containerized Python FastAPI microservice (`main.py`, `Dockerfile`, `requirements.txt`) with strict JSON schema parsing and PaddleOCR fallback.
-- **Node.js Local OCR Adapter (`localOcrService.js`)**: Probes sidecar health on port 8001 and delegates receipt scans with automatic fallback to Tier 3 Local Heuristic receipt parsing.
-- **Local Financial SLM Adapter (`localSlmClient.js`)**: Seamlessly routes transactions and Copilot natural language queries to local Ollama host models (`qwen2.5:1.5b` or `phi-3.5-mini`) with zero cloud data transmission.
-- **3-Tier Unified AI Cascade (`aiService.js`)**: Tier 1 (Cloud Frontier AI - Together/Gemini/OpenAI) $\to$ Tier 2 (Local GPU/NPU Unlimited-OCR & Qwen2.5-1.5B) $\to$ Tier 3 (Local Heuristics / Local RAG Engine).
-- **In-Browser WebGPU SLM Service (`webLlmService.js`)**: In-browser client adapter for hardware Tier 2 Pro devices.
-- **Test Suite Expansion**: Added `localOcr.test.js`, `localSlm.test.js`, and `aiCascade.test.js` — **30 test suites, 204/204 tests passing (0 failures)**.
+- **Local Baidu Unlimited-OCR Sidecar (`server/services/ocr-sidecar/`)**: Containerized Python FastAPI microservice with strict JSON schema parsing and PaddleOCR fallback.
+- **Node.js Local OCR Adapter (`localOcrService.js`)**: Probes sidecar health on port 8001 and delegates receipt scans with automatic fallback.
+- **Local Financial SLM Adapter (`localSlmClient.js`)**: Routes transactions and Copilot queries to local Ollama host models (`qwen2.5:1.5b`).
 
 ---
 
 ## `v3.2.0` — Sovereign Customization Hub, Habit Intelligence & Full PWA (2026-08-18)
-- **Staged Modular Customization Machine**: Dual-state buffer (`CustomizationContext.jsx`) and floating confirmation bar (`StagedConfirmationBar.jsx`) with automated pre-sync Memento snapshots.
+- **Staged Modular Customization Machine**: Dual-state buffer (`CustomizationContext.jsx`) and floating confirmation bar with automated pre-sync Memento snapshots.
 - **5-Studio Customization Hub (`CustomizationPage.jsx`)**: Feature Modules Suite, Visual Theme Studio, Dashboard Grid Studio, Currency & Regional Engine, and Snapshot Vault.
-- **Client Hardware Scanner (`deviceCapabilityProfiler.js`)**: Non-invasive inspection of WebGPU, RAM, CPU threads, battery, and 30ms WASM micro-benchmark with Tier 0/1/2 calibration.
-- **On-Device Lifestyle & Habit Learning (`lifestyleHabitEngine.js`)**: Income Cadence ($C_v$), Payday Euphoria Decay ($\lambda$), Late-Night Impulse Score ($\mathcal{I}_{\text{night}}$), and Lifestyle Inflation Index ($\mathcal{L}_{\text{inf}}$) with `HabitNudgesCard.jsx`.
-- **Sovereign Progressive Web App (PWA)**: `manifest.webmanifest`, Multi-tier caching `sw.js` with BackgroundSync `sync-expenses`, `PwaInstallPrompt.jsx`, WebAuthn Biometric Passkeys (`webAuthnLock.js`), and Native App Badging (`appBadging.js`).
-- **Comprehensive Test Verification**: 27 test suites, 195/195 tests passing with 0 errors.
-
----
-
-## `v3.1.0` — Sovereign Offline AI, Habit Intelligence & PWA Architecture (2026-08-18)
-- Conducted comprehensive research report on Baidu Unlimited-OCR (3B MoE VLM) and local SLM bill parsing pipelines (`[[LOCAL_UNLIMITED_OCR_AND_SLM_BILL_PARSING_RESEARCH]]`).
-- Formalized and accepted `[[ADR-006-Local-Unlimited-OCR-and-SLM-Fallback-Pipeline]]` for 3-tier fallback architecture: Cloud Gemini 2.5 Flash $\to$ Local GPU Unlimited-OCR + Qwen2.5-1.5B $\to$ Local CPU Tesseract.
-- Conducted exhaustive research on **Local Financial Small Language Models (SLMs)** for spending explanations, monthly summaries, and zero-outage fallback intelligence (`[[LOCAL_FINANCIAL_SLM_INTELLIGENCE_AND_FALLBACK_RESEARCH]]`).
-- Formalized and accepted `[[ADR-007-Local-Financial-SLM-Intelligence-and-Fallback-Architecture]]` for 3-tier conversational AI cascade: Cloud Frontier AI $\to$ Local Host SLM (Qwen2.5-1.5B/Ollama) or In-Browser WebGPU SLM (WebLLM) $\to$ Deterministic Rule Templates.
-- Formulated and accepted `[[ADR-008-Local-Lifestyle-Habit-Learning-and-PWA-Architecture]]` and published comprehensive research on **On-Device Lifestyle & Habit Learning Engine** and full-stack **Sovereign PWA Web App Architecture** (`[[LOCAL_LIFESTYLE_HABIT_LEARNING_AND_SOVEREIGN_WEBAPP_ARCHITECTURE]]`).
-- Formulated and accepted `[[ADR-009-Adaptive-Device-Hardware-Profiling-and-Feature-Optimization]]` and published research on **Client-Side Hardware Profiling & Dynamic Feature Gating** (`[[ADAPTIVE_DEVICE_HARDWARE_PROFILING_AND_CAPABILITY_OPTIMIZATION_RESEARCH]]`).
-- Formulated and accepted `[[ADR-010-Modular-Feature-Flags-State-Snapshot-Backup-and-Customization-Hub]]` and published research on **Staged Modular Feature Flags, Pre-Sync Memento Snapshots & Customization Hub** (`[[MODULAR_FEATURE_FLAG_ENGINE_AND_STATE_SNAPSHOT_CUSTOMIZATION_HUB_RESEARCH]]`).
-- Added `[[Customization-Hub-and-Feature-Flag-Engine]]` specifications to feature registry and updated Master MOC Index.
 
 ---
 
 ## `v3.0.0` — Sovereign Wealth & Global Readiness (2026-08-16)
 - Added 1,000-Run Stochastic Monte Carlo Wealth Simulator ($P_{10}, P_{50}, P_{90}$).
 - Added Rule-of-25 FIRE retirement milestone sandbox with SWR controls.
-- Added Multi-Currency Real-Time Foreign Exchange (FX) Engine.
-- Added Vacation Trip Budget Vaults with local currency tagging.
 - Full Jest test suite expansion: **20 test suites, 127/127 tests passing**.
-
----
-
-## `v2.5.0` — Social Ledgers & Debt Freedom (2026-08-14)
-- Added Group Shared Bill Splitting with custom ratios.
-- Added Minimum Cash Flow Graph Simplifier ($O(N^2) \to N-1$).
-- Added Dynamic NPCI UPI QR code popup generation.
-- Added Debt Snowball vs Avalanche payoff strategy simulator.
-
----
-
-## `v2.4.0` — Automated Ingestion & 5-Pillar Scorecard (2026-08-12)
-- Added CSV Bank Statement Importer with automatic column mapping & SHA-256 deduplication.
-- Added 5-Pillar Radial Financial Health Scorecard (0–100).
-- Added Global Privacy Shield (`Alt+P` blur filter).
-- Added Voice Quick-Log audio transcription interface.
-
----
-
-## `v2.3.0` — Core Financials & Multimodal OCR (2026-08-10)
-- Added Dual-Token JWT Authentication with Refresh Token rotation.
-- Added Full Income & Multi-Category Expense CRUD with Tax Deductions (80C, 80D, GST).
-- Added Multimodal Gemini 2.5 Flash Receipt OCR Scanner.
-- Added Real-time Cash Flow Velocity Engine.

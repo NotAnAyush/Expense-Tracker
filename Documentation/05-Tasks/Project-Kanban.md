@@ -5,8 +5,8 @@ tags:
   - kanban
   - sprints
   - status
-version: 3.0.0
-last_updated: 2026-08-17
+version: 3.7.0
+last_updated: 2026-08-18
 ---
 
 # 📋 Project Execution Kanban & Task Matrix
@@ -15,7 +15,7 @@ Use this interactive board in Obsidian or during Antigravity pair-programming se
 
 ---
 
-## 🟢 Completed Milestones (Production Master v3.0.0)
+## 🟢 Completed Milestones (Production Master v3.7.0)
 
 ### Phase 1: Core Financials & OCR
 - [x] Dual-Token JWT Auth with Refresh Rotation (`/api/auth/*`)
@@ -51,10 +51,6 @@ Use this interactive board in Obsidian or during Antigravity pair-programming se
 - [x] Modular Feature Flags, Memento State Snapshot & Customization Hub Research (`[[MODULAR_FEATURE_FLAG_ENGINE_AND_STATE_SNAPSHOT_CUSTOMIZATION_HUB_RESEARCH]]`)
 - [x] Architecture Decision Record ADR-010 Logged (`[[ADR-010-Modular-Feature-Flags-State-Snapshot-Backup-and-Customization-Hub]]`)
 
----
-
-## 🟡 In Progress / Active Sprints (Phases 5 & 6)
-
 ### Phase 5: Sovereign Customization, Staged Toggles & Adaptive Hardware Profiler
 - [x] Implement `CustomizationContext.jsx` & `StagedConfirmationBar.jsx` for atomic feature toggling
 - [x] Build 5-studio `CustomizationPage.jsx` (Feature Modules, Visual Studio, Dashboard Grid, Currency, Snapshots)
@@ -68,17 +64,11 @@ Use this interactive board in Obsidian or during Antigravity pair-programming se
 - [x] Implement WebAuthn biometric passkeys (`webAuthnLock.js`) and Web Share Target for direct receipt ingestion
 - [x] Build `HabitNudgesCard.jsx` and `PwaInstallPrompt.jsx` components
 
----
-
-## ⚪ Backlog / Future Enhancements (Phases 7, 8 & 9)
-
 ### Phase 7: Local Sovereign OCR & Multi-Tier AI Fallback Pipeline
 - [x] Containerize Local Python OCR Sidecar (`server/services/ocr-sidecar/` with Baidu Unlimited-OCR 3B + GBNF)
 - [x] Implement `localSlmClient.js` client for Ollama / local host Qwen2.5-1.5B
 - [x] Implement `localOcrService.js` adapter and integrate into `unifiedAIClient.js` 3-tier cascade
 - [x] In-Browser WebGPU AI execution via `webLlmService.js`
-
----
 
 ### Phase 8: Stock Market, Verified Schemes & Passive Income Ecosystem
 - [x] Real-time broker WebSocket integration (`Zerodha`, `Dhan`, `Alpaca`, `Polygon.io`) with `brokerClient.js`
@@ -88,9 +78,31 @@ Use this interactive board in Obsidian or during Antigravity pair-programming se
 - [x] Debt Prepayment vs Investment Arbitrage Solver (`arbitrageSolver.js`)
 - [x] Stock Market & Passive Income Studio UI (`PassiveIncomePage.jsx`)
 
----
-
 ### Phase 9: Family Multi-User Ledgers, Bank SMS Webhooks & Enterprise Exports
 - [x] Family multi-user sub-account permissions & shared family vault budgets (`FamilyVault.js`, `familyService.js`, `FamilyVaultPage.jsx`)
 - [x] Bank SMS Webhook parser (`smsParserEngine.js`) for automated background ingestion and instant SMS paste
 - [x] Vector PDF & styled Excel report export generator (`reportExportEngine.js`) for institutional-grade financial statements
+
+### Phase 10: State-of-the-Art Voice AI Engine & Sovereign Modular Model Hub
+- [x] Deep Research & Benchmarks for Local STT, OCR, SLM & Embeddings (`[[LOCAL_VOICE_AI_AND_ON_DEMAND_MODULAR_INTELLIGENCE_RESEARCH]]`)
+- [x] Architecture Decision Record ADR-013 Logged (`[[ADR-013-Local-Voice-AI-and-On-Demand-Modular-Intelligence-Hub]]`)
+- [x] Feature Spec Documented (`[[Local-Voice-AI-and-Modular-Model-Hub]]`)
+- [x] Continuous Web Speech recognition with auto-reconnect watchdog (`VoiceQuickLogModal.jsx`)
+- [x] Live 24-Band Web Audio API frequency equalizer & dynamic volume pulse ring
+- [x] Multilingual accent selector (`en-IN`, `en-US`, `en-GB`, `hi-IN`, `es-ES`, etc.)
+- [x] Multi-entity financial NLP parser for amounts, 15+ categories, payment modes, and dates (`localVoiceAiService.js`)
+- [x] On-Demand Local AI Model Management Studio in Customization Hub (`LocalAiModelStudio.jsx`)
+
+### Phase 11: Institutional Monte Carlo Stochastic Engine, 6-Tier FIRE & What-If Sandbox (v3.7.0)
+- [x] Geometric Brownian Motion (GBM) with Ito calculus volatility drag correction ($-\frac{1}{2}\sigma^2$) (`fireSimulatorEngine.js`)
+- [x] Merton Jump Diffusion Model with Poisson crash/rally jumps ($\lambda \approx 0.12, \mu_J \approx -18\%$)
+- [x] Empirical Historical Bootstrap Resampling (1970–2024 economic cycles)
+- [x] Multi-Asset Covariance Allocation (Equity, Debt, Gold, Cash) & Dynamic Age Glidepaths
+- [x] Scaled high-performance paths (1,000 to 50,000 runs with `Float64Array`)
+- [x] Quantitative Risk KPI metrics: Survival Rate (%), Ruin Probability (%), VaR 95%, CVaR (Expected Shortfall), Sharpe Ratio, Max Drawdown
+- [x] 6-Tier Comprehensive FIRE Spectrum (Barista, Lean, Standard, Chubby, Fat, Coast FIRE) with dynamic SWR slider (2.5% to 6.0%)
+- [x] Real-time parameter calibration sliders & freedom countdown clock
+- [x] What-If Sandbox 1-click presets & timed capital event shocks with dual-area trajectory chart
+- [x] Executive Quantitative Portfolio Synthesis Card & In-App "How It Works & Quant Guide" Interactive Tutorial Modal
+- [x] Fixed template literal string interpolation bug for Coast FIRE target and raw LaTeX math displays
+- [x] Synchronized Obsidian Knowledge Vault, ADR-008, API Contracts, and 100% passing test suite (`fireSimulation.test.js`)
