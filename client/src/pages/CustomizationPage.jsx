@@ -35,6 +35,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCustomization } from '../context/CustomizationContext';
 import DevicePerformanceCard from '../components/Settings/DevicePerformanceCard';
+import LocalAiModelStudio from '../components/Customization/LocalAiModelStudio';
 
 export const CustomizationPage = () => {
   const {
@@ -334,6 +335,7 @@ export const CustomizationPage = () => {
       <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
         {[
           { id: 'modules', label: 'Feature Modules', icon: Layers },
+          { id: 'models', label: 'AI Models & Voice', icon: Bot },
           { id: 'theme', label: 'Theme Studio', icon: Palette },
           { id: 'dashboard', label: 'Dashboard Studio', icon: LayoutGrid },
           { id: 'regional', label: 'Currency & Regional', icon: Globe },
@@ -927,6 +929,18 @@ export const CustomizationPage = () => {
                 </div>
               )}
             </div>
+          </motion.div>
+        )}
+
+        {/* TAB 7: AI MODELS & VOICE STUDIO */}
+        {activeTab === 'models' && (
+          <motion.div
+            key="models"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+          >
+            <LocalAiModelStudio />
           </motion.div>
         )}
       </AnimatePresence>
