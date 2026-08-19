@@ -3,6 +3,7 @@ import { Plus, Trash2, PieChart as PieIcon, ShieldCheck, AlertTriangle } from 'l
 import { motion } from 'framer-motion';
 import { apiFetch } from '../api/client';
 import { PinCard } from '../components/UI/PinCard';
+import { CountUp } from '../components/UI/CountUp';
 import { usePrivacy } from '../context/PrivacyContext';
 
 export const BudgetsPage = ({ categories = [] }) => {
@@ -99,29 +100,33 @@ export const BudgetsPage = ({ categories = [] }) => {
       {/* Category Budget Grid */}
       {budgetList.length > 0 ? (
         <div className="grid-masonry">
-          {budgetList.map((b) => {
+          {budgetList.map((b, idx) => {
             const isOver = b.isOverBudget || (b.percentage || 0) > 100;
+            const isHighAlert = (b.percentage || 0) >= 90;
             return (
               <motion.div
                 key={b.budgetId || b.category}
-                whileHover={{ y: -2 }}
-                className="glass-card"
+                whileHover={{ scale: 1.02, y: -2 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                className="glass-card glass-card-hover-border card-lift-glow"
                 style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '12px' }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <h3 className="heading-md" style={{ margin: 0, color: '#F1F5F9' }}>{b.category}</h3>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <span
+                      className={isHighAlert ? 'budget-alert-pulse' : ''}
                       style={{
                         padding: '2px 8px',
                         borderRadius: '999px',
                         fontSize: '11px',
                         fontWeight: 700,
-                        background: isOver ? 'rgba(244, 63, 94, 0.15)' : 'rgba(0, 255, 135, 0.12)',
-                        color: isOver ? '#FB7185' : '#00FF87',
-                        border: `1px solid ${isOver ? 'rgba(244, 63, 94, 0.3)' : 'rgba(0, 255, 135, 0.3)'}`,
+                        background: isOver ? 'rgba(244, 63, 94, 0.15)' : isHighAlert ? 'rgba(244, 63, 94, 0.2)' : 'rgba(0, 255, 135, 0.12)',
+                        color: isOver ? '#FB7185' : isHighAlert ? '#FF4D6A' : '#00FF87',
+                        border: `1px solid ${isOver ? 'rgba(244, 63, 94, 0.5)' : isHighAlert ? 'rgba(244, 63, 94, 0.6)' : 'rgba(0, 255, 135, 0.3)'}`,
                       }}
                     >
+                      {isHighAlert && '⚡ '}
                       {b.percentage || 0}% Used
                     </span>
                     {b.budgetId && (
@@ -140,22 +145,25 @@ export const BudgetsPage = ({ categories = [] }) => {
 
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', color: '#94A3B8' }}>
                   <span className={isPrivacyMaskActive ? 'privacy-masked' : ''}>
-                    Spent: <strong className="tabular-nums" style={{ color: isOver ? '#FB7185' : '#F1F5F9' }}>₹{(b.spent || 0).toLocaleString()}</strong>
+                    Spent: <strong className="tabular-nums" style={{ color: isOver ? '#FB7185' : '#F1F5F9' }}><CountUp value={b.spent || 0} prefix="₹" /></strong>
                   </span>
                   <span className={isPrivacyMaskActive ? 'privacy-masked' : ''}>
-                    Limit: <strong className="tabular-nums" style={{ color: '#F1F5F9' }}>₹{(b.allocated || 0).toLocaleString()}</strong>
+                    Limit: <strong className="tabular-nums" style={{ color: '#F1F5F9' }}><CountUp value={b.allocated || 0} prefix="₹" /></strong>
                   </span>
                 </div>
 
-                {/* Progress Bar */}
+                {/* Staggered Animated Progress Bar */}
                 <div style={{ width: '100%', height: '6px', backgroundColor: 'rgba(255, 255, 255, 0.06)', borderRadius: '999px', overflow: 'hidden' }}>
-                  <div style={{
-                    height: '100%',
-                    width: `${Math.min(100, Math.max(0, b.percentage || 0))}%`,
-                    backgroundColor: isOver ? '#F43F5E' : (b.percentage || 0) > 80 ? '#F59E0B' : '#00FF87',
-                    borderRadius: '999px',
-                    transition: 'var(--transition)'
-                  }} />
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${Math.min(100, Math.max(0, b.percentage || 0))}%` }}
+                    transition={{ duration: 0.9, delay: 0.15 + idx * 0.1, ease: 'easeOut' }}
+                    style={{
+                      height: '100%',
+                      backgroundColor: isOver ? '#F43F5E' : (b.percentage || 0) > 80 ? '#F59E0B' : '#00FF87',
+                      borderRadius: '999px',
+                    }}
+                  />
                 </div>
 
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11.5px', color: isOver ? '#FB7185' : '#64748B' }}>

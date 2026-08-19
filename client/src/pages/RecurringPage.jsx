@@ -3,6 +3,7 @@ import { Plus, Edit2, Trash2, CheckCircle2, History, X, Repeat, Calendar } from 
 import { motion } from 'framer-motion';
 import { apiFetch, getLocalDateString } from '../api/client';
 import { PinCard } from '../components/UI/PinCard';
+import { CountUp } from '../components/UI/CountUp';
 import { usePrivacy } from '../context/PrivacyContext';
 
 export const RecurringPage = ({ categories = [] }) => {
@@ -200,6 +201,7 @@ export const RecurringPage = ({ categories = [] }) => {
         amount={totalMonthlyBurden}
         overlayPill={`${recurring.filter(r => r.active !== false).length} Active Subscriptions`}
         pillColor="violet"
+        sparklineData={[12, 16, 14, 20, 24, 22, 28, 30]}
         subtitle="Fixed monthly commitments automatically tracked"
       />
 
@@ -209,8 +211,9 @@ export const RecurringPage = ({ categories = [] }) => {
           {recurring.map((item) => (
             <motion.div
               key={item._id}
-              whileHover={{ y: -2 }}
-              className="glass-card"
+              whileHover={{ scale: 1.02, y: -2 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              className="glass-card glass-card-hover-border"
               style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '12px' }}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
@@ -238,7 +241,7 @@ export const RecurringPage = ({ categories = [] }) => {
 
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
                 <div className={`font-display tabular-nums ${isPrivacyMaskActive ? 'privacy-masked' : ''}`} style={{ fontSize: '24px', fontWeight: 800, color: '#00FF87' }}>
-                  ₹{(Number(item.amount) || 0).toLocaleString()}
+                  <CountUp value={Number(item.amount) || 0} prefix="₹" />
                 </div>
                 <span
                   style={{

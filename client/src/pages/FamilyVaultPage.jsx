@@ -23,6 +23,8 @@ import {
   X
 } from 'lucide-react';
 import { apiFetch } from '../api/client';
+import { CountUp } from '../components/UI/CountUp';
+import { FlowingSparkline } from '../components/UI/FlowingSparkline';
 
 export const FamilyVaultPage = () => {
   const [vaults, setVaults] = useState([]);
@@ -200,7 +202,12 @@ export const FamilyVaultPage = () => {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           {/* 4-CARD BENTO KPI GRID */}
           <div className="grid-kpi">
-            <div className="glass-card" style={{ padding: '18px 20px' }}>
+            <motion.div
+              whileHover={{ scale: 1.02, y: -2 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              className="glass-card glass-card-hover-border"
+              style={{ padding: '18px 20px' }}
+            >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
                 <span className="body-sm" style={{ color: '#94A3B8' }}>Pooled Monthly Spend</span>
                 <span style={{ padding: '2px 8px', borderRadius: '999px', fontSize: '10px', fontWeight: 800, background: 'rgba(244, 63, 94, 0.12)', color: '#F43F5E', border: '1px solid rgba(244, 63, 94, 0.3)' }}>
@@ -208,14 +215,22 @@ export const FamilyVaultPage = () => {
                 </span>
               </div>
               <div className="display-lg font-display tabular-nums" style={{ color: '#F8FAFC', margin: 0 }}>
-                {activeVault.currency || '₹'}{(vaultSummary?.totalPooledSpend || 0).toLocaleString()}
+                <CountUp value={vaultSummary?.totalPooledSpend || 0} prefix={activeVault.currency || '₹'} />
+              </div>
+              <div style={{ marginTop: '6px' }}>
+                <FlowingSparkline data={[14, 18, 22, 19, 26, 24, 30, 28]} color="#F43F5E" height={24} />
               </div>
               <span className="body-xs" style={{ color: '#64748B', display: 'block', marginTop: '4px' }}>
                 Across {activeVault.sharedExpenses?.length || 0} pooled bills
               </span>
-            </div>
+            </motion.div>
 
-            <div className="glass-card" style={{ padding: '18px 20px' }}>
+            <motion.div
+              whileHover={{ scale: 1.02, y: -2 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              className="glass-card glass-card-hover-border"
+              style={{ padding: '18px 20px' }}
+            >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
                 <span className="body-sm" style={{ color: '#94A3B8' }}>Active Members</span>
                 <span style={{ padding: '2px 8px', borderRadius: '999px', fontSize: '10px', fontWeight: 800, background: 'rgba(0, 240, 255, 0.12)', color: '#00F0FF', border: '1px solid rgba(0, 240, 255, 0.3)' }}>
@@ -223,14 +238,22 @@ export const FamilyVaultPage = () => {
                 </span>
               </div>
               <div className="display-lg font-display tabular-nums" style={{ color: '#00F0FF', margin: 0 }}>
-                {activeVault.members?.length || 1} Members
+                <CountUp value={activeVault.members?.length || 1} suffix=" Members" />
+              </div>
+              <div style={{ marginTop: '6px' }}>
+                <FlowingSparkline data={[10, 12, 15, 14, 18, 20, 22, 25]} color="#00F0FF" height={24} />
               </div>
               <span className="body-xs" style={{ color: '#64748B', display: 'block', marginTop: '4px' }}>
                 {activeVault.members?.filter(m => m.role === 'OWNER' || m.role === 'ADMIN').length || 1} Admins & Owners
               </span>
-            </div>
+            </motion.div>
 
-            <div className="glass-card" style={{ padding: '18px 20px' }}>
+            <motion.div
+              whileHover={{ scale: 1.02, y: -2 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              className="glass-card glass-card-hover-border"
+              style={{ padding: '18px 20px' }}
+            >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
                 <span className="body-sm" style={{ color: '#94A3B8' }}>Top Category</span>
                 <span style={{ padding: '2px 8px', borderRadius: '999px', fontSize: '10px', fontWeight: 800, background: 'rgba(0, 255, 135, 0.12)', color: '#00FF87', border: '1px solid rgba(0, 255, 135, 0.3)' }}>
@@ -240,12 +263,20 @@ export const FamilyVaultPage = () => {
               <div className="display-lg font-display" style={{ color: '#00FF87', margin: 0, fontSize: '20px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                 {vaultSummary?.topCategory || 'Groceries'}
               </div>
+              <div style={{ marginTop: '6px' }}>
+                <FlowingSparkline data={[12, 16, 20, 24, 22, 28, 26, 32]} color="#00FF87" height={24} />
+              </div>
               <span className="body-xs" style={{ color: '#64748B', display: 'block', marginTop: '4px' }}>
                 Highest shared household expense
               </span>
-            </div>
+            </motion.div>
 
-            <div className="glass-card" style={{ padding: '18px 20px' }}>
+            <motion.div
+              whileHover={{ scale: 1.02, y: -2 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              className="glass-card glass-card-hover-border"
+              style={{ padding: '18px 20px' }}
+            >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
                 <span className="body-sm" style={{ color: '#94A3B8' }}>Ledger Privacy</span>
                 <span style={{ padding: '2px 8px', borderRadius: '999px', fontSize: '10px', fontWeight: 800, background: 'rgba(139, 92, 246, 0.12)', color: '#A78BFA', border: '1px solid rgba(139, 92, 246, 0.3)' }}>
@@ -255,10 +286,13 @@ export const FamilyVaultPage = () => {
               <div className="display-lg font-display" style={{ color: '#A78BFA', margin: 0, fontSize: '20px' }}>
                 100% Isolated
               </div>
+              <div style={{ marginTop: '6px' }}>
+                <FlowingSparkline data={[25, 25, 25, 25, 25, 25, 25, 25]} color="#A78BFA" height={24} />
+              </div>
               <span className="body-xs" style={{ color: '#64748B', display: 'block', marginTop: '4px' }}>
                 Private accounts strictly hidden
               </span>
-            </div>
+            </motion.div>
           </div>
 
           {/* 2-COLUMN MAIN CONTENT: MEMBERS ROSTER & SHARED LEDGER */}

@@ -23,6 +23,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { apiFetch, API_BASE_URL } from '../api/client';
 import { usePrivacy } from '../context/PrivacyContext';
 import UPIPaymentModal from '../components/UPI/UPIPaymentModal';
+import { CountUp } from '../components/UI/CountUp';
+import { FlowingSparkline } from '../components/UI/FlowingSparkline';
 
 export const ExpensesPage = ({
   onAddExpense,
@@ -230,7 +232,11 @@ export const ExpensesPage = ({
                 border: `1px solid ${activeMode === 'expenses' ? 'rgba(255, 77, 77, 0.3)' : 'rgba(0, 255, 135, 0.3)'}`,
               }}
             >
-              {activeMode === 'expenses' ? `${expenseTotal} Expenses` : `${incomeTotal} Incomes`}
+              {activeMode === 'expenses' ? (
+                <CountUp value={expenseTotal} suffix=" Expenses" />
+              ) : (
+                <CountUp value={incomeTotal} suffix=" Incomes" />
+              )}
             </span>
           </div>
           <p className="body-sm" style={{ marginTop: '4px' }}>
@@ -516,7 +522,7 @@ export const ExpensesPage = ({
 
       {/* Ledger Container */}
       <div
-        className="glass-card"
+        className="glass-card glass-card-hover-border"
         style={{
           borderRadius: '20px',
           padding: '20px',

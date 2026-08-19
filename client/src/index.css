@@ -1689,3 +1689,153 @@ textarea.glass-input, textarea.input-field {
   border-color: rgba(0, 240, 255, 0.4) !important;
   box-shadow: 0 0 20px rgba(0, 240, 255, 0.15) !important;
 }
+
+/* ==========================================================================
+   Continuous Conic-Gradient Border Loop & Ambient Micro-Interactions
+   ========================================================================== */
+
+@property --gradient-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes conic-border-spin {
+  0% {
+    --gradient-angle: 0deg;
+  }
+  100% {
+    --gradient-angle: 360deg;
+  }
+}
+
+@keyframes ambient-glow-pulse {
+  0%, 100% {
+    opacity: 0.25;
+    transform: scale(1) translateY(0);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.06) translateY(-2px);
+  }
+}
+
+@keyframes ambient-shimmer-sweep {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Glass Card Dynamic Conic Border on Hover */
+.glass-card-hover-border {
+  position: relative;
+  isolation: isolate;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+}
+
+.glass-card-hover-border::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: conic-gradient(
+    from var(--gradient-angle, 0deg) at 50% 50%,
+    transparent 0%,
+    var(--color-mint) 25%,
+    var(--color-cyan) 50%,
+    var(--color-violet) 75%,
+    transparent 100%
+  );
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 2;
+  animation: conic-border-spin 4s linear infinite;
+}
+
+.glass-card-hover-border:hover::after {
+  opacity: 1;
+}
+
+.glass-card-hover-border:hover {
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.55), 0 0 20px rgba(0, 255, 135, 0.12);
+}
+
+/* KPI Ambient Backdrop and Grid Wrapper */
+.kpi-grid-ambient-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.kpi-grid-ambient-glow {
+  position: absolute;
+  top: -24px;
+  left: 2%;
+  right: 2%;
+  height: 160px;
+  background: radial-gradient(ellipse 65% 50% at 50% 30%, rgba(0, 255, 135, 0.12) 0%, rgba(0, 240, 255, 0.08) 35%, rgba(139, 92, 246, 0.05) 60%, transparent 80%);
+  filter: blur(48px);
+  pointer-events: none;
+  z-index: 0;
+  animation: ambient-glow-pulse 7s ease-in-out infinite alternate;
+}
+
+.ambient-card-glow-shimmer {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.03) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ==========================================================================
+   Card Lift & Border Glow Micro-Interactions (Tailwind / CSS Enhanced)
+   ========================================================================== */
+.card-lift-glow,
+.glass-card {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.25s ease !important;
+}
+
+.card-lift-glow:hover,
+.glass-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(0, 255, 135, 0.4) !important;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6), 0 0 24px rgba(0, 255, 135, 0.16) !important;
+}
+
+/* ==========================================================================
+   High Budget Alert Pulse (Animated for categories >= 90% capacity)
+   ========================================================================== */
+@keyframes alert-badge-pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.8), 0 0 10px rgba(244, 63, 94, 0.4);
+  }
+  50% {
+    transform: scale(1.06);
+    box-shadow: 0 0 0 6px rgba(244, 63, 94, 0), 0 0 18px rgba(244, 63, 94, 0.65);
+  }
+}
+
+.budget-alert-pulse {
+  animation: alert-badge-pulse 1.6s ease-in-out infinite !important;
+  background: rgba(244, 63, 94, 0.22) !important;
+  color: #FF4D6A !important;
+  border: 1px solid rgba(244, 63, 94, 0.65) !important;
+  font-weight: 800 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+}
+
+

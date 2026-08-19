@@ -15,6 +15,8 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { apiFetch } from '../api/client';
 import { usePrivacy } from '../context/PrivacyContext';
+import { CountUp } from '../components/UI/CountUp';
+import { FlowingSparkline } from '../components/UI/FlowingSparkline';
 
 export const TripVaultPage = () => {
   const { isPrivacyMaskActive } = usePrivacy();
@@ -285,47 +287,77 @@ export const TripVaultPage = () => {
       ) : (
         <>
           {/* 1. Trip Overview Strip */}
+          {/* 1. Trip Overview Strip with Flowing Running Sparklines */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px' }}>
-            <div className="glass-card" style={{ padding: '20px' }}>
+            <motion.div
+              whileHover={{ scale: 1.02, y: -2 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              className="glass-card glass-card-hover-border"
+              style={{ padding: '20px' }}
+            >
               <div style={{ fontSize: '12px', fontWeight: 600, color: '#94A3B8', textTransform: 'uppercase' }}>Trip Budget (INR)</div>
               <div
                 className={`font-display ${isPrivacyMaskActive ? 'privacy-masked' : ''}`}
                 style={{ fontSize: '28px', fontWeight: 800, color: '#F1F5F9', marginTop: '4px' }}
               >
-                ₹{(currentTrip?.budgetBaseCurrency || 0).toLocaleString()}
+                <CountUp value={currentTrip?.budgetBaseCurrency || 0} prefix="₹" />
+              </div>
+              <div style={{ marginTop: '8px' }}>
+                <FlowingSparkline data={[20, 22, 25, 24, 28, 27, 30, 32]} color="#F1F5F9" height={24} />
               </div>
               <div style={{ fontSize: '12px', color: '#94A3B8', marginTop: '4px' }}>
                 {currentTrip?.destination}
               </div>
-            </div>
+            </motion.div>
 
-            <div className="glass-card" style={{ padding: '20px' }}>
+            <motion.div
+              whileHover={{ scale: 1.02, y: -2 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              className="glass-card glass-card-hover-border"
+              style={{ padding: '20px' }}
+            >
               <div style={{ fontSize: '12px', fontWeight: 600, color: '#94A3B8', textTransform: 'uppercase' }}>Total Spent So Far</div>
               <div
                 className={`font-display ${isPrivacyMaskActive ? 'privacy-masked' : ''}`}
                 style={{ fontSize: '28px', fontWeight: 800, color: '#00F0FF', marginTop: '4px' }}
               >
-                ₹{totalSpent.toLocaleString()}
+                <CountUp value={totalSpent} prefix="₹" />
+              </div>
+              <div style={{ marginTop: '8px' }}>
+                <FlowingSparkline data={[10, 15, 18, 24, 22, 28, 32, 36]} color="#00F0FF" height={24} />
               </div>
               <div style={{ fontSize: '12px', color: '#00F0FF', marginTop: '4px' }}>
                 {burnRate}% Budget Burned
               </div>
-            </div>
+            </motion.div>
 
-            <div className="glass-card" style={{ padding: '20px' }}>
+            <motion.div
+              whileHover={{ scale: 1.02, y: -2 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              className="glass-card glass-card-hover-border"
+              style={{ padding: '20px' }}
+            >
               <div style={{ fontSize: '12px', fontWeight: 600, color: '#94A3B8', textTransform: 'uppercase' }}>Remaining Vault Budget</div>
               <div
                 className={`font-display ${isPrivacyMaskActive ? 'privacy-masked' : ''}`}
                 style={{ fontSize: '28px', fontWeight: 800, color: remaining > 0 ? '#00FF87' : '#FF7D7D', marginTop: '4px' }}
               >
-                ₹{remaining.toLocaleString()}
+                <CountUp value={remaining} prefix="₹" />
+              </div>
+              <div style={{ marginTop: '8px' }}>
+                <FlowingSparkline data={[36, 32, 28, 24, 20, 18, 14, 10]} color={remaining > 0 ? '#00FF87' : '#FF7D7D'} height={24} />
               </div>
               <div style={{ fontSize: '12px', color: '#94A3B8', marginTop: '4px' }}>
                 Safe spending runway
               </div>
-            </div>
+            </motion.div>
 
-            <div className="glass-card" style={{ padding: '20px', position: 'relative' }}>
+            <motion.div
+              whileHover={{ scale: 1.02, y: -2 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              className="glass-card glass-card-hover-border"
+              style={{ padding: '20px', position: 'relative' }}
+            >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div style={{ fontSize: '12px', fontWeight: 600, color: '#94A3B8', textTransform: 'uppercase' }}>Live Exchange Rate</div>
                 <button
@@ -341,30 +373,41 @@ export const TripVaultPage = () => {
               <div className="font-display" style={{ fontSize: '24px', fontWeight: 800, color: '#FFD700', marginTop: '4px' }}>
                 1 {currentTrip?.tripCurrency} = ₹{currentRate}
               </div>
+              <div style={{ marginTop: '8px' }}>
+                <FlowingSparkline data={[24, 25, 23, 26, 24, 27, 25, 26]} color="#FFD700" height={24} />
+              </div>
               <div style={{ fontSize: '11px', color: '#00FF87', marginTop: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
                 <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#00FF87' }} />
                 <span>LIVE FX FEED ({fxSource?.replace(/_/g, ' ')})</span>
               </div>
-            </div>
+            </motion.div>
           </div>
 
           {/* 2. Budget Burn Progress Bar */}
-          <div className="glass-card" style={{ padding: '20px' }}>
+          <motion.div
+            whileHover={{ y: -1 }}
+            className="glass-card glass-card-hover-border"
+            style={{ padding: '20px' }}
+          >
             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', color: '#94A3B8', marginBottom: '8px' }}>
               <span>Trip Budget Consumption ({burnRate}%)</span>
-              <span>₹{totalSpent.toLocaleString()} / ₹{(currentTrip?.budgetBaseCurrency || 0).toLocaleString()}</span>
+              <span>
+                <CountUp value={totalSpent} prefix="₹" /> / <CountUp value={currentTrip?.budgetBaseCurrency || 0} prefix="₹" />
+              </span>
             </div>
             <div style={{ width: '100%', height: '10px', borderRadius: '999px', background: 'rgba(255, 255, 255, 0.08)', overflow: 'hidden' }}>
-              <div
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: `${Math.min(100, Math.max(0, burnRate))}%` }}
+                transition={{ duration: 1.1, ease: 'easeOut' }}
                 style={{
-                  width: `${burnRate}%`,
                   height: '100%',
                   background: burnRate > 90 ? '#FF7D7D' : 'linear-gradient(90deg, #00FF87, #00F0FF)',
                   borderRadius: '999px',
                 }}
               />
             </div>
-          </div>
+          </motion.div>
 
           {/* 3. Multi-Currency Travel Expense Ledger */}
           <div className="glass-card" style={{ padding: '24px' }}>

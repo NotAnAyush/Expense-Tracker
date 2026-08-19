@@ -18,6 +18,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { apiFetch } from '../api/client';
 import { usePrivacy } from '../context/PrivacyContext';
 import { AddDebtModal } from '../components/Debt/AddDebtModal';
+import { CountUp } from '../components/UI/CountUp';
+import { FlowingSparkline } from '../components/UI/FlowingSparkline';
 
 export const DebtPayoffPage = () => {
   const { isPrivacyMaskActive } = usePrivacy();
@@ -188,45 +190,69 @@ export const DebtPayoffPage = () => {
         </div>
       ) : (
         <>
-          {/* 1. KPI Top Summary Strip */}
+          {/* 1. KPI Top Summary Strip with Flowing Running Sparklines */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px' }}>
-            <div className="glass-card" style={{ padding: '20px' }}>
+            <motion.div
+              whileHover={{ scale: 1.02, y: -2 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              className="glass-card glass-card-hover-border"
+              style={{ padding: '20px' }}
+            >
               <div style={{ fontSize: '12px', fontWeight: 600, color: '#94A3B8', textTransform: 'uppercase' }}>Total Outstanding Debt</div>
               <div
                 className={`font-display ${isPrivacyMaskActive ? 'privacy-masked' : ''}`}
                 style={{ fontSize: '28px', fontWeight: 800, color: '#FF7D7D', marginTop: '4px' }}
               >
-                ₹{totalBalance.toLocaleString()}
+                <CountUp value={totalBalance} prefix="₹" />
+              </div>
+              <div style={{ marginTop: '8px' }}>
+                <FlowingSparkline data={[35, 30, 26, 22, 18, 14, 10, 6]} color="#FF7D7D" height={28} />
               </div>
               <div style={{ fontSize: '12px', color: '#94A3B8', marginTop: '4px' }}>
                 Across {activeCount} active loan accounts
               </div>
-            </div>
+            </motion.div>
 
-            <div className="glass-card" style={{ padding: '20px' }}>
+            <motion.div
+              whileHover={{ scale: 1.02, y: -2 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              className="glass-card glass-card-hover-border"
+              style={{ padding: '20px' }}
+            >
               <div style={{ fontSize: '12px', fontWeight: 600, color: '#94A3B8', textTransform: 'uppercase' }}>Total Minimum Due / Month</div>
               <div
                 className={`font-display ${isPrivacyMaskActive ? 'privacy-masked' : ''}`}
                 style={{ fontSize: '28px', fontWeight: 800, color: '#FFD700', marginTop: '4px' }}
               >
-                ₹{totalMinDue.toLocaleString()}
+                <CountUp value={totalMinDue} prefix="₹" />
+              </div>
+              <div style={{ marginTop: '8px' }}>
+                <FlowingSparkline data={[20, 22, 21, 24, 23, 25, 24, 26]} color="#FFD700" height={28} />
               </div>
               <div style={{ fontSize: '12px', color: '#94A3B8', marginTop: '4px' }}>
                 Baseline obligatory monthly commitment
               </div>
-            </div>
+            </motion.div>
 
-            <div className="glass-card" style={{ padding: '20px' }}>
+            <motion.div
+              whileHover={{ scale: 1.02, y: -2 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              className="glass-card glass-card-hover-border"
+              style={{ padding: '20px' }}
+            >
               <div style={{ fontSize: '12px', fontWeight: 600, color: '#94A3B8', textTransform: 'uppercase' }}>Projected Debt-Free Date</div>
               <div className="font-display" style={{ fontSize: '24px', fontWeight: 800, color: '#00FF87', marginTop: '4px' }}>
                 {currentStrategyStats?.debtFreeDate
                   ? new Date(currentStrategyStats.debtFreeDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
                   : '—'}
               </div>
+              <div style={{ marginTop: '8px' }}>
+                <FlowingSparkline data={[8, 12, 16, 22, 26, 30, 34, 38]} color="#00FF87" height={28} />
+              </div>
               <div style={{ fontSize: '12px', color: '#00FF87', marginTop: '4px' }}>
                 {currentStrategyStats?.months || 0} months to total freedom
               </div>
-            </div>
+            </motion.div>
           </div>
 
           {/* 2. Interactive Strategy Comparator & Accelerated Slider Banner */}

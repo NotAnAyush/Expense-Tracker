@@ -1,6 +1,7 @@
 import React from 'react';
 import { ShieldCheck, TrendingUp, AlertTriangle, Sparkles, Target, Zap, ArrowRight, Award } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { CountUp } from '../UI/CountUp';
 import { usePrivacy } from '../../context/PrivacyContext';
 
 export const FinancialHealthCard = ({ healthData }) => {
@@ -23,8 +24,10 @@ export const FinancialHealthCard = ({ healthData }) => {
   else scoreColor = '#FB7185'; // Novice Coral
 
   return (
-    <div
-      className="glass-card"
+    <motion.div
+      whileHover={{ y: -2 }}
+      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+      className="glass-card glass-card-hover-border"
       style={{
         padding: '22px 24px',
         display: 'flex',
@@ -106,15 +109,15 @@ export const FinancialHealthCard = ({ healthData }) => {
               strokeDasharray={circumference}
               initial={{ strokeDashoffset: circumference }}
               animate={{ strokeDashoffset }}
-              transition={{ duration: 0.8, ease: 'easeOut' }}
+              transition={{ duration: 1.2, ease: 'easeOut' }}
               strokeLinecap="round"
             />
           </svg>
 
-          {/* Center Score */}
+          {/* Center Score with Spring CountUp */}
           <div style={{ position: 'absolute', textAlign: 'center' }} className={isPrivacyMaskActive ? 'privacy-masked' : ''}>
             <div className="font-display tabular-nums" style={{ fontSize: '30px', fontWeight: 800, color: '#FFFFFF', lineHeight: 1 }}>
-              {score}
+              <CountUp value={score} />
             </div>
             <div style={{ fontSize: '10px', color: '#64748B', fontWeight: 700, textTransform: 'uppercase', marginTop: '2px' }}>
               / 100
@@ -122,23 +125,23 @@ export const FinancialHealthCard = ({ healthData }) => {
           </div>
         </div>
 
-        {/* 5-Pillar Score Meters */}
+        {/* 5-Pillar Score Meters with Staggered Sequence Delays */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          {Object.entries(pillars).map(([key, p]) => {
+          {Object.entries(pillars).map(([key, p], idx) => {
             const pct = Math.round((p.score / p.max) * 100);
             return (
               <div key={key} style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
                   <span style={{ fontWeight: 600, color: '#E2E8F0' }}>{p.label}</span>
                   <span className="tabular-nums" style={{ fontWeight: 700, color: pct >= 80 ? '#00FF87' : pct >= 50 ? '#00F0FF' : '#FB7185' }}>
-                    {p.score}/{p.max} pts ({pct}%)
+                    <CountUp value={p.score} />/{p.max} pts ({pct}%)
                   </span>
                 </div>
                 <div style={{ width: '100%', height: '5px', borderRadius: '999px', background: 'rgba(255, 255, 255, 0.06)', overflow: 'hidden' }}>
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${pct}%` }}
-                    transition={{ duration: 0.6, delay: 0.05 }}
+                    transition={{ duration: 0.85, delay: 0.1 + idx * 0.1, ease: 'easeOut' }}
                     style={{
                       height: '100%',
                       borderRadius: '999px',
@@ -186,6 +189,6 @@ export const FinancialHealthCard = ({ healthData }) => {
           </div>
         </div>
       )}
-    </div>
+    </motion.div>
   );
 };

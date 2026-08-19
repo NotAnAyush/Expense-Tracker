@@ -3,6 +3,8 @@ import { Sparkles, AlertOctagon, TrendingUp, TrendingDown, Zap, ArrowUpRight } f
 import { motion } from 'framer-motion';
 import { apiFetch } from '../api/client';
 import { FinancialHealthCard } from '../components/Dashboard/FinancialHealthCard';
+import { RealtimeStreamCard } from '../components/Dashboard/RealtimeStreamCard';
+import { CountUp } from '../components/UI/CountUp';
 import { usePrivacy } from '../context/PrivacyContext';
 
 export const AnalyticsPage = () => {
@@ -61,6 +63,12 @@ export const AnalyticsPage = () => {
         </p>
       </div>
 
+      {/* Real-time Streaming Velocity Waveform */}
+      <RealtimeStreamCard
+        title="Live Statistical Spend Velocity"
+        subtitle="Sub-second statistical delta velocity and real-time ledger pacing stream"
+      />
+
       {/* Financial Health Index 5-Pillar Scorecard */}
       {financialHealth && (
         <FinancialHealthCard healthData={financialHealth} />
@@ -71,7 +79,7 @@ export const AnalyticsPage = () => {
         <motion.div
           whileHover={{ y: -1 }}
           transition={{ duration: 0.15 }}
-          className="glass-card"
+          className="glass-card glass-card-hover-border"
           style={{
             padding: '20px 24px',
             background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(10, 14, 24, 0.9) 100%)',
@@ -91,7 +99,12 @@ export const AnalyticsPage = () => {
       )}
 
       {/* MoM Category Deltas Table Card */}
-      <div className="glass-card" style={{ padding: '20px 24px' }}>
+      <motion.div
+        whileHover={{ y: -2 }}
+        transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+        className="glass-card glass-card-hover-border"
+        style={{ padding: '20px 24px' }}
+      >
         <h3 className="heading-md" style={{ color: '#F1F5F9', marginBottom: '14px' }}>
           Month-Over-Month Category Changes
         </h3>
@@ -113,10 +126,10 @@ export const AnalyticsPage = () => {
                       {cat.category}
                     </td>
                     <td className={`tabular-nums ${isPrivacyMaskActive ? 'privacy-masked' : ''}`} style={{ color: '#F1F5F9', fontWeight: 600 }}>
-                      ₹{(Number(cat.currentAmount) || 0).toLocaleString()}
+                      <CountUp value={Number(cat.currentAmount) || 0} prefix="₹" />
                     </td>
                     <td className={`tabular-nums ${isPrivacyMaskActive ? 'privacy-masked' : ''}`} style={{ color: '#94A3B8' }}>
-                      ₹{(Number(cat.previousAmount) || 0).toLocaleString()}
+                      <CountUp value={Number(cat.previousAmount) || 0} prefix="₹" />
                     </td>
                     <td
                       className={`tabular-nums ${isPrivacyMaskActive ? 'privacy-masked' : ''}`}
@@ -138,10 +151,15 @@ export const AnalyticsPage = () => {
             No month-over-month category variance recorded yet. Log expenses across months to see delta trends.
           </div>
         )}
-      </div>
+      </motion.div>
 
       {/* Flagged Anomalies Card */}
-      <div className="glass-card" style={{ padding: '20px 24px' }}>
+      <motion.div
+        whileHover={{ y: -2 }}
+        transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+        className="glass-card glass-card-hover-border"
+        style={{ padding: '20px 24px' }}
+      >
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px' }}>
           <AlertOctagon size={18} color="#FB7185" />
           <h3 className="heading-md" style={{ color: '#F1F5F9', margin: 0 }}>
@@ -170,7 +188,7 @@ export const AnalyticsPage = () => {
                 </div>
                 <div style={{ textAlign: 'right' }}>
                   <div className={`font-display tabular-nums ${isPrivacyMaskActive ? 'privacy-masked' : ''}`} style={{ fontWeight: 800, color: '#FB7185', fontSize: '16px' }}>
-                    ₹{(Number(anom.amount) || 0).toLocaleString()}
+                    <CountUp value={Number(anom.amount) || 0} prefix="₹" />
                   </div>
                   <span style={{ fontSize: '10.5px', color: '#FB7185', background: 'rgba(244, 63, 94, 0.12)', padding: '1px 6px', borderRadius: '4px', display: 'inline-block', marginTop: '2px' }}>
                     {anom.deviationFactor || '1.5'}x Std Dev
@@ -184,7 +202,7 @@ export const AnalyticsPage = () => {
             🛡️ All transaction patterns match historical standard distribution.
           </div>
         )}
-      </div>
+      </motion.div>
     </div>
   );
 };

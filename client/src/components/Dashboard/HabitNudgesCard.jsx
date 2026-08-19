@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Activity, Zap, ShieldCheck, AlertCircle, Clock, Sparkles, TrendingUp, Moon } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { apiFetch } from '../../api/client';
+import { CountUp } from '../UI/CountUp';
 import { calculateLocalHabitProfile } from '../../services/localHabitEngine';
 
 export const HabitNudgesCard = ({ expenses = [], incomes = [] }) => {
@@ -46,8 +48,10 @@ export const HabitNudgesCard = ({ expenses = [], incomes = [] }) => {
   const euphoria = profile?.euphoria || { hasEuphoriaSpike: false };
 
   return (
-    <div
-      className="glass-card"
+    <motion.div
+      whileHover={{ y: -2 }}
+      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+      className="glass-card glass-card-hover-border"
       style={{
         padding: '22px',
         display: 'flex',
@@ -98,7 +102,7 @@ export const HabitNudgesCard = ({ expenses = [], incomes = [] }) => {
               fontFamily: 'var(--font-mono)',
             }}
           >
-            Score: {score}/100
+            Score: <CountUp value={score} suffix="/100" />
           </div>
         </div>
 
@@ -163,7 +167,7 @@ export const HabitNudgesCard = ({ expenses = [], incomes = [] }) => {
           ))}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
