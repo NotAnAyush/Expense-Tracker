@@ -4,11 +4,39 @@ tags:
   - tasks
   - changelog
   - history
-version: 3.8.0
+version: 3.9.0
 last_updated: 2026-08-19
 ---
 
 # 📜 Expense Tracker V2 — Changelog & Version History
+
+---
+
+## `v3.9.0` — Live Dynamic Data Pipelines, Multi-Tier FX Engine, Central Bank Calibration & Auto-Update Radar (2026-08-19)
+- **Multi-Tier Live FX Engine (`server/src/services/fx/fxService.js`, `server/src/controllers/tripVaultController.js`)**:
+  - Replaced static rates table with asynchronous 4-tier live currency pipeline:
+    - Tier 1: Open Exchange Rates API (`open.er-api.com`) supporting 160+ currency pairs.
+    - Tier 2: Frankfurter API (`api.frankfurter.app`).
+    - Tier 3: Yahoo Finance Forex chart rates.
+    - Tier 4: Institutional deterministic baselines.
+  - Implemented 15-minute TTL cache, `forceRefresh` support, `POST /api/fx/convert` endpoint, and instant synchronous + async conversion methods.
+- **Universal Dynamic Market Feed (`server/src/services/market/brokerClient.js`)**:
+  - Expanded symbol registry covering Indian Equities (NSE), US Equities (NYSE/NASDAQ), Global Indices, Commodities (Gold/Silver Spot), and Crypto (BTC-INR, ETH-INR, SOL).
+  - Built universal dynamic ticker detection allowing users to search and add any stock/crypto ticker symbol on the fly.
+  - Added in-memory caching with 30-second TTL and `forceRefresh` bypass.
+- **Macroeconomic & Sovereign Intelligence Service (`server/src/services/market/macroService.js`)**:
+  - Dedicated service synthesizing real-time monetary policy benchmarks: RBI Repo Rate (6.50%), US Fed Funds (5.25%), India CPI Inflation (5.40%), 10-Year Benchmark G-Sec Yield (7.12%), and live 24K Spot Gold per gram.
+  - Created `GET /api/market/macro` endpoint for live macroeconomic calibration.
+- **Dynamic Real Yield Sovereign Radar (`server/src/services/market/schemeRadarService.js`)**:
+  - Integrated `MacroService` to dynamically calculate real inflation-adjusted yields ($R_{\text{real}} = R_{\text{nominal}} - \text{CPI}_{\text{live}}$) across all T-Bills, Government Savings Schemes (SCSS, SSY, NSC, PPF, KVP, POMIS), and High-Yield Bank FDs.
+- **Frontend Auto-Updating Radar & Dynamic UI (`PassiveIncomePage.jsx`, `WealthSimulatorPage.jsx`, `TripVaultPage.jsx`, `DashboardPage.jsx`)**:
+  - **Passive Income Radar**: Real-time Macroeconomic Benchmark Strip, 30-second countdown auto-update loop with toggle, animated pulse radar badge, manual refresh button, and dynamic symbol search & watchlist.
+  - **Wealth Simulator**: 1-Click "Sync Live Macro" button calibrating expected returns and inflation directly against RBI/CPI ground truth.
+  - **Trip Vault & Dashboard**: Added live FX feed indicators and on-demand refresh triggers.
+- **Testing & Documentation**:
+  - Expanded test suites (34 test suites, 232/232 tests passing with 0 regressions).
+  - Logged Architecture Decision Record `[[ADR-015-Live-Dynamic-Data-Pipelines-and-Resilient-Market-Sync]]`.
+  - Updated all Obsidian Knowledge Vault architecture documents, feature specs, and task matrices.
 
 ---
 
@@ -28,7 +56,6 @@ last_updated: 2026-08-19
 ---
 
 ## `v3.8.0` — Real-Time Multi-Asset Live Market Feeds, Official Sovereign Yields, & Dynamic Maturity Calculator (2026-08-19)
-
 - **Live Multi-Asset Exchange Ingestion Engine (`brokerClient.js`)**:
   - Connected live real-time price feeds for major Indian equities and indices (`^NSEI`, `^BSESN`, `RELIANCE.NS`, `TCS.NS`, `HDFCBANK.NS`, `INFY.NS`, `ICICIBANK.NS`, `SBIN.NS`, `GOLDBEES.NS`, `USDINR=X`) and US equities (`AAPL`, `NVDA`, `MSFT`, `GOOGL`).
   - Implemented 30-second in-memory TTL caching with parallel ticker resolution and timeout protection (3.5s).
@@ -56,8 +83,8 @@ last_updated: 2026-08-19
 
 ## `v3.7.0` — Institutional Monte Carlo Stochastic Engine, 6-Tier FIRE Planner & What-If Sandbox (2026-08-18)
 - **Institutional Monte Carlo Stochastic Engine (`fireSimulatorEngine.js`)**:
-  - Implemented Geometric Brownian Motion (GBM) with exact Ito calculus drift correction term ($-\frac{1}{2}\sigma^2$) to eliminate volatility drag bias.
-  - Implemented Merton Jump Diffusion model superimposing Poisson market crash/rally jumps ($\lambda \approx 0.12, \mu_J \approx -18\%$).
+  - Implemented Geometric Brownian Motion (GBM) with exact Ito calculus drift correction term ($-\\frac{1}{2}\\sigma^2$) to eliminate volatility drag bias.
+  - Implemented Merton Jump Diffusion model superimposing Poisson market crash/rally jumps ($\\lambda \\approx 0.12, \\mu_J \\approx -18\\%$).
   - Added Empirical Historical Bootstrap Resampling across 55 years of multi-asset historical cycles (1970–2024).
   - Added Multi-Asset Covariance Allocation (Equity, Debt, Gold, Cash) with Dynamic Age Glidepaths (-0.75% equity/yr into fixed income).
   - Scaled simulation capacity with typed arrays (`Float64Array`) supporting **1,000, 5,000, 10,000, 25,000, and 50,000 parallel paths**.
@@ -80,8 +107,8 @@ last_updated: 2026-08-19
 - **Continuous Resilient Voice Engine (`VoiceQuickLogModal.jsx`)**: Resolved 1-second auto-disconnect bug via `continuous: true`, auto-reconnect watchdog, silence debounce, and graceful session lifecycle management.
 - **Live 24-Band Web Audio API Waveform Visualizer**: Integrated real-time `AudioContext` and `AnalyserNode` rendering dynamic glowing cyberpunk equalizer spectrum bars and decibel pulse rings.
 - **Multilingual Accent Switcher**: Added regional accent switcher (`en-IN` Indian English, `en-US`, `en-GB`, `hi-IN` Hindi, `es-ES`, `fr-FR`, `de-DE`, `ja-JP`).
-- **Multi-Entity Financial NLP Parser (`localVoiceAiService.js`)**: Robust natural language extraction for amounts (₹, $, words, decimals, k/lakh), 15+ financial categories, payment methods (UPI, GPay, PhonePe, Cards, Cash), counterparties, and relative dates ("yesterday", "today").
-- **On-Demand Local AI Model Management Studio (`LocalAiModelStudio.jsx`)**: Dedicated 7th studio tab in `CustomizationPage.jsx` allowing users to inspect, benchmark, download on demand, switch active engines, and purge local model weights.
+- **Multi-Entity Financial NLP Parser (`localVoiceAiService.js`)**: Robust natural language extraction for amounts (₹, $, words, decimals, k/lakh), 15+ financial categories, payment methods (UPI, GPay, PhonePe, Cards, Cash), counterparties, and relative dates (\"yesterday\", \"today\").
+- **On-Demand Local AI Model Management Studio in Customization Hub (`LocalAiModelStudio.jsx`)**: Dedicated 7th studio tab in `CustomizationPage.jsx` allowing users to inspect, benchmark, download on demand, switch active engines, and purge local model weights.
 
 ---
 

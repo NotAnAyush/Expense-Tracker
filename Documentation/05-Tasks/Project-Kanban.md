@@ -117,7 +117,6 @@ Use this interactive board in Obsidian or during Antigravity pair-programming se
 - [x] Built interactive Yield & Fixed Deposit Maturity Calculator (`calculateMaturity`) with compound interest, APY, frequency selection, and +0.50% senior citizen booster
 - [x] Upgraded frontend Studio UI (`PassiveIncomePage.jsx`) with live refresh button, live status badge, categorized scheme radar, and calculation modal
 - [x] Synchronized Obsidian Knowledge Vault, ADR-011, Feature Spec, and verified 100% pass on all 34 test suites (229/229 tests)
-
 ### Phase 13: Wealth & FIRE Freedom Simulator UI/UX Design System Alignment (v3.8.1)
 - [x] Refactored `WealthSimulatorPage.jsx` from generic Tailwind classes to native bespoke Vanilla CSS tokens (`RICHY RICH — DESIGN SYSTEM & LUXURY FINTECH CSS v3.0`)
 - [x] Added FinTech range slider utility styles (`.slider-luxury`, `.slider-mint`, `.slider-cyan`, `.slider-amber`, `.slider-violet`, `.slider-rose`), glowing progress bars (`.progress-bar-luxury`), and card glow variants in `index.css`
@@ -125,4 +124,15 @@ Use this interactive board in Obsidian or during Antigravity pair-programming se
 - [x] Built custom dark glassmorphic Recharts tooltips with glowing neon borders for What-If comparative trajectories and Monte Carlo stochastic confidence ribbons (P5 to P95)
 - [x] Verified full visual polish with browser subagent across all tabs, responsive Bento cards, calibration sliders, 6-Tier FIRE spectrum, and Quant Guide modal
 - [x] Logged Architecture Decision Record `[[ADR-014-Wealth-Simulator-Fintech-UIUX-Alignment]]` and synchronized Obsidian Knowledge Vault
+
+### Phase 14: Dynamic Live Data Integration, Multi-Tier FX & Central Bank Sync (v3.9.0)
+- [x] Multi-Tier Live FX Engine (`server/src/services/fx/fxService.js`) with 160+ currency pairs via OpenER & Frankfurter fallback
+- [x] Universal Dynamic Market Feed (`server/src/services/market/brokerClient.js`) with dynamic runtime ticker lookup for global equities, commodities, and crypto
+- [x] Macroeconomic & Sovereign Intelligence Service (`server/src/services/market/macroService.js`) synthesizing RBI Repo Rate, India CPI Inflation, 10Y Benchmark G-Sec Yield, and live Gold Spot
+- [x] Dynamic Real Yield computation ($R_{\text{real}} = R_{\text{nominal}} - \text{CPI}$) across all T-Bills, Government Savings Schemes, and Bank FDs
+- [x] Frontend 30-Second Auto-Updating Engine with live countdown timer, pulsing radar dot, manual refresh button, and dynamic watchlist search input (`PassiveIncomePage.jsx`)
+- [x] 1-Click "Sync Live Macro" integration in Wealth & FIRE Freedom Simulator (`WealthSimulatorPage.jsx`)
+- [x] On-demand live FX rate refresh and status indicators in Travel Trip Vault (`TripVaultPage.jsx`) and Dashboard (`DashboardPage.jsx`)
+- [x] Complete test suite expansion (34 test suites, 232/232 tests passing with 0 regressions)
+- [x] Logged Architecture Decision Record `[[ADR-015-Live-Dynamic-Data-Pipelines-and-Resilient-Market-Sync]]` and synchronized Obsidian Knowledge Vault
 
