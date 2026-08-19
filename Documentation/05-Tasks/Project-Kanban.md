@@ -5,8 +5,8 @@ tags:
   - kanban
   - sprints
   - status
-version: 3.7.0
-last_updated: 2026-08-18
+version: 3.8.0
+last_updated: 2026-08-19
 ---
 
 # 📋 Project Execution Kanban & Task Matrix
@@ -15,7 +15,7 @@ Use this interactive board in Obsidian or during Antigravity pair-programming se
 
 ---
 
-## 🟢 Completed Milestones (Production Master v3.7.0)
+## 🟢 Completed Milestones (Production Master v3.8.0)
 
 ### Phase 1: Core Financials & OCR
 - [x] Dual-Token JWT Auth with Refresh Rotation (`/api/auth/*`)
@@ -106,3 +106,14 @@ Use this interactive board in Obsidian or during Antigravity pair-programming se
 - [x] Executive Quantitative Portfolio Synthesis Card & In-App "How It Works & Quant Guide" Interactive Tutorial Modal
 - [x] Fixed template literal string interpolation bug for Coast FIRE target and raw LaTeX math displays
 - [x] Synchronized Obsidian Knowledge Vault, ADR-008, API Contracts, and 100% passing test suite (`fireSimulation.test.js`)
+
+### Phase 12: Real-Time Live Market Feeds, Official Sovereign Yields & Maturity Calculator (v3.8.0)
+- [x] Replaced hardcoded market mock quotes with real-time multi-asset live market ingestion engine (`brokerClient.js`) across Indian (`^NSEI`, `^BSESN`, `RELIANCE.NS`, `TCS.NS`, `HDFCBANK.NS`, `INFY.NS`, `ICICIBANK.NS`, `SBIN.NS`, `GOLDBEES.NS`, `USDINR=X`) and US Equities (`AAPL`, `NVDA`, `MSFT`, `GOOGL`)
+- [x] Built in-memory 30-second TTL caching layer with timeout abort protection (3.5s) and zero-downtime deterministic fallbacks
+- [x] Integrated real-time 24K Gold Spot rate calculation (per gram and per 10g) calibrated from live gold exchange ETF feeds
+- [x] Integrated official RBI/FBIL Treasury Bill yields (91D, 182D, 364D, 10Y Benchmark G-Sec)
+- [x] Integrated official Ministry of Finance (MoF) gazette-notified Small Savings Scheme rates (SCSS, SSY, NSC, PPF, KVP, POMIS, MSSC)
+- [x] Resolved Bank Fixed Deposit lock-in tenure notation bug (`1001 Days`, `732 Days`, `400 Days`, `55 Months`, `390 Days`) with DICGC ₹5 Lakh insurance status
+- [x] Built interactive Yield & Fixed Deposit Maturity Calculator (`calculateMaturity`) with compound interest, APY, frequency selection, and +0.50% senior citizen booster
+- [x] Upgraded frontend Studio UI (`PassiveIncomePage.jsx`) with live refresh button, live status badge, categorized scheme radar, and calculation modal
+- [x] Synchronized Obsidian Knowledge Vault, ADR-011, Feature Spec, and verified 100% pass on all 34 test suites (229/229 tests)
