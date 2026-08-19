@@ -5,26 +5,71 @@ const QuantitativeEngine = require('../src/services/market/quantitativeEngine');
 const ArbitrageSolver = require('../src/services/market/arbitrageSolver');
 
 describe('Stock Market, Verified Schemes & Passive Income Tests (Phase 8)', () => {
-  describe('Broker Quotes Feed', () => {
-    it('should return valid market quotes for specified symbols', async () => {
-      const quotes = await BrokerClient.getQuotes(['NIFTY50', 'RELIANCE', 'AAPL']);
+  describe('Broker Quotes Feed & Multi-Asset Connector', () => {
+    it('should return valid market quotes for specified symbols with live/baseline metadata', async () => {
+      const quotes = await BrokerClient.getQuotes(['NIFTY50', 'RELIANCE', 'AAPL', 'GOLD', 'USDINR']);
       expect(Array.isArray(quotes)).toBe(true);
-      expect(quotes.length).toBe(3);
+      expect(quotes.length).toBe(5);
       expect(quotes[0]).toHaveProperty('price');
+      expect(quotes[0]).toHaveProperty('previousClose');
+      expect(quotes[0]).toHaveProperty('change');
       expect(quotes[0]).toHaveProperty('changePercent');
+      expect(quotes[0]).toHaveProperty('currency');
+      expect(quotes[0]).toHaveProperty('source');
       expect(quotes[0].price).toBeGreaterThan(0);
+    });
+
+    it('should correctly handle custom and lowercase ticker lookups', async () => {
+      const quotes = await BrokerClient.getQuotes(['nifty50', 'tcs', 'nvda']);
+      expect(quotes.length).toBe(3);
+      expect(quotes.find((q) => q.symbol === 'TCS')).toBeDefined();
+      expect(quotes.find((q) => q.symbol === 'NVDA')?.currency).toBe('$');
     });
   });
 
   describe('Verified Sovereign Scheme Radar', () => {
-    it('should return categorized sovereign and fixed income schemes', () => {
-      const schemes = SchemeRadarService.getVerifiedSchemes();
+    it('should return categorized sovereign and fixed income schemes with live gold spot', async () => {
+      const schemes = await SchemeRadarService.getVerifiedSchemes();
       expect(schemes).toHaveProperty('treasuryBills');
       expect(schemes).toHaveProperty('goldBonds');
+      expect(schemes).toHaveProperty('goldSpot24K');
       expect(schemes).toHaveProperty('governmentSchemes');
       expect(schemes).toHaveProperty('bankFixedDeposits');
+
       expect(schemes.treasuryBills.length).toBeGreaterThanOrEqual(3);
-      expect(schemes.bankFixedDeposits.length).toBeGreaterThanOrEqual(4);
+      expect(schemes.governmentSchemes.length).toBeGreaterThanOrEqual(6);
+      expect(schemes.bankFixedDeposits.length).toBeGreaterThanOrEqual(5);
+
+      // Verify accurate tenure nomenclature
+      const unityFd = schemes.bankFixedDeposits.find((b) => b.bank.includes('Unity'));
+      expect(unityFd).toBeDefined();
+      expect(unityFd.tenure).toContain('1001 Days');
+      expect(unityFd.dicgcInsured).toBe(true);
+
+      const sbiFd = schemes.bankFixedDeposits.find((b) => b.bank.includes('SBI') || b.bank.includes('State Bank of India'));
+      expect(sbiFd).toBeDefined();
+      expect(sbiFd.tenure).toContain('400 Days');
+
+      // Verify 24K Gold Spot
+      expect(schemes.goldSpot24K.pricePerGramInr).toBeGreaterThan(5000);
+      expect(schemes.goldSpot24K.purity).toContain('24 Karat');
+    });
+
+    it('should calculate compound maturity returns accurately for bank FDs and T-Bills', () => {
+      const result = SchemeRadarService.calculateMaturity({
+        principal: 100000,
+        annualRatePercent: 9.0,
+        tenorYears: 3,
+        compounding: 'quarterly',
+        isSeniorCitizen: true,
+        seniorRateBonus: 0.50,
+      });
+
+      expect(result.principal).toBe(100000);
+      expect(result.effectiveAnnualRate).toBe(9.5);
+      expect(result.maturityAmount).toBeGreaterThan(130000);
+      expect(result.totalInterestEarned).toBeGreaterThan(30000);
+      expect(result.effectiveApyPercent).toBeGreaterThan(9.5);
     });
   });
 
