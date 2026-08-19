@@ -3,6 +3,7 @@ const router = express.Router();
 const {
   getQuotes,
   getSchemes,
+  getMacroIndicators,
   calculateMaturity,
   evaluateScamRisk,
   calculateDCF,
@@ -16,6 +17,7 @@ router.use(protect);
 
 router.get('/quotes', getQuotes);
 router.get('/schemes', getSchemes);
+router.get('/macro', getMacroIndicators);
 router.post('/calculate-maturity', calculateMaturity);
 router.post('/scam-check', evaluateScamRisk);
 router.post('/dcf-valuation', calculateDCF);

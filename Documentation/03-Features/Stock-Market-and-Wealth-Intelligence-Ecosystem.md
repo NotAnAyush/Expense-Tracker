@@ -84,4 +84,16 @@ $$S_{\text{auth}} = 100 - \left( 35 \cdot \mathbf{1}_{\text{unregulated}} + 25 \
 - **`Debt.js`**: Arbitrage solver compares debt APR against risk-adjusted investment yield.
 - **`Goal.js`**: Automatically shifts asset allocation from equity to sovereign debt as target dates approach (glidepath).
 - **`SecretVault.js`**: Client-side AES-256-GCM zero-knowledge encryption for broker API secret tokens.
-- **`WealthSimulatorPage.jsx`**: Incorporates real-time dividend and coupon cash flows into 1,000-run Monte Carlo FIRE simulations.
+- **`WealthSimulatorPage.jsx`**: Incorporates real-time dividend and coupon cash flows into 1,000-run Monte Carlo FIRE simulations with 1-click live macro calibration.
+
+---
+
+## 5. Live Dynamic Multi-Asset Feed & Auto-Update Engine
+
+- **Universal Dynamic Quotes Pipeline**: `BrokerClient.js` dynamically pulls real-time market data across global exchanges without rigid symbol whitelisting, empowering users to search and add any equity ticker or cryptocurrency to their live watch radar.
+- **Live Macroeconomic Strip**: Displays real-time RBI Repo Rate (6.50%), India CPI Inflation (5.40%), 10-Year Sovereign Benchmark Yield (7.12%), and real spread directly above the passive income radar.
+- **Real Inflation-Adjusted Yield Calculation**:
+  $$R_{\text{real}} = R_{\text{nominal}} - \text{CPI}_{\text{live}}$$
+  Every T-Bill, Government Scheme, and Bank FD is dynamically tagged with its net real purchasing power yield.
+- **Auto-Sync & Manual Refresh**: Embedded 30-second live polling loop with countdown UI, pulsating radar dot, tactile manual refresh button, and non-blocking in-memory caching.
+- **ADR Reference**: `[[ADR-015-Live-Dynamic-Data-Pipelines-and-Resilient-Market-Sync]]`.

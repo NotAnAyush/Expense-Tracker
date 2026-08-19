@@ -78,12 +78,28 @@ Auth Header: `Authorization: Bearer <accessToken>`
 
 ---
 
-## 5. Travel & Vaults (`/trip-vaults`, `/fx`, `/vault`)
+## 5. Travel, Multi-Currency FX & Vaults (`/trips`, `/fx`, `/vault`)
 
 | Method | Endpoint | Auth | Request Payload | Description |
 | :--- | :--- | :--- | :--- | :--- |
-| `GET` | `/trip-vaults` | Yes | - | List vacation budget vaults |
-| `POST` | `/trip-vaults` | Yes | `{ tripName, destination, baseCurrency, targetCurrency, budgetTotal }` | Create trip vault |
-| `GET` | `/fx/rates` | Yes | `?base=INR` | Real-time foreign exchange conversion table |
+| `GET` | `/trips` | Yes | - | List travel budget vaults |
+| `POST` | `/trips` | Yes | `{ name, destination, tripCurrency, budgetBaseCurrency }` | Create trip vault |
+| `POST` | `/trips/:id/expenses` | Yes | `{ description, foreignAmount, currency, category, syncToExpenses }` | Log trip expense with auto FX conversion |
+| `GET` | `/fx/rates` | Yes | `?base=INR&refresh=true` | Multi-tier live foreign exchange rates table (OpenER + Frankfurter + Yahoo Forex) |
+| `POST` | `/fx/convert` | Yes | `{ amount, fromCurrency, toCurrency, forceRefresh }` | Real-time cross-currency conversion |
 | `POST` | `/vault/unlock` | Yes | `{ masterPassphrase }` | Decrypt client-side encrypted secret vault |
 | `POST` | `/vault/save` | Yes | `{ encryptedPayload, iv, authTag }` | Persist encrypted credentials |
+
+---
+
+## 6. Stock Market, Sovereign Radar & Passive Income (`/market`)
+
+| Method | Endpoint | Auth | Request Payload | Description |
+| :--- | :--- | :--- | :--- | :--- |
+| `GET` | `/market/quotes` | Yes | `?symbols=NIFTY50,RELIANCE,AAPL,GOLD,USDINR&refresh=true` | Live exchange quotes for pre-registered and dynamic custom tickers |
+| `GET` | `/market/schemes` | Yes | `?refresh=true` | Sovereign scheme radar (T-Bills, SGBs, Post Office, Bank FDs) with dynamic real yields |
+| `GET` | `/market/macro` | Yes | `?refresh=true` | Real-time macroeconomic indicators (RBI Repo, CPI Inflation, 10Y Sovereign Yield, Gold Spot) |
+| `POST` | `/market/calculate-maturity` | Yes | `{ principal, annualRatePercent, tenorYears, compounding, isSeniorCitizen }` | Accurate compound maturity & interest breakdown |
+| `POST` | `/market/scam-check` | Yes | `{ schemeName, promisedReturnPercent, returnFrequency, hasReferralCommission, isRegulatedBySebiOrRbi }` | Forensic fraud & Ponzi probability score (0–100) |
+| `POST` | `/market/dcf-valuation` | Yes | `{ currentFCF, growthRateStage1, growthRateStage2, discountRateWACC, terminalGrowthRate, sharesOutstanding, netDebt, currentPrice }` | 2-Stage Discounted Cash Flow intrinsic fair value |
+| `POST` | `/market/arbitrage-solve` | Yes | `{ surplusMonthlyCash, debtBalance, debtInterestRatePercent, expectedEquityReturnPercent, capitalGainsTaxRatePercent, emergencyFundCoveredMonths }` | Optimal monthly routing between accelerated debt payoff and equity SIP |

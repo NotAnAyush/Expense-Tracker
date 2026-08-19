@@ -181,6 +181,8 @@ export const WealthSimulatorPage = () => {
   const [showSpaghettiPaths, setShowSpaghettiPaths] = useState(true);
   const [mcResults, setMcResults] = useState(null);
   const [runningMc, setRunningMc] = useState(false);
+  const [syncingMacro, setSyncingMacro] = useState(false);
+  const [macroSyncStatus, setMacroSyncStatus] = useState(null);
 
   // Fetch initial context from backend
   const fetchContext = async () => {
@@ -198,6 +200,15 @@ export const WealthSimulatorPage = () => {
         setMcMonthlyContrib(Math.max(0, (res.context.currentMonthlyIncome || 100000) - (res.context.currentMonthlyExpense || 45000)));
       }
 
+      if (res?.macroIndicators) {
+        const inf = res.macroIndicators.monetaryPolicy?.india?.cpiInflationPercent;
+        if (inf) {
+          setFireInflation(inf);
+          setWhatIfInflation(inf);
+          setMcInflation(inf);
+        }
+      }
+
       if (res?.monteCarlo) {
         setMcResults(res.monteCarlo);
       }
@@ -205,6 +216,29 @@ export const WealthSimulatorPage = () => {
       console.error('[WealthSimulatorPage:fetchContext]', err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const syncLiveMacro = async () => {
+    try {
+      setSyncingMacro(true);
+      const macro = await apiFetch('/market/macro?refresh=true');
+      if (macro) {
+        const inf = macro.monetaryPolicy?.india?.cpiInflationPercent || 5.40;
+        const gsec = macro.sovereignYieldCurve?.tenor10y?.yieldPercent || 7.12;
+        setFireInflation(inf);
+        setWhatIfInflation(inf);
+        setMcInflation(inf);
+        setFireExpectedReturn(Number((gsec + 5.0).toFixed(1))); // G-Sec + Equity Risk Premium (5.0%)
+        setWhatIfReturn(Number((gsec + 5.0).toFixed(1)));
+        setMcExpectedReturn(Number((gsec + 5.0).toFixed(1)));
+        setMacroSyncStatus(`Synced Live Macro: CPI Inflation ${inf}% • Expected Return ${(gsec + 5.0).toFixed(1)}% (10Y G-Sec ${gsec}% + 5% ERP)`);
+        setTimeout(() => setMacroSyncStatus(null), 5000);
+      }
+    } catch (err) {
+      console.warn('Macro sync warning:', err.message);
+    } finally {
+      setSyncingMacro(false);
     }
   };
 
@@ -602,6 +636,28 @@ Projected FIRE Countdown: ${fireData.yearsToFire} Years (${new Date(fireData.fir
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+          {/* Sync Live Macro Button */}
+          <button
+            type="button"
+            onClick={syncLiveMacro}
+            disabled={syncingMacro}
+            className="btn-glass-secondary"
+            style={{
+              height: '38px',
+              padding: '0 14px',
+              fontSize: '12px',
+              color: '#00FF87',
+              borderColor: 'rgba(0, 255, 135, 0.3)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+            }}
+            title="Calibrate return expectations and inflation against live RBI and CPI ground truth"
+          >
+            <RefreshCw size={14} className={syncingMacro ? 'animate-spin' : ''} />
+            <span>{syncingMacro ? 'Syncing...' : 'Sync Live Macro'}</span>
+          </button>
+
           {/* Guide & Tutorial Button */}
           <button
             type="button"
@@ -639,6 +695,27 @@ Projected FIRE Countdown: ${fireData.yearsToFire} Years (${new Date(fireData.fir
           </button>
         </div>
       </div>
+
+      {/* Macro Sync Toast Banner */}
+      {macroSyncStatus && (
+        <div
+          style={{
+            padding: '10px 16px',
+            borderRadius: '10px',
+            background: 'rgba(0, 255, 135, 0.12)',
+            border: '1px solid rgba(0, 255, 135, 0.35)',
+            color: '#00FF87',
+            fontSize: '12px',
+            fontWeight: 600,
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+          }}
+        >
+          <CheckCircle2 size={15} />
+          <span>{macroSyncStatus}</span>
+        </div>
+      )}
 
       {/* 2. SUB-STUDIO NAVIGATION TABS RIBBON */}
       <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '4px' }}>

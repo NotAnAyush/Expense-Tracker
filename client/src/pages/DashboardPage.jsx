@@ -17,7 +17,8 @@ import {
   Award,
   Wallet,
   ArrowDownRight,
-  ChevronRight
+  ChevronRight,
+  RefreshCw
 } from 'lucide-react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import { motion } from 'framer-motion';
@@ -60,11 +61,14 @@ export const DashboardPage = ({
   const [aiSummary, setAiSummary] = useState(null);
   const [insights, setInsights] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
 
-  const fetchDashboardData = async () => {
+  const fetchDashboardData = async (isManualRefresh = false) => {
     try {
-      setLoading(true);
+      if (isManualRefresh) setRefreshing(true);
+      else setLoading(true);
+
       const [analyticsRes, summaryRes, insightsRes] = await Promise.all([
         apiFetch('/analytics'),
         apiFetch('/ai/summary').catch(() => null),
@@ -78,11 +82,12 @@ export const DashboardPage = ({
       console.error('Failed to load dashboard:', err);
     } finally {
       setLoading(false);
+      if (isManualRefresh) setRefreshing(false);
     }
   };
 
   useEffect(() => {
-    fetchDashboardData();
+    fetchDashboardData(false);
   }, []);
 
   if (loading || !data) {
@@ -229,6 +234,17 @@ export const DashboardPage = ({
               + Expense
             </button>
           )}
+
+          <button
+            type="button"
+            onClick={() => fetchDashboardData(true)}
+            disabled={refreshing}
+            className="btn-glass-secondary"
+            style={{ padding: '6px 10px', fontSize: '12px', height: '32px', color: '#00FF87', borderColor: 'rgba(0, 255, 135, 0.3)' }}
+            title="Refresh Live Financial Engine"
+          >
+            <RefreshCw size={14} className={refreshing ? 'animate-spin' : ''} />
+          </button>
 
           <div
             style={{

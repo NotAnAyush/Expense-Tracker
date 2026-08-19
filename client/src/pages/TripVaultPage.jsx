@@ -22,6 +22,8 @@ export const TripVaultPage = () => {
   const [selectedTripId, setSelectedTripId] = useState(null);
   const [tripDetails, setTripDetails] = useState(null);
   const [fxRates, setFxRates] = useState({});
+  const [fxSource, setFxSource] = useState('LIVE_OPEN_EXCHANGE_API');
+  const [refreshingFx, setRefreshingFx] = useState(false);
   const [loading, setLoading] = useState(true);
 
   // Modals
@@ -65,6 +67,7 @@ export const TripVaultPage = () => {
       const list = tripRes.trips || [];
       setTrips(list);
       setFxRates(fxRes.rates || {});
+      if (fxRes.source) setFxSource(fxRes.source);
       if (list.length > 0 && !selectedTripId) {
         setSelectedTripId(list[0]._id);
       }
@@ -72,6 +75,19 @@ export const TripVaultPage = () => {
       console.error('Failed to load trips:', err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const refreshFxRates = async () => {
+    try {
+      setRefreshingFx(true);
+      const fxRes = await apiFetch('/fx/rates?base=INR&refresh=true');
+      setFxRates(fxRes.rates || {});
+      if (fxRes.source) setFxSource(fxRes.source);
+    } catch (err) {
+      console.warn('FX refresh error:', err.message);
+    } finally {
+      setRefreshingFx(false);
     }
   };
 
@@ -309,13 +325,25 @@ export const TripVaultPage = () => {
               </div>
             </div>
 
-            <div className="glass-card" style={{ padding: '20px' }}>
-              <div style={{ fontSize: '12px', fontWeight: 600, color: '#94A3B8', textTransform: 'uppercase' }}>Live Exchange Rate</div>
+            <div className="glass-card" style={{ padding: '20px', position: 'relative' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={{ fontSize: '12px', fontWeight: 600, color: '#94A3B8', textTransform: 'uppercase' }}>Live Exchange Rate</div>
+                <button
+                  type="button"
+                  onClick={refreshFxRates}
+                  disabled={refreshingFx}
+                  style={{ background: 'transparent', border: 'none', color: '#00FF87', cursor: 'pointer', padding: '2px' }}
+                  title="Refresh live exchange rates"
+                >
+                  <RefreshCw size={13} className={refreshingFx ? 'animate-spin' : ''} />
+                </button>
+              </div>
               <div className="font-display" style={{ fontSize: '24px', fontWeight: 800, color: '#FFD700', marginTop: '4px' }}>
                 1 {currentTrip?.tripCurrency} = ₹{currentRate}
               </div>
-              <div style={{ fontSize: '12px', color: '#94A3B8', marginTop: '4px' }}>
-                Auto-converted on transaction
+              <div style={{ fontSize: '11px', color: '#00FF87', marginTop: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#00FF87' }} />
+                <span>LIVE FX FEED ({fxSource?.replace(/_/g, ' ')})</span>
               </div>
             </div>
           </div>

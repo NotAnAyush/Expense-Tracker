@@ -97,10 +97,41 @@ graph TD
 
 ---
 
-## 4. Ingestion & Foreign Exchange Engines
+## 4. Ingestion & Multi-Tier Foreign Exchange Engines
 
 ### `importService.js` (`server/src/services/import/`)
 - **CSV Bank Ingestion**: Auto-detects column headers and performs SHA-256 deduplication.
 
 ### `fxService.js` (`server/src/services/fx/`)
-- **Foreign Exchange Rates**: Real-time currency conversions cached with 1-hour TTL.
+- **Foreign Exchange Engine**: Multi-tiered asynchronous real-time forex pipeline:
+  - **Tier 1**: Open Exchange Rates API (`open.er-api.com`) for 160+ currency pairs.
+  - **Tier 2**: Frankfurter API (`api.frankfurter.app`).
+  - **Tier 3**: Yahoo Finance Forex charts.
+  - **Tier 4**: Institutional deterministic baseline.
+- **Features**: 15-minute TTL cache, `forceRefresh` support, instant and async cross-currency conversion methods (`[[ADR-015-Live-Dynamic-Data-Pipelines-and-Resilient-Market-Sync]]`).
+
+---
+
+## 5. Stock Market, Macroeconomic & Quantitative Engines (`server/src/services/market/`)
+
+### `brokerClient.js`
+- **Universal Market Connector**: Real-time multi-asset price feed for Indian equities (NSE), US equities (NYSE/NASDAQ), global indices, commodities (Gold/Silver), and crypto.
+- **Dynamic Ticker Detection**: Auto-detects and resolves any custom stock symbol or ticker on the fly.
+- **Caching**: 30-second memory cache with force-refresh bypass.
+
+### `macroService.js`
+- **Macroeconomic Intelligence**: Synthesizes official central bank policy benchmarks (RBI Repo Rate @ 6.50%, US Fed Funds @ 5.25%), official MoSPI CPI Inflation (@ 5.40%), 10-Year GoI Benchmark Bond Yield (@ 7.12%), and live 24K Spot Gold per gram.
+- **Simulation Calibration**: Exposes baseline inflation and risk-free rates directly to Monte Carlo and FIRE engines.
+
+### `schemeRadarService.js`
+- **Sovereign Scheme Radar**: Computes dynamic Real Yields ($R_{\text{real}} = R_{\text{nominal}} - \text{CPI}$) for RBI T-Bills (91D, 182D, 364D), Sovereign Gold Bonds, Government Savings Schemes (SCSS, SSY, NSC, PPF, KVP, POMIS), and High-Yield Bank FDs.
+- **Maturity Calculator**: Multi-frequency compound interest calculator ($A = P(1 + r/n)^{nt}$).
+
+### `scamShieldEngine.js`
+- **Forensic Fraud Detection**: Probabilistic red-flag analyzer evaluating Ponzi mechanisms, unrealistic promises, and regulatory registrations.
+
+### `quantitativeEngine.js`
+- **Valuation Suite**: 2-Stage Discounted Cash Flow (DCF), Piotroski F-Score (0–9), and Altman Z-Score financial distress classifier.
+
+### `arbitrageSolver.js`
+- **Debt vs. Equity Arbitrage**: Algorithmic capital allocation solving post-tax equity return spread versus guaranteed debt interest drag.

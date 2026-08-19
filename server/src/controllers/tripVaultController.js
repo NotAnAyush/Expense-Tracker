@@ -240,16 +240,37 @@ class TripVaultController {
 
   /**
    * Get Live FX Rates
-   * GET /api/fx/rates
+   * GET /api/fx/rates?base=INR&refresh=true
    */
   static async getFxRates(req, res) {
     try {
-      const baseCurrency = req.query.base || req.user.currency || 'INR';
-      const rates = FxService.getRates(baseCurrency);
+      const baseCurrency = req.query.base || req.user?.currency || 'INR';
+      const forceRefresh = req.query.refresh === 'true' || req.query.force === 'true';
+      const rates = await FxService.getRates(baseCurrency, forceRefresh);
       return ApiResponse.success(res, rates);
     } catch (err) {
       console.error('[TripVaultController:getFxRates]', err);
       return ApiResponse.error(res, err.message || 'Failed to fetch FX rates', 500);
+    }
+  }
+
+  /**
+   * Convert Currency on the Fly
+   * POST /api/fx/convert
+   */
+  static async convertCurrency(req, res) {
+    try {
+      const { amount, fromCurrency, toCurrency, forceRefresh } = req.body;
+      const result = await FxService.convertAsync({
+        amount: Number(amount) || 0,
+        fromCurrency: fromCurrency || 'USD',
+        toCurrency: toCurrency || req.user?.currency || 'INR',
+        forceRefresh: !!forceRefresh,
+      });
+      return ApiResponse.success(res, result);
+    } catch (err) {
+      console.error('[TripVaultController:convertCurrency]', err);
+      return ApiResponse.error(res, err.message || 'Currency conversion failed', 500);
     }
   }
 }

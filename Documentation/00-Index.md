@@ -109,6 +109,8 @@ graph TD
 - [[ADR-011-Stock-Market-Sovereign-Schemes-and-Valuation-Engine]] — Accepted. Real-time broker WebSockets, RBI T-Bill / SGB radar, Scam Shield, and DCF/Piotroski/Altman valuation.
 - [[ADR-012-Family-Multi-User-Ledgers-and-Bank-SMS-Ingestion]] — Accepted. Multi-tenant household vaults, role-based permissions, bank SMS regex state machine, and vector PDF reports.
 - [[ADR-013-Local-Voice-AI-and-On-Demand-Modular-Intelligence-Hub]] — Accepted. Resilient continuous voice recognition, Web Audio frequency equalizer, and on-demand local AI weights studio.
+- [[ADR-014-Wealth-Simulator-Fintech-UIUX-Alignment]] — Accepted. Sovereign high-density quant visual hierarchy, dynamic responsive layout, and tooltips.
+- [[ADR-015-Live-Dynamic-Data-Pipelines-and-Resilient-Market-Sync]] — Accepted. Multi-tier live FX engine, universal dynamic stock/crypto connector, MacroService central bank calibration, and auto-updating UI.
 
 ### 05. Tasks, Roadmap & Sprints (`Documentation/05-Tasks/`)
 - [[Project-Kanban]] — Live interactive status board of all sprints, phases, and active Pair-Programming tasks.

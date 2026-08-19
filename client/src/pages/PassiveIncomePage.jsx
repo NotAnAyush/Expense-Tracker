@@ -29,18 +29,29 @@ import {
   Sliders,
   HelpCircle,
   FileCheck,
-  Landmark
+  Landmark,
+  Plus,
+  Trash2
 } from 'lucide-react';
 import { apiFetch } from '../api/client';
 
 export const PassiveIncomePage = () => {
   const [quotes, setQuotes] = useState([]);
   const [schemes, setSchemes] = useState(null);
+  const [macroData, setMacroData] = useState(null);
   const [activeTab, setActiveTab] = useState('radar'); // 'radar', 'dcf', 'scam', 'arbitrage'
   const [radarFilter, setRadarFilter] = useState('all'); // 'all', 'tbills', 'sgb', 'small_savings', 'fds'
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [lastRefreshed, setLastRefreshed] = useState(new Date());
+
+  // Auto-Update Engine
+  const [autoRefreshActive, setAutoRefreshActive] = useState(true);
+  const [countdown, setCountdown] = useState(30);
+
+  // Dynamic Watchlist Management
+  const [watchedSymbols, setWatchedSymbols] = useState(['NIFTY50', 'RELIANCE', 'TCS', 'HDFCBANK', 'AAPL', 'NVDA', 'GOLD', 'USDINR']);
+  const [customTickerInput, setCustomTickerInput] = useState('');
 
   // Interactive Yield & FD Maturity Calculator Modal State
   const [calcModalOpen, setCalcModalOpen] = useState(false);
@@ -93,17 +104,21 @@ export const PassiveIncomePage = () => {
   });
   const [arbitrageResult, setArbitrageResult] = useState(null);
 
-  const loadMarketData = async (showRefreshSpinner = false) => {
+  const loadMarketData = async (showRefreshSpinner = false, symbolsToFetch = watchedSymbols) => {
     if (showRefreshSpinner) setRefreshing(true);
     try {
-      const [quotesRes, schemesRes] = await Promise.all([
-        apiFetch('/market/quotes').catch(() => ({ quotes: [] })),
-        apiFetch('/market/schemes').catch(() => null),
+      const symbolsQuery = symbolsToFetch.join(',');
+      const [quotesRes, schemesRes, macroRes] = await Promise.all([
+        apiFetch(`/market/quotes?symbols=${symbolsQuery}${showRefreshSpinner ? '&refresh=true' : ''}`).catch(() => ({ quotes: [] })),
+        apiFetch(`/market/schemes${showRefreshSpinner ? '?refresh=true' : ''}`).catch(() => null),
+        apiFetch(`/market/macro${showRefreshSpinner ? '?refresh=true' : ''}`).catch(() => null),
       ]);
 
       setQuotes(quotesRes?.quotes || []);
       setSchemes(schemesRes);
+      setMacroData(macroRes);
       setLastRefreshed(new Date());
+      setCountdown(30);
     } catch (err) {
       console.warn('Market data load warning:', err.message);
     } finally {
@@ -113,11 +128,47 @@ export const PassiveIncomePage = () => {
   };
 
   useEffect(() => {
-    loadMarketData();
+    loadMarketData(false, watchedSymbols);
     runDcfCalculation();
     runArbitrageSolver();
     runScamAudit();
   }, []);
+
+  // 30-Second Live Polling Loop
+  useEffect(() => {
+    if (!autoRefreshActive) return;
+
+    const timer = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev <= 1) {
+          loadMarketData(false, watchedSymbols);
+          return 30;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [autoRefreshActive, watchedSymbols]);
+
+  const handleAddCustomTicker = (e) => {
+    e.preventDefault();
+    const formatted = customTickerInput.trim().toUpperCase();
+    if (!formatted) return;
+
+    if (!watchedSymbols.includes(formatted)) {
+      const updated = [...watchedSymbols, formatted];
+      setWatchedSymbols(updated);
+      loadMarketData(true, updated);
+    }
+    setCustomTickerInput('');
+  };
+
+  const handleRemoveTicker = (symToRemove) => {
+    const updated = watchedSymbols.filter((s) => s !== symToRemove);
+    setWatchedSymbols(updated);
+    setQuotes((prev) => prev.filter((q) => q.symbol !== symToRemove));
+  };
 
   const runScamAudit = async () => {
     setEvaluatingScam(true);
@@ -154,17 +205,16 @@ export const PassiveIncomePage = () => {
       });
       setArbitrageResult(res);
     } catch (err) {
-      console.warn('Arbitrage solver error:', err.message);
+      console.warn('Arbitrage calculation error:', err.message);
     }
   };
 
-  // Open Maturity Calculator pre-filled with scheme details
-  const openCalculator = (schemeName, ratePercent, tenorYears = 3, compounding = 'quarterly') => {
+  const openCalculator = (schemeName, ratePercent, tenor = 3, compounding = 'quarterly') => {
     setCalcInput({
       schemeName,
       principal: 100000,
-      annualRatePercent: Number(ratePercent) || 7.5,
-      tenorYears: Number(tenorYears) || 3,
+      annualRatePercent: ratePercent,
+      tenorYears: tenor,
       compounding,
       isSeniorCitizen: false,
       seniorRateBonus: 0.50,
@@ -172,10 +222,10 @@ export const PassiveIncomePage = () => {
     setCalcModalOpen(true);
   };
 
-  // Compute live client-side maturity calculation
-  const computedMaturity = useMemo(() => {
+  const calculatedMaturity = useMemo(() => {
     const p = Math.max(100, Number(calcInput.principal) || 100000);
-    const effectiveRate = Number(calcInput.annualRatePercent || 7.5) + (calcInput.isSeniorCitizen ? Number(calcInput.seniorRateBonus || 0.5) : 0);
+    const bonus = calcInput.isSeniorCitizen ? Number(calcInput.seniorRateBonus || 0.50) : 0;
+    const effectiveRate = (Number(calcInput.annualRatePercent) || 7.5) + bonus;
     const t = Math.max(0.1, Number(calcInput.tenorYears) || 1);
     const rDec = effectiveRate / 100;
 
@@ -186,7 +236,7 @@ export const PassiveIncomePage = () => {
       totalInterest = p * rDec * t;
       maturityAmount = p + totalInterest;
     } else {
-      let n = 4; // quarterly
+      let n = 4;
       if (calcInput.compounding === 'monthly') n = 12;
       if (calcInput.compounding === 'annual') n = 1;
 
@@ -194,7 +244,7 @@ export const PassiveIncomePage = () => {
       totalInterest = maturityAmount - p;
     }
 
-    const effectiveApy = (Math.pow(maturityAmount / p, 1 / t) - 1) * 100;
+    const effectiveApy = ((Math.pow(maturityAmount / p, 1 / t) - 1) * 100);
 
     return {
       principal: Math.round(p),
@@ -215,18 +265,53 @@ export const PassiveIncomePage = () => {
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '3px' }}>
             <span className="animate-live-dot" />
             <span style={{ fontSize: '11px', fontWeight: 800, color: '#00FF87', textTransform: 'uppercase', letterSpacing: '0.6px' }}>
-              Live Market & Sovereign Yield Radar • v3.8
+              Live Dynamic Market & Sovereign Radar • v3.9
             </span>
           </div>
           <h1 className="display-xl" style={{ margin: 0 }}>
             Stock Market & Passive Wealth Studio
           </h1>
           <p className="body-sm" style={{ margin: '4px 0 0 0', color: '#94A3B8' }}>
-            Real-time market feeds (NSE/BSE/US), official RBI sovereign bond yields, MoF small savings rates, and DCF intrinsic valuations.
+            Multi-tier real-time market feeds (NSE/BSE/US/Crypto), official RBI sovereign bond yields, MoF small savings rates, and DCF intrinsic valuations.
           </p>
         </div>
 
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
+          {/* Auto-Refresh Toggle & Countdown */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '6px 12px',
+              borderRadius: '10px',
+              background: 'rgba(255, 255, 255, 0.03)',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: autoRefreshActive ? '#00FF87' : '#94A3B8' }} />
+              <span style={{ fontSize: '11px', color: '#94A3B8', fontFamily: 'var(--font-mono)' }}>
+                {autoRefreshActive ? `Auto: ${countdown}s` : 'Paused'}
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={() => setAutoRefreshActive(!autoRefreshActive)}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: autoRefreshActive ? '#00FF87' : '#94A3B8',
+                fontSize: '10px',
+                fontWeight: 700,
+                cursor: 'pointer',
+                padding: '2px 4px',
+              }}
+            >
+              {autoRefreshActive ? 'PAUSE' : 'RESUME'}
+            </button>
+          </div>
+
           {/* Refresh Button */}
           <button
             type="button"
@@ -270,7 +355,53 @@ export const PassiveIncomePage = () => {
         </div>
       </div>
 
-      {/* 2. SUB-STUDIO NAVIGATION TABS */}
+      {/* 2. LIVE MACROECONOMIC BENCHMARK STRIP */}
+      <div
+        className="glass-card"
+        style={{
+          padding: '12px 18px',
+          background: 'linear-gradient(90deg, rgba(13, 17, 28, 0.95), rgba(20, 28, 45, 0.95))',
+          border: '1px solid rgba(0, 240, 255, 0.2)',
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+          gap: '14px',
+          alignItems: 'center',
+        }}
+      >
+        <div>
+          <div style={{ fontSize: '10.5px', color: '#94A3B8', fontWeight: 600, textTransform: 'uppercase' }}>RBI Repo Rate (MPC)</div>
+          <div className="font-display tabular-nums" style={{ fontSize: '18px', fontWeight: 800, color: '#00F0FF' }}>
+            {macroData?.monetaryPolicy?.india?.rbiRepoRatePercent || 6.50}% p.a.
+          </div>
+          <div style={{ fontSize: '10px', color: '#64748B' }}>Official Central Bank Benchmark</div>
+        </div>
+
+        <div>
+          <div style={{ fontSize: '10.5px', color: '#94A3B8', fontWeight: 600, textTransform: 'uppercase' }}>India CPI Inflation</div>
+          <div className="font-display tabular-nums" style={{ fontSize: '18px', fontWeight: 800, color: '#FFB800' }}>
+            {macroData?.monetaryPolicy?.india?.cpiInflationPercent || 5.40}% p.a.
+          </div>
+          <div style={{ fontSize: '10px', color: '#64748B' }}>MoSPI Headline Gazette</div>
+        </div>
+
+        <div>
+          <div style={{ fontSize: '10.5px', color: '#94A3B8', fontWeight: 600, textTransform: 'uppercase' }}>10Y Benchmark G-Sec</div>
+          <div className="font-display tabular-nums" style={{ fontSize: '18px', fontWeight: 800, color: '#00FF87' }}>
+            {macroData?.sovereignYieldCurve?.tenor10y?.yieldPercent || 7.12}% p.a.
+          </div>
+          <div style={{ fontSize: '10px', color: '#64748B' }}>Real Sovereign Spread: +{(7.12 - (macroData?.monetaryPolicy?.india?.cpiInflationPercent || 5.40)).toFixed(2)}%</div>
+        </div>
+
+        <div>
+          <div style={{ fontSize: '10.5px', color: '#94A3B8', fontWeight: 600, textTransform: 'uppercase' }}>24K Spot Gold (999)</div>
+          <div className="font-display tabular-nums" style={{ fontSize: '18px', fontWeight: 800, color: '#FFD700' }}>
+            ₹{(macroData?.preciousMetalsSpot?.gold24KPerGramInr || 7550).toLocaleString()}/g
+          </div>
+          <div style={{ fontSize: '10px', color: '#64748B' }}>₹{(macroData?.preciousMetalsSpot?.gold24KPer10GramInr || 75500).toLocaleString()}/10g</div>
+        </div>
+      </div>
+
+      {/* 3. SUB-STUDIO NAVIGATION TABS */}
       <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
         {[
           { id: 'radar', label: 'Scheme Radar & Yields', icon: Award },
@@ -294,64 +425,112 @@ export const PassiveIncomePage = () => {
         })}
       </div>
 
-      {/* 3. LIVE MARKET WATCH TICKER RIBBON */}
-      <div style={{ overflowX: 'auto', paddingBottom: '4px' }}>
-        <div style={{ display: 'flex', gap: '10px', minWidth: 'max-content' }}>
-          {quotes.map((q) => {
-            const isPositive = q.change >= 0;
-            return (
-              <div
-                key={q.symbol}
-                className="glass-card"
-                style={{
-                  padding: '10px 16px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '14px',
-                  border: '1px solid rgba(255, 255, 255, 0.08)',
-                  background: 'rgba(13, 17, 28, 0.85)',
-                  minWidth: '185px',
-                }}
-              >
-                <div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <span style={{ fontSize: '12px', fontWeight: 800, color: '#F8FAFC' }}>{q.symbol}</span>
-                    <span style={{ fontSize: '9px', padding: '1px 4px', borderRadius: '4px', background: q.marketStatus === 'LIVE' ? 'rgba(0, 255, 135, 0.15)' : 'rgba(255, 255, 255, 0.08)', color: q.marketStatus === 'LIVE' ? '#00FF87' : '#94A3B8', fontFamily: 'var(--font-mono)' }}>
-                      {q.marketStatus === 'LIVE' ? 'LIVE' : 'BENCHMARK'}
-                    </span>
-                  </div>
-                  <div style={{ fontSize: '10.5px', color: '#94A3B8', maxWidth: '125px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                    {q.name}
-                  </div>
-                </div>
+      {/* 4. LIVE MARKET WATCH TICKER RIBBON & DYNAMIC SEARCH */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
+          <div style={{ fontSize: '12px', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase' }}>
+            Live Market Watchlist ({quotes.length} Assets)
+          </div>
 
-                <div style={{ textAlign: 'right', marginLeft: 'auto' }}>
-                  <div className="font-display tabular-nums" style={{ fontSize: '13.5px', fontWeight: 800, color: '#F8FAFC' }}>
-                    {q.currency}{q.price?.toLocaleString()}
+          {/* Quick Custom Ticker Search Form */}
+          <form onSubmit={handleAddCustomTicker} style={{ display: 'flex', gap: '6px' }}>
+            <input
+              type="text"
+              placeholder="Search ticker (e.g. TSLA, TATAMOTORS, BTC-INR)..."
+              value={customTickerInput}
+              onChange={(e) => setCustomTickerInput(e.target.value)}
+              className="input-luxury"
+              style={{ width: '280px', height: '30px', fontSize: '11px', padding: '0 10px' }}
+            />
+            <button
+              type="submit"
+              className="btn-glass-secondary"
+              style={{ height: '30px', padding: '0 10px', fontSize: '11px', color: '#00FF87', borderColor: 'rgba(0, 255, 135, 0.3)' }}
+            >
+              <Plus size={12} /> Add
+            </button>
+          </form>
+        </div>
+
+        <div style={{ overflowX: 'auto', paddingBottom: '4px' }}>
+          <div style={{ display: 'flex', gap: '10px', minWidth: 'max-content' }}>
+            {quotes.map((q) => {
+              const isPositive = q.change >= 0;
+              return (
+                <div
+                  key={q.symbol}
+                  className="glass-card"
+                  style={{
+                    padding: '10px 16px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '14px',
+                    border: '1px solid rgba(255, 255, 255, 0.08)',
+                    background: 'rgba(13, 17, 28, 0.85)',
+                    minWidth: '185px',
+                    position: 'relative',
+                  }}
+                >
+                  <div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <span style={{ fontSize: '12px', fontWeight: 800, color: '#F8FAFC' }}>{q.symbol}</span>
+                      <span style={{ fontSize: '9px', padding: '1px 4px', borderRadius: '4px', background: q.marketStatus === 'LIVE' ? 'rgba(0, 255, 135, 0.15)' : 'rgba(255, 255, 255, 0.08)', color: q.marketStatus === 'LIVE' ? '#00FF87' : '#94A3B8', fontFamily: 'var(--font-mono)' }}>
+                        {q.marketStatus === 'LIVE' ? 'LIVE' : 'BENCHMARK'}
+                      </span>
+                    </div>
+                    <div style={{ fontSize: '10.5px', color: '#94A3B8', maxWidth: '125px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      {q.name}
+                    </div>
                   </div>
-                  <div
-                    className="font-mono tabular-nums"
-                    style={{
-                      fontSize: '11px',
-                      fontWeight: 700,
-                      color: isPositive ? '#00FF87' : '#F43F5E',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'flex-end',
-                      gap: '2px',
-                    }}
-                  >
-                    {isPositive ? <ArrowUpRight size={12} /> : <ArrowDownRight size={12} />}
-                    {isPositive ? '+' : ''}{q.changePercent}%
+
+                  <div style={{ textAlign: 'right', marginLeft: 'auto' }}>
+                    <div className="font-display tabular-nums" style={{ fontSize: '13.5px', fontWeight: 800, color: '#F8FAFC' }}>
+                      {q.currency}{q.price?.toLocaleString()}
+                    </div>
+                    <div
+                      className="font-mono tabular-nums"
+                      style={{
+                        fontSize: '11px',
+                        fontWeight: 700,
+                        color: isPositive ? '#00FF87' : '#F43F5E',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'flex-end',
+                        gap: '2px',
+                      }}
+                    >
+                      {isPositive ? <ArrowUpRight size={12} /> : <ArrowDownRight size={12} />}
+                      {isPositive ? '+' : ''}{q.changePercent}%
+                    </div>
                   </div>
+
+                  {/* Remove Button for custom tickers */}
+                  {watchedSymbols.length > 3 && (
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveTicker(q.symbol)}
+                      style={{
+                        background: 'transparent',
+                        border: 'none',
+                        color: '#64748B',
+                        cursor: 'pointer',
+                        padding: '2px',
+                        marginLeft: '4px',
+                        opacity: 0.6,
+                      }}
+                      title="Remove from watchlist"
+                    >
+                      <X size={11} />
+                    </button>
+                  )}
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </div>
 
-      {/* 4. STUDIO VIEWS */}
+      {/* 5. STUDIO VIEWS */}
       <AnimatePresence mode="wait">
         {/* ========================================================================= */}
         {/* TAB 1: SOVEREIGN SCHEME RADAR & YIELDS */}
@@ -437,6 +616,9 @@ export const PassiveIncomePage = () => {
                             <div className="font-display tabular-nums" style={{ fontSize: '15px', fontWeight: 800, color: '#00F0FF' }}>
                               {tb.yieldPercent}% p.a.
                             </div>
+                            <div style={{ fontSize: '10px', color: '#00FF87', marginTop: '1px' }}>
+                              Real Yield: +{tb.realYieldPercent || (tb.yieldPercent - 5.4).toFixed(2)}%
+                            </div>
                             <button
                               type="button"
                               className="btn-glass-secondary"
@@ -451,14 +633,14 @@ export const PassiveIncomePage = () => {
                   </div>
                 )}
 
-                {/* Sovereign Gold Bonds (SGB) & Live 24K Gold Spot */}
+                {/* Sovereign Gold Bonds & 24K Spot */}
                 {(radarFilter === 'all' || radarFilter === 'sgb') && (
                   <div className="glass-card" style={{ padding: '22px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px', paddingBottom: '10px', borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                         <Coins size={18} color="#FFD700" />
                         <h3 className="heading-md" style={{ margin: 0, color: '#F8FAFC' }}>
-                          Sovereign Gold Bonds & Live 24K Gold
+                          Sovereign Gold Bonds (SGB) & Live Spot
                         </h3>
                       </div>
                       <span style={{ fontSize: '10px', fontWeight: 800, fontFamily: 'var(--font-mono)', padding: '2px 8px', borderRadius: '999px', background: 'rgba(255, 215, 0, 0.12)', color: '#FFD700', border: '1px solid rgba(255, 215, 0, 0.3)' }}>
@@ -466,111 +648,133 @@ export const PassiveIncomePage = () => {
                       </span>
                     </div>
 
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                      {/* Live 24K Gold Spot Benchmark */}
-                      <div style={{ padding: '12px 16px', borderRadius: '12px', background: 'linear-gradient(135deg, rgba(255, 215, 0, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%)', border: '1px solid rgba(255, 215, 0, 0.25)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                      {/* Live 24K Gold Spot Card */}
+                      <div
+                        style={{
+                          padding: '14px 16px',
+                          borderRadius: '12px',
+                          background: 'linear-gradient(135deg, rgba(255, 215, 0, 0.08), rgba(255, 215, 0, 0.02))',
+                          border: '1px solid rgba(255, 215, 0, 0.25)',
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                        }}
+                      >
                         <div>
-                          <div style={{ fontSize: '13px', fontWeight: 700, color: '#F8FAFC', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                            <span>Live 24K Gold Spot (999 Purity)</span>
-                            <span style={{ fontSize: '9px', padding: '1px 5px', borderRadius: '4px', background: 'rgba(255, 215, 0, 0.2)', color: '#FFD700', fontFamily: 'var(--font-mono)' }}>LIVE SPOT</span>
+                          <div style={{ fontSize: '11px', fontWeight: 700, color: '#FFD700', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                            24K Gold Spot (999 Purity)
                           </div>
-                          <div style={{ fontSize: '11px', color: '#94A3B8' }}>₹{schemes?.goldSpot24K?.pricePer10GramInr?.toLocaleString()} per 10 Grams • Source: MCX / IBJA</div>
+                          <div className="font-display tabular-nums" style={{ fontSize: '20px', fontWeight: 800, color: '#F8FAFC', marginTop: '2px' }}>
+                            ₹{schemes?.goldSpot24K?.pricePerGramInr?.toLocaleString()} <span style={{ fontSize: '12px', color: '#94A3B8', fontWeight: 500 }}>/ gram</span>
+                          </div>
+                          <div style={{ fontSize: '11px', color: '#94A3B8' }}>
+                            10 Grams: ₹{schemes?.goldSpot24K?.pricePer10GramInr?.toLocaleString()}
+                          </div>
                         </div>
                         <div style={{ textAlign: 'right' }}>
-                          <div className="font-display tabular-nums" style={{ fontSize: '16px', fontWeight: 800, color: '#FFD700' }}>
-                            ₹{schemes?.goldSpot24K?.pricePerGramInr?.toLocaleString()} / gm
-                          </div>
-                          <div style={{ fontSize: '10.5px', color: schemes?.goldSpot24K?.changePercent >= 0 ? '#00FF87' : '#F43F5E', fontFamily: 'var(--font-mono)' }}>
-                            {schemes?.goldSpot24K?.changePercent >= 0 ? '+' : ''}{schemes?.goldSpot24K?.changePercent}% 24h
-                          </div>
+                          <span style={{ fontSize: '10px', fontWeight: 800, padding: '3px 8px', borderRadius: '6px', background: 'rgba(0, 255, 135, 0.15)', color: '#00FF87' }}>
+                            {schemes?.marketStatus || 'LIVE FEED'}
+                          </span>
                         </div>
                       </div>
 
-                      {/* Guaranteed Coupon */}
-                      <div style={{ padding: '12px 16px', borderRadius: '12px', background: 'rgba(255, 255, 255, 0.02)', border: '1px solid rgba(255, 255, 255, 0.06)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <div>
-                          <div style={{ fontSize: '13px', fontWeight: 700, color: '#F8FAFC' }}>Guaranteed Annual Coupon</div>
-                          <div style={{ fontSize: '11px', color: '#94A3B8' }}>2.50% paid semi-annually directly to bank account</div>
+                      {/* SGB Terms */}
+                      {schemes?.goldBonds?.map((sgb) => (
+                        <div
+                          key={sgb.name}
+                          className="glass-card-interactive"
+                          style={{
+                            padding: '14px 16px',
+                            borderRadius: '12px',
+                            background: 'rgba(255, 255, 255, 0.02)',
+                            border: '1px solid rgba(255, 255, 255, 0.06)',
+                          }}
+                          onClick={() => openCalculator('Sovereign Gold Bonds (2.5% Coupon + Gold CAGR)', 13.7, 8, 'annual')}
+                        >
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <div style={{ fontSize: '13.5px', fontWeight: 700, color: '#F8FAFC' }}>{sgb.name}</div>
+                            <div className="font-display tabular-nums" style={{ fontSize: '15px', fontWeight: 800, color: '#FFD700' }}>
+                              2.50% p.a. + Gold CAGR
+                            </div>
+                          </div>
+                          <div style={{ fontSize: '11.5px', color: '#00FF87', marginTop: '4px', fontWeight: 600 }}>
+                            {sgb.capitalGainsTax}
+                          </div>
+                          <div style={{ fontSize: '11px', color: '#94A3B8', marginTop: '4px' }}>
+                            Tenor: {sgb.tenorYears} Years (Premature exit at Year {sgb.prematureExitYears}) • {sgb.digitalDiscount}
+                          </div>
+                          <div style={{ fontSize: '10px', color: '#64748B', marginTop: '4px' }}>
+                            {sgb.statutoryAuthority}
+                          </div>
                         </div>
-                        <div className="font-display tabular-nums" style={{ fontSize: '15px', fontWeight: 800, color: '#FFD700' }}>
-                          2.50% p.a.
-                        </div>
-                      </div>
-
-                      {/* Maturity & Tax Exemption */}
-                      <div style={{ padding: '12px 16px', borderRadius: '12px', background: 'rgba(255, 255, 255, 0.02)', border: '1px solid rgba(255, 255, 255, 0.06)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <div>
-                          <div style={{ fontSize: '13px', fontWeight: 700, color: '#F8FAFC' }}>Tenor & Tax Exemption</div>
-                          <div style={{ fontSize: '11px', color: '#94A3B8' }}>8 Years (Exit available at Y5, Y6, Y7) • 100% Tax Exempt (Sec 47(viic))</div>
-                        </div>
-                        <div style={{ fontSize: '12px', fontWeight: 700, color: '#00FF87' }}>
-                          RBI Guaranteed
-                        </div>
-                      </div>
+                      ))}
                     </div>
                   </div>
                 )}
               </div>
             )}
 
-            {/* 2. Top Verified Bank Fixed Deposits */}
-            {(radarFilter === 'all' || radarFilter === 'fds') && (
+            {/* 2. Official Government Savings Schemes (MoF Gazette) */}
+            {(radarFilter === 'all' || radarFilter === 'small_savings') && (
               <div className="glass-card" style={{ padding: '22px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', paddingBottom: '10px', borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <Percent size={18} color="#00FF87" />
+                    <Landmark size={18} color="#00FF87" />
                     <h3 className="heading-md" style={{ margin: 0, color: '#F8FAFC' }}>
-                      Top Verified Bank Fixed Deposits (Accurate Tenures)
+                      Official Government of India Small Savings Schemes (MoF Gazette)
                     </h3>
                   </div>
-                  <span style={{ fontSize: '11px', color: '#00FF87', fontFamily: 'var(--font-mono)', background: 'rgba(0, 255, 135, 0.1)', padding: '3px 8px', borderRadius: '6px', border: '1px solid rgba(0, 255, 135, 0.25)' }}>
-                    DICGC Insured up to ₹5 Lakhs per Depositor
+                  <span style={{ fontSize: '10px', fontWeight: 800, fontFamily: 'var(--font-mono)', padding: '2px 8px', borderRadius: '999px', background: 'rgba(0, 255, 135, 0.12)', color: '#00FF87', border: '1px solid rgba(0, 255, 135, 0.3)' }}>
+                    Sovereign Backed & Sec 80C
                   </span>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '14px' }}>
-                  {schemes?.bankFixedDeposits?.map((fd) => (
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '12px' }}>
+                  {schemes?.governmentSchemes?.map((sch) => (
                     <div
-                      key={fd.bank}
+                      key={sch.id}
                       className="glass-card-interactive"
                       style={{
-                        padding: '16px',
+                        padding: '14px 16px',
+                        borderRadius: '12px',
                         background: 'rgba(255, 255, 255, 0.02)',
                         border: '1px solid rgba(255, 255, 255, 0.06)',
                         display: 'flex',
                         flexDirection: 'column',
                         justifyContent: 'space-between',
+                        gap: '10px',
                       }}
-                      onClick={() => openCalculator(fd.bank, fd.maxRatePercent, 3, 'quarterly')}
+                      onClick={() => openCalculator(sch.name, sch.ratePercent, sch.lockInYears, sch.frequency.includes('Quarterly') ? 'quarterly' : (sch.frequency.includes('Monthly') ? 'monthly' : 'annual'))}
                     >
                       <div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '4px' }}>
-                          <div style={{ fontSize: '13.5px', fontWeight: 800, color: '#F8FAFC' }}>{fd.bank}</div>
-                          <span style={{ fontSize: '9.5px', color: '#94A3B8', fontFamily: 'var(--font-mono)', padding: '1px 5px', borderRadius: '4px', background: 'rgba(255, 255, 255, 0.06)' }}>
-                            {fd.category?.split(' ')[0]}
-                          </span>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '8px' }}>
+                          <div style={{ fontSize: '13px', fontWeight: 700, color: '#F8FAFC' }}>{sch.name}</div>
+                          <div className="font-display tabular-nums" style={{ fontSize: '16px', fontWeight: 800, color: '#00FF87', whiteSpace: 'nowrap' }}>
+                            {sch.ratePercent}%
+                          </div>
                         </div>
-
-                        {/* ACCURATE TENURE DISPLAY (FIXED GLITCH) */}
-                        <div style={{ fontSize: '11.5px', color: '#00F0FF', fontWeight: 700, marginBottom: '10px' }}>
-                          {fd.tenureFormatted || fd.tenure}
+                        <div style={{ fontSize: '10px', color: '#00F0FF', marginTop: '2px' }}>
+                          Real Yield: +{sch.realYieldPercent || (sch.ratePercent - 5.4).toFixed(2)}% over CPI
+                        </div>
+                        <div style={{ fontSize: '11px', color: '#94A3B8', marginTop: '4px' }}>
+                          {sch.frequency} • Lock-in: {sch.lockInYears} Yrs
+                        </div>
+                        <div style={{ fontSize: '11px', color: '#64748B', marginTop: '2px' }}>
+                          Eligibility: {sch.eligibility}
                         </div>
                       </div>
 
-                      <div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', paddingTop: '8px', borderTop: '1px solid rgba(255, 255, 255, 0.05)', marginBottom: '8px' }}>
-                          <span style={{ fontSize: '11px', color: '#94A3B8' }}>Regular / Senior Citizen</span>
-                          <span className="font-display tabular-nums" style={{ fontSize: '15px', fontWeight: 800, color: '#00FF87' }}>
-                            {fd.maxRatePercent}% / {fd.seniorCitizenRate}%
-                          </span>
-                        </div>
-
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '8px', borderTop: '1px solid rgba(255, 255, 255, 0.04)' }}>
+                        <span style={{ fontSize: '10px', color: sch.taxDeduction80C ? '#00FF87' : '#94A3B8', fontWeight: 600 }}>
+                          {sch.taxDeduction80C ? '✓ Sec 80C Eligible' : 'Standard Taxation'}
+                        </span>
                         <button
                           type="button"
                           className="btn-glass-secondary"
-                          style={{ width: '100%', height: '28px', fontSize: '11px', color: '#00FF87', borderColor: 'rgba(0, 255, 135, 0.3)' }}
+                          style={{ height: '22px', padding: '0 8px', fontSize: '10px', color: '#00FF87', borderColor: 'rgba(0, 255, 135, 0.3)' }}
                         >
-                          Calculate FD Returns
+                          Calculate
                         </button>
                       </div>
                     </div>
@@ -579,63 +783,72 @@ export const PassiveIncomePage = () => {
               </div>
             )}
 
-            {/* 3. Government Small Savings Schemes (MoF Notified) */}
-            {(radarFilter === 'all' || radarFilter === 'small_savings') && (
+            {/* 3. Verified Bank Fixed Deposits (DICGC Insured) */}
+            {(radarFilter === 'all' || radarFilter === 'fds') && (
               <div className="glass-card" style={{ padding: '22px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', paddingBottom: '10px', borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <Landmark size={18} color="#FFD700" />
+                    <ShieldCheck size={18} color="#00F0FF" />
                     <h3 className="heading-md" style={{ margin: 0, color: '#F8FAFC' }}>
-                      Ministry of Finance (MoF) Small Savings Schemes
+                      Highest Verified Bank Fixed Deposits (DICGC Insured up to ₹5 Lakhs)
                     </h3>
                   </div>
-                  <span style={{ fontSize: '11px', color: '#94A3B8', fontFamily: 'var(--font-mono)' }}>Quarterly Gazette Notified Rates</span>
+                  <span style={{ fontSize: '10px', fontWeight: 800, fontFamily: 'var(--font-mono)', padding: '2px 8px', borderRadius: '999px', background: 'rgba(0, 240, 255, 0.12)', color: '#00F0FF', border: '1px solid rgba(0, 240, 255, 0.3)' }}>
+                    RBI Regulated
+                  </span>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '14px' }}>
-                  {schemes?.governmentSchemes?.map((sch) => (
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '12px' }}>
+                  {schemes?.bankFixedDeposits?.map((fd) => (
                     <div
-                      key={sch.name}
+                      key={fd.bank}
                       className="glass-card-interactive"
                       style={{
-                        padding: '16px',
+                        padding: '14px 16px',
+                        borderRadius: '12px',
                         background: 'rgba(255, 255, 255, 0.02)',
                         border: '1px solid rgba(255, 255, 255, 0.06)',
                         display: 'flex',
                         flexDirection: 'column',
                         justifyContent: 'space-between',
+                        gap: '10px',
                       }}
-                      onClick={() => openCalculator(sch.name, sch.ratePercent, sch.lockInYears || 5, sch.frequency?.toLowerCase().includes('annual') ? 'annual' : 'quarterly')}
+                      onClick={() => openCalculator(`${fd.bank} FD (${fd.tenureFormatted})`, fd.maxRatePercent, fd.tenure.includes('1001') ? 2.74 : (fd.tenure.includes('732') ? 2.0 : 1.1), 'quarterly')}
                     >
                       <div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '6px' }}>
-                          <div style={{ fontSize: '13px', fontWeight: 800, color: '#F8FAFC' }}>{sch.name}</div>
-                          {sch.taxDeduction80C && (
-                            <span style={{ fontSize: '9px', fontWeight: 800, padding: '1px 5px', borderRadius: '4px', background: 'rgba(0, 255, 135, 0.15)', color: '#00FF87', border: '1px solid rgba(0, 255, 135, 0.3)', fontFamily: 'var(--font-mono)' }}>
-                              80C TAX SAVER
-                            </span>
-                          )}
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '8px' }}>
+                          <div>
+                            <div style={{ fontSize: '13.5px', fontWeight: 700, color: '#F8FAFC' }}>{fd.bank}</div>
+                            <div style={{ fontSize: '11px', color: '#94A3B8' }}>{fd.category}</div>
+                          </div>
+                          <div style={{ textAlign: 'right' }}>
+                            <div className="font-display tabular-nums" style={{ fontSize: '16px', fontWeight: 800, color: '#00F0FF' }}>
+                              {fd.maxRatePercent}%
+                            </div>
+                            <div style={{ fontSize: '10px', color: '#FFD700', fontWeight: 600 }}>
+                              Senior: {fd.seniorCitizenRate}%
+                            </div>
+                            <div style={{ fontSize: '10px', color: '#00FF87' }}>
+                              Real: +{fd.realYieldPercent || (fd.maxRatePercent - 5.4).toFixed(2)}%
+                            </div>
+                          </div>
                         </div>
 
-                        <div style={{ fontSize: '11px', color: '#94A3B8', marginBottom: '8px' }}>
-                          {sch.frequency} • {sch.lockInYears} Years Lock-in
+                        <div style={{ fontSize: '11.5px', fontWeight: 600, color: '#F8FAFC', marginTop: '6px' }}>
+                          Tenure: <span style={{ color: '#00F0FF' }}>{fd.tenureFormatted || fd.tenure}</span>
                         </div>
                       </div>
 
-                      <div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', paddingTop: '8px', borderTop: '1px solid rgba(255, 255, 255, 0.05)', marginBottom: '8px' }}>
-                          <span style={{ fontSize: '11px', color: '#94A3B8' }}>Interest Rate</span>
-                          <span className="font-display tabular-nums" style={{ fontSize: '16px', fontWeight: 800, color: '#FFD700' }}>
-                            {sch.ratePercent}% p.a.
-                          </span>
-                        </div>
-
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '8px', borderTop: '1px solid rgba(255, 255, 255, 0.04)' }}>
+                        <span style={{ fontSize: '10px', color: '#00FF87', fontWeight: 600 }}>
+                          ✓ DICGC ₹5L Insured
+                        </span>
                         <button
                           type="button"
                           className="btn-glass-secondary"
-                          style={{ width: '100%', height: '28px', fontSize: '11px', color: '#FFD700', borderColor: 'rgba(255, 215, 0, 0.3)' }}
+                          style={{ height: '22px', padding: '0 8px', fontSize: '10px', color: '#00F0FF', borderColor: 'rgba(0, 240, 255, 0.3)' }}
                         >
-                          Calculate Scheme Growth
+                          Calculate
                         </button>
                       </div>
                     </div>
@@ -647,7 +860,7 @@ export const PassiveIncomePage = () => {
         )}
 
         {/* ========================================================================= */}
-        {/* TAB 2: DCF QUANTITATIVE VALUATION */}
+        {/* TAB 2: DCF INTRINSIC VALUATION */}
         {/* ========================================================================= */}
         {activeTab === 'dcf' && (
           <motion.div
@@ -655,69 +868,106 @@ export const PassiveIncomePage = () => {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '18px' }}
+            style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))', gap: '18px' }}
           >
-            {/* Input Parameter Form Panel */}
-            <div className="glass-card" style={{ padding: '24px' }}>
-              <h3 className="heading-md" style={{ margin: '0 0 16px 0', color: '#F8FAFC', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            {/* Input Controls */}
+            <div className="glass-card" style={{ padding: '22px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
                 <Calculator size={18} color="#00FF87" />
-                2-Stage DCF Valuation Inputs
-              </h3>
+                <h3 className="heading-md" style={{ margin: 0 }}>2-Stage Discounted Free Cash Flow (DCF)</h3>
+              </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 <div>
-                  <label className="body-sm" style={{ color: '#94A3B8', display: 'block', marginBottom: '4px' }}>
-                    Current Free Cash Flow (₹ Cr / Millions)
+                  <label className="body-xs" style={{ color: '#94A3B8', display: 'block', marginBottom: '4px' }}>
+                    Current Free Cash Flow (TTM in ₹ Cr)
                   </label>
                   <input
                     type="number"
                     value={dcfInput.currentFCF}
-                    onChange={(e) => setDcfInput({ ...dcfInput, currentFCF: Number(e.target.value) })}
-                    style={{ width: '100%', padding: '8px 12px', background: 'rgba(0, 0, 0, 0.4)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '10px', color: '#FFFFFF', fontSize: '13px' }}
+                    onChange={(e) => {
+                      const val = parseFloat(e.target.value) || 0;
+                      setDcfInput({ ...dcfInput, currentFCF: val });
+                    }}
+                    className="input-luxury"
                   />
                 </div>
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
                   <div>
-                    <label className="body-xs" style={{ color: '#94A3B8', display: 'block', marginBottom: '4px' }}>Stage 1 Growth (Yr 1-5 %)</label>
+                    <label className="body-xs" style={{ color: '#94A3B8', display: 'block', marginBottom: '4px' }}>
+                      Stage 1 Growth (5 Yrs %)
+                    </label>
                     <input
                       type="number"
                       step="0.01"
-                      value={Math.round(dcfInput.growthRateStage1 * 100)}
-                      onChange={(e) => setDcfInput({ ...dcfInput, growthRateStage1: Number(e.target.value) / 100 })}
-                      style={{ width: '100%', padding: '8px 12px', background: 'rgba(0, 0, 0, 0.4)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '10px', color: '#FFFFFF', fontSize: '13px' }}
+                      value={dcfInput.growthRateStage1}
+                      onChange={(e) => setDcfInput({ ...dcfInput, growthRateStage1: parseFloat(e.target.value) || 0 })}
+                      className="input-luxury"
                     />
                   </div>
                   <div>
-                    <label className="body-xs" style={{ color: '#94A3B8', display: 'block', marginBottom: '4px' }}>Stage 2 Growth (Yr 6-10 %)</label>
+                    <label className="body-xs" style={{ color: '#94A3B8', display: 'block', marginBottom: '4px' }}>
+                      Stage 2 Growth (Yrs 6–10 %)
+                    </label>
                     <input
                       type="number"
                       step="0.01"
-                      value={Math.round(dcfInput.growthRateStage2 * 100)}
-                      onChange={(e) => setDcfInput({ ...dcfInput, growthRateStage2: Number(e.target.value) / 100 })}
-                      style={{ width: '100%', padding: '8px 12px', background: 'rgba(0, 0, 0, 0.4)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '10px', color: '#FFFFFF', fontSize: '13px' }}
+                      value={dcfInput.growthRateStage2}
+                      onChange={(e) => setDcfInput({ ...dcfInput, growthRateStage2: parseFloat(e.target.value) || 0 })}
+                      className="input-luxury"
                     />
                   </div>
                 </div>
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
                   <div>
-                    <label className="body-xs" style={{ color: '#94A3B8', display: 'block', marginBottom: '4px' }}>WACC Discount Rate (%)</label>
+                    <label className="body-xs" style={{ color: '#94A3B8', display: 'block', marginBottom: '4px' }}>
+                      Discount Rate (WACC %)
+                    </label>
                     <input
                       type="number"
                       step="0.01"
-                      value={Math.round(dcfInput.discountRateWACC * 100)}
-                      onChange={(e) => setDcfInput({ ...dcfInput, discountRateWACC: Number(e.target.value) / 100 })}
-                      style={{ width: '100%', padding: '8px 12px', background: 'rgba(0, 0, 0, 0.4)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '10px', color: '#FFFFFF', fontSize: '13px' }}
+                      value={dcfInput.discountRateWACC}
+                      onChange={(e) => setDcfInput({ ...dcfInput, discountRateWACC: parseFloat(e.target.value) || 0 })}
+                      className="input-luxury"
                     />
                   </div>
                   <div>
-                    <label className="body-xs" style={{ color: '#94A3B8', display: 'block', marginBottom: '4px' }}>Current Market Price (₹)</label>
+                    <label className="body-xs" style={{ color: '#94A3B8', display: 'block', marginBottom: '4px' }}>
+                      Terminal Growth Rate (%)
+                    </label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      value={dcfInput.terminalGrowthRate}
+                      onChange={(e) => setDcfInput({ ...dcfInput, terminalGrowthRate: parseFloat(e.target.value) || 0 })}
+                      className="input-luxury"
+                    />
+                  </div>
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                  <div>
+                    <label className="body-xs" style={{ color: '#94A3B8', display: 'block', marginBottom: '4px' }}>
+                      Shares Outstanding (Cr)
+                    </label>
+                    <input
+                      type="number"
+                      value={dcfInput.sharesOutstanding}
+                      onChange={(e) => setDcfInput({ ...dcfInput, sharesOutstanding: parseFloat(e.target.value) || 1 })}
+                      className="input-luxury"
+                    />
+                  </div>
+                  <div>
+                    <label className="body-xs" style={{ color: '#94A3B8', display: 'block', marginBottom: '4px' }}>
+                      Current Market Price (₹)
+                    </label>
                     <input
                       type="number"
                       value={dcfInput.currentPrice}
-                      onChange={(e) => setDcfInput({ ...dcfInput, currentPrice: Number(e.target.value) })}
-                      style={{ width: '100%', padding: '8px 12px', background: 'rgba(0, 0, 0, 0.4)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '10px', color: '#FFFFFF', fontSize: '13px' }}
+                      onChange={(e) => setDcfInput({ ...dcfInput, currentPrice: parseFloat(e.target.value) || 0 })}
+                      className="input-luxury"
                     />
                   </div>
                 </div>
@@ -726,82 +976,63 @@ export const PassiveIncomePage = () => {
                   type="button"
                   onClick={runDcfCalculation}
                   className="btn-primary-mint"
-                  style={{ width: '100%', marginTop: '8px' }}
+                  style={{ marginTop: '10px', height: '40px' }}
                 >
-                  Calculate Intrinsic Fair Value
+                  Recalculate Intrinsic Value
                 </button>
               </div>
             </div>
 
-            {/* DCF Output Scorecard */}
-            <div className="glass-card" style={{ padding: '24px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-              {dcfResult ? (
+            {/* DCF Output Synthesis */}
+            {dcfResult && (
+              <div className="glass-card" style={{ padding: '22px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '18px', paddingBottom: '16px', borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>
-                    <div>
-                      <span className="body-sm" style={{ color: '#94A3B8' }}>Intrinsic Fair Value Per Share</span>
-                      <div className="display-xl font-display tabular-nums" style={{ color: '#00FF87', margin: '2px 0 0 0' }}>
-                        ₹{dcfResult.fairValuePerShare}
-                      </div>
-                    </div>
+                  <div style={{ fontSize: '11px', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.6px' }}>
+                    Valuation Verdict & Margin of Safety
+                  </div>
 
-                    <div style={{ textAlign: 'right' }}>
-                      <span className="body-sm" style={{ color: '#94A3B8' }}>Margin of Safety</span>
-                      <div className="heading-xl font-mono tabular-nums" style={{ color: dcfResult.isUndervalued ? '#00FF87' : '#F43F5E', margin: '2px 0 0 0' }}>
-                        {dcfResult.marginOfSafetyPercent > 0 ? '+' : ''}{dcfResult.marginOfSafetyPercent}%
-                      </div>
+                  <div style={{ marginTop: '14px', display: 'flex', alignItems: 'baseline', gap: '12px' }}>
+                    <div className="font-display" style={{ fontSize: '32px', fontWeight: 900, color: '#00FF87' }}>
+                      ₹{dcfResult.fairValuePerShare}
+                    </div>
+                    <div style={{ fontSize: '14px', color: '#94A3B8' }}>
+                      Fair Intrinsic Value
                     </div>
                   </div>
 
-                  <div
-                    style={{
-                      padding: '14px',
-                      borderRadius: '12px',
-                      background: dcfResult.isUndervalued ? 'rgba(0, 255, 135, 0.08)' : 'rgba(244, 63, 94, 0.08)',
-                      border: dcfResult.isUndervalued ? '1px solid rgba(0, 255, 135, 0.3)' : '1px solid rgba(244, 63, 94, 0.3)',
-                      color: dcfResult.isUndervalued ? '#00FF87' : '#F43F5E',
-                      fontSize: '12.5px',
-                      marginBottom: '18px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '10px',
-                    }}
-                  >
-                    {dcfResult.isUndervalued ? <CheckCircle2 size={20} color="#00FF87" /> : <XCircle size={20} color="#F43F5E" />}
-                    <div>
-                      <strong style={{ display: 'block' }}>{dcfResult.isUndervalued ? 'Undervalued Discount' : 'Trading at Premium'}</strong>
-                      <span style={{ fontSize: '11.5px', color: '#E2E8F0' }}>
-                        {dcfResult.isUndervalued
-                          ? `Asset is trading at a ${Math.abs(dcfResult.marginOfSafetyPercent)}% discount to projected discounted cash flow value.`
-                          : `Current market price (₹${dcfResult.currentPrice}) exceeds estimated DCF value (₹${dcfResult.fairValuePerShare}).`}
+                  <div style={{ marginTop: '12px', padding: '14px', borderRadius: '12px', background: dcfResult.upsidePercent >= 0 ? 'rgba(0, 255, 135, 0.08)' : 'rgba(244, 63, 94, 0.08)', border: `1px solid ${dcfResult.upsidePercent >= 0 ? 'rgba(0, 255, 135, 0.3)' : 'rgba(244, 63, 94, 0.3)'}` }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '13px', fontWeight: 700, color: '#F8FAFC' }}>Recommendation:</span>
+                      <span style={{ fontSize: '13px', fontWeight: 800, color: dcfResult.upsidePercent >= 0 ? '#00FF87' : '#F43F5E' }}>
+                        {dcfResult.verdict}
                       </span>
                     </div>
+                    <div style={{ fontSize: '12px', color: '#94A3B8', marginTop: '4px' }}>
+                      Margin of Safety: <strong style={{ color: dcfResult.upsidePercent >= 0 ? '#00FF87' : '#F43F5E' }}>{dcfResult.upsidePercent}%</strong> relative to current price (₹{dcfInput.currentPrice})
+                    </div>
                   </div>
 
-                  <h4 className="heading-md" style={{ margin: '0 0 10px 0', color: '#F8FAFC' }}>Projected 5-Year Cash Flows</h4>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                    {dcfResult.fcfProjection?.slice(0, 5).map((row) => (
-                      <div
-                        key={row.year}
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          padding: '8px 12px',
-                          borderRadius: '8px',
-                          background: 'rgba(255, 255, 255, 0.02)',
-                          fontSize: '12px',
-                        }}
-                      >
-                        <span style={{ color: '#94A3B8' }}>Year {row.year} (Growth: {(row.growthRate * 100).toFixed(0)}%)</span>
-                        <span className="font-mono tabular-nums" style={{ color: '#00FF87', fontWeight: 700 }}>₹{row.presentValue} PV</span>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginTop: '16px' }}>
+                    <div style={{ padding: '10px', borderRadius: '8px', background: 'rgba(255, 255, 255, 0.02)' }}>
+                      <div style={{ fontSize: '11px', color: '#94A3B8' }}>10-Yr PV of Cashflows</div>
+                      <div className="font-display tabular-nums" style={{ fontSize: '14px', fontWeight: 800, color: '#F8FAFC' }}>
+                        ₹{dcfResult.presentValueOfCashflows?.toLocaleString()} Cr
                       </div>
-                    ))}
+                    </div>
+                    <div style={{ padding: '10px', borderRadius: '8px', background: 'rgba(255, 255, 255, 0.02)' }}>
+                      <div style={{ fontSize: '11px', color: '#94A3B8' }}>PV of Terminal Value</div>
+                      <div className="font-display tabular-nums" style={{ fontSize: '14px', fontWeight: 800, color: '#F8FAFC' }}>
+                        ₹{dcfResult.presentValueOfTerminalValue?.toLocaleString()} Cr
+                      </div>
+                    </div>
                   </div>
                 </div>
-              ) : (
-                <div style={{ textAlign: 'center', padding: '40px 0', color: '#64748B' }}>Run DCF calculation to view intrinsic valuation scorecard.</div>
-              )}
-            </div>
+
+                <div style={{ fontSize: '11px', color: '#64748B', marginTop: '18px', paddingTop: '10px', borderTop: '1px solid rgba(255, 255, 255, 0.06)' }}>
+                  Formula: Gordon Growth Terminal Value + 10-Yr Discounted Free Cash Flow PV.
+                </div>
+              </div>
+            )}
           </motion.div>
         )}
 
@@ -814,34 +1045,33 @@ export const PassiveIncomePage = () => {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '18px' }}
+            style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))', gap: '18px' }}
           >
-            {/* Scam Input Form */}
-            <div className="glass-card" style={{ padding: '24px' }}>
-              <h3 className="heading-md" style={{ margin: '0 0 16px 0', color: '#F8FAFC', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div className="glass-card" style={{ padding: '22px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
                 <ShieldCheck size={18} color="#F43F5E" />
-                Algorithmic Scam & Ponzi Shield
-              </h3>
+                <h3 className="heading-md" style={{ margin: 0 }}>Forensic Fraud & Scam Detection Audit</h3>
+              </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 <div>
-                  <label className="body-xs" style={{ color: '#94A3B8', display: 'block', marginBottom: '4px' }}>Scheme / App Name</label>
+                  <label className="body-xs" style={{ color: '#94A3B8', display: 'block', marginBottom: '4px' }}>Scheme / Platform Name</label>
                   <input
                     type="text"
                     value={scamInput.schemeName}
                     onChange={(e) => setScamInput({ ...scamInput, schemeName: e.target.value })}
-                    style={{ width: '100%', padding: '8px 12px', background: 'rgba(0, 0, 0, 0.4)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '10px', color: '#FFFFFF', fontSize: '13px' }}
+                    className="input-luxury"
                   />
                 </div>
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
                   <div>
-                    <label className="body-xs" style={{ color: '#94A3B8', display: 'block', marginBottom: '4px' }}>Promised Return (%)</label>
+                    <label className="body-xs" style={{ color: '#94A3B8', display: 'block', marginBottom: '4px' }}>Promised Return (% p.a.)</label>
                     <input
                       type="number"
                       value={scamInput.promisedReturnPercent}
-                      onChange={(e) => setScamInput({ ...scamInput, promisedReturnPercent: Number(e.target.value) })}
-                      style={{ width: '100%', padding: '8px 12px', background: 'rgba(0, 0, 0, 0.4)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '10px', color: '#FFFFFF', fontSize: '13px' }}
+                      onChange={(e) => setScamInput({ ...scamInput, promisedReturnPercent: parseFloat(e.target.value) || 0 })}
+                      className="input-luxury"
                     />
                   </div>
                   <div>
@@ -849,7 +1079,7 @@ export const PassiveIncomePage = () => {
                     <select
                       value={scamInput.returnFrequency}
                       onChange={(e) => setScamInput({ ...scamInput, returnFrequency: e.target.value })}
-                      style={{ width: '100%', padding: '8px 12px', background: 'rgba(10, 14, 24, 0.95)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '10px', color: '#FFFFFF', fontSize: '13px' }}
+                      className="input-luxury"
                     >
                       <option value="daily">Daily (High Risk)</option>
                       <option value="monthly">Monthly</option>
@@ -858,24 +1088,24 @@ export const PassiveIncomePage = () => {
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 12px', borderRadius: '10px', background: 'rgba(255, 255, 255, 0.02)', border: '1px solid rgba(255, 255, 255, 0.06)' }}>
-                  <span style={{ fontSize: '12.5px', color: '#E2E8F0' }}>Multi-Tier MLM Referral Bonus?</span>
-                  <input
-                    type="checkbox"
-                    checked={scamInput.hasReferralCommission}
-                    onChange={(e) => setScamInput({ ...scamInput, hasReferralCommission: e.target.checked })}
-                    style={{ width: '16px', height: '16px', accentColor: '#F43F5E' }}
-                  />
-                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '6px' }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12.5px', color: '#F8FAFC', cursor: 'pointer' }}>
+                    <input
+                      type="checkbox"
+                      checked={scamInput.hasReferralCommission}
+                      onChange={(e) => setScamInput({ ...scamInput, hasReferralCommission: e.target.checked })}
+                    />
+                    Has Multi-Tier Referral / MLM Commission
+                  </label>
 
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 12px', borderRadius: '10px', background: 'rgba(255, 255, 255, 0.02)', border: '1px solid rgba(255, 255, 255, 0.06)' }}>
-                  <span style={{ fontSize: '12.5px', color: '#E2E8F0' }}>SEBI / RBI Registered Entity?</span>
-                  <input
-                    type="checkbox"
-                    checked={scamInput.isRegulatedBySebiOrRbi}
-                    onChange={(e) => setScamInput({ ...scamInput, isRegulatedBySebiOrRbi: e.target.checked })}
-                    style={{ width: '16px', height: '16px', accentColor: '#00FF87' }}
-                  />
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12.5px', color: '#F8FAFC', cursor: 'pointer' }}>
+                    <input
+                      type="checkbox"
+                      checked={scamInput.isRegulatedBySebiOrRbi}
+                      onChange={(e) => setScamInput({ ...scamInput, isRegulatedBySebiOrRbi: e.target.checked })}
+                    />
+                    Registered & Regulated by SEBI, RBI, or SEC
+                  </label>
                 </div>
 
                 <button
@@ -883,73 +1113,64 @@ export const PassiveIncomePage = () => {
                   onClick={runScamAudit}
                   disabled={evaluatingScam}
                   className="btn-primary-mint"
-                  style={{ width: '100%', marginTop: '6px' }}
+                  style={{ marginTop: '10px', height: '40px' }}
                 >
-                  {evaluatingScam ? 'Auditing Mechanism...' : 'Run Fraud Audit'}
+                  {evaluatingScam ? 'Auditing Regulatory Databases...' : 'Run Forensic Scam Audit'}
                 </button>
               </div>
             </div>
 
-            {/* Scam Result Scorecard */}
-            <div className="glass-card" style={{ padding: '24px' }}>
-              {scamResult ? (
+            {scamResult && (
+              <div className="glass-card" style={{ padding: '22px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px', paddingBottom: '16px', borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>
-                    <div>
-                      <span className="body-sm" style={{ color: '#94A3B8' }}>Ponzi Risk Score</span>
-                      <div className="display-xl font-display tabular-nums" style={{ color: scamResult.riskScore > 50 ? '#F43F5E' : '#00FF87', margin: '2px 0 0 0' }}>
-                        {scamResult.riskScore} / 100
-                      </div>
-                    </div>
+                  <div style={{ fontSize: '11px', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.6px' }}>
+                    Scam Risk Scorecard
+                  </div>
 
-                    <span
+                  <div style={{ marginTop: '14px', display: 'flex', alignItems: 'baseline', gap: '10px' }}>
+                    <div
+                      className="font-display"
                       style={{
-                        padding: '4px 12px',
-                        borderRadius: '999px',
-                        fontSize: '11px',
-                        fontWeight: 800,
-                        fontFamily: 'var(--font-mono)',
-                        background: scamResult.riskScore > 50 ? 'rgba(244, 63, 94, 0.15)' : 'rgba(0, 255, 135, 0.15)',
-                        color: scamResult.riskScore > 50 ? '#F43F5E' : '#00FF87',
-                        border: `1px solid ${scamResult.riskScore > 50 ? 'rgba(244, 63, 94, 0.3)' : 'rgba(0, 255, 135, 0.3)'}`,
+                        fontSize: '34px',
+                        fontWeight: 900,
+                        color: scamResult.riskScore >= 60 ? '#F43F5E' : (scamResult.riskScore >= 30 ? '#FFB800' : '#00FF87'),
                       }}
                     >
-                      {scamResult.riskLevel}
+                      {scamResult.riskScore} / 100
+                    </div>
+                    <span style={{ fontSize: '13px', fontWeight: 700, color: '#94A3B8' }}>
+                      Risk Category: <strong style={{ color: scamResult.riskScore >= 60 ? '#F43F5E' : '#00FF87' }}>{scamResult.verdict}</strong>
                     </span>
                   </div>
 
-                  <h4 className="heading-md" style={{ margin: '0 0 10px 0', color: '#F8FAFC' }}>Red Flag Analysis</h4>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                    {scamResult.flags?.map((flag, idx) => (
+                  <div style={{ marginTop: '14px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    {scamResult.redFlags?.map((flag, idx) => (
                       <div
                         key={idx}
                         style={{
-                          padding: '10px 14px',
-                          borderRadius: '10px',
-                          background: 'rgba(244, 63, 94, 0.06)',
+                          padding: '8px 12px',
+                          borderRadius: '8px',
+                          background: 'rgba(244, 63, 94, 0.08)',
                           border: '1px solid rgba(244, 63, 94, 0.2)',
+                          fontSize: '12px',
+                          color: '#F87171',
                           display: 'flex',
                           alignItems: 'center',
-                          gap: '10px',
-                          fontSize: '12px',
-                          color: '#FECDD3',
+                          gap: '8px',
                         }}
                       >
-                        <AlertTriangle size={15} color="#F43F5E" />
+                        <AlertTriangle size={14} />
                         <span>{flag}</span>
                       </div>
                     ))}
-                    {scamResult.flags?.length === 0 && (
-                      <div style={{ padding: '12px', borderRadius: '10px', background: 'rgba(0, 255, 135, 0.06)', border: '1px solid rgba(0, 255, 135, 0.2)', color: '#00FF87', fontSize: '12px' }}>
-                        No acute Ponzi anomalies detected. Verify official SEBI registry before deposit.
-                      </div>
-                    )}
                   </div>
                 </div>
-              ) : (
-                <div style={{ textAlign: 'center', padding: '40px 0', color: '#64748B' }}>Audit in progress...</div>
-              )}
-            </div>
+
+                <div style={{ fontSize: '11px', color: '#64748B', marginTop: '16px', paddingTop: '10px', borderTop: '1px solid rgba(255, 255, 255, 0.06)' }}>
+                  Algorithmic Fraud Red-Flag Shield (ADR-011). Validates risk-free yield spreads vs. RBI Repo Rate (6.50%).
+                </div>
+              </div>
+            )}
           </motion.div>
         )}
 
@@ -962,64 +1183,44 @@ export const PassiveIncomePage = () => {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '18px' }}
+            style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))', gap: '18px' }}
           >
-            {/* Input Arbitrage Parameters */}
-            <div className="glass-card" style={{ padding: '24px' }}>
-              <h3 className="heading-md" style={{ margin: '0 0 16px 0', color: '#F8FAFC', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div className="glass-card" style={{ padding: '22px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
                 <Scale size={18} color="#00F0FF" />
-                Arbitrage Solver Parameters
-              </h3>
+                <h3 className="heading-md" style={{ margin: 0 }}>Debt Payoff vs. Equity Investment Solver</h3>
+              </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 <div>
-                  <label className="body-xs" style={{ color: '#94A3B8', display: 'block', marginBottom: '4px' }}>Surplus Monthly Cash (₹)</label>
+                  <label className="body-xs" style={{ color: '#94A3B8', display: 'block', marginBottom: '4px' }}>Surplus Monthly Cash Available (₹)</label>
                   <input
                     type="number"
                     value={arbitrageInput.surplusMonthlyCash}
-                    onChange={(e) => setArbitrageInput({ ...arbitrageInput, surplusMonthlyCash: Number(e.target.value) })}
-                    style={{ width: '100%', padding: '8px 12px', background: 'rgba(0, 0, 0, 0.4)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '10px', color: '#FFFFFF', fontSize: '13px' }}
+                    onChange={(e) => setArbitrageInput({ ...arbitrageInput, surplusMonthlyCash: parseFloat(e.target.value) || 0 })}
+                    className="input-luxury"
                   />
                 </div>
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
                   <div>
-                    <label className="body-xs" style={{ color: '#94A3B8', display: 'block', marginBottom: '4px' }}>Debt Balance (₹)</label>
+                    <label className="body-xs" style={{ color: '#94A3B8', display: 'block', marginBottom: '4px' }}>Debt Interest Rate (% APR)</label>
                     <input
                       type="number"
-                      value={arbitrageInput.debtBalance}
-                      onChange={(e) => setArbitrageInput({ ...arbitrageInput, debtBalance: Number(e.target.value) })}
-                      style={{ width: '100%', padding: '8px 12px', background: 'rgba(0, 0, 0, 0.4)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '10px', color: '#FFFFFF', fontSize: '13px' }}
-                    />
-                  </div>
-                  <div>
-                    <label className="body-xs" style={{ color: '#94A3B8', display: 'block', marginBottom: '4px' }}>Debt Interest Rate (%)</label>
-                    <input
-                      type="number"
+                      step="0.1"
                       value={arbitrageInput.debtInterestRatePercent}
-                      onChange={(e) => setArbitrageInput({ ...arbitrageInput, debtInterestRatePercent: Number(e.target.value) })}
-                      style={{ width: '100%', padding: '8px 12px', background: 'rgba(0, 0, 0, 0.4)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '10px', color: '#FFFFFF', fontSize: '13px' }}
+                      onChange={(e) => setArbitrageInput({ ...arbitrageInput, debtInterestRatePercent: parseFloat(e.target.value) || 0 })}
+                      className="input-luxury"
                     />
                   </div>
-                </div>
-
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
                   <div>
                     <label className="body-xs" style={{ color: '#94A3B8', display: 'block', marginBottom: '4px' }}>Expected Equity Return (%)</label>
                     <input
                       type="number"
+                      step="0.1"
                       value={arbitrageInput.expectedEquityReturnPercent}
-                      onChange={(e) => setArbitrageInput({ ...arbitrageInput, expectedEquityReturnPercent: Number(e.target.value) })}
-                      style={{ width: '100%', padding: '8px 12px', background: 'rgba(0, 0, 0, 0.4)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '10px', color: '#FFFFFF', fontSize: '13px' }}
-                    />
-                  </div>
-                  <div>
-                    <label className="body-xs" style={{ color: '#94A3B8', display: 'block', marginBottom: '4px' }}>Capital Gains Tax (%)</label>
-                    <input
-                      type="number"
-                      value={arbitrageInput.capitalGainsTaxRatePercent}
-                      onChange={(e) => setArbitrageInput({ ...arbitrageInput, capitalGainsTaxRatePercent: Number(e.target.value) })}
-                      style={{ width: '100%', padding: '8px 12px', background: 'rgba(0, 0, 0, 0.4)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '10px', color: '#FFFFFF', fontSize: '13px' }}
+                      onChange={(e) => setArbitrageInput({ ...arbitrageInput, expectedEquityReturnPercent: parseFloat(e.target.value) || 0 })}
+                      className="input-luxury"
                     />
                   </div>
                 </div>
@@ -1028,236 +1229,226 @@ export const PassiveIncomePage = () => {
                   type="button"
                   onClick={runArbitrageSolver}
                   className="btn-primary-mint"
-                  style={{ width: '100%', marginTop: '6px' }}
+                  style={{ marginTop: '10px', height: '40px' }}
                 >
-                  Solve Cash Flow Allocation
+                  Optimize Monthly Cash Allocation
                 </button>
               </div>
             </div>
 
-            {/* Arbitrage Recommendation Output */}
-            <div className="glass-card" style={{ padding: '24px' }}>
-              {arbitrageResult ? (
+            {arbitrageResult && (
+              <div className="glass-card" style={{ padding: '22px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <div>
-                  <div style={{ marginBottom: '18px', paddingBottom: '14px', borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>
-                    <span className="body-sm" style={{ color: '#94A3B8' }}>Optimal Mathematical Strategy</span>
-                    <div className="heading-xl font-display" style={{ color: '#00FF87', margin: '4px 0 0 0' }}>
-                      {arbitrageResult.recommendation}
+                  <div style={{ fontSize: '11px', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.6px' }}>
+                    Optimal Arbitrage Strategy
+                  </div>
+
+                  <div className="font-display" style={{ fontSize: '24px', fontWeight: 800, color: '#00F0FF', marginTop: '10px' }}>
+                    {arbitrageResult.allocationStrategy?.replace(/_/g, ' ')}
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginTop: '16px' }}>
+                    <div style={{ padding: '14px', borderRadius: '12px', background: 'rgba(255, 255, 255, 0.02)', border: '1px solid rgba(255, 255, 255, 0.06)' }}>
+                      <div style={{ fontSize: '11px', color: '#94A3B8' }}>Monthly to Debt Payoff</div>
+                      <div className="font-display tabular-nums" style={{ fontSize: '20px', fontWeight: 800, color: '#F43F5E', marginTop: '2px' }}>
+                        ₹{arbitrageResult.monthlyToDebt?.toLocaleString()}
+                      </div>
+                      <div style={{ fontSize: '10px', color: '#94A3B8' }}>{arbitrageResult.debtPrepayAllocationPercent}% Allocation</div>
+                    </div>
+
+                    <div style={{ padding: '14px', borderRadius: '12px', background: 'rgba(255, 255, 255, 0.02)', border: '1px solid rgba(255, 255, 255, 0.06)' }}>
+                      <div style={{ fontSize: '11px', color: '#94A3B8' }}>Monthly to Equity SIP</div>
+                      <div className="font-display tabular-nums" style={{ fontSize: '20px', fontWeight: 800, color: '#00FF87', marginTop: '2px' }}>
+                        ₹{arbitrageResult.monthlyToInvestment?.toLocaleString()}
+                      </div>
+                      <div style={{ fontSize: '10px', color: '#94A3B8' }}>{arbitrageResult.investmentAllocationPercent}% Allocation</div>
                     </div>
                   </div>
 
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '16px' }}>
-                    <div style={{ padding: '12px', borderRadius: '10px', background: 'rgba(255, 255, 255, 0.02)', border: '1px solid rgba(255, 255, 255, 0.06)' }}>
-                      <span style={{ fontSize: '11px', color: '#94A3B8' }}>Debt Guaranteed Cost</span>
-                      <div className="font-display tabular-nums" style={{ fontSize: '16px', fontWeight: 800, color: '#F43F5E' }}>
-                        {arbitrageInput.debtInterestRatePercent}% p.a.
-                      </div>
-                    </div>
-
-                    <div style={{ padding: '12px', borderRadius: '10px', background: 'rgba(255, 255, 255, 0.02)', border: '1px solid rgba(255, 255, 255, 0.06)' }}>
-                      <span style={{ fontSize: '11px', color: '#94A3B8' }}>Post-Tax Equity Hurdle</span>
-                      <div className="font-display tabular-nums" style={{ fontSize: '16px', fontWeight: 800, color: '#00FF87' }}>
-                        {(arbitrageInput.expectedEquityReturnPercent * (1 - arbitrageInput.capitalGainsTaxRatePercent / 100)).toFixed(2)}% p.a.
-                      </div>
-                    </div>
+                  <div style={{ marginTop: '14px', fontSize: '12.5px', color: '#94A3B8', lineHeight: 1.5 }}>
+                    Net Post-Tax Spread: <strong style={{ color: '#00FF87' }}>{arbitrageResult.netArbitrageSpreadPercent}%</strong>
                   </div>
-
-                  <p className="body-sm" style={{ color: '#94A3B8', lineHeight: 1.5, margin: 0 }}>
-                    {arbitrageResult.rationale}
-                  </p>
                 </div>
-              ) : (
-                <div style={{ textAlign: 'center', padding: '40px 0', color: '#64748B' }}>Solving arbitrage equation...</div>
-              )}
-            </div>
+
+                <div style={{ fontSize: '11px', color: '#64748B', marginTop: '16px', paddingTop: '10px', borderTop: '1px solid rgba(255, 255, 255, 0.06)' }}>
+                  Mathematical proof: Guaranteed Debt Payoff APR yields risk-free returns equivalent to paying interest drag.
+                </div>
+              </div>
+            )}
           </motion.div>
         )}
       </AnimatePresence>
 
       {/* ========================================================================= */}
-      {/* 5. INTERACTIVE YIELD & FD MATURITY CALCULATOR MODAL */}
+      {/* MODAL: INTERACTIVE YIELD & FD MATURITY CALCULATOR */}
       {/* ========================================================================= */}
-      <AnimatePresence>
-        {calcModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md" style={{ position: 'fixed', inset: 0, zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0, 0, 0, 0.8)', backdropFilter: 'blur(8px)', padding: '16px' }}>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 10 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 10 }}
-              className="glass-card"
-              style={{
-                width: '100%',
-                maxWidth: '680px',
-                maxHeight: '90vh',
-                overflowY: 'auto',
-                border: '1px solid rgba(0, 255, 135, 0.3)',
-                background: '#0B0F19',
-                borderRadius: '24px',
-                padding: '24px',
-                boxShadow: '0 20px 50px rgba(0, 0, 0, 0.8)',
-              }}
-            >
-              {/* Modal Header */}
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '14px', borderBottom: '1px solid rgba(255, 255, 255, 0.08)', marginBottom: '18px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <Calculator size={20} color="#00FF87" />
-                  <div>
-                    <h3 className="heading-lg" style={{ margin: 0, color: '#F8FAFC' }}>
-                      Yield & Fixed Deposit Maturity Calculator
-                    </h3>
-                    <div style={{ fontSize: '11px', color: '#00FF87', fontFamily: 'var(--font-mono)' }}>
-                      {calcInput.schemeName}
-                    </div>
-                  </div>
+      {calcModalOpen && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 9999,
+            background: 'rgba(5, 8, 16, 0.85)',
+            backdropFilter: 'blur(12px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '20px',
+          }}
+          onClick={() => setCalcModalOpen(false)}
+        >
+          <div
+            className="glass-card"
+            style={{
+              width: '100%',
+              maxWidth: '560px',
+              padding: '26px',
+              border: '1px solid rgba(0, 255, 135, 0.3)',
+              boxShadow: '0 20px 50px rgba(0, 0, 0, 0.7)',
+              background: '#0B0F19',
+              borderRadius: '20px',
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', borderBottom: '1px solid rgba(255, 255, 255, 0.08)', paddingBottom: '12px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Calculator size={18} color="#00FF87" />
+                <h3 className="heading-md" style={{ margin: 0, color: '#F8FAFC' }}>
+                  Yield & Maturity Calculator
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setCalcModalOpen(false)}
+                style={{ background: 'transparent', border: 'none', color: '#94A3B8', cursor: 'pointer' }}
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              <div>
+                <label className="body-xs" style={{ color: '#94A3B8', display: 'block', marginBottom: '4px' }}>
+                  Instrument / Bank Scheme
+                </label>
+                <input
+                  type="text"
+                  value={calcInput.schemeName}
+                  onChange={(e) => setCalcInput({ ...calcInput, schemeName: e.target.value })}
+                  className="input-luxury"
+                />
+              </div>
+
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#94A3B8', marginBottom: '4px' }}>
+                  <span>Principal Investment: ₹{Number(calcInput.principal).toLocaleString()}</span>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => setCalcModalOpen(false)}
-                  style={{ background: 'transparent', border: 'none', color: '#94A3B8', cursor: 'pointer', padding: '4px' }}
+                <input
+                  type="range"
+                  min="10000"
+                  max="2000000"
+                  step="10000"
+                  value={calcInput.principal}
+                  onChange={(e) => setCalcInput({ ...calcInput, principal: parseFloat(e.target.value) || 10000 })}
+                  className="slider-luxury slider-mint"
+                />
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#94A3B8', marginBottom: '4px' }}>
+                    <span>Interest Rate: {calcInput.annualRatePercent}%</span>
+                  </div>
+                  <input
+                    type="range"
+                    min="3.0"
+                    max="14.0"
+                    step="0.05"
+                    value={calcInput.annualRatePercent}
+                    onChange={(e) => setCalcInput({ ...calcInput, annualRatePercent: parseFloat(e.target.value) || 7.0 })}
+                    className="slider-luxury slider-cyan"
+                  />
+                </div>
+
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#94A3B8', marginBottom: '4px' }}>
+                    <span>Tenor: {calcInput.tenorYears} Yrs</span>
+                  </div>
+                  <input
+                    type="range"
+                    min="0.25"
+                    max="15.0"
+                    step="0.25"
+                    value={calcInput.tenorYears}
+                    onChange={(e) => setCalcInput({ ...calcInput, tenorYears: parseFloat(e.target.value) || 1.0 })}
+                    className="slider-luxury slider-amber"
+                  />
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 12px', borderRadius: '10px', background: 'rgba(255, 255, 255, 0.02)' }}>
+                <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: '#F8FAFC', cursor: 'pointer' }}>
+                  <input
+                    type="checkbox"
+                    checked={calcInput.isSeniorCitizen}
+                    onChange={(e) => setCalcInput({ ...calcInput, isSeniorCitizen: e.target.checked })}
+                  />
+                  Senior Citizen (+0.50% Extra Yield)
+                </label>
+
+                <select
+                  value={calcInput.compounding}
+                  onChange={(e) => setCalcInput({ ...calcInput, compounding: e.target.value })}
+                  className="input-luxury"
+                  style={{ width: '130px', height: '28px', fontSize: '11px', padding: '0 8px' }}
                 >
-                  <X size={20} />
-                </button>
+                  <option value="quarterly">Quarterly Comp</option>
+                  <option value="monthly">Monthly Comp</option>
+                  <option value="annual">Annual Comp</option>
+                  <option value="simple">Simple Interest</option>
+                </select>
               </div>
 
-              {/* Grid of Inputs & Results */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
-                {/* Inputs Left Panel */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-                  {/* Deposit Amount Slider */}
+              {/* Calculator Output Grid */}
+              <div
+                style={{
+                  padding: '16px',
+                  borderRadius: '14px',
+                  background: 'linear-gradient(135deg, rgba(0, 255, 135, 0.06), rgba(0, 240, 255, 0.03))',
+                  border: '1px solid rgba(0, 255, 135, 0.25)',
+                  marginTop: '6px',
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
                   <div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', marginBottom: '4px' }}>
-                      <span style={{ color: '#94A3B8' }}>Deposit Principal (₹)</span>
-                      <span className="font-mono" style={{ color: '#F8FAFC', fontWeight: 700 }}>₹{calcInput.principal?.toLocaleString()}</span>
+                    <div style={{ fontSize: '11px', color: '#94A3B8', textTransform: 'uppercase' }}>Maturity Corpus</div>
+                    <div className="font-display tabular-nums" style={{ fontSize: '26px', fontWeight: 900, color: '#00FF87' }}>
+                      ₹{calculatedMaturity.maturityAmount?.toLocaleString()}
                     </div>
-                    <input
-                      type="range"
-                      min={10000}
-                      max={5000000}
-                      step={10000}
-                      value={calcInput.principal}
-                      onChange={(e) => setCalcInput({ ...calcInput, principal: Number(e.target.value) })}
-                      style={{ width: '100%', accentColor: '#00FF87' }}
-                    />
                   </div>
-
-                  {/* Annual Interest Rate Slider */}
-                  <div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', marginBottom: '4px' }}>
-                      <span style={{ color: '#94A3B8' }}>Annual Interest Rate (%)</span>
-                      <span className="font-mono" style={{ color: '#00FF87', fontWeight: 800 }}>{calcInput.annualRatePercent}% p.a.</span>
+                  <div style={{ textAlign: 'right' }}>
+                    <div style={{ fontSize: '11px', color: '#94A3B8', textTransform: 'uppercase' }}>Total Interest</div>
+                    <div className="font-display tabular-nums" style={{ fontSize: '18px', fontWeight: 800, color: '#FFD700' }}>
+                      +₹{calculatedMaturity.totalInterest?.toLocaleString()}
                     </div>
-                    <input
-                      type="range"
-                      min={4.0}
-                      max={12.0}
-                      step={0.05}
-                      value={calcInput.annualRatePercent}
-                      onChange={(e) => setCalcInput({ ...calcInput, annualRatePercent: Number(e.target.value) })}
-                      style={{ width: '100%', accentColor: '#00FF87' }}
-                    />
-                  </div>
-
-                  {/* Tenor Years Slider */}
-                  <div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', marginBottom: '4px' }}>
-                      <span style={{ color: '#94A3B8' }}>Investment Tenor (Years)</span>
-                      <span className="font-mono" style={{ color: '#F8FAFC', fontWeight: 700 }}>{calcInput.tenorYears} Years</span>
-                    </div>
-                    <input
-                      type="range"
-                      min={0.25}
-                      max={10.0}
-                      step={0.25}
-                      value={calcInput.tenorYears}
-                      onChange={(e) => setCalcInput({ ...calcInput, tenorYears: Number(e.target.value) })}
-                      style={{ width: '100%', accentColor: '#00F0FF' }}
-                    />
-                  </div>
-
-                  {/* Compounding Frequency Selector */}
-                  <div>
-                    <label style={{ fontSize: '11px', color: '#94A3B8', display: 'block', marginBottom: '4px' }}>Compounding Frequency</label>
-                    <select
-                      value={calcInput.compounding}
-                      onChange={(e) => setCalcInput({ ...calcInput, compounding: e.target.value })}
-                      style={{ width: '100%', padding: '8px 10px', background: 'rgba(255, 255, 255, 0.04)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '8px', color: '#FFFFFF', fontSize: '12px' }}
-                    >
-                      <option value="quarterly">Quarterly Compounded (Standard Bank FD)</option>
-                      <option value="annual">Annual Compounded (PPF / NSC)</option>
-                      <option value="monthly">Monthly Payout (POMIS / Senior Citizen)</option>
-                      <option value="simple">Simple Discount Yield (RBI T-Bills)</option>
-                    </select>
-                  </div>
-
-                  {/* Senior Citizen Bonus Toggle */}
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 12px', borderRadius: '10px', background: 'rgba(255, 255, 255, 0.02)', border: '1px solid rgba(255, 255, 255, 0.06)' }}>
-                    <div>
-                      <div style={{ fontSize: '12px', color: '#F8FAFC', fontWeight: 700 }}>Senior Citizen Rate (+0.50%)</div>
-                      <div style={{ fontSize: '10px', color: '#94A3B8' }}>Applies extra 50 bps bonus for depositors age 60+</div>
-                    </div>
-                    <input
-                      type="checkbox"
-                      checked={calcInput.isSeniorCitizen}
-                      onChange={(e) => setCalcInput({ ...calcInput, isSeniorCitizen: e.target.checked })}
-                      style={{ width: '16px', height: '16px', accentColor: '#00FF87', cursor: 'pointer' }}
-                    />
                   </div>
                 </div>
 
-                {/* Scorecard Results Right Panel */}
-                <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '18px', borderRadius: '16px', background: 'rgba(0, 255, 135, 0.03)', border: '1px solid rgba(0, 255, 135, 0.2)' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginTop: '12px', paddingTop: '10px', borderTop: '1px solid rgba(255, 255, 255, 0.08)' }}>
                   <div>
-                    <span style={{ fontSize: '11.5px', color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Total Maturity Corpus</span>
-                    <div className="font-display tabular-nums" style={{ fontSize: '28px', fontWeight: 900, color: '#00FF87', margin: '2px 0 10px 0' }}>
-                      ₹{computedMaturity.maturityAmount?.toLocaleString()}
-                    </div>
-
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '14px' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', paddingBottom: '6px', borderBottom: '1px solid rgba(255, 255, 255, 0.06)' }}>
-                        <span style={{ color: '#94A3B8' }}>Total Interest Earned</span>
-                        <span className="font-mono tabular-nums" style={{ color: '#00FF87', fontWeight: 700 }}>+₹{computedMaturity.totalInterest?.toLocaleString()}</span>
-                      </div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', paddingBottom: '6px', borderBottom: '1px solid rgba(255, 255, 255, 0.06)' }}>
-                        <span style={{ color: '#94A3B8' }}>Effective Annual Yield (APY)</span>
-                        <span className="font-mono tabular-nums" style={{ color: '#FFD700', fontWeight: 700 }}>{computedMaturity.effectiveApy}%</span>
-                      </div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', paddingBottom: '6px', borderBottom: '1px solid rgba(255, 255, 255, 0.06)' }}>
-                        <span style={{ color: '#94A3B8' }}>Quarterly Passive Income</span>
-                        <span className="font-mono tabular-nums" style={{ color: '#00F0FF', fontWeight: 700 }}>₹{computedMaturity.quarterlyPayout?.toLocaleString()}</span>
-                      </div>
-                    </div>
+                    <div style={{ fontSize: '10px', color: '#94A3B8' }}>Effective APY</div>
+                    <div style={{ fontSize: '13px', fontWeight: 800, color: '#00F0FF' }}>{calculatedMaturity.effectiveApy}%</div>
                   </div>
-
-                  <div style={{ paddingTop: '10px' }}>
-                    <div style={{ fontSize: '10px', color: '#94A3B8', marginBottom: '4px', display: 'flex', justifyContent: 'space-between' }}>
-                      <span>Principal ({Math.round((computedMaturity.principal / (computedMaturity.maturityAmount || 1)) * 100)}%)</span>
-                      <span style={{ color: '#00FF87' }}>Interest ({Math.round((computedMaturity.totalInterest / (computedMaturity.maturityAmount || 1)) * 100)}%)</span>
-                    </div>
-                    <div style={{ width: '100%', height: '8px', borderRadius: '999px', background: 'rgba(255, 255, 255, 0.1)', overflow: 'hidden', display: 'flex' }}>
-                      <div style={{ width: `${(computedMaturity.principal / (computedMaturity.maturityAmount || 1)) * 100}%`, background: '#64748B' }} />
-                      <div style={{ width: `${(computedMaturity.totalInterest / (computedMaturity.maturityAmount || 1)) * 100}%`, background: 'linear-gradient(90deg, #00FF87, #00F0FF)' }} />
-                    </div>
+                  <div>
+                    <div style={{ fontSize: '10px', color: '#94A3B8' }}>Monthly Regular Payout</div>
+                    <div style={{ fontSize: '13px', fontWeight: 800, color: '#F8FAFC' }}>₹{calculatedMaturity.monthlyPayout?.toLocaleString()}/mo</div>
                   </div>
                 </div>
               </div>
-
-              {/* Modal Footer */}
-              <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '20px', paddingTop: '14px', borderTop: '1px solid rgba(255, 255, 255, 0.08)' }}>
-                <button
-                  type="button"
-                  onClick={() => setCalcModalOpen(false)}
-                  className="btn-primary-mint"
-                  style={{ height: '36px', padding: '0 20px', fontSize: '12px' }}
-                >
-                  Done
-                </button>
-              </div>
-            </motion.div>
+            </div>
           </div>
-        )}
-      </AnimatePresence>
+        </div>
+      )}
     </div>
   );
 };
-
-export default PassiveIncomePage;

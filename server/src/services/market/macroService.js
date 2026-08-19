@@ -34,7 +34,7 @@ class MacroService {
     let us10yChange = 0.0;
 
     try {
-      const liveQuotes = await BrokerClient.getQuotes(['GOLD', 'USDINR', 'SPOTGOLD'], { forceRefresh });
+      const liveQuotes = await BrokerClient.getQuotes(['GOLD', 'USDINR', 'SPOTGOLD'], forceRefresh);
       const goldQuote = liveQuotes.find((q) => q.symbol === 'GOLD');
       const usdinrQuote = liveQuotes.find((q) => q.symbol === 'USDINR');
 

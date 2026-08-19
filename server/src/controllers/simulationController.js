@@ -3,6 +3,7 @@ const Income = require('../models/Income');
 const Goal = require('../models/Goal');
 const User = require('../models/User');
 const { FireSimulatorEngine } = require('../services/analytics/fireSimulatorEngine');
+const MacroService = require('../services/market/macroService');
 const ApiResponse = require('../utils/response');
 
 class SimulationController {
@@ -17,7 +18,7 @@ class SimulationController {
       const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
       const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
 
-      const [monthlyExpenses, monthlyIncomes, goals, userProfile] = await Promise.all([
+      const [monthlyExpenses, monthlyIncomes, goals, userProfile, macroIndicators] = await Promise.all([
         Expense.aggregate([
           { $match: { userId, date: { $gte: startOfMonth, $lte: endOfMonth } } },
           { $group: { _id: null, total: { $sum: '$amount' } } },
@@ -28,6 +29,7 @@ class SimulationController {
         ]),
         Goal.find({ userId }),
         User.findById(userId).select('fireTargetAge age monthlySavingsGoal'),
+        MacroService.getMacroIndicators().catch(() => null),
       ]);
 
       const currentMonthlyExpense = monthlyExpenses[0]?.total || 45000;
@@ -65,6 +67,7 @@ class SimulationController {
           targetRetirementAge,
           currentAge,
         },
+        macroIndicators,
         fireMilestones,
         monteCarlo,
       });

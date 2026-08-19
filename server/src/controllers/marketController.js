@@ -1,19 +1,28 @@
 const asyncHandler = require('../utils/asyncHandler');
 const BrokerClient = require('../services/market/brokerClient');
 const SchemeRadarService = require('../services/market/schemeRadarService');
+const MacroService = require('../services/market/macroService');
 const ScamShieldEngine = require('../services/market/scamShieldEngine');
 const QuantitativeEngine = require('../services/market/quantitativeEngine');
 const ArbitrageSolver = require('../services/market/arbitrageSolver');
 
 exports.getQuotes = asyncHandler(async (req, res) => {
   const symbols = req.query.symbols ? req.query.symbols.split(',').map((s) => s.trim()) : undefined;
-  const quotes = await BrokerClient.getQuotes(symbols);
+  const forceRefresh = req.query.refresh === 'true' || req.query.force === 'true';
+  const quotes = await BrokerClient.getQuotes(symbols, forceRefresh);
   res.json({ quotes, timestamp: new Date().toISOString() });
 });
 
 exports.getSchemes = asyncHandler(async (req, res) => {
-  const schemes = await SchemeRadarService.getVerifiedSchemes();
+  const forceRefresh = req.query.refresh === 'true' || req.query.force === 'true';
+  const schemes = await SchemeRadarService.getVerifiedSchemes(forceRefresh);
   res.json(schemes);
+});
+
+exports.getMacroIndicators = asyncHandler(async (req, res) => {
+  const forceRefresh = req.query.refresh === 'true' || req.query.force === 'true';
+  const macro = await MacroService.getMacroIndicators(forceRefresh);
+  res.json(macro);
 });
 
 exports.calculateMaturity = asyncHandler(async (req, res) => {
