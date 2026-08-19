@@ -36,3 +36,14 @@ coverage/
 
 # Graphify watch / runtime artifacts
 graphify-out/
+
+# Smart Environment / AI caches
+.smart-env/
+
+# User Local Screen Recordings
+Folder Feedback/
+Expense Tracker/
+
+# Obsidian community plugins cache
+.obsidian/plugins/
+.obsidian/cache/

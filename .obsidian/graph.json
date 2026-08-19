@@ -1,0 +1,72 @@
+{
+  "collapse-filter": false,
+  "search": "",
+  "showTags": true,
+  "showAttachments": false,
+  "hideUnresolved": false,
+  "showOrphans": true,
+  "collapse-color-groups": false,
+  "colorGroups": [
+    {
+      "query": "tag:#moc",
+      "color": {
+        "a": 1,
+        "rgb": 16744192
+      }
+    },
+    {
+      "query": "tag:#architecture",
+      "color": {
+        "a": 1,
+        "rgb": 65535
+      }
+    },
+    {
+      "query": "tag:#api",
+      "color": {
+        "a": 1,
+        "rgb": 3394815
+      }
+    },
+    {
+      "query": "tag:#design-system",
+      "color": {
+        "a": 1,
+        "rgb": 65280
+      }
+    },
+    {
+      "query": "tag:#features",
+      "color": {
+        "a": 1,
+        "rgb": 11141375
+      }
+    },
+    {
+      "query": "tag:#adr",
+      "color": {
+        "a": 1,
+        "rgb": 16763904
+      }
+    },
+    {
+      "query": "tag:#tasks",
+      "color": {
+        "a": 1,
+        "rgb": 65415
+      }
+    }
+  ],
+  "collapse-display": false,
+  "showArrow": true,
+  "textFadeMultiplier": 3,
+  "nodeSizeMultiplier": 1.01407661164746,
+  "lineSizeMultiplier": 1,
+  "collapse-forces": false,
+  "centerStrength": 0.5,
+  "repelStrength": 10,
+  "linkStrength": 1,
+  "linkDistance": 250,
+  "scale": 0.3596450274975999,
+  "close": false
+}

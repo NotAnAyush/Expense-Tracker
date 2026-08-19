@@ -8,12 +8,17 @@ const ArbitrageSolver = require('../services/market/arbitrageSolver');
 exports.getQuotes = asyncHandler(async (req, res) => {
   const symbols = req.query.symbols ? req.query.symbols.split(',').map((s) => s.trim()) : undefined;
   const quotes = await BrokerClient.getQuotes(symbols);
-  res.json({ quotes });
+  res.json({ quotes, timestamp: new Date().toISOString() });
 });
 
 exports.getSchemes = asyncHandler(async (req, res) => {
-  const schemes = SchemeRadarService.getVerifiedSchemes();
+  const schemes = await SchemeRadarService.getVerifiedSchemes();
   res.json(schemes);
+});
+
+exports.calculateMaturity = asyncHandler(async (req, res) => {
+  const result = SchemeRadarService.calculateMaturity(req.body);
+  res.json(result);
 });
 
 exports.evaluateScamRisk = asyncHandler(async (req, res) => {

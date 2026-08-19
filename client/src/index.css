@@ -1490,5 +1490,202 @@ textarea.glass-input, textarea.input-field {
   }
 }
 
+/* ==========================================================================
+   Luxury FinTech Range Sliders & Quant Simulation Controls
+   ========================================================================== */
+.slider-luxury {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin: 8px 0;
+}
 
+.slider-luxury:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
 
+.slider-luxury::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  border: 2px solid #080B11;
+}
+
+.slider-luxury::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  border: 2px solid #080B11;
+}
+
+.slider-luxury:hover::-webkit-slider-thumb {
+  transform: scale(1.15);
+}
+
+.slider-luxury:hover::-moz-range-thumb {
+  transform: scale(1.15);
+}
+
+.slider-luxury:active::-webkit-slider-thumb {
+  transform: scale(1.25);
+}
+
+.slider-luxury:active::-moz-range-thumb {
+  transform: scale(1.25);
+}
+
+/* Color Accent Variants */
+.slider-mint::-webkit-slider-thumb {
+  background: #00FF87;
+  box-shadow: 0 0 12px rgba(0, 255, 135, 0.6);
+}
+.slider-mint::-moz-range-thumb {
+  background: #00FF87;
+  box-shadow: 0 0 12px rgba(0, 255, 135, 0.6);
+}
+
+.slider-cyan::-webkit-slider-thumb {
+  background: #00F0FF;
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.6);
+}
+.slider-cyan::-moz-range-thumb {
+  background: #00F0FF;
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.6);
+}
+
+.slider-amber::-webkit-slider-thumb {
+  background: #FFD700;
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.6);
+}
+.slider-amber::-moz-range-thumb {
+  background: #FFD700;
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.6);
+}
+
+.slider-violet::-webkit-slider-thumb {
+  background: #A78BFA;
+  box-shadow: 0 0 12px rgba(167, 139, 250, 0.6);
+}
+.slider-violet::-moz-range-thumb {
+  background: #A78BFA;
+  box-shadow: 0 0 12px rgba(167, 139, 250, 0.6);
+}
+
+.slider-rose::-webkit-slider-thumb {
+  background: #F43F5E;
+  box-shadow: 0 0 12px rgba(244, 63, 94, 0.6);
+}
+.slider-rose::-moz-range-thumb {
+  background: #F43F5E;
+  box-shadow: 0 0 12px rgba(244, 63, 94, 0.6);
+}
+
+/* Luxury Glowing Progress Bars */
+.progress-bar-luxury {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 999px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-bar-fill-mint {
+  height: 100%;
+  background: linear-gradient(90deg, #00FF87 0%, #00F0FF 100%);
+  border-radius: 999px;
+  box-shadow: 0 0 10px rgba(0, 255, 135, 0.5);
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.progress-bar-fill-gold {
+  height: 100%;
+  background: linear-gradient(90deg, #FFD700 0%, #FF8800 100%);
+  border-radius: 999px;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.progress-bar-fill-cyan {
+  height: 100%;
+  background: linear-gradient(90deg, #00F0FF 0%, #3B82F6 100%);
+  border-radius: 999px;
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.progress-bar-fill-violet {
+  height: 100%;
+  background: linear-gradient(90deg, #8B5CF6 0%, #EC4899 100%);
+  border-radius: 999px;
+  box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Card Glow Variants */
+.glass-card-glow-mint {
+  border-color: rgba(0, 255, 135, 0.25) !important;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45), 0 0 20px rgba(0, 255, 135, 0.08) !important;
+}
+
+.glass-card-glow-amber {
+  border-color: rgba(255, 215, 0, 0.25) !important;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45), 0 0 20px rgba(255, 215, 0, 0.08) !important;
+}
+
+.glass-card-glow-cyan {
+  border-color: rgba(0, 240, 255, 0.25) !important;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45), 0 0 20px rgba(0, 240, 255, 0.08) !important;
+}
+
+.glass-card-glow-violet {
+  border-color: rgba(139, 92, 246, 0.25) !important;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45), 0 0 20px rgba(139, 92, 246, 0.08) !important;
+}
+
+.glass-card-glow-rose {
+  border-color: rgba(244, 63, 94, 0.25) !important;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45), 0 0 20px rgba(244, 63, 94, 0.08) !important;
+}
+
+/* Preset Interactive Card */
+.preset-card-luxury {
+  background: rgba(15, 20, 32, 0.6);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.preset-card-luxury:hover {
+  background: rgba(22, 30, 48, 0.85);
+  border-color: rgba(255, 255, 255, 0.18);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+.preset-card-luxury-active {
+  background: rgba(0, 240, 255, 0.08) !important;
+  border-color: rgba(0, 240, 255, 0.4) !important;
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.15) !important;
+}

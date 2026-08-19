@@ -1,0 +1,16 @@
+{
+  "useMarkdownLinks": false,
+  "livePreview": true,
+  "autoPairBrackets": true,
+  "autoPairMarkdown": true,
+  "showLineNumber": true,
+  "readableLineLength": false,
+  "strictLineBreaks": false,
+  "showFrontmatter": true,
+  "defaultViewMode": "source",
+  "newFileLocation": "folder",
+  "newFileFolderPath": "D:\\Project\\Expense Tracker\\V2\\Documentation",
+  "alwaysUpdateLinks": true,
+  "showUnsupportedFiles": true,
+  "settingsPopoutWindow": true
+}

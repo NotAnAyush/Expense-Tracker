@@ -1,0 +1,254 @@
+{
+  "main": {
+    "id": "5324373015726ba8",
+    "type": "split",
+    "children": [
+      {
+        "id": "4509724f8bf84da7",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "e7a7b303c61786dc",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Graph view"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "5bddb70ee32e87fb",
+    "type": "split",
+    "children": [
+      {
+        "id": "aabaaa4113fb0d04",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "cfd8abdd80025675",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "75a9e1427893cef9",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "tag:#architecture",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "6de4d3d89c1ae2b1",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          },
+          {
+            "id": "0940c6b508952711",
+            "type": "leaf",
+            "state": {
+              "type": "recent-files",
+              "state": {},
+              "icon": "clock",
+              "title": "Recent files"
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "d054e1dae16e153f",
+    "type": "split",
+    "children": [
+      {
+        "id": "24bcc8be9c3899ca",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "7e8a538ebc9ff428",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks"
+            }
+          },
+          {
+            "id": "eebe03a870ecdd20",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links"
+            }
+          },
+          {
+            "id": "bcc574b435dad3e4",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "a9a619bbbd3a6df0",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "f5c69de6221fa98a",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline"
+            }
+          },
+          {
+            "id": "2a186014992acf54",
+            "type": "leaf",
+            "state": {
+              "type": "smart-connections-view",
+              "state": {},
+              "icon": "smart-connections",
+              "title": "Connections"
+            }
+          }
+        ],
+        "currentTab": 5
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "audio-recorder:Start/stop recording": false,
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "command-palette:Open command palette": false,
+      "markdown-importer:Open format converter": false,
+      "bases:Create new base": false,
+      "obsidian-excalidraw-plugin:New drawing": false,
+      "templater-obsidian:Templater": false,
+      "obsidian-kanban:Create new board": false,
+      "obsidian-git:Open Git source control": false,
+      "table-editor-obsidian:Advanced Tables Toolbar": false,
+      "obsidian-importer:Import notes": false,
+      "obsidian-advanced-slides:Show Slide Preview": false,
+      "homepage:Open homepage": false,
+      "smart-connections:Smart Connections: Open random connection": false,
+      "smart-connections:Smart Connections: Open connections view": false,
+      "smart-connections:Toggle Footer Connections": false
+    }
+  },
+  "active": "e7a7b303c61786dc",
+  "lastOpenFiles": [
+    "graphify-out/cache/ast/d4dea35b2d0d38fb353b457308c1ff9fec80f60de22a69e5dec7dddecdd3e924.json",
+    "graphify-out/cache/ast/d3e2026f2a6e4da9491beaad11aa302d90ce415e15b90a909738e9f4f6ae1dd8.json",
+    "graphify-out/cache/ast/efcf91dbfdbfe6f180edc91e52fcc5e4e73312964fbb83b0bfe169e23175b6fd.json",
+    "graphify-out/cache/ast/c4e685bc9bf501a40af2e352bba55e429354f0de8f2ce21c707361d6f0dd45d7.json",
+    "graphify-out/cache/ast/9426d707ab73c8afa9101e175e17fea0488b442ba13ef6dd947f8635fe907a25.json",
+    "Documentation/04-ADR/ADR-014-Wealth-Simulator-Fintech-UIUX-Alignment.md",
+    "client/dist/index.html",
+    "client/dist/assets/index-DojsELHh.css",
+    "client/dist/assets/index-DB2lMgVQ.js",
+    "client/dist/assets",
+    "graphify-out/GRAPH_REPORT.md",
+    "Documentation/00-Index.md",
+    "Documentation/01-Architecture/Environment-Variables.md",
+    "Documentation/01-Architecture/Services-and-Engines.md",
+    "Documentation/01-Architecture/Security-and-Middleware.md",
+    "Documentation/01-Architecture/Database-Models.md",
+    "Documentation/01-Architecture/API-Contracts.md",
+    "server/node_modules/nodemon/node_modules/debug/README.md",
+    "examples/node",
+    "examples",
+    "Documentation/03-Features/Local-Unlimited-OCR-and-Mini-Model-Engine.md",
+    "Documentation/04-ADR/ADR-006-Local-Unlimited-OCR-and-SLM-Fallback-Pipeline.md",
+    "Documentation/LOCAL_UNLIMITED_OCR_AND_SLM_BILL_PARSING_RESEARCH.md",
+    "Excalidraw/Drawing 2026-08-17 22.28.23.excalidraw.md",
+    "Excalidraw/Scripts/Downloaded/Printable Layout Wizard.svg",
+    "Excalidraw/Scripts/Downloaded/Printable Layout Wizard.md",
+    "Excalidraw/Scripts/Downloaded/Text to Path.svg",
+    "Excalidraw/Scripts/Downloaded/Text to Path.md",
+    "Excalidraw/Scripts/Downloaded/Text Aura.svg",
+    "Excalidraw/Scripts/Downloaded/Text Aura.md",
+    "Excalidraw/Scripts/Downloaded/Split text by lines.svg",
+    "Excalidraw/Scripts/Downloaded/Split text by lines.md",
+    "Design/pinterest/DESIGN.md",
+    "Documentation/03-Features/Blockchain-and-Emerging-Tech-Ecosystem.md",
+    "Documentation/BLOCKCHAIN_AND_FUTURE_TECH_FEATURE_PLAN.md"
+  ]
+}

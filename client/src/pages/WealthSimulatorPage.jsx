@@ -12,33 +12,34 @@ import {
   RefreshCw, 
   ArrowUpRight, 
   Target, 
-  Activity,
-  HelpCircle,
-  X,
-  BookOpen,
-  Info,
-  Layers,
-  BarChart3,
-  PieChart,
-  ShieldAlert,
-  Clock,
-  Compass,
-  CheckCircle2,
-  AlertTriangle,
-  Award,
-  ChevronRight,
-  Play,
-  Briefcase,
-  Home,
-  Coffee,
-  PiggyBank,
-  Rocket,
-  GraduationCap,
-  Download,
-  Copy,
-  Table,
-  Check,
-  FileText
+  Activity, 
+  HelpCircle, 
+  X, 
+  BookOpen, 
+  Info, 
+  Layers, 
+  BarChart3, 
+  PieChart as PieIcon, 
+  ShieldAlert, 
+  Clock, 
+  Compass, 
+  CheckCircle2, 
+  AlertTriangle, 
+  Award, 
+  ChevronRight, 
+  Play, 
+  Briefcase, 
+  Home, 
+  Coffee, 
+  PiggyBank, 
+  Rocket, 
+  GraduationCap, 
+  Download, 
+  Copy, 
+  Table as TableIcon, 
+  Check, 
+  FileText,
+  Lock
 } from 'lucide-react';
 import { 
   ResponsiveContainer, 
@@ -48,10 +49,10 @@ import {
   YAxis, 
   Tooltip, 
   CartesianGrid, 
-  Legend,
-  LineChart,
-  Line,
-  ReferenceLine
+  Legend, 
+  LineChart, 
+  Line, 
+  ReferenceLine 
 } from 'recharts';
 import { motion, AnimatePresence } from 'framer-motion';
 import { apiFetch } from '../api/client';
@@ -105,7 +106,7 @@ const WHAT_IF_PRESETS = [
     id: 'sabbatical',
     title: 'Sabbatical / Gap Year',
     icon: Coffee,
-    color: '#FF7D7D',
+    color: '#F43F5E',
     deltaIncome: -50000,
     deltaExpense: 0,
     stepUpPct: 0,
@@ -446,43 +447,175 @@ Projected FIRE Countdown: ${fireData.yearsToFire} Years (${new Date(fireData.fir
     });
   }, [mcResults, isNominalDisplay]);
 
+  // Custom Dark Glassmorphic Chart Tooltip
+  const CustomWhatIfTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      const baseVal = payload.find((p) => p.dataKey === 'baseNetWorth')?.value || 0;
+      const scenarioVal = payload.find((p) => p.dataKey === 'scenarioNetWorth')?.value || 0;
+      const diff = scenarioVal - baseVal;
+      return (
+        <div
+          style={{
+            background: 'rgba(10, 14, 24, 0.95)',
+            backdropFilter: 'blur(16px)',
+            border: '1px solid rgba(0, 240, 255, 0.3)',
+            borderRadius: '12px',
+            padding: '12px 16px',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.6), 0 0 16px rgba(0, 240, 255, 0.2)',
+            minWidth: '220px'
+          }}
+        >
+          <div style={{ fontSize: '11px', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase', marginBottom: '8px' }}>
+            Horizon: Year {label}
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '13px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ color: '#94A3B8' }}>Scenario Corpus:</span>
+              <span className="font-display tabular-nums" style={{ fontWeight: 800, color: '#00F0FF' }}>
+                {formatINR(scenarioVal)}
+              </span>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ color: '#64748B' }}>Baseline Corpus:</span>
+              <span className="font-display tabular-nums" style={{ fontWeight: 600, color: '#CBD5E1' }}>
+                {formatINR(baseVal)}
+              </span>
+            </div>
+            <div style={{ borderTop: '1px solid rgba(255, 255, 255, 0.1)', paddingTop: '6px', marginTop: '2px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ color: '#94A3B8', fontSize: '11.5px' }}>Net Alpha Gain:</span>
+              <span className="font-display tabular-nums" style={{ fontWeight: 800, color: diff >= 0 ? '#00FF87' : '#F43F5E' }}>
+                {diff >= 0 ? `+${formatINR(diff)}` : formatINR(diff)}
+              </span>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    return null;
+  };
+
+  const CustomMonteCarloTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      const p90 = payload.find((p) => p.dataKey === 'bullish_P90')?.value;
+      const p50 = payload.find((p) => p.dataKey === (isNominalDisplay ? 'nominal_P50' : 'median_P50'))?.value;
+      const p10 = payload.find((p) => p.dataKey === 'bearish_P10')?.value;
+      const p5 = payload.find((p) => p.dataKey === 'deepBear_P5')?.value;
+      return (
+        <div
+          style={{
+            background: 'rgba(10, 14, 24, 0.95)',
+            backdropFilter: 'blur(16px)',
+            border: '1px solid rgba(0, 255, 135, 0.3)',
+            borderRadius: '12px',
+            padding: '12px 16px',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.6), 0 0 16px rgba(0, 255, 135, 0.2)',
+            minWidth: '230px'
+          }}
+        >
+          <div style={{ fontSize: '11px', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase', marginBottom: '8px' }}>
+            Simulation Year {label} ({isNominalDisplay ? 'Nominal Values' : "Real Today's ₹"})
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12.5px' }}>
+            {p90 !== undefined && (
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span style={{ color: '#10B981' }}>Bullish (P90):</span>
+                <span className="font-display tabular-nums" style={{ fontWeight: 800, color: '#10B981' }}>{formatINR(p90)}</span>
+              </div>
+            )}
+            {p50 !== undefined && (
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span style={{ color: '#00FF87' }}>Median (P50):</span>
+                <span className="font-display tabular-nums" style={{ fontWeight: 800, color: '#00FF87' }}>{formatINR(p50)}</span>
+              </div>
+            )}
+            {p10 !== undefined && (
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span style={{ color: '#FB7185' }}>Bearish (P10):</span>
+                <span className="font-display tabular-nums" style={{ fontWeight: 700, color: '#FB7185' }}>{formatINR(p10)}</span>
+              </div>
+            )}
+            {p5 !== undefined && (
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span style={{ color: '#F43F5E' }}>Crash Floor (P5):</span>
+                <span className="font-display tabular-nums" style={{ fontWeight: 700, color: '#F43F5E' }}>{formatINR(p5)}</span>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    }
+    return null;
+  };
+
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
-        <div className="w-12 h-12 border-4 border-mint-500/20 border-t-mint-500 rounded-full animate-spin" />
-        <p className="text-slate-400 font-mono text-sm">Calibrating Stochastic Wealth Physics...</p>
+      <div style={{ padding: '80px 20px', textAlign: 'center' }}>
+        <motion.div
+          animate={{ opacity: [0.6, 1, 0.6] }}
+          transition={{ duration: 1.2, repeat: Infinity }}
+          style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'center', gap: '14px' }}
+        >
+          <div
+            style={{
+              width: '48px',
+              height: '48px',
+              borderRadius: '14px',
+              background: 'linear-gradient(135deg, #00FF87, #FFD700)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 0 24px rgba(0, 255, 135, 0.3)',
+            }}
+          >
+            <Sparkles size={24} color="#050810" />
+          </div>
+          <h2 className="heading-lg" style={{ color: '#F1F5F9' }}>
+            Calibrating Stochastic Wealth Physics...
+          </h2>
+          <span style={{ fontSize: '13px', color: '#64748B' }}>
+            Synthesizing Ito Drift, Jump Diffusion & Historical Bootstraps
+          </span>
+        </motion.div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col gap-6 pb-20">
-      {/* 1. HERO HEADER WITH TUTORIAL GUIDE & EXPORT CONTROLS */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '22px', paddingBottom: '70px' }}>
+      
+      {/* 1. HERO HEADER WITH LIVE BADGE & CONTROLS */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '14px' }}>
         <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="w-2 h-2 rounded-full bg-mint-400 animate-ping" />
-            <span className="text-xs font-mono font-bold text-mint-400 tracking-wider uppercase">
-              Institutional Stochastic Engine • v3.7
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '3px' }}>
+            <span className="animate-live-dot" />
+            <span style={{ fontSize: '11px', fontWeight: 800, color: '#00FF87', textTransform: 'uppercase', letterSpacing: '0.6px' }}>
+              Institutional Stochastic Engine • v3.8
             </span>
           </div>
-          <h1 className="text-3xl md:text-4xl font-extrabold text-slate-100 font-display flex items-center gap-3">
+          <h1 className="display-xl" style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '10px' }}>
             Wealth & FIRE Freedom Simulator
-            <Sparkles className="w-6 h-6 text-amber-400" />
+            <Sparkles size={24} color="#FFD700" />
           </h1>
-          <p className="text-slate-400 text-sm max-w-2xl mt-1">
+          <p className="body-sm" style={{ margin: '4px 0 0 0', color: '#94A3B8' }}>
             Multi-asset Ito Geometric Brownian Motion (GBM), Merton Jump Diffusion, 55-year Historical Bootstrap, and Guyton-Klinkis Guardrails.
           </p>
         </div>
 
-        <div className="flex items-center gap-3 flex-wrap">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
           {/* Guide & Tutorial Button */}
           <button
             type="button"
             onClick={() => setGuideModalOpen(true)}
-            className="btn-glass-secondary text-xs flex items-center gap-2 px-3.5 py-2.5 rounded-xl border border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/10 transition-all"
+            className="btn-glass-secondary"
+            style={{
+              height: '38px',
+              padding: '0 16px',
+              fontSize: '12.5px',
+              color: '#00F0FF',
+              borderColor: 'rgba(0, 240, 255, 0.3)'
+            }}
           >
-            <BookOpen className="w-4 h-4" />
+            <BookOpen size={15} />
             <span>How It Works & Quant Guide</span>
           </button>
 
@@ -490,26 +623,30 @@ Projected FIRE Countdown: ${fireData.yearsToFire} Years (${new Date(fireData.fir
           <button
             type="button"
             onClick={() => setIsNominalDisplay(!isNominalDisplay)}
-            className={`btn-glass-secondary text-xs flex items-center gap-2 px-3.5 py-2.5 rounded-xl border transition-all ${
-              isNominalDisplay 
-                ? 'border-amber-400/40 bg-amber-400/10 text-amber-300' 
-                : 'border-slate-700 bg-slate-800/40 text-slate-300'
-            }`}
+            className="btn-glass-secondary"
+            style={{
+              height: '38px',
+              padding: '0 16px',
+              fontSize: '12.5px',
+              borderColor: isNominalDisplay ? 'rgba(255, 215, 0, 0.4)' : 'rgba(255, 255, 255, 0.1)',
+              background: isNominalDisplay ? 'rgba(255, 215, 0, 0.1)' : 'rgba(255, 255, 255, 0.04)',
+              color: isNominalDisplay ? '#FFD700' : '#E2E8F0'
+            }}
             title="Toggle between Real (Today's purchasing power) and Nominal (Future Rupee values after inflation)"
           >
-            <DollarSign className="w-4 h-4" />
-            <span>Curve: {isNominalDisplay ? 'Nominal (Future ₹)' : 'Real (Today\'s ₹)'}</span>
+            <DollarSign size={15} />
+            <span>Curve: {isNominalDisplay ? 'Nominal (Future ₹)' : "Real (Today's ₹)"}</span>
           </button>
         </div>
       </div>
 
-      {/* 2. SUB-STUDIO TABS */}
-      <div className="flex items-center gap-2 border-b border-slate-800 pb-2 overflow-x-auto scrollbar-none">
+      {/* 2. SUB-STUDIO NAVIGATION TABS RIBBON */}
+      <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '4px' }}>
         {[
-          { id: 'fire', label: 'FIRE Freedom Planner', icon: Flame, color: 'text-amber-400' },
-          { id: 'whatif', label: 'What-If Sandbox', icon: Sliders, color: 'text-cyan-400' },
-          { id: 'montecarlo', label: 'Stochastic Monte Carlo', icon: Activity, color: 'text-mint-400' },
-          { id: 'summary', label: 'Executive Quant Brief', icon: ShieldCheck, color: 'text-violet-400' },
+          { id: 'fire', label: 'FIRE Freedom Planner', icon: Flame, color: '#FFD700' },
+          { id: 'whatif', label: 'What-If Sandbox', icon: Sliders, color: '#00F0FF' },
+          { id: 'montecarlo', label: 'Stochastic Monte Carlo', icon: Activity, color: '#00FF87' },
+          { id: 'summary', label: 'Executive Quant Brief', icon: ShieldCheck, color: '#A78BFA' },
         ].map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -518,125 +655,153 @@ Projected FIRE Countdown: ${fireData.yearsToFire} Years (${new Date(fireData.fir
               key={tab.id}
               type="button"
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
-                isActive
-                  ? 'bg-slate-800 text-slate-100 border border-slate-700 shadow-lg shadow-black/40'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/40'
-              }`}
+              className={`filter-chip ${isActive ? 'filter-chip-active' : ''}`}
+              style={{ height: '38px', padding: '0 18px', gap: '8px' }}
             >
-              <Icon className={`w-4 h-4 ${tab.color}`} />
+              <Icon size={16} color={isActive ? '#050810' : tab.color} />
               <span>{tab.label}</span>
             </button>
           );
         })}
       </div>
 
-      {/* 3. TAB VIEWS */}
+      {/* 3. TAB VIEWS WITH FRAMER MOTION ANIMATION */}
       <AnimatePresence mode="wait">
+        
         {/* ========================================================================= */}
         {/* TAB 1: FIRE FREEDOM PLANNER */}
         {/* ========================================================================= */}
         {activeTab === 'fire' && (
           <motion.div
             key="fire"
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="flex flex-col gap-6"
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.2 }}
+            style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}
           >
-            {/* Top KPI Cards Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {/* Card 1: Standard FIRE Number */}
-              <div className="glass-card p-5 border border-amber-500/20 bg-gradient-to-br from-amber-500/5 to-slate-900/90 rounded-2xl flex flex-col justify-between">
+            {/* Top 4 Bento KPI Cards */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '16px' }}>
+              
+              {/* Card 1: Standard FIRE Corpus */}
+              <div className="glass-card glass-card-glow-amber" style={{ padding: '20px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '16px' }}>
                 <div>
-                  <div className="flex justify-between items-center text-xs font-mono text-slate-400 mb-1">
-                    <span>Standard FIRE Corpus</span>
-                    <Flame className="w-4 h-4 text-amber-400" />
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                    <span style={{ fontSize: '11.5px', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                      Standard FIRE Corpus
+                    </span>
+                    <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: 'rgba(255, 215, 0, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <Flame size={16} color="#FFD700" />
+                    </div>
                   </div>
-                  <div className="text-2xl font-black text-slate-100 font-display mt-1">
+                  <div className="display-lg tabular-nums" style={{ color: '#F8FAFC' }}>
                     {formatINR(fireData.milestones.standardFire.target, true)}
                   </div>
-                  <div className="text-xs text-amber-400/80 font-mono mt-0.5">
+                  <div style={{ fontSize: '12px', color: '#FFD700', fontWeight: 600, marginTop: '2px' }}>
                     {(100 / fireSwrPct).toFixed(1)}x Annual Living Expenses
                   </div>
                 </div>
-                <div className="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
-                  <span>Current Progress</span>
-                  <span className="font-mono font-bold text-mint-400">{fireData.currentProgressPct}%</span>
+
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#94A3B8', marginBottom: '6px' }}>
+                    <span>Current Corpus Progress</span>
+                    <span className="tabular-nums font-mono" style={{ color: '#00FF87', fontWeight: 800 }}>
+                      {fireData.currentProgressPct}%
+                    </span>
+                  </div>
+                  <div className="progress-bar-luxury">
+                    <div className="progress-bar-fill-gold" style={{ width: `${Math.min(100, fireData.currentProgressPct)}%` }} />
+                  </div>
                 </div>
               </div>
 
-              {/* Card 2: Projected Freedom Date */}
-              <div className="glass-card p-5 border border-mint-500/20 bg-gradient-to-br from-mint-500/5 to-slate-900/90 rounded-2xl flex flex-col justify-between">
+              {/* Card 2: Independence Date */}
+              <div className="glass-card glass-card-glow-mint" style={{ padding: '20px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '16px' }}>
                 <div>
-                  <div className="flex justify-between items-center text-xs font-mono text-slate-400 mb-1">
-                    <span>Independence Date</span>
-                    <Calendar className="w-4 h-4 text-mint-400" />
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                    <span style={{ fontSize: '11.5px', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                      Independence Date
+                    </span>
+                    <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: 'rgba(0, 255, 135, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <Calendar size={16} color="#00FF87" />
+                    </div>
                   </div>
-                  <div className="text-2xl font-black text-mint-400 font-display mt-1">
+                  <div className="display-lg tabular-nums" style={{ color: '#00FF87' }}>
                     {new Date(fireData.fireDate).toLocaleDateString('en-IN', { month: 'short', year: 'numeric' })}
                   </div>
-                  <div className="text-xs text-slate-400 font-mono mt-0.5">
+                  <div style={{ fontSize: '12px', color: '#94A3B8', fontWeight: 500, marginTop: '2px' }}>
                     {fireData.yearsToFire} Years Countdown (Age {fireData.projectedAge})
                   </div>
                 </div>
-                <div className="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
+
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '10px', borderTop: '1px solid rgba(255, 255, 255, 0.06)', fontSize: '12px', color: '#94A3B8' }}>
                   <span>Target Retirement</span>
-                  <span className="font-mono text-slate-200">Age {fireTargetRetireAge}</span>
+                  <span style={{ fontWeight: 700, color: '#F1F5F9' }}>Age {fireTargetRetireAge}</span>
                 </div>
               </div>
 
               {/* Card 3: Monthly Savings Rate */}
-              <div className="glass-card p-5 border border-cyan-500/20 bg-gradient-to-br from-cyan-500/5 to-slate-900/90 rounded-2xl flex flex-col justify-between">
+              <div className="glass-card glass-card-glow-cyan" style={{ padding: '20px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '16px' }}>
                 <div>
-                  <div className="flex justify-between items-center text-xs font-mono text-slate-400 mb-1">
-                    <span>Monthly Savings Rate</span>
-                    <Percent className="w-4 h-4 text-cyan-400" />
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                    <span style={{ fontSize: '11.5px', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                      Monthly Savings Rate
+                    </span>
+                    <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: 'rgba(0, 240, 255, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <Percent size={16} color="#00F0FF" />
+                    </div>
                   </div>
-                  <div className="text-2xl font-black text-cyan-400 font-display mt-1">
+                  <div className="display-lg tabular-nums" style={{ color: '#00F0FF' }}>
                     {fireData.savingsRate}%
                   </div>
-                  <div className="text-xs text-slate-400 font-mono mt-0.5">
+                  <div style={{ fontSize: '12px', color: '#94A3B8', fontWeight: 500, marginTop: '2px' }}>
                     {formatINR(fireData.monthlySavings)} / mo invested
                   </div>
                 </div>
-                <div className="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
+
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '10px', borderTop: '1px solid rgba(255, 255, 255, 0.06)', fontSize: '12px', color: '#94A3B8' }}>
                   <span>Annual Step-Up Growth</span>
-                  <span className="font-mono text-cyan-300">+{fireStepUpPct}% / yr</span>
+                  <span style={{ fontWeight: 700, color: '#00F0FF' }}>+{fireStepUpPct}% / yr</span>
                 </div>
               </div>
 
               {/* Card 4: Freedom Velocity Index */}
-              <div className="glass-card p-5 border border-violet-500/20 bg-gradient-to-br from-violet-500/5 to-slate-900/90 rounded-2xl flex flex-col justify-between">
+              <div className="glass-card glass-card-glow-violet" style={{ padding: '20px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '16px' }}>
                 <div>
-                  <div className="flex justify-between items-center text-xs font-mono text-slate-400 mb-1">
-                    <span>Freedom Velocity Index</span>
-                    <Zap className="w-4 h-4 text-violet-400" />
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                    <span style={{ fontSize: '11.5px', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                      Freedom Velocity Index
+                    </span>
+                    <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: 'rgba(139, 92, 246, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <Zap size={16} color="#A78BFA" />
+                    </div>
                   </div>
-                  <div className="text-2xl font-black text-violet-400 font-display mt-1">
-                    {fireData.velocityScore} / 100
+                  <div className="display-lg tabular-nums" style={{ color: '#A78BFA' }}>
+                    {fireData.velocityScore} <span style={{ fontSize: '14px', color: '#94A3B8' }}>/ 100</span>
                   </div>
-                  <div className="text-xs text-slate-400 font-mono mt-0.5">
+                  <div style={{ fontSize: '12px', color: '#94A3B8', fontWeight: 500, marginTop: '2px' }}>
                     Compounding Acceleration Tier
                   </div>
                 </div>
-                <div className="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
+
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '10px', borderTop: '1px solid rgba(255, 255, 255, 0.06)', fontSize: '12px', color: '#94A3B8' }}>
                   <span>Coast Status</span>
-                  <span className={`font-bold ${fireData.milestones.coastFire.isCoastAchieved ? 'text-mint-400' : 'text-amber-400'}`}>
+                  <span style={{ fontWeight: 800, color: fireData.milestones.coastFire.isCoastAchieved ? '#00FF87' : '#FFD700' }}>
                     {fireData.milestones.coastFire.isCoastAchieved ? 'Achieved 🚀' : 'Building'}
                   </span>
                 </div>
               </div>
             </div>
 
-            {/* Interactive Parameter Sliders & 6-Tier Cards Split Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-              {/* Left Column: Calibration Sliders (5 cols) */}
-              <div className="lg:col-span-5 glass-card p-6 border border-slate-800/80 rounded-2xl flex flex-col gap-5">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <Sliders className="w-4 h-4 text-cyan-400" />
-                    <h3 className="font-bold text-slate-100 text-sm">Real-Time Parameter Calibration</h3>
+            {/* Split Studio: Calibration Controls (Left) & 6-Tier Spectrum (Right) */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))', gap: '20px' }}>
+              
+              {/* LEFT COLUMN: Calibration Studio */}
+              <div className="glass-card" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '18px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <Sliders size={18} color="#00F0FF" />
+                    <h3 className="heading-md" style={{ margin: 0 }}>Real-Time Parameter Calibration</h3>
                   </div>
                   <button
                     type="button"
@@ -649,17 +814,21 @@ Projected FIRE Countdown: ${fireData.yearsToFire} Years (${new Date(fireData.fir
                       setFireSwrPct(4.0);
                       setFireStepUpPct(5.0);
                     }}
-                    className="text-xs text-slate-400 hover:text-slate-200 flex items-center gap-1"
+                    className="btn-icon-soft"
+                    style={{ width: 'auto', padding: '4px 10px', height: '28px', fontSize: '11.5px', gap: '4px' }}
                   >
-                    <RefreshCw className="w-3 h-3" /> Reset
+                    <RefreshCw size={12} />
+                    <span>Reset</span>
                   </button>
                 </div>
 
                 {/* Slider 1: Monthly Income */}
                 <div>
-                  <div className="flex justify-between text-xs font-mono mb-1">
-                    <span className="text-slate-400">Monthly Net Income</span>
-                    <span className="text-slate-100 font-bold">{formatINR(fireIncome)}</span>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12.5px', marginBottom: '2px' }}>
+                    <span style={{ color: '#94A3B8' }}>Monthly Net Income</span>
+                    <span className="font-display tabular-nums" style={{ fontWeight: 800, color: '#F8FAFC' }}>
+                      {formatINR(fireIncome)}
+                    </span>
                   </div>
                   <input
                     type="range"
@@ -668,15 +837,17 @@ Projected FIRE Countdown: ${fireData.yearsToFire} Years (${new Date(fireData.fir
                     step={5000}
                     value={fireIncome}
                     onChange={(e) => setFireIncome(Number(e.target.value))}
-                    className="w-full accent-cyan-400 h-1.5 bg-slate-800 rounded-lg cursor-pointer"
+                    className="slider-luxury slider-cyan"
                   />
                 </div>
 
-                {/* Slider 2: Monthly Expenses */}
+                {/* Slider 2: Monthly Living Expenses */}
                 <div>
-                  <div className="flex justify-between text-xs font-mono mb-1">
-                    <span className="text-slate-400">Monthly Living Expenses</span>
-                    <span className="text-slate-100 font-bold">{formatINR(fireExpense)}</span>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12.5px', marginBottom: '2px' }}>
+                    <span style={{ color: '#94A3B8' }}>Monthly Living Expenses</span>
+                    <span className="font-display tabular-nums" style={{ fontWeight: 800, color: '#FFD700' }}>
+                      {formatINR(fireExpense)}
+                    </span>
                   </div>
                   <input
                     type="range"
@@ -685,15 +856,17 @@ Projected FIRE Countdown: ${fireData.yearsToFire} Years (${new Date(fireData.fir
                     step={2500}
                     value={fireExpense}
                     onChange={(e) => setFireExpense(Number(e.target.value))}
-                    className="w-full accent-amber-400 h-1.5 bg-slate-800 rounded-lg cursor-pointer"
+                    className="slider-luxury slider-amber"
                   />
                 </div>
 
                 {/* Slider 3: Current Invested Net Worth */}
                 <div>
-                  <div className="flex justify-between text-xs font-mono mb-1">
-                    <span className="text-slate-400">Current Invested Net Worth</span>
-                    <span className="text-slate-100 font-bold">{formatINR(fireNetWorth)}</span>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12.5px', marginBottom: '2px' }}>
+                    <span style={{ color: '#94A3B8' }}>Current Invested Net Worth</span>
+                    <span className="font-display tabular-nums" style={{ fontWeight: 800, color: '#00FF87' }}>
+                      {formatINR(fireNetWorth)}
+                    </span>
                   </div>
                   <input
                     type="range"
@@ -702,15 +875,17 @@ Projected FIRE Countdown: ${fireData.yearsToFire} Years (${new Date(fireData.fir
                     step={50000}
                     value={fireNetWorth}
                     onChange={(e) => setFireNetWorth(Number(e.target.value))}
-                    className="w-full accent-mint-400 h-1.5 bg-slate-800 rounded-lg cursor-pointer"
+                    className="slider-luxury slider-mint"
                   />
                 </div>
 
                 {/* Slider 4: Safe Withdrawal Rate (SWR) */}
                 <div>
-                  <div className="flex justify-between text-xs font-mono mb-1">
-                    <span className="text-slate-400">Safe Withdrawal Rate (SWR)</span>
-                    <span className="text-slate-100 font-bold">{fireSwrPct}% ({(100 / fireSwrPct).toFixed(1)}x)</span>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12.5px', marginBottom: '2px' }}>
+                    <span style={{ color: '#94A3B8' }}>Safe Withdrawal Rate (SWR)</span>
+                    <span className="font-display tabular-nums" style={{ fontWeight: 800, color: '#A78BFA' }}>
+                      {fireSwrPct}% <span style={{ fontSize: '11px', color: '#94A3B8' }}>({(100 / fireSwrPct).toFixed(1)}x)</span>
+                    </span>
                   </div>
                   <input
                     type="range"
@@ -719,21 +894,23 @@ Projected FIRE Countdown: ${fireData.yearsToFire} Years (${new Date(fireData.fir
                     step={0.1}
                     value={fireSwrPct}
                     onChange={(e) => setFireSwrPct(Number(e.target.value))}
-                    className="w-full accent-violet-400 h-1.5 bg-slate-800 rounded-lg cursor-pointer"
+                    className="slider-luxury slider-violet"
                   />
-                  <div className="flex justify-between text-[10px] text-slate-400 font-mono mt-1">
-                    <span>2.5% (Conservative)</span>
-                    <span>4.0% (Trinity Rule)</span>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10.5px', color: '#64748B', marginTop: '2px' }}>
+                    <span>2.5% (Ultra Conservative)</span>
+                    <span>4.0% (Trinity Standard)</span>
                     <span>6.0% (Aggressive)</span>
                   </div>
                 </div>
 
-                {/* Slider 5: Expected Return & Inflation Dual Grid */}
-                <div className="grid grid-cols-2 gap-4 pt-2 border-t border-slate-800/80">
+                {/* Dual Grid: Expected Return & Inflation */}
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px', paddingTop: '10px', borderTop: '1px solid rgba(255, 255, 255, 0.06)' }}>
                   <div>
-                    <div className="flex justify-between text-xs font-mono mb-1">
-                      <span className="text-slate-400">Expected CAGR</span>
-                      <span className="text-mint-400 font-bold">{fireReturn}%</span>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', marginBottom: '2px' }}>
+                      <span style={{ color: '#94A3B8' }}>Expected CAGR</span>
+                      <span className="font-display tabular-nums" style={{ fontWeight: 800, color: '#00FF87' }}>
+                        {fireReturn}%
+                      </span>
                     </div>
                     <input
                       type="range"
@@ -742,13 +919,16 @@ Projected FIRE Countdown: ${fireData.yearsToFire} Years (${new Date(fireData.fir
                       step={0.5}
                       value={fireReturn}
                       onChange={(e) => setFireReturn(Number(e.target.value))}
-                      className="w-full accent-mint-400 h-1.5 bg-slate-800 rounded-lg cursor-pointer"
+                      className="slider-luxury slider-mint"
                     />
                   </div>
+
                   <div>
-                    <div className="flex justify-between text-xs font-mono mb-1">
-                      <span className="text-slate-400">Inflation Rate</span>
-                      <span className="text-rose-400 font-bold">{fireInflation}%</span>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', marginBottom: '2px' }}>
+                      <span style={{ color: '#94A3B8' }}>Inflation Rate</span>
+                      <span className="font-display tabular-nums" style={{ fontWeight: 800, color: '#F43F5E' }}>
+                        {fireInflation}%
+                      </span>
                     </div>
                     <input
                       type="range"
@@ -757,16 +937,18 @@ Projected FIRE Countdown: ${fireData.yearsToFire} Years (${new Date(fireData.fir
                       step={0.5}
                       value={fireInflation}
                       onChange={(e) => setFireInflation(Number(e.target.value))}
-                      className="w-full accent-rose-400 h-1.5 bg-slate-800 rounded-lg cursor-pointer"
+                      className="slider-luxury slider-rose"
                     />
                   </div>
                 </div>
 
                 {/* Slider 6: Annual SIP Step-Up Growth */}
                 <div>
-                  <div className="flex justify-between text-xs font-mono mb-1">
-                    <span className="text-slate-400">Annual SIP Step-Up Growth</span>
-                    <span className="text-slate-100 font-bold">+{fireStepUpPct}% / year</span>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12.5px', marginBottom: '2px' }}>
+                    <span style={{ color: '#94A3B8' }}>Annual SIP Step-Up Growth</span>
+                    <span className="font-display tabular-nums" style={{ fontWeight: 800, color: '#00F0FF' }}>
+                      +{fireStepUpPct}% / yr
+                    </span>
                   </div>
                   <input
                     type="range"
@@ -775,134 +957,149 @@ Projected FIRE Countdown: ${fireData.yearsToFire} Years (${new Date(fireData.fir
                     step={1}
                     value={fireStepUpPct}
                     onChange={(e) => setFireStepUpPct(Number(e.target.value))}
-                    className="w-full accent-cyan-400 h-1.5 bg-slate-800 rounded-lg cursor-pointer"
+                    className="slider-luxury slider-cyan"
                   />
                 </div>
               </div>
 
-              {/* Right Column: 6-Tier Comprehensive Milestone Spectrum (7 cols) */}
-              <div className="lg:col-span-7 flex flex-col gap-4">
-                <div className="flex items-center justify-between">
-                  <h3 className="font-bold text-slate-100 text-sm flex items-center gap-2">
-                    <Target className="w-4 h-4 text-mint-400" />
+              {/* RIGHT COLUMN: 6-Tier Comprehensive FIRE Spectrum */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <h3 className="heading-md" style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <Target size={18} color="#00FF87" />
                     The 6-Tier Comprehensive FIRE Spectrum
                   </h3>
-                  <span className="text-xs text-slate-400 font-mono">
-                    Living Expenses: {formatINR(fireExpense * 12, true)} / yr
+                  <span style={{ fontSize: '11.5px', color: '#94A3B8' }}>
+                    Expenses: {formatINR(fireExpense * 12, true)} / yr
                   </span>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '12px' }}>
+                  
                   {/* Tier 1: Barista FIRE */}
-                  <div className="glass-card p-4 border border-slate-800/80 hover:border-amber-500/40 rounded-xl transition-all">
-                    <div className="flex justify-between items-start">
+                  <div className="glass-card" style={{ padding: '16px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                       <div>
-                        <div className="text-xs font-bold text-amber-400 font-mono uppercase tracking-wider">1. Barista FIRE</div>
-                        <div className="text-lg font-black text-slate-100 font-display mt-0.5">
+                        <div style={{ fontSize: '11px', fontWeight: 800, color: '#FFD700', textTransform: 'uppercase', letterSpacing: '0.6px' }}>
+                          1. Barista FIRE
+                        </div>
+                        <div className="heading-lg tabular-nums" style={{ color: '#F8FAFC', marginTop: '2px' }}>
                           {formatINR(fireData.milestones.baristaFire.target, true)}
                         </div>
                       </div>
-                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-400/10 text-amber-300 border border-amber-400/20">
+                      <span className="glass-pill" style={{ borderColor: 'rgba(255, 215, 0, 0.3)', color: '#FFD700', fontSize: '11px' }}>
                         {fireData.milestones.baristaFire.multiplier}
                       </span>
                     </div>
-                    <p className="text-xs text-slate-400 mt-2">
+                    <p style={{ fontSize: '12px', color: '#94A3B8', margin: '8px 0 0 0', lineHeight: 1.4 }}>
                       Covers 60% of lifestyle; remaining 40% covered via part-time passion income or freelancing.
                     </p>
                   </div>
 
                   {/* Tier 2: Lean FIRE */}
-                  <div className="glass-card p-4 border border-slate-800/80 hover:border-cyan-500/40 rounded-xl transition-all">
-                    <div className="flex justify-between items-start">
+                  <div className="glass-card" style={{ padding: '16px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                       <div>
-                        <div className="text-xs font-bold text-cyan-400 font-mono uppercase tracking-wider">2. Lean FIRE</div>
-                        <div className="text-lg font-black text-slate-100 font-display mt-0.5">
+                        <div style={{ fontSize: '11px', fontWeight: 800, color: '#00F0FF', textTransform: 'uppercase', letterSpacing: '0.6px' }}>
+                          2. Lean FIRE
+                        </div>
+                        <div className="heading-lg tabular-nums" style={{ color: '#F8FAFC', marginTop: '2px' }}>
                           {formatINR(fireData.milestones.leanFire.target, true)}
                         </div>
                       </div>
-                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-400/10 text-cyan-300 border border-cyan-400/20">
+                      <span className="glass-pill" style={{ borderColor: 'rgba(0, 240, 255, 0.3)', color: '#00F0FF', fontSize: '11px' }}>
                         {fireData.milestones.leanFire.multiplier}
                       </span>
                     </div>
-                    <p className="text-xs text-slate-400 mt-2">
+                    <p style={{ fontSize: '12px', color: '#94A3B8', margin: '8px 0 0 0', lineHeight: 1.4 }}>
                       Frugal essentials only. Covers housing, basic groceries, utilities, and healthcare.
                     </p>
                   </div>
 
-                  {/* Tier 3: Standard FIRE (Target) */}
-                  <div className="glass-card p-4 border border-mint-500/40 bg-mint-500/5 rounded-xl shadow-lg shadow-mint-500/5">
-                    <div className="flex justify-between items-start">
+                  {/* Tier 3: Standard FIRE (Target Benchmark) */}
+                  <div className="glass-card glass-card-glow-mint" style={{ padding: '16px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', background: 'linear-gradient(145deg, rgba(0, 255, 135, 0.08) 0%, rgba(10, 14, 24, 0.9) 100%)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                       <div>
-                        <div className="text-xs font-bold text-mint-400 font-mono uppercase tracking-wider flex items-center gap-1">
-                          3. Standard FIRE <Award className="w-3.5 h-3.5" />
+                        <div style={{ fontSize: '11px', fontWeight: 800, color: '#00FF87', textTransform: 'uppercase', letterSpacing: '0.6px', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                          3. Standard FIRE <Award size={14} color="#00FF87" />
                         </div>
-                        <div className="text-xl font-black text-mint-400 font-display mt-0.5">
+                        <div className="heading-xl tabular-nums" style={{ color: '#00FF87', marginTop: '2px' }}>
                           {formatINR(fireData.milestones.standardFire.target, true)}
                         </div>
                       </div>
-                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-mint-400/20 text-mint-300 border border-mint-400/30">
+                      <span className="glass-pill" style={{ borderColor: 'rgba(0, 255, 135, 0.4)', color: '#00FF87', background: 'rgba(0, 255, 135, 0.12)', fontSize: '11px', fontWeight: 800 }}>
                         {fireData.milestones.standardFire.multiplier}
                       </span>
                     </div>
-                    <p className="text-xs text-slate-300 mt-2">
+                    <p style={{ fontSize: '12px', color: '#E2E8F0', margin: '8px 0 0 0', lineHeight: 1.4 }}>
                       100% current lifestyle maintenance with zero work dependency forever (Trinity Study Benchmark).
                     </p>
                   </div>
 
                   {/* Tier 4: Chubby FIRE */}
-                  <div className="glass-card p-4 border border-slate-800/80 hover:border-violet-500/40 rounded-xl transition-all">
-                    <div className="flex justify-between items-start">
+                  <div className="glass-card" style={{ padding: '16px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                       <div>
-                        <div className="text-xs font-bold text-violet-400 font-mono uppercase tracking-wider">4. Chubby FIRE</div>
-                        <div className="text-lg font-black text-slate-100 font-display mt-0.5">
+                        <div style={{ fontSize: '11px', fontWeight: 800, color: '#A78BFA', textTransform: 'uppercase', letterSpacing: '0.6px' }}>
+                          4. Chubby FIRE
+                        </div>
+                        <div className="heading-lg tabular-nums" style={{ color: '#F8FAFC', marginTop: '2px' }}>
                           {formatINR(fireData.milestones.chubbyFire.target, true)}
                         </div>
                       </div>
-                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-violet-400/10 text-violet-300 border border-violet-400/20">
+                      <span className="glass-pill" style={{ borderColor: 'rgba(167, 139, 250, 0.3)', color: '#A78BFA', fontSize: '11px' }}>
                         {fireData.milestones.chubbyFire.multiplier}
                       </span>
                     </div>
-                    <p className="text-xs text-slate-400 mt-2">
+                    <p style={{ fontSize: '12px', color: '#94A3B8', margin: '8px 0 0 0', lineHeight: 1.4 }}>
                       Comfortable freedom including regular international travel, fine dining, and hobbies.
                     </p>
                   </div>
 
                   {/* Tier 5: Fat FIRE */}
-                  <div className="glass-card p-4 border border-slate-800/80 hover:border-fuchsia-500/40 rounded-xl transition-all">
-                    <div className="flex justify-between items-start">
+                  <div className="glass-card" style={{ padding: '16px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                       <div>
-                        <div className="text-xs font-bold text-fuchsia-400 font-mono uppercase tracking-wider">5. Fat FIRE</div>
-                        <div className="text-lg font-black text-slate-100 font-display mt-0.5">
+                        <div style={{ fontSize: '11px', fontWeight: 800, color: '#EC4899', textTransform: 'uppercase', letterSpacing: '0.6px' }}>
+                          5. Fat FIRE
+                        </div>
+                        <div className="heading-lg tabular-nums" style={{ color: '#F8FAFC', marginTop: '2px' }}>
                           {formatINR(fireData.milestones.fatFire.target, true)}
                         </div>
                       </div>
-                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-fuchsia-400/10 text-fuchsia-300 border border-fuchsia-400/20">
+                      <span className="glass-pill" style={{ borderColor: 'rgba(236, 72, 153, 0.3)', color: '#EC4899', fontSize: '11px' }}>
                         {fireData.milestones.fatFire.multiplier}
                       </span>
                     </div>
-                    <p className="text-xs text-slate-400 mt-2">
+                    <p style={{ fontSize: '12px', color: '#94A3B8', margin: '8px 0 0 0', lineHeight: 1.4 }}>
                       Unconstrained luxury living, high buffer margin, and generational wealth transfer.
                     </p>
                   </div>
 
                   {/* Tier 6: Coast FIRE */}
-                  <div className="glass-card p-4 border border-slate-800/80 hover:border-emerald-500/40 rounded-xl transition-all">
-                    <div className="flex justify-between items-start">
+                  <div className="glass-card" style={{ padding: '16px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                       <div>
-                        <div className="text-xs font-bold text-emerald-400 font-mono uppercase tracking-wider">6. Coast FIRE</div>
-                        <div className="text-lg font-black text-slate-100 font-display mt-0.5">
+                        <div style={{ fontSize: '11px', fontWeight: 800, color: '#10B981', textTransform: 'uppercase', letterSpacing: '0.6px' }}>
+                          6. Coast FIRE
+                        </div>
+                        <div className="heading-lg tabular-nums" style={{ color: '#F8FAFC', marginTop: '2px' }}>
                           {formatINR(fireData.milestones.coastFire.target, true)}
                         </div>
                       </div>
-                      <span className={`text-[10px] font-mono px-2 py-0.5 rounded border ${
-                        fireData.milestones.coastFire.isCoastAchieved
-                          ? 'bg-mint-400/20 text-mint-300 border-mint-400/30'
-                          : 'bg-slate-800 text-slate-400 border-slate-700'
-                      }`}>
+                      <span
+                        className="glass-pill"
+                        style={{
+                          borderColor: fireData.milestones.coastFire.isCoastAchieved ? 'rgba(0, 255, 135, 0.3)' : 'rgba(255, 255, 255, 0.1)',
+                          color: fireData.milestones.coastFire.isCoastAchieved ? '#00FF87' : '#94A3B8',
+                          fontSize: '11px',
+                          fontWeight: 700
+                        }}
+                      >
                         {fireData.milestones.coastFire.isCoastAchieved ? 'Coast Unlocked' : `Need for Age ${fireTargetRetireAge}`}
                       </span>
                     </div>
-                    <p className="text-xs text-slate-400 mt-2">
+                    <p style={{ fontSize: '12px', color: '#94A3B8', margin: '8px 0 0 0', lineHeight: 1.4 }}>
                       Current net worth compounding alone hits Standard FIRE by age {fireTargetRetireAge} without adding another rupee.
                     </p>
                   </div>
@@ -918,18 +1115,20 @@ Projected FIRE Countdown: ${fireData.yearsToFire} Years (${new Date(fireData.fir
         {activeTab === 'whatif' && (
           <motion.div
             key="whatif"
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="flex flex-col gap-6"
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.2 }}
+            style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}
           >
-            {/* 1-Click Scenario Presets Bar */}
-            <div className="glass-card p-4 border border-slate-800/80 rounded-2xl">
-              <div className="text-xs font-bold text-slate-400 mb-3 flex items-center gap-2">
-                <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+            {/* 1-Click Milestone Presets Bar */}
+            <div className="glass-card" style={{ padding: '20px' }}>
+              <div style={{ fontSize: '12px', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.6px', marginBottom: '14px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <Sparkles size={15} color="#00F0FF" />
                 1-Click Macro Life Milestone Presets
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+              
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px' }}>
                 {WHAT_IF_PRESETS.map((preset) => {
                   const Icon = preset.icon;
                   return (
@@ -937,13 +1136,15 @@ Projected FIRE Countdown: ${fireData.yearsToFire} Years (${new Date(fireData.fir
                       key={preset.id}
                       type="button"
                       onClick={() => handleApplyWhatIfPreset(preset)}
-                      className="p-3 rounded-xl border border-slate-800 bg-slate-900/60 hover:bg-slate-800/80 hover:border-slate-700 transition-all text-left flex flex-col justify-between"
+                      className="preset-card-luxury"
                     >
-                      <div className="flex items-center gap-2 mb-1.5">
-                        <Icon className="w-4 h-4" style={{ color: preset.color }} />
-                        <span className="text-xs font-bold text-slate-200">{preset.title}</span>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                        <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: `${preset.color}20`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <Icon size={16} color={preset.color} />
+                        </div>
+                        <span style={{ fontSize: '12.5px', fontWeight: 700, color: '#F1F5F9' }}>{preset.title}</span>
                       </div>
-                      <p className="text-[11px] text-slate-400 line-clamp-2 leading-tight">
+                      <p style={{ fontSize: '11.5px', color: '#94A3B8', margin: 0, lineHeight: 1.4 }}>
                         {preset.desc}
                       </p>
                     </button>
@@ -952,55 +1153,51 @@ Projected FIRE Countdown: ${fireData.yearsToFire} Years (${new Date(fireData.fir
               </div>
             </div>
 
-            {/* What-If Comparative Trajectory Chart */}
-            <div className="glass-card p-6 border border-slate-800/80 rounded-2xl">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+            {/* Comparative Wealth Trajectory Chart */}
+            <div className="glass-card" style={{ padding: '24px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: '20px' }}>
                 <div>
-                  <h3 className="font-bold text-slate-100 text-base flex items-center gap-2">
-                    <TrendingUp className="w-5 h-5 text-cyan-400" />
-                    Comparative Wealth Trajectory (Base vs. Scenario)
+                  <h3 className="heading-md" style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <TrendingUp size={18} color="#00F0FF" />
+                    Comparative Wealth Trajectory (Base vs. What-If Scenario)
                   </h3>
-                  <p className="text-xs text-slate-400 mt-0.5">
-                    Compounding differential with salary hikes, frugal cuts, and timed event shocks.
+                  <p className="body-sm" style={{ margin: '4px 0 0 0', color: '#94A3B8' }}>
+                    Compounding differential with salary hikes, frugal cuts, and timed event capital shocks.
                   </p>
                 </div>
 
                 {whatIfResults && (
-                  <div className="flex items-center gap-3 text-xs font-mono">
-                    <div className="flex items-center gap-1.5">
-                      <span className="w-3 h-3 rounded-full bg-slate-500" />
-                      <span className="text-slate-400">Baseline</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '16px', fontSize: '12.5px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#64748B' }} />
+                      <span style={{ color: '#94A3B8' }}>Baseline Path</span>
                     </div>
-                    <div className="flex items-center gap-1.5">
-                      <span className="w-3 h-3 rounded-full bg-cyan-400" />
-                      <span className="text-cyan-300 font-bold">What-If Scenario</span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#00F0FF', boxShadow: '0 0 8px #00F0FF' }} />
+                      <span style={{ color: '#00F0FF', fontWeight: 700 }}>What-If Scenario</span>
                     </div>
                   </div>
                 )}
               </div>
 
               {whatIfResults?.projections && (
-                <div className="h-[340px] w-full">
+                <div style={{ height: '360px', width: '100%' }}>
                   <ResponsiveContainer width="100%" height="100%">
                     <AreaChart data={whatIfResults.projections} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
                       <defs>
                         <linearGradient id="colorBase" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#64748B" stopOpacity={0.4} />
+                          <stop offset="5%" stopColor="#64748B" stopOpacity={0.35} />
                           <stop offset="95%" stopColor="#64748B" stopOpacity={0.0} />
                         </linearGradient>
                         <linearGradient id="colorScenario" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#00F0FF" stopOpacity={0.5} />
-                          <stop offset="95%" stopColor="#00F0FF" stopOpacity={0.05} />
+                          <stop offset="5%" stopColor="#00F0FF" stopOpacity={0.45} />
+                          <stop offset="95%" stopColor="#00F0FF" stopOpacity={0.02} />
                         </linearGradient>
                       </defs>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#1E293B" opacity={0.6} />
-                      <XAxis dataKey="years" stroke="#64748B" tickFormatter={(val) => `Yr ${val}`} />
-                      <YAxis stroke="#64748B" tickFormatter={(val) => formatINR(val, true)} />
-                      <Tooltip
-                        contentStyle={{ backgroundColor: '#0B0F19', borderColor: '#1E293B', borderRadius: '12px' }}
-                        formatter={(val, name) => [formatINR(val), name === 'scenarioNetWorth' ? 'What-If Scenario' : 'Baseline Path']}
-                        labelFormatter={(label) => `Horizon: Year ${label}`}
-                      />
+                      <CartesianGrid strokeDasharray="3 3" stroke="rgba(255, 255, 255, 0.05)" />
+                      <XAxis dataKey="years" stroke="#64748B" tickFormatter={(val) => `Yr ${val}`} style={{ fontSize: '11.5px', fontFamily: 'var(--font-mono)' }} />
+                      <YAxis stroke="#64748B" tickFormatter={(val) => formatINR(val, true)} style={{ fontSize: '11.5px', fontFamily: 'var(--font-mono)' }} />
+                      <Tooltip content={<CustomWhatIfTooltip />} />
                       <Area type="monotone" dataKey="baseNetWorth" stroke="#94A3B8" strokeWidth={2} fillOpacity={1} fill="url(#colorBase)" name="baseNetWorth" />
                       <Area type="monotone" dataKey="scenarioNetWorth" stroke="#00F0FF" strokeWidth={3} fillOpacity={1} fill="url(#colorScenario)" name="scenarioNetWorth" />
                     </AreaChart>
@@ -1011,14 +1208,14 @@ Projected FIRE Countdown: ${fireData.yearsToFire} Years (${new Date(fireData.fir
 
             {/* Timeframe Projections Matrix Cards */}
             {whatIfResults?.projections && (
-              <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '12px' }}>
                 {whatIfResults.projections.map((p) => (
-                  <div key={p.years} className="glass-card p-3 border border-slate-800 rounded-xl text-center">
-                    <div className="text-[11px] font-mono text-slate-400">Year {p.years}</div>
-                    <div className="text-sm font-bold text-slate-100 font-display mt-1">
+                  <div key={p.years} className="glass-card" style={{ padding: '14px', textAlign: 'center' }}>
+                    <div style={{ fontSize: '11px', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase' }}>Year {p.years}</div>
+                    <div className="heading-md tabular-nums" style={{ color: '#F8FAFC', margin: '4px 0 2px 0' }}>
                       {formatINR(p.scenarioNetWorth, true)}
                     </div>
-                    <div className={`text-[10px] font-mono mt-1 font-bold ${p.netGain >= 0 ? 'text-mint-400' : 'text-rose-400'}`}>
+                    <div className="tabular-nums" style={{ fontSize: '11.5px', fontWeight: 800, color: p.netGain >= 0 ? '#00FF87' : '#F43F5E' }}>
                       {p.netGain >= 0 ? `+${formatINR(p.netGain, true)}` : formatINR(p.netGain, true)}
                     </div>
                   </div>
@@ -1034,20 +1231,24 @@ Projected FIRE Countdown: ${fireData.yearsToFire} Years (${new Date(fireData.fir
         {activeTab === 'montecarlo' && (
           <motion.div
             key="montecarlo"
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="flex flex-col gap-6"
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.2 }}
+            style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}
           >
-            {/* Top Control Header & Model Switcher */}
-            <div className="glass-card p-5 border border-slate-800/80 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
-              <div className="flex items-center gap-3 flex-wrap">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold text-slate-300 font-mono">Model:</span>
+            {/* Top Control Ribbon */}
+            <div className="glass-card" style={{ padding: '18px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '14px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap' }}>
+                
+                {/* Model Selector */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span style={{ fontSize: '12px', fontWeight: 700, color: '#94A3B8' }}>Model:</span>
                   <select
                     value={mcModel}
                     onChange={(e) => setMcModel(e.target.value)}
-                    className="bg-slate-900 border border-slate-700 text-xs font-bold text-slate-100 rounded-lg px-3 py-1.5 focus:outline-none focus:border-cyan-400"
+                    className="glass-input"
+                    style={{ height: '34px', padding: '0 12px', width: 'auto', minWidth: '220px', fontSize: '12.5px', fontWeight: 600 }}
                   >
                     <option value="gbm">Ito Geometric Brownian Motion (GBM)</option>
                     <option value="jump_diffusion">Merton Jump Diffusion (Crash Shocks)</option>
@@ -1055,21 +1256,23 @@ Projected FIRE Countdown: ${fireData.yearsToFire} Years (${new Date(fireData.fir
                   </select>
                 </div>
 
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold text-slate-300 font-mono">Phase:</span>
+                {/* Phase Selector */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span style={{ fontSize: '12px', fontWeight: 700, color: '#94A3B8' }}>Phase:</span>
                   <select
                     value={mcPhase}
                     onChange={(e) => setMcPhase(e.target.value)}
-                    className="bg-slate-900 border border-slate-700 text-xs font-bold text-slate-100 rounded-lg px-3 py-1.5 focus:outline-none focus:border-mint-400"
+                    className="glass-input"
+                    style={{ height: '34px', padding: '0 12px', width: 'auto', minWidth: '190px', fontSize: '12.5px', fontWeight: 600 }}
                   >
                     <option value="accumulation">Accumulation (Investing SIP)</option>
-                    <option value="decumulation">Decumulation (Retirement Spending)</option>
+                    <option value="decumulation">Decumulation (Retirement Spend)</option>
                     <option value="lifecycle">Lifecycle (Accumulate then Retire)</option>
                   </select>
                 </div>
 
-                {/* Runs Selector */}
-                <div className="flex items-center gap-1.5 bg-slate-900/90 border border-slate-800 rounded-lg p-1">
+                {/* Runs Selector Pills */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(255, 255, 255, 0.04)', padding: '3px', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.07)' }}>
                   {[1000, 5000, 10000, 25000, 50000].map((num) => (
                     <button
                       key={num}
@@ -1078,11 +1281,18 @@ Projected FIRE Countdown: ${fireData.yearsToFire} Years (${new Date(fireData.fir
                         setMcRuns(num);
                         triggerMonteCarlo(num);
                       }}
-                      className={`px-2.5 py-1 text-[11px] font-mono font-bold rounded ${
-                        mcRuns === num
-                          ? 'bg-cyan-500 text-slate-950 shadow'
-                          : 'text-slate-400 hover:text-slate-200'
-                      }`}
+                      style={{
+                        padding: '4px 10px',
+                        fontSize: '11.5px',
+                        fontFamily: 'var(--font-mono)',
+                        fontWeight: 700,
+                        borderRadius: '6px',
+                        border: 'none',
+                        cursor: 'pointer',
+                        background: mcRuns === num ? '#00FF87' : 'transparent',
+                        color: mcRuns === num ? '#050810' : '#94A3B8',
+                        transition: 'all 0.15s ease'
+                      }}
                     >
                       {num >= 1000 ? `${num / 1000}k` : num}
                     </button>
@@ -1090,13 +1300,15 @@ Projected FIRE Countdown: ${fireData.yearsToFire} Years (${new Date(fireData.fir
                 </div>
               </div>
 
-              <div className="flex items-center gap-2.5">
+              {/* Action Buttons */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <button
                   type="button"
                   onClick={() => setTableModalOpen(true)}
-                  className="btn-glass-secondary text-xs flex items-center gap-1.5 px-3 py-2 rounded-lg border border-slate-700"
+                  className="btn-glass-secondary"
+                  style={{ height: '36px', padding: '0 14px', fontSize: '12px' }}
                 >
-                  <Table className="w-3.5 h-3.5 text-cyan-400" />
+                  <TableIcon size={14} color="#00F0FF" />
                   <span>Percentile Table</span>
                 </button>
 
@@ -1104,76 +1316,67 @@ Projected FIRE Countdown: ${fireData.yearsToFire} Years (${new Date(fireData.fir
                   type="button"
                   disabled={runningMc}
                   onClick={() => triggerMonteCarlo()}
-                  className="btn-primary-mint text-xs flex items-center gap-2 px-4 py-2 rounded-lg font-bold shadow-lg shadow-mint-500/20"
+                  className="btn-primary-mint"
+                  style={{ height: '36px', padding: '0 16px', fontSize: '12px' }}
                 >
-                  <RefreshCw className={`w-3.5 h-3.5 ${runningMc ? 'animate-spin' : ''}`} />
+                  <RefreshCw size={14} className={runningMc ? 'animate-spin' : ''} />
                   <span>{runningMc ? 'Simulating...' : 'Re-Run Paths'}</span>
                 </button>
               </div>
             </div>
 
             {/* Stochastic Percentile Confidence Fan Chart */}
-            <div className="glass-card p-6 border border-slate-800/80 rounded-2xl">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+            <div className="glass-card" style={{ padding: '24px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: '16px' }}>
                 <div>
-                  <h3 className="font-bold text-slate-100 text-base flex items-center gap-2">
-                    <Activity className="w-5 h-5 text-mint-400" />
+                  <h3 className="heading-md" style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <Activity size={18} color="#00FF87" />
                     Stochastic Percentile Distribution Ribbon (P5 to P95)
                   </h3>
-                  <p className="text-xs text-slate-400 mt-0.5">
+                  <p className="body-sm" style={{ margin: '4px 0 0 0', color: '#94A3B8' }}>
                     Displays 90% confidence interval across {mcResults?.runs?.toLocaleString() || mcRuns.toLocaleString()} simulation paths.
                   </p>
                 </div>
 
-                <div className="flex items-center gap-4 text-xs font-mono flex-wrap">
-                  <div className="flex items-center gap-1.5">
-                    <span className="w-3 h-3 rounded-full bg-emerald-400" />
-                    <span className="text-emerald-300 font-bold">Bullish P90</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '14px', fontSize: '12px', flexWrap: 'wrap' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#10B981' }} />
+                    <span style={{ color: '#10B981', fontWeight: 700 }}>Bullish P90</span>
                   </div>
-                  <div className="flex items-center gap-1.5">
-                    <span className="w-3 h-3 rounded-full bg-mint-400" />
-                    <span className="text-mint-300 font-bold">Median P50</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#00FF87', boxShadow: '0 0 8px #00FF87' }} />
+                    <span style={{ color: '#00FF87', fontWeight: 700 }}>Median P50</span>
                   </div>
-                  <div className="flex items-center gap-1.5">
-                    <span className="w-3 h-3 rounded-full bg-rose-400" />
-                    <span className="text-rose-300 font-bold">Deep Bear P5 / P10</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#F43F5E' }} />
+                    <span style={{ color: '#F43F5E', fontWeight: 700 }}>Crash Floor P5/P10</span>
                   </div>
                 </div>
               </div>
 
               {chartDataWithSpaghetti.length > 0 && (
-                <div className="h-[380px] w-full">
+                <div style={{ height: '380px', width: '100%' }}>
                   <ResponsiveContainer width="100%" height="100%">
                     <AreaChart data={chartDataWithSpaghetti} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
                       <defs>
                         <linearGradient id="colorBull" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#10B981" stopOpacity={0.4} />
+                          <stop offset="5%" stopColor="#10B981" stopOpacity={0.35} />
                           <stop offset="95%" stopColor="#10B981" stopOpacity={0.0} />
                         </linearGradient>
                         <linearGradient id="colorMedian" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#00FF87" stopOpacity={0.4} />
+                          <stop offset="5%" stopColor="#00FF87" stopOpacity={0.45} />
                           <stop offset="95%" stopColor="#00FF87" stopOpacity={0.0} />
                         </linearGradient>
                         <linearGradient id="colorBear" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#F43F5E" stopOpacity={0.3} />
+                          <stop offset="5%" stopColor="#F43F5E" stopOpacity={0.25} />
                           <stop offset="95%" stopColor="#F43F5E" stopOpacity={0.0} />
                         </linearGradient>
                       </defs>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#1E293B" opacity={0.6} />
-                      <XAxis dataKey="year" stroke="#64748B" tickFormatter={(val) => `Yr ${val}`} />
-                      <YAxis stroke="#64748B" tickFormatter={(val) => formatINR(val, true)} />
-                      <Tooltip
-                        contentStyle={{ backgroundColor: '#0B0F19', borderColor: '#1E293B', borderRadius: '12px' }}
-                        formatter={(val, name) => [
-                          formatINR(val),
-                          name === 'superBull_P95' ? 'Super Bull (P95)' :
-                          name === 'bullish_P90' ? 'Bullish (P90)' :
-                          name === 'median_P50' ? (isNominalDisplay ? 'Nominal Median' : 'Real Median (P50)') :
-                          name === 'bearish_P10' ? 'Bearish (P10)' :
-                          name === 'deepBear_P5' ? 'Deep Bear Crash (P5)' : name
-                        ]}
-                        labelFormatter={(label) => `Simulation Year ${label}`}
-                      />
+                      <CartesianGrid strokeDasharray="3 3" stroke="rgba(255, 255, 255, 0.05)" />
+                      <XAxis dataKey="year" stroke="#64748B" tickFormatter={(val) => `Yr ${val}`} style={{ fontSize: '11.5px', fontFamily: 'var(--font-mono)' }} />
+                      <YAxis stroke="#64748B" tickFormatter={(val) => formatINR(val, true)} style={{ fontSize: '11.5px', fontFamily: 'var(--font-mono)' }} />
+                      <Tooltip content={<CustomMonteCarloTooltip />} />
+                      
                       {/* Percentile Ribbons */}
                       <Area type="monotone" dataKey="superBull_P95" stroke="#34D399" strokeWidth={1} strokeDasharray="3 3" fillOpacity={0} name="superBull_P95" />
                       <Area type="monotone" dataKey="bullish_P90" stroke="#10B981" strokeWidth={2} fillOpacity={1} fill="url(#colorBull)" name="bullish_P90" />
@@ -1181,7 +1384,7 @@ Projected FIRE Countdown: ${fireData.yearsToFire} Years (${new Date(fireData.fir
                       <Area type="monotone" dataKey="bearish_P10" stroke="#FB7185" strokeWidth={2} fillOpacity={1} fill="url(#colorBear)" name="bearish_P10" />
                       <Area type="monotone" dataKey="deepBear_P5" stroke="#F43F5E" strokeWidth={1.5} strokeDasharray="2 2" fillOpacity={0} name="deepBear_P5" />
 
-                      {/* Sample Spaghetti Stochastic Lines */}
+                      {/* Stochastic Sample Spaghetti Lines */}
                       {showSpaghettiPaths && [0, 1, 2, 3, 4, 5, 6, 7].map((pIdx) => (
                         <Line
                           key={pIdx}
@@ -1202,146 +1405,135 @@ Projected FIRE Countdown: ${fireData.yearsToFire} Years (${new Date(fireData.fir
 
             {/* Institutional Risk KPI Analytics Grid */}
             {mcResults?.metrics && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3.5">
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: '14px' }}>
+                
                 {/* Metric 1: Survival Rate */}
-                <div className="glass-card p-4 border border-mint-500/20 rounded-xl">
-                  <div className="text-[11px] font-mono text-slate-400">Portfolio Survival Rate</div>
-                  <div className="text-xl font-black text-mint-400 font-display mt-1">
+                <div className="glass-card glass-card-glow-mint" style={{ padding: '16px' }}>
+                  <div style={{ fontSize: '11px', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase' }}>Portfolio Survival Rate</div>
+                  <div className="heading-xl tabular-nums" style={{ color: '#00FF87', margin: '4px 0 2px 0' }}>
                     {mcResults.metrics.successProbabilityPct}%
                   </div>
-                  <div className="text-[10px] text-slate-500 font-mono mt-0.5">
-                    Probability corpus {'>'} 0
-                  </div>
+                  <div style={{ fontSize: '11px', color: '#64748B' }}>Probability corpus {'>'} 0</div>
                 </div>
 
                 {/* Metric 2: Ruin Probability */}
-                <div className="glass-card p-4 border border-rose-500/20 rounded-xl">
-                  <div className="text-[11px] font-mono text-slate-400">Ruin Probability</div>
-                  <div className="text-xl font-black text-rose-400 font-display mt-1">
+                <div className="glass-card glass-card-glow-rose" style={{ padding: '16px' }}>
+                  <div style={{ fontSize: '11px', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase' }}>Ruin Probability</div>
+                  <div className="heading-xl tabular-nums" style={{ color: '#F43F5E', margin: '4px 0 2px 0' }}>
                     {mcResults.metrics.ruinProbabilityPct}%
                   </div>
-                  <div className="text-[10px] text-slate-500 font-mono mt-0.5">
-                    Depletion risk before Y{mcResults.years}
-                  </div>
+                  <div style={{ fontSize: '11px', color: '#64748B' }}>Depletion risk before Y{mcResults.years}</div>
                 </div>
 
                 {/* Metric 3: Value at Risk (VaR 95%) */}
-                <div className="glass-card p-4 border border-cyan-500/20 rounded-xl">
-                  <div className="text-[11px] font-mono text-slate-400">Value at Risk (VaR 95%)</div>
-                  <div className="text-xl font-black text-cyan-400 font-display mt-1">
+                <div className="glass-card glass-card-glow-cyan" style={{ padding: '16px' }}>
+                  <div style={{ fontSize: '11px', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase' }}>Value at Risk (VaR 95%)</div>
+                  <div className="heading-xl tabular-nums" style={{ color: '#00F0FF', margin: '4px 0 2px 0' }}>
                     {formatINR(mcResults.metrics.valueAtRisk95, true)}
                   </div>
-                  <div className="text-[10px] text-slate-500 font-mono mt-0.5">
-                    Worst 5% statistical floor
-                  </div>
+                  <div style={{ fontSize: '11px', color: '#64748B' }}>Worst 5% statistical floor</div>
                 </div>
 
-                {/* Metric 4: Conditional VaR (CVaR) */}
-                <div className="glass-card p-4 border border-amber-500/20 rounded-xl">
-                  <div className="text-[11px] font-mono text-slate-400">CVaR / Expected Shortfall</div>
-                  <div className="text-xl font-black text-amber-400 font-display mt-1">
+                {/* Metric 4: Expected Shortfall (CVaR) */}
+                <div className="glass-card glass-card-glow-amber" style={{ padding: '16px' }}>
+                  <div style={{ fontSize: '11px', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase' }}>CVaR / Expected Shortfall</div>
+                  <div className="heading-xl tabular-nums" style={{ color: '#FFD700', margin: '4px 0 2px 0' }}>
                     {formatINR(mcResults.metrics.conditionalVaR95, true)}
                   </div>
-                  <div className="text-[10px] text-slate-500 font-mono mt-0.5">
-                    Avg in tail crash scenarios
-                  </div>
+                  <div style={{ fontSize: '11px', color: '#64748B' }}>Avg in tail crash scenarios</div>
                 </div>
 
                 {/* Metric 5: Sharpe Ratio */}
-                <div className="glass-card p-4 border border-violet-500/20 rounded-xl">
-                  <div className="text-[11px] font-mono text-slate-400">Sharpe Ratio</div>
-                  <div className="text-xl font-black text-violet-400 font-display mt-1">
+                <div className="glass-card glass-card-glow-violet" style={{ padding: '16px' }}>
+                  <div style={{ fontSize: '11px', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase' }}>Sharpe Ratio</div>
+                  <div className="heading-xl tabular-nums" style={{ color: '#A78BFA', margin: '4px 0 2px 0' }}>
                     {mcResults.metrics.sharpeRatio}
                   </div>
-                  <div className="text-[10px] text-slate-500 font-mono mt-0.5">
-                    Risk-adjusted efficiency
-                  </div>
+                  <div style={{ fontSize: '11px', color: '#64748B' }}>Risk-adjusted efficiency</div>
                 </div>
 
                 {/* Metric 6: Average Max Drawdown */}
-                <div className="glass-card p-4 border border-slate-800 rounded-xl">
-                  <div className="text-[11px] font-mono text-slate-400">Avg Max Drawdown</div>
-                  <div className="text-xl font-black text-slate-200 font-display mt-1">
+                <div className="glass-card" style={{ padding: '16px' }}>
+                  <div style={{ fontSize: '11px', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase' }}>Avg Max Drawdown</div>
+                  <div className="heading-xl tabular-nums" style={{ color: '#E2E8F0', margin: '4px 0 2px 0' }}>
                     {mcResults.metrics.avgMaxDrawdownPct}%
                   </div>
-                  <div className="text-[10px] text-slate-500 font-mono mt-0.5">
-                    Peak-to-trough path volatility
-                  </div>
+                  <div style={{ fontSize: '11px', color: '#64748B' }}>Peak-to-trough path volatility</div>
                 </div>
               </div>
             )}
 
-            {/* Asset Allocation & Dynamic Glidepath Settings */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-              {/* Asset Allocation Preset Selector */}
-              <div className="lg:col-span-8 glass-card p-5 border border-slate-800 rounded-2xl flex flex-col gap-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <PieChart className="w-4 h-4 text-cyan-400" />
-                    <h4 className="font-bold text-slate-100 text-sm">Multi-Asset Covariance Allocation</h4>
+            {/* Asset Allocation & Dynamic Rules */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px' }}>
+              
+              {/* Asset Allocation Presets */}
+              <div className="glass-card" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <PieIcon size={18} color="#00F0FF" />
+                    <h4 className="heading-md" style={{ margin: 0 }}>Multi-Asset Covariance Allocation</h4>
                   </div>
-                  <span className="text-xs text-slate-400 font-mono">
-                    Expected: {mcExpectedReturn}% • Volatility: {mcVolatility}%
+                  <span style={{ fontSize: '11.5px', color: '#94A3B8', fontFamily: 'var(--font-mono)' }}>
+                    CAGR: {mcExpectedReturn}% • Vol: {mcVolatility}%
                   </span>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '10px' }}>
                   {ASSET_PRESETS.map((p) => (
                     <button
                       key={p.id}
                       type="button"
                       onClick={() => handleSelectAssetPreset(p.id)}
-                      className={`p-3 rounded-xl border text-left transition-all flex flex-col justify-between ${
-                        mcSelectedPreset === p.id
-                          ? 'border-cyan-400/50 bg-cyan-400/10'
-                          : 'border-slate-800 bg-slate-900/60 hover:bg-slate-800/80'
-                      }`}
+                      className={`preset-card-luxury ${mcSelectedPreset === p.id ? 'preset-card-luxury-active' : ''}`}
                     >
-                      <div className="text-xs font-bold text-slate-200">{p.name}</div>
-                      <div className="text-[11px] text-slate-400 mt-1">{p.desc}</div>
+                      <div style={{ fontSize: '12px', fontWeight: 800, color: '#F1F5F9' }}>{p.name}</div>
+                      <div style={{ fontSize: '11px', color: '#94A3B8', marginTop: '4px', lineHeight: 1.3 }}>{p.desc}</div>
                     </button>
                   ))}
                 </div>
               </div>
 
-              {/* Dynamic Rules Controls (Glidepath & Guardrails) */}
-              <div className="lg:col-span-4 glass-card p-5 border border-slate-800 rounded-2xl flex flex-col justify-between gap-4">
+              {/* Dynamic Institutional Rules (Glidepath & Guardrails) */}
+              <div className="glass-card" style={{ padding: '20px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '14px' }}>
                 <div>
-                  <h4 className="font-bold text-slate-100 text-sm flex items-center gap-2 mb-3">
-                    <ShieldCheck className="w-4 h-4 text-mint-400" />
+                  <h4 className="heading-md" style={{ margin: '0 0 12px 0', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <ShieldCheck size={18} color="#00FF87" />
                     Dynamic Institutional Rules
                   </h4>
 
-                  {/* Dynamic Age Glidepath Toggle */}
-                  <label className="flex items-center justify-between p-2.5 rounded-xl border border-slate-800 bg-slate-900/60 cursor-pointer mb-2.5">
-                    <div>
-                      <div className="text-xs font-bold text-slate-200">Dynamic Age Glidepath</div>
-                      <div className="text-[10px] text-slate-400">-0.75% equity/yr into fixed income</div>
-                    </div>
-                    <input
-                      type="checkbox"
-                      checked={mcGlidePath}
-                      onChange={(e) => setMcGlidePath(e.target.checked)}
-                      className="w-4 h-4 accent-mint-400 cursor-pointer"
-                    />
-                  </label>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    
+                    {/* Dynamic Age Glidepath Toggle */}
+                    <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 14px', borderRadius: '10px', background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.07)', cursor: 'pointer' }}>
+                      <div>
+                        <div style={{ fontSize: '12.5px', fontWeight: 700, color: '#F1F5F9' }}>Dynamic Age Glidepath</div>
+                        <div style={{ fontSize: '11px', color: '#94A3B8' }}>-0.75% equity/yr into fixed income</div>
+                      </div>
+                      <input
+                        type="checkbox"
+                        checked={mcGlidePath}
+                        onChange={(e) => setMcGlidePath(e.target.checked)}
+                        style={{ width: '18px', height: '18px', accentColor: '#00FF87', cursor: 'pointer' }}
+                      />
+                    </label>
 
-                  {/* Guyton-Klinkis Guardrails Toggle */}
-                  <label className="flex items-center justify-between p-2.5 rounded-xl border border-slate-800 bg-slate-900/60 cursor-pointer">
-                    <div>
-                      <div className="text-xs font-bold text-slate-200">Guyton-Klinkis Guardrails</div>
-                      <div className="text-[10px] text-slate-400">Dynamic ±10% spending rule adjustments</div>
-                    </div>
-                    <input
-                      type="checkbox"
-                      checked={mcGuardrails}
-                      onChange={(e) => setMcGuardrails(e.target.checked)}
-                      className="w-4 h-4 accent-cyan-400 cursor-pointer"
-                    />
-                  </label>
+                    {/* Guyton-Klinkis Guardrails Toggle */}
+                    <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 14px', borderRadius: '10px', background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.07)', cursor: 'pointer' }}>
+                      <div>
+                        <div style={{ fontSize: '12.5px', fontWeight: 700, color: '#F1F5F9' }}>Guyton-Klinkis Guardrails</div>
+                        <div style={{ fontSize: '11px', color: '#94A3B8' }}>Dynamic ±10% spending rule adjustments</div>
+                      </div>
+                      <input
+                        type="checkbox"
+                        checked={mcGuardrails}
+                        onChange={(e) => setMcGuardrails(e.target.checked)}
+                        style={{ width: '18px', height: '18px', accentColor: '#00F0FF', cursor: 'pointer' }}
+                      />
+                    </label>
+                  </div>
                 </div>
 
-                <div className="text-[11px] text-slate-400 font-mono">
+                <div style={{ fontSize: '11.5px', color: '#64748B', fontFamily: 'var(--font-mono)' }}>
                   Ito Volatility Drag Correction active (-0.5*sigma^2)
                 </div>
               </div>
@@ -1355,101 +1547,93 @@ Projected FIRE Countdown: ${fireData.yearsToFire} Years (${new Date(fireData.fir
         {activeTab === 'summary' && (
           <motion.div
             key="summary"
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="flex flex-col gap-6"
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.2 }}
+            style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}
           >
             {/* Header with Export Controls */}
-            <div className="glass-card p-6 border border-slate-800/80 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="glass-card" style={{ padding: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '14px' }}>
               <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <ShieldCheck className="w-5 h-5 text-mint-400" />
-                  <h3 className="font-extrabold text-slate-100 text-lg font-display">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                  <ShieldCheck size={20} color="#00FF87" />
+                  <h3 className="heading-xl" style={{ margin: 0 }}>
                     Executive Quantitative Portfolio Synthesis
                   </h3>
                 </div>
-                <p className="text-xs text-slate-400 max-w-2xl">
+                <p className="body-sm" style={{ margin: 0, color: '#94A3B8' }}>
                   Algorithmic breakdown of wealth trajectory, sequence-of-returns vulnerabilities, and highest-impact alpha levers.
                 </p>
               </div>
 
-              <div className="flex items-center gap-3">
-                <button
-                  type="button"
-                  onClick={handleCopySummary}
-                  className="btn-glass-secondary text-xs flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-700 hover:border-slate-600"
-                >
-                  {copiedToast ? <Check className="w-4 h-4 text-mint-400" /> : <Copy className="w-4 h-4 text-slate-400" />}
-                  <span>{copiedToast ? 'Copied to Clipboard!' : 'Copy Executive Brief'}</span>
-                </button>
-              </div>
+              <button
+                type="button"
+                onClick={handleCopySummary}
+                className="btn-glass-secondary"
+                style={{ height: '38px', padding: '0 16px', fontSize: '12.5px' }}
+              >
+                {copiedToast ? <Check size={16} color="#00FF87" /> : <Copy size={16} color="#94A3B8" />}
+                <span>{copiedToast ? 'Copied to Clipboard!' : 'Copy Executive Brief'}</span>
+              </button>
             </div>
 
             {/* 3-Pillar Executive Breakdown Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px' }}>
+              
               {/* Pillar 1: Trajectory Health */}
-              <div className="glass-card p-5 border border-mint-500/20 rounded-2xl flex flex-col justify-between">
+              <div className="glass-card glass-card-glow-mint" style={{ padding: '20px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <div>
-                  <div className="flex items-center gap-2 text-mint-400 text-xs font-bold font-mono uppercase tracking-wider mb-2">
-                    <TrendingUp className="w-4 h-4" /> 1. Trajectory Health
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#00FF87', fontSize: '11.5px', fontWeight: 800, textTransform: 'uppercase', marginBottom: '8px' }}>
+                    <TrendingUp size={16} /> 1. Trajectory Health
                   </div>
-                  <h4 className="text-xl font-bold text-slate-100 font-display">
+                  <h4 className="heading-lg" style={{ color: '#F8FAFC', margin: 0 }}>
                     {fireData.savingsRate >= 50 ? 'Hyper-Accumulation Tier' : 'Standard Growth Phase'}
                   </h4>
-                  <p className="text-xs text-slate-400 mt-2 leading-relaxed">
-                    With an active savings rate of <strong className="text-mint-400">{fireData.savingsRate}%</strong> and monthly investments of <strong className="text-slate-200">{formatINR(fireData.monthlySavings)}</strong>, your wealth is compounding rapidly toward Standard FIRE target of <strong className="text-slate-200">{formatINR(fireData.milestones.standardFire.target, true)}</strong>.
+                  <p style={{ fontSize: '12.5px', color: '#94A3B8', marginTop: '8px', lineHeight: 1.5 }}>
+                    With an active savings rate of <strong style={{ color: '#00FF87' }}>{fireData.savingsRate}%</strong> and monthly investments of <strong style={{ color: '#F1F5F9' }}>{formatINR(fireData.monthlySavings)}</strong>, your wealth is compounding rapidly toward Standard FIRE target of <strong style={{ color: '#F1F5F9' }}>{formatINR(fireData.milestones.standardFire.target, true)}</strong>.
                   </p>
                 </div>
-                <div className="mt-4 pt-3 border-t border-slate-800 text-xs text-slate-400 flex justify-between font-mono">
-                  <span>Projected Freedom Age:</span>
-                  <span className="text-mint-400 font-bold">Age {fireData.projectedAge}</span>
+                <div style={{ marginTop: '16px', paddingTop: '12px', borderTop: '1px solid rgba(255, 255, 255, 0.06)', display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
+                  <span style={{ color: '#94A3B8' }}>Projected Freedom Age:</span>
+                  <span style={{ color: '#00FF87', fontWeight: 800 }}>Age {fireData.projectedAge}</span>
                 </div>
               </div>
 
-              {/* Pillar 2: Sequence of Returns Vulnerability */}
-              <div className="glass-card p-5 border border-amber-500/20 rounded-2xl flex flex-col justify-between">
+              {/* Pillar 2: Sequence-of-Returns Risk */}
+              <div className="glass-card glass-card-glow-amber" style={{ padding: '20px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <div>
-                  <div className="flex items-center gap-2 text-amber-400 text-xs font-bold font-mono uppercase tracking-wider mb-2">
-                    <ShieldAlert className="w-4 h-4" /> 2. Sequence-of-Returns Risk
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#FFD700', fontSize: '11.5px', fontWeight: 800, textTransform: 'uppercase', marginBottom: '8px' }}>
+                    <ShieldAlert size={16} /> 2. Sequence-of-Returns Risk
                   </div>
-                  <h4 className="text-xl font-bold text-slate-100 font-display">
+                  <h4 className="heading-lg" style={{ color: '#F8FAFC', margin: 0 }}>
                     {mcResults?.metrics?.successProbabilityPct >= 90 ? 'Robust Nest Egg Shield' : 'Moderate Tail Sensitivity'}
                   </h4>
-                  <p className="text-xs text-slate-400 mt-2 leading-relaxed">
-                    Under the 95% worst market tail crash (VaR 95%), your terminal corpus is projected at <strong className="text-cyan-400">{formatINR(mcResults?.metrics?.valueAtRisk95, true)}</strong>. Activating Guyton-Klinkis guardrails cuts ruin probability by ~60%.
+                  <p style={{ fontSize: '12.5px', color: '#94A3B8', marginTop: '8px', lineHeight: 1.5 }}>
+                    Under the 95% worst market tail crash (VaR 95%), your terminal corpus is projected at <strong style={{ color: '#00F0FF' }}>{formatINR(mcResults?.metrics?.valueAtRisk95, true)}</strong>. Activating Guyton-Klinkis guardrails cuts ruin probability by ~60%.
                   </p>
                 </div>
-                <div className="mt-4 pt-3 border-t border-slate-800 text-xs text-slate-400 flex justify-between font-mono">
-                  <span>Survival Probability:</span>
-                  <span className="text-amber-400 font-bold">{mcResults?.metrics?.successProbabilityPct}%</span>
+                <div style={{ marginTop: '16px', paddingTop: '12px', borderTop: '1px solid rgba(255, 255, 255, 0.06)', display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
+                  <span style={{ color: '#94A3B8' }}>Survival Probability:</span>
+                  <span style={{ color: '#FFD700', fontWeight: 800 }}>{mcResults?.metrics?.successProbabilityPct}%</span>
                 </div>
               </div>
 
-              {/* Pillar 3: Highest-Leverage Action Items */}
-              <div className="glass-card p-5 border border-cyan-500/20 rounded-2xl flex flex-col justify-between">
+              {/* Pillar 3: Top 3 Alpha Levers */}
+              <div className="glass-card glass-card-glow-cyan" style={{ padding: '20px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <div>
-                  <div className="flex items-center gap-2 text-cyan-400 text-xs font-bold font-mono uppercase tracking-wider mb-2">
-                    <Zap className="w-4 h-4" /> 3. Top 3 Alpha Levers
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#00F0FF', fontSize: '11.5px', fontWeight: 800, textTransform: 'uppercase', marginBottom: '8px' }}>
+                    <Zap size={16} /> 3. Top 3 Alpha Levers
                   </div>
-                  <ul className="text-xs text-slate-300 space-y-2 mt-2">
-                    <li className="flex items-start gap-1.5">
-                      <span className="text-cyan-400 font-bold">1.</span>
-                      <span><strong>+5% Annual Step-Up:</strong> Accelerates retirement timeline by 3.4 years.</span>
-                    </li>
-                    <li className="flex items-start gap-1.5">
-                      <span className="text-cyan-400 font-bold">2.</span>
-                      <span><strong>Dynamic Glidepath:</strong> De-risks equity drawdowns during the final 5 years before freedom.</span>
-                    </li>
-                    <li className="flex items-start gap-1.5">
-                      <span className="text-cyan-400 font-bold">3.</span>
-                      <span><strong>Coast FIRE Buffer:</strong> Reach ₹{formatINR(fireData.milestones.coastFire.target, true)} to eliminate forced work stress immediately.</span>
-                    </li>
+                  <ul style={{ paddingLeft: '16px', margin: '8px 0 0 0', fontSize: '12px', color: '#CBD5E1', display: 'flex', flexDirection: 'column', gap: '8px', lineHeight: 1.4 }}>
+                    <li><strong style={{ color: '#00F0FF' }}>+5% Annual Step-Up:</strong> Accelerates retirement timeline by 3.4 years.</li>
+                    <li><strong style={{ color: '#00FF87' }}>Dynamic Glidepath:</strong> De-risks equity drawdowns during final 5 years.</li>
+                    <li><strong style={{ color: '#FFD700' }}>Coast FIRE Buffer:</strong> Reach {formatINR(fireData.milestones.coastFire.target, true)} to eliminate forced work stress.</li>
                   </ul>
                 </div>
-                <div className="mt-4 pt-3 border-t border-slate-800 text-xs text-slate-400 flex justify-between font-mono">
-                  <span>Velocity Score:</span>
-                  <span className="text-cyan-400 font-bold">{fireData.velocityScore} / 100</span>
+                <div style={{ marginTop: '16px', paddingTop: '12px', borderTop: '1px solid rgba(255, 255, 255, 0.06)', display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
+                  <span style={{ color: '#94A3B8' }}>Freedom Velocity Score:</span>
+                  <span style={{ color: '#00F0FF', fontWeight: 800 }}>{fireData.velocityScore} / 100</span>
                 </div>
               </div>
             </div>
@@ -1462,47 +1646,44 @@ Projected FIRE Countdown: ${fireData.yearsToFire} Years (${new Date(fireData.fir
       {/* ========================================================================= */}
       <AnimatePresence>
         {guideModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+          <div className="modal-overlay" onClick={() => setGuideModalOpen(false)}>
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 10 }}
+              initial={{ opacity: 0, scale: 0.95, y: 14 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 10 }}
-              className="glass-card w-full max-w-3xl max-h-[85vh] overflow-y-auto border border-cyan-500/30 bg-slate-950/95 rounded-3xl p-6 shadow-2xl flex flex-col gap-5"
+              exit={{ opacity: 0, scale: 0.95, y: 14 }}
+              onClick={(e) => e.stopPropagation()}
+              className="modal-card"
+              style={{ maxWidth: '680px' }}
             >
               {/* Modal Header */}
-              <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-                <div className="flex items-center gap-2.5">
-                  <BookOpen className="w-5 h-5 text-cyan-400" />
-                  <h3 className="font-extrabold text-slate-100 text-lg font-display">
-                    How It Works & Quantitative Guide
-                  </h3>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', paddingBottom: '12px', borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <BookOpen size={20} color="#00F0FF" />
+                  <h3 className="heading-lg" style={{ margin: 0 }}>How It Works & Quantitative Guide</h3>
                 </div>
                 <button
                   type="button"
                   onClick={() => setGuideModalOpen(false)}
-                  className="p-1 rounded-full text-slate-400 hover:text-slate-100 hover:bg-slate-800"
+                  className="btn-icon-soft"
                 >
-                  <X className="w-5 h-5" />
+                  <X size={16} />
                 </button>
               </div>
 
               {/* Sub-Guide Navigation Chips */}
-              <div className="flex items-center gap-2 overflow-x-auto pb-1">
+              <div style={{ display: 'flex', gap: '6px', overflowX: 'auto', marginBottom: '16px' }}>
                 {[
                   { id: 'fire', label: '1. FIRE Math & SWR' },
                   { id: 'whatif', label: '2. What-If Leverage' },
-                  { id: 'stochastic', label: '3. Stochastic Physics & Ito Drift' },
-                  { id: 'rules', label: '4. The 4 Rules for 99% Survival' },
+                  { id: 'stochastic', label: '3. Stochastic Physics & Ito' },
+                  { id: 'rules', label: '4. 4 Rules for 99% Survival' },
                 ].map((gTab) => (
                   <button
                     key={gTab.id}
                     type="button"
                     onClick={() => setGuideTab(gTab.id)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${
-                      guideTab === gTab.id
-                        ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
-                        : 'text-slate-400 hover:text-slate-200 bg-slate-900 border border-slate-800'
-                    }`}
+                    className={`filter-chip ${guideTab === gTab.id ? 'filter-chip-active' : ''}`}
+                    style={{ height: '32px', fontSize: '11.5px', padding: '0 12px' }}
                   >
                     {gTab.label}
                   </button>
@@ -1510,18 +1691,18 @@ Projected FIRE Countdown: ${fireData.yearsToFire} Years (${new Date(fireData.fir
               </div>
 
               {/* Guide Content Sections */}
-              <div className="text-xs text-slate-300 space-y-4 leading-relaxed font-sans">
+              <div style={{ fontSize: '13px', color: '#CBD5E1', lineHeight: 1.6, display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 {guideTab === 'fire' && (
                   <>
-                    <h4 className="text-sm font-bold text-amber-400">The Mathematics of Financial Independence</h4>
+                    <h4 className="heading-md" style={{ color: '#FFD700', margin: 0 }}>The Mathematics of Financial Independence</h4>
                     <p>
                       Financial Independence is achieved when the passive inflation-adjusted cash flow generated by your invested corpus covers your living expenses indefinitely.
                     </p>
-                    <div className="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 font-mono text-[11px] text-slate-200">
+                    <div style={{ background: 'rgba(255, 255, 255, 0.04)', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '10px', padding: '12px 14px', fontFamily: 'var(--font-mono)', fontSize: '12px', color: '#00FF87' }}>
                       Target Corpus = Annual Living Expenses × (100 / Safe Withdrawal Rate)
                     </div>
                     <p>
-                      <strong>Standard FIRE (4% SWR • 25x Spend):</strong> Derived from the landmark Trinity Study (1998), a 4% annual withdrawal rate indexed to inflation historicallly survived 95%+ of 30-year retirement horizons across US and global equity/debt mixes.
+                      <strong>Standard FIRE (4% SWR • 25x Spend):</strong> Derived from the landmark Trinity Study (1998), a 4% annual withdrawal rate indexed to inflation historically survived 95%+ of 30-year retirement horizons.
                     </p>
                     <p>
                       <strong>Coast FIRE:</strong> The specific corpus you need invested today such that, with zero future monthly additions, it naturally compounds to your Standard FIRE target by your target retirement age.
@@ -1531,11 +1712,11 @@ Projected FIRE Countdown: ${fireData.yearsToFire} Years (${new Date(fireData.fir
 
                 {guideTab === 'whatif' && (
                   <>
-                    <h4 className="text-sm font-bold text-cyan-400">Leveraging the What-If Sandbox</h4>
+                    <h4 className="heading-md" style={{ color: '#00F0FF', margin: 0 }}>Leveraging the What-If Sandbox</h4>
                     <p>
                       Small recurring improvements create outsized terminal wealth differentials because compounding is non-linear:
                     </p>
-                    <ul className="list-disc pl-5 space-y-1.5 text-slate-300">
+                    <ul style={{ paddingLeft: '16px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
                       <li><strong>Frugal Optimization:</strong> Cutting recurring monthly leaks (e.g. -₹5,000/mo) adds ~₹18–25 Lakh over a 15-year horizon.</li>
                       <li><strong>Career Step-Up Growth:</strong> Escalating your SIP by +5% to +10% annually matches real salary growth and drastically shortens retirement time by 3 to 6 years.</li>
                       <li><strong>Timed Capital Shocks:</strong> Accurately model one-time life events like property downpayments or ESOP windfalls triggered at precise future years.</li>
@@ -1545,48 +1726,49 @@ Projected FIRE Countdown: ${fireData.yearsToFire} Years (${new Date(fireData.fir
 
                 {guideTab === 'stochastic' && (
                   <>
-                    <h4 className="text-sm font-bold text-mint-400">Stochastic Physics, Volatility Drag & Ito Calculus</h4>
+                    <h4 className="heading-md" style={{ color: '#00FF87', margin: 0 }}>Stochastic Physics, Volatility Drag & Ito Calculus</h4>
                     <p>
                       Static average-return calculators suffer from the <em>"Flaw of Averages"</em> and miss <strong>Sequence of Returns Risk (SRR)</strong>.
                     </p>
-                    <div className="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 font-mono text-[11px] text-slate-200">
+                    <div style={{ background: 'rgba(255, 255, 255, 0.04)', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '10px', padding: '12px 14px', fontFamily: 'var(--font-mono)', fontSize: '12px', color: '#00F0FF' }}>
                       W_{'{t+1}'} = (W_t + C_t) × exp( (μ - 0.5×σ²)Δt + σ√Δt Z_t )
                     </div>
                     <p>
                       <strong>Volatility Drag (-0.5*σ²):</strong> High variance drains geometric CAGR. A portfolio that drops -20% and then gains +20% has a net compound loss of -4%. Our engine explicitly models this Ito drift correction.
                     </p>
                     <p>
-                      <strong>Merton Jump Diffusion:</strong> Superimposes Poisson crash jumps (average -18% real drop) to account for market leptokurtosis (fat-tail black swan events like 1987, 2008, and 2020).
+                      <strong>Merton Jump Diffusion:</strong> Superimposes Poisson crash jumps (average -18% real drop) to account for market leptokurtosis (fat-tail black swan events).
                     </p>
                   </>
                 )}
 
                 {guideTab === 'rules' && (
                   <>
-                    <h4 className="text-sm font-bold text-violet-400">The 4 Institutional Rules for 99% Portfolio Survival</h4>
-                    <div className="space-y-2.5">
-                      <div className="p-2.5 rounded-lg bg-slate-900 border border-slate-800">
-                        <strong className="text-mint-400">1. Guyton-Klinkis Guardrails:</strong> In retirement decumulation, cut spending by 10% during severe bear markets (Capital Preservation Rule) and increase by 10% during super bull runs (Prosperity Rule).
+                    <h4 className="heading-md" style={{ color: '#A78BFA', margin: 0 }}>The 4 Institutional Rules for 99% Portfolio Survival</h4>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                      <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.06)', borderRadius: '8px', padding: '10px 12px' }}>
+                        <strong style={{ color: '#00FF87' }}>1. Guyton-Klinkis Guardrails:</strong> In retirement decumulation, cut spending by 10% during severe bear markets (Capital Preservation Rule) and increase by 10% during super bull runs (Prosperity Rule).
                       </div>
-                      <div className="p-2.5 rounded-lg bg-slate-900 border border-slate-800">
-                        <strong className="text-cyan-400">2. Dynamic Age Glidepath:</strong> Shift 0.75% of portfolio from equities into fixed income each year as retirement approaches to eliminate sequence risk.
+                      <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.06)', borderRadius: '8px', padding: '10px 12px' }}>
+                        <strong style={{ color: '#00F0FF' }}>2. Dynamic Age Glidepath:</strong> Shift 0.75% of portfolio from equities into fixed income each year as retirement approaches to eliminate sequence risk.
                       </div>
-                      <div className="p-2.5 rounded-lg bg-slate-900 border border-slate-800">
-                        <strong className="text-amber-400">3. 2-Year Cash Buffer:</strong> Hold 24 months of living expenses in liquid debt/T-Bills so you never have to sell equities at a market trough.
+                      <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.06)', borderRadius: '8px', padding: '10px 12px' }}>
+                        <strong style={{ color: '#FFD700' }}>3. 2-Year Cash Buffer:</strong> Hold 24 months of living expenses in liquid debt/T-Bills so you never have to sell equities at a market trough.
                       </div>
-                      <div className="p-2.5 rounded-lg bg-slate-900 border border-slate-800">
-                        <strong className="text-fuchsia-400">4. Flexible Barista Bridge:</strong> Generating just 20%–30% of living expenses through low-stress part-time work lowers required portfolio corpus by 35%.
+                      <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.06)', borderRadius: '8px', padding: '10px 12px' }}>
+                        <strong style={{ color: '#EC4899' }}>4. Flexible Barista Bridge:</strong> Generating just 20%–30% of living expenses through low-stress part-time work lowers required portfolio corpus by 35%.
                       </div>
                     </div>
                   </>
                 )}
               </div>
 
-              <div className="pt-3 border-t border-slate-800 flex justify-end">
+              <div style={{ marginTop: '20px', paddingTop: '14px', borderTop: '1px solid rgba(255, 255, 255, 0.08)', display: 'flex', justifyContent: 'flex-end' }}>
                 <button
                   type="button"
                   onClick={() => setGuideModalOpen(false)}
-                  className="btn-primary-mint text-xs px-5 py-2 rounded-xl"
+                  className="btn-primary-mint"
+                  style={{ height: '36px', padding: '0 18px', fontSize: '12.5px' }}
                 >
                   Got It, Let's Simulate
                 </button>
@@ -1601,72 +1783,77 @@ Projected FIRE Countdown: ${fireData.yearsToFire} Years (${new Date(fireData.fir
       {/* ========================================================================= */}
       <AnimatePresence>
         {tableModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+          <div className="modal-overlay" onClick={() => setTableModalOpen(false)}>
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 10 }}
+              initial={{ opacity: 0, scale: 0.95, y: 14 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 10 }}
-              className="glass-card w-full max-w-5xl max-h-[85vh] overflow-hidden border border-slate-800 bg-slate-950/98 rounded-3xl p-6 shadow-2xl flex flex-col gap-4"
+              exit={{ opacity: 0, scale: 0.95, y: 14 }}
+              onClick={(e) => e.stopPropagation()}
+              className="modal-card"
+              style={{ maxWidth: '920px' }}
             >
               {/* Modal Header */}
-              <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-                <div className="flex items-center gap-2.5">
-                  <Table className="w-5 h-5 text-mint-400" />
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', paddingBottom: '12px', borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <TableIcon size={20} color="#00FF87" />
                   <div>
-                    <h3 className="font-extrabold text-slate-100 text-lg font-display">
-                      Year-by-Year Stochastic Distribution Table
-                    </h3>
-                    <p className="text-xs text-slate-400 font-mono">
-                      {mcResults?.runs?.toLocaleString()} Runs • {mcResults?.model?.toUpperCase()} Model • {isNominalDisplay ? 'Nominal Values' : 'Real Purchasing Power'}
-                    </p>
+                    <h3 className="heading-lg" style={{ margin: 0 }}>Year-by-Year Stochastic Distribution Table</h3>
+                    <div style={{ fontSize: '11.5px', color: '#94A3B8', fontFamily: 'var(--font-mono)' }}>
+                      {mcResults?.runs?.toLocaleString()} Runs • {mcResults?.model?.toUpperCase()} • {isNominalDisplay ? 'Nominal Values' : "Real Today's ₹"}
+                    </div>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2.5">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <button
                     type="button"
                     onClick={handleDownloadCsv}
-                    className="btn-primary-mint text-xs flex items-center gap-2 px-3.5 py-2 rounded-xl"
+                    className="btn-primary-mint"
+                    style={{ height: '34px', padding: '0 14px', fontSize: '12px', gap: '5px' }}
                   >
-                    <Download className="w-3.5 h-3.5" />
+                    <Download size={14} />
                     <span>Download CSV</span>
                   </button>
                   <button
                     type="button"
                     onClick={() => setTableModalOpen(false)}
-                    className="p-1.5 rounded-full text-slate-400 hover:text-slate-100 hover:bg-slate-800"
+                    className="btn-icon-soft"
                   >
-                    <X className="w-5 h-5" />
+                    <X size={16} />
                   </button>
                 </div>
               </div>
 
-              {/* Data Grid Table Container */}
-              <div className="overflow-auto flex-1 border border-slate-800/80 rounded-xl">
-                <table className="w-full text-left text-xs font-mono">
-                  <thead className="bg-slate-900/90 text-slate-400 sticky top-0 border-b border-slate-800">
+              {/* Data Table */}
+              <div style={{ overflowX: 'auto', maxHeight: '55vh', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
+                <table className="table-luxury" style={{ width: '100%', fontFamily: 'var(--font-mono)', fontSize: '12px' }}>
+                  <thead style={{ position: 'sticky', top: 0, background: '#0D111C', zIndex: 2 }}>
                     <tr>
-                      <th className="p-3">Year</th>
-                      <th className="p-3 text-rose-400">Deep Bear (P5)</th>
-                      <th className="p-3 text-rose-300">Bearish (P10)</th>
-                      <th className="p-3 text-slate-300">Lower (P25)</th>
-                      <th className="p-3 text-mint-400 font-bold">Median (P50)</th>
-                      <th className="p-3 text-slate-300">Upper (P75)</th>
-                      <th className="p-3 text-emerald-400 font-bold">Bullish (P90)</th>
-                      <th className="p-3 text-emerald-300">Super Bull (P95)</th>
+                      <th style={{ padding: '10px 14px' }}>Year</th>
+                      <th style={{ padding: '10px 14px', color: '#F43F5E' }}>Deep Bear (P5)</th>
+                      <th style={{ padding: '10px 14px', color: '#FB7185' }}>Bearish (P10)</th>
+                      <th style={{ padding: '10px 14px' }}>Lower (P25)</th>
+                      <th style={{ padding: '10px 14px', color: '#00FF87', fontWeight: 800 }}>Median (P50)</th>
+                      <th style={{ padding: '10px 14px' }}>Upper (P75)</th>
+                      <th style={{ padding: '10px 14px', color: '#10B981', fontWeight: 800 }}>Bullish (P90)</th>
+                      <th style={{ padding: '10px 14px', color: '#34D399' }}>Super Bull (P95)</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-800/60 text-slate-200">
+                  <tbody>
                     {mcResults?.trajectory?.map((row) => (
-                      <tr key={row.year} className="hover:bg-slate-900/40">
-                        <td className="p-3 font-bold text-slate-400">Yr {row.year}</td>
-                        <td className="p-3 text-rose-400/90">{formatINR(row.deepBear_P5)}</td>
-                        <td className="p-3 text-rose-300/90">{formatINR(row.bearish_P10)}</td>
-                        <td className="p-3">{formatINR(row.lowerQuartile_P25)}</td>
-                        <td className="p-3 font-bold text-mint-400 bg-mint-500/5">{formatINR(isNominalDisplay ? row.nominal_P50 : row.median_P50)}</td>
-                        <td className="p-3">{formatINR(row.upperQuartile_P75)}</td>
-                        <td className="p-3 font-bold text-emerald-400">{formatINR(isNominalDisplay ? row.nominal_P90 : row.bullish_P90)}</td>
-                        <td className="p-3 text-emerald-300">{formatINR(row.superBull_P95)}</td>
+                      <tr key={row.year}>
+                        <td style={{ padding: '10px 14px', fontWeight: 700, color: '#94A3B8' }}>Yr {row.year}</td>
+                        <td style={{ padding: '10px 14px', color: '#F43F5E' }}>{formatINR(row.deepBear_P5)}</td>
+                        <td style={{ padding: '10px 14px', color: '#FB7185' }}>{formatINR(row.bearish_P10)}</td>
+                        <td style={{ padding: '10px 14px', color: '#CBD5E1' }}>{formatINR(row.lowerQuartile_P25)}</td>
+                        <td style={{ padding: '10px 14px', fontWeight: 800, color: '#00FF87', background: 'rgba(0, 255, 135, 0.04)' }}>
+                          {formatINR(isNominalDisplay ? row.nominal_P50 : row.median_P50)}
+                        </td>
+                        <td style={{ padding: '10px 14px', color: '#CBD5E1' }}>{formatINR(row.upperQuartile_P75)}</td>
+                        <td style={{ padding: '10px 14px', fontWeight: 700, color: '#10B981' }}>
+                          {formatINR(isNominalDisplay ? row.nominal_P90 : row.bullish_P90)}
+                        </td>
+                        <td style={{ padding: '10px 14px', color: '#34D399' }}>{formatINR(row.superBull_P95)}</td>
                       </tr>
                     ))}
                   </tbody>

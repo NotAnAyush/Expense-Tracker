@@ -4,11 +4,53 @@ tags:
   - tasks
   - changelog
   - history
-version: 3.7.0
-last_updated: 2026-08-18
+version: 3.8.0
+last_updated: 2026-08-19
 ---
 
 # 📜 Expense Tracker V2 — Changelog & Version History
+
+---
+
+## `v3.8.1` — Wealth & FIRE Simulator Luxury FinTech UI/UX Design System Alignment (2026-08-19)
+- **Design System & Styling Architecture Alignment (`WealthSimulatorPage.jsx`, `index.css`)**:
+  - Completely refactored `WealthSimulatorPage.jsx` from generic Tailwind classes to native bespoke Vanilla CSS design tokens (`RICHY RICH — DESIGN SYSTEM & LUXURY FINTECH CSS v3.0`).
+  - Added hardware-accelerated FinTech range slider styles (`.slider-luxury`, `.slider-mint`, `.slider-cyan`, `.slider-amber`, `.slider-violet`, `.slider-rose`) with custom glowing thumbs and glass tracks.
+  - Added glowing progress bar utilities (`.progress-bar-luxury`, `.progress-bar-fill-gold`, `.progress-bar-fill-mint`) and card glow accent variants (`.glass-card-glow-mint`, `.glass-card-glow-amber`, `.glass-card-glow-cyan`, `.glass-card-glow-violet`, `.glass-card-glow-rose`).
+- **State-of-the-Art Micro-Animations & Custom Tooltips**:
+  - Implemented Framer Motion tab transitions with interactive `.filter-chip` and `.filter-chip-active` navigation.
+  - Built custom dark glassmorphic Recharts tooltips with glowing neon borders for What-If comparative trajectories and Monte Carlo stochastic confidence ribbons.
+  - Added responsive Bento KPI cards, luxury calibration slider controls, 6-Tier FIRE spectrum cards, and interactive modal dialogs.
+- **Obsidian Knowledge Vault & Documentation**:
+  - Logged Architecture Decision Record `[[ADR-014-Wealth-Simulator-Fintech-UIUX-Alignment]]`.
+  - Updated `[[Page-Directory]]`, `[[Project-Kanban]]`, and `[[Changelog]]`.
+
+---
+
+## `v3.8.0` — Real-Time Multi-Asset Live Market Feeds, Official Sovereign Yields, & Dynamic Maturity Calculator (2026-08-19)
+
+- **Live Multi-Asset Exchange Ingestion Engine (`brokerClient.js`)**:
+  - Connected live real-time price feeds for major Indian equities and indices (`^NSEI`, `^BSESN`, `RELIANCE.NS`, `TCS.NS`, `HDFCBANK.NS`, `INFY.NS`, `ICICIBANK.NS`, `SBIN.NS`, `GOLDBEES.NS`, `USDINR=X`) and US equities (`AAPL`, `NVDA`, `MSFT`, `GOOGL`).
+  - Implemented 30-second in-memory TTL caching with parallel ticker resolution and timeout protection (3.5s).
+  - Built zero-downtime deterministic fallback baselines ensuring 100% offline test suite reliability.
+- **Official Sovereign Yield & Fixed Income Radar (`schemeRadarService.js`)**:
+  - Live 24K Gold Spot (999 Purity) rate calculation per gram (₹7,548/g) and per 10g (₹75,480) derived from live gold exchange ETF feeds with 24h delta.
+  - Official Reserve Bank of India (RBI) / FBIL Treasury Bill yields (91D: 6.85%, 182D: 6.98%, 364D: 7.04%) and 10-Year GoI Benchmark Bond (7.12%).
+  - Sovereign Gold Bonds (SGBs) tracking with 2.50% p.a. guaranteed semi-annual coupon and 0% Capital Gains Tax exemption under Sec 47(viic).
+  - Official Ministry of Finance (MoF) Small Savings Schemes gazette rates (SCSS: 8.20%, SSY: 8.20%, NSC: 7.70%, PPF: 7.10%, KVP: 7.50%, POMIS: 7.40%, MSSC: 7.50%).
+  - Top Verified Bank Fixed Deposits with accurate lock-in tenures (`1001 Days`, `732 Days`, `400 Days`, `55 Months`, `390 Days`) and DICGC ₹5 Lakh depositor protection.
+- **Interactive Yield & FD Maturity Calculator (`PassiveIncomePage.jsx`)**:
+  - Dynamic compound interest and APY calculator with parametric sliders for Principal (₹10k - ₹50L), Interest Rate (4% - 12%), Tenor (0.25 - 10 Yrs), and Compounding Frequency (Quarterly, Monthly, Annual, Simple).
+  - One-click Senior Citizen Rate bonus (+0.50%) with dynamic recalculation of interest earned and payout cash flows.
+  - Visual corpus distribution bar comparing principal ratio vs total interest accumulated.
+- **UI/UX & Live Watch Ribbon Upgrades**:
+  - Live market status badges (`LIVE` vs `BENCHMARK`) with real-time price change arrows and day ranges.
+  - 1-Click "Refresh Live Rates" control with smooth spinning animation.
+  - Granular category filter chips (`All`, `RBI T-Bills`, `SGB & Gold`, `Small Savings`, `Bank FDs`).
+  - Resolved `{fd.tenureMonths} Months` display bug (`1001 Days` instead of `1001 Months`).
+- **Tests & Quality Assurance**:
+  - All 34 test suites (229/229 tests) passing 100%.
+  - Verified live browser rendering and interactions with recorded WebP session artifacts.
 
 ---
 
@@ -31,11 +73,6 @@ last_updated: 2026-08-18
 - **Executive Quantitative Summary & Interactive Tutorial Modal**:
   - Added Automated Portfolio Synthesis card breaking down trajectory, sequence-of-returns vulnerability, and top 3 alpha levers.
   - Added interactive in-app educational guide modal with 4 quantitative theory sub-tabs and institutional pro tips.
-- **Architecture & Knowledge Base Synchronization**:
-  - Documented complete mathematical formulations in `[[Monte-Carlo-and-FIRE-Simulator]]`.
-  - Formalized and accepted `[[ADR-008-Stochastic-Monte-Carlo-and-FIRE-Engine]]`.
-  - Updated API contracts and backend engine specifications.
-  - Verified 100% test pass on `tests/fireSimulation.test.js` and confirmed in live browser.
 
 ---
 
@@ -54,31 +91,3 @@ last_updated: 2026-08-18
 - **Indian Bank Transaction SMS Parser (`smsParserEngine.js`)**: Deterministic regex state machine parsing transaction notifications across HDFC, SBI, ICICI, Axis, Kotak, PayTM, PhonePe, and UPI.
 - **Instant SMS Quick-Parse Modal Integration (`BankStatementModal.jsx`)**: Dual-mode statement importer supporting both multi-column CSV uploads and direct SMS alert text parsing.
 - **Enterprise Vector PDF & CSV Financial Statement Generator (`reportExportEngine.js`)**: Multi-sheet formatted statement reports with executive summaries, category allocation percentages, and tax-ready schedules.
-
----
-
-## `v3.4.0` — Quantitative Stock Market, Scheme Radar & Scam Shield (2026-08-18)
-- **Stock Market & Passive Wealth Studio (`PassiveIncomePage.jsx`)**: Real-time market ticker (Nifty 50, Sensex, Reliance, TCS, Apple, Nvidia), interactive tabs, and visual financial analytics.
-- **Verified Sovereign Scheme Radar (`schemeRadarService.js`)**: Real-time comparator for RBI Treasury Bills (91D, 182D, 364D), Sovereign Gold Bonds (SGBs), Post Office SCSS/SSY/PPF, and Bank Fixed Deposits.
-- **Automated Scam & Ponzi Shield (`scamShieldEngine.js` red flag detector)**: Algorithmic red flag detection engine ($\mathcal{S}_{\text{risk}}$) evaluating guaranteed unrealistic yields ($>18\%$), MLM pyramid downlines, and regulatory compliance.
-- **Institutional Quantitative Valuation Suite (`quantitativeEngine.js`)**: Two-stage Discounted Cash Flow (DCF) fair value calculation, 9-point Piotroski F-Score, and Altman Z-Score bankruptcy prediction.
-
----
-
-## `v3.3.0` — Local Sovereign OCR & Multi-Tier AI Fallback Cascade (2026-08-18)
-- **Local Baidu Unlimited-OCR Sidecar (`server/services/ocr-sidecar/`)**: Containerized Python FastAPI microservice with strict JSON schema parsing and PaddleOCR fallback.
-- **Node.js Local OCR Adapter (`localOcrService.js`)**: Probes sidecar health on port 8001 and delegates receipt scans with automatic fallback.
-- **Local Financial SLM Adapter (`localSlmClient.js`)**: Routes transactions and Copilot queries to local Ollama host models (`qwen2.5:1.5b`).
-
----
-
-## `v3.2.0` — Sovereign Customization Hub, Habit Intelligence & Full PWA (2026-08-18)
-- **Staged Modular Customization Machine**: Dual-state buffer (`CustomizationContext.jsx`) and floating confirmation bar with automated pre-sync Memento snapshots.
-- **5-Studio Customization Hub (`CustomizationPage.jsx`)**: Feature Modules Suite, Visual Theme Studio, Dashboard Grid Studio, Currency & Regional Engine, and Snapshot Vault.
-
----
-
-## `v3.0.0` — Sovereign Wealth & Global Readiness (2026-08-16)
-- Added 1,000-Run Stochastic Monte Carlo Wealth Simulator ($P_{10}, P_{50}, P_{90}$).
-- Added Rule-of-25 FIRE retirement milestone sandbox with SWR controls.
-- Full Jest test suite expansion: **20 test suites, 127/127 tests passing**.
