@@ -34,6 +34,8 @@ import {
   Trash2
 } from 'lucide-react';
 import { apiFetch } from '../api/client';
+import { CountUp } from '../components/UI/CountUp';
+import { FlowingSparkline } from '../components/UI/FlowingSparkline';
 
 export const PassiveIncomePage = () => {
   const [quotes, setQuotes] = useState([]);
@@ -353,53 +355,65 @@ export const PassiveIncomePage = () => {
             <span>Yield & FD Calculator</span>
           </button>
         </div>
-      </div>
-
-      {/* 2. LIVE MACROECONOMIC BENCHMARK STRIP */}
-      <div
-        className="glass-card"
+      </div>      {/* 2. LIVE MACROECONOMIC BENCHMARK STRIP WITH FLOWING SPARKLINE METERS */}
+      <motion.div
+        whileHover={{ y: -2 }}
+        transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+        className="glass-card glass-card-hover-border"
         style={{
-          padding: '12px 18px',
+          padding: '16px 20px',
           background: 'linear-gradient(90deg, rgba(13, 17, 28, 0.95), rgba(20, 28, 45, 0.95))',
           border: '1px solid rgba(0, 240, 255, 0.2)',
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-          gap: '14px',
+          gap: '16px',
           alignItems: 'center',
         }}
       >
         <div>
           <div style={{ fontSize: '10.5px', color: '#94A3B8', fontWeight: 600, textTransform: 'uppercase' }}>RBI Repo Rate (MPC)</div>
           <div className="font-display tabular-nums" style={{ fontSize: '18px', fontWeight: 800, color: '#00F0FF' }}>
-            {macroData?.monetaryPolicy?.india?.rbiRepoRatePercent || 6.50}% p.a.
+            <CountUp value={macroData?.monetaryPolicy?.india?.rbiRepoRatePercent || 6.50} suffix="% p.a." />
           </div>
-          <div style={{ fontSize: '10px', color: '#64748B' }}>Official Central Bank Benchmark</div>
+          <div style={{ marginTop: '4px' }}>
+            <FlowingSparkline data={[6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5]} color="#00F0FF" height={18} />
+          </div>
+          <div style={{ fontSize: '10px', color: '#64748B', marginTop: '2px' }}>Official Central Bank Benchmark</div>
         </div>
 
         <div>
           <div style={{ fontSize: '10.5px', color: '#94A3B8', fontWeight: 600, textTransform: 'uppercase' }}>India CPI Inflation</div>
           <div className="font-display tabular-nums" style={{ fontSize: '18px', fontWeight: 800, color: '#FFB800' }}>
-            {macroData?.monetaryPolicy?.india?.cpiInflationPercent || 5.40}% p.a.
+            <CountUp value={macroData?.monetaryPolicy?.india?.cpiInflationPercent || 5.40} suffix="% p.a." />
           </div>
-          <div style={{ fontSize: '10px', color: '#64748B' }}>MoSPI Headline Gazette</div>
+          <div style={{ marginTop: '4px' }}>
+            <FlowingSparkline data={[5.7, 5.5, 5.1, 4.8, 5.2, 5.4, 5.3, 5.4]} color="#FFB800" height={18} />
+          </div>
+          <div style={{ fontSize: '10px', color: '#64748B', marginTop: '2px' }}>MoSPI Headline Gazette</div>
         </div>
 
         <div>
           <div style={{ fontSize: '10.5px', color: '#94A3B8', fontWeight: 600, textTransform: 'uppercase' }}>10Y Benchmark G-Sec</div>
           <div className="font-display tabular-nums" style={{ fontSize: '18px', fontWeight: 800, color: '#00FF87' }}>
-            {macroData?.sovereignYieldCurve?.tenor10y?.yieldPercent || 7.12}% p.a.
+            <CountUp value={macroData?.sovereignYieldCurve?.tenor10y?.yieldPercent || 7.12} suffix="% p.a." />
           </div>
-          <div style={{ fontSize: '10px', color: '#64748B' }}>Real Sovereign Spread: +{(7.12 - (macroData?.monetaryPolicy?.india?.cpiInflationPercent || 5.40)).toFixed(2)}%</div>
+          <div style={{ marginTop: '4px' }}>
+            <FlowingSparkline data={[7.25, 7.22, 7.18, 7.15, 7.14, 7.13, 7.12, 7.12]} color="#00FF87" height={18} />
+          </div>
+          <div style={{ fontSize: '10px', color: '#64748B', marginTop: '2px' }}>Real Sovereign Spread: +{(7.12 - (macroData?.monetaryPolicy?.india?.cpiInflationPercent || 5.40)).toFixed(2)}%</div>
         </div>
 
         <div>
           <div style={{ fontSize: '10.5px', color: '#94A3B8', fontWeight: 600, textTransform: 'uppercase' }}>24K Spot Gold (999)</div>
           <div className="font-display tabular-nums" style={{ fontSize: '18px', fontWeight: 800, color: '#FFD700' }}>
-            ₹{(macroData?.preciousMetalsSpot?.gold24KPerGramInr || 7550).toLocaleString()}/g
+            <CountUp value={macroData?.preciousMetalsSpot?.gold24KPerGramInr || 7550} prefix="₹" suffix="/g" />
           </div>
-          <div style={{ fontSize: '10px', color: '#64748B' }}>₹{(macroData?.preciousMetalsSpot?.gold24KPer10GramInr || 75500).toLocaleString()}/10g</div>
+          <div style={{ marginTop: '4px' }}>
+            <FlowingSparkline data={[6800, 7050, 7150, 7300, 7420, 7490, 7520, 7550]} color="#FFD700" height={18} />
+          </div>
+          <div style={{ fontSize: '10px', color: '#64748B', marginTop: '2px' }}>₹{(macroData?.preciousMetalsSpot?.gold24KPer10GramInr || 75500).toLocaleString()}/10g</div>
         </div>
-      </div>
+      </motion.div>
 
       {/* 3. SUB-STUDIO NAVIGATION TABS */}
       <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>

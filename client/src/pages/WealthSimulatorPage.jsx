@@ -57,6 +57,8 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { apiFetch } from '../api/client';
 import { usePrivacy } from '../context/PrivacyContext';
+import { CountUp } from '../components/UI/CountUp';
+import { FlowingSparkline } from '../components/UI/FlowingSparkline';
 
 // Preset Asset Allocations
 const ASSET_PRESETS = [
@@ -758,10 +760,16 @@ Projected FIRE Countdown: ${fireData.yearsToFire} Years (${new Date(fireData.fir
             style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}
           >
             {/* Top 4 Bento KPI Cards */}
+            {/* Top 4 Bento KPI Cards with Flowing Sparklines & Spring Dynamics */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '16px' }}>
               
               {/* Card 1: Standard FIRE Corpus */}
-              <div className="glass-card glass-card-glow-amber" style={{ padding: '20px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '16px' }}>
+              <motion.div
+                whileHover={{ scale: 1.02, y: -2 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                className="glass-card glass-card-glow-amber glass-card-hover-border"
+                style={{ padding: '20px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '14px' }}
+              >
                 <div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
                     <span style={{ fontSize: '11.5px', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
@@ -772,28 +780,42 @@ Projected FIRE Countdown: ${fireData.yearsToFire} Years (${new Date(fireData.fir
                     </div>
                   </div>
                   <div className="display-lg tabular-nums" style={{ color: '#F8FAFC' }}>
-                    {formatINR(fireData.milestones.standardFire.target, true)}
+                    <CountUp value={fireData.milestones.standardFire.target} prefix="₹" />
                   </div>
                   <div style={{ fontSize: '12px', color: '#FFD700', fontWeight: 600, marginTop: '2px' }}>
                     {(100 / fireSwrPct).toFixed(1)}x Annual Living Expenses
                   </div>
                 </div>
 
+                <div style={{ margin: '2px 0' }}>
+                  <FlowingSparkline data={[15, 20, 26, 32, 40, 52, 65, 80]} color="#FFD700" height={22} />
+                </div>
+
                 <div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#94A3B8', marginBottom: '6px' }}>
                     <span>Current Corpus Progress</span>
                     <span className="tabular-nums font-mono" style={{ color: '#00FF87', fontWeight: 800 }}>
-                      {fireData.currentProgressPct}%
+                      <CountUp value={fireData.currentProgressPct} suffix="%" />
                     </span>
                   </div>
                   <div className="progress-bar-luxury">
-                    <div className="progress-bar-fill-gold" style={{ width: `${Math.min(100, fireData.currentProgressPct)}%` }} />
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: `${Math.min(100, fireData.currentProgressPct)}%` }}
+                      transition={{ duration: 1, ease: 'easeOut' }}
+                      className="progress-bar-fill-gold"
+                    />
                   </div>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Card 2: Independence Date */}
-              <div className="glass-card glass-card-glow-mint" style={{ padding: '20px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '16px' }}>
+              <motion.div
+                whileHover={{ scale: 1.02, y: -2 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                className="glass-card glass-card-glow-mint glass-card-hover-border"
+                style={{ padding: '20px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '14px' }}
+              >
                 <div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
                     <span style={{ fontSize: '11.5px', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
@@ -811,14 +833,23 @@ Projected FIRE Countdown: ${fireData.yearsToFire} Years (${new Date(fireData.fir
                   </div>
                 </div>
 
+                <div style={{ margin: '2px 0' }}>
+                  <FlowingSparkline data={[10, 15, 20, 28, 35, 45, 60, 75]} color="#00FF87" height={22} />
+                </div>
+
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '10px', borderTop: '1px solid rgba(255, 255, 255, 0.06)', fontSize: '12px', color: '#94A3B8' }}>
                   <span>Target Retirement</span>
                   <span style={{ fontWeight: 700, color: '#F1F5F9' }}>Age {fireTargetRetireAge}</span>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Card 3: Monthly Savings Rate */}
-              <div className="glass-card glass-card-glow-cyan" style={{ padding: '20px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '16px' }}>
+              <motion.div
+                whileHover={{ scale: 1.02, y: -2 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                className="glass-card glass-card-glow-cyan glass-card-hover-border"
+                style={{ padding: '20px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '14px' }}
+              >
                 <div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
                     <span style={{ fontSize: '11.5px', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
@@ -829,21 +860,30 @@ Projected FIRE Countdown: ${fireData.yearsToFire} Years (${new Date(fireData.fir
                     </div>
                   </div>
                   <div className="display-lg tabular-nums" style={{ color: '#00F0FF' }}>
-                    {fireData.savingsRate}%
+                    <CountUp value={fireData.savingsRate} suffix="%" />
                   </div>
                   <div style={{ fontSize: '12px', color: '#94A3B8', fontWeight: 500, marginTop: '2px' }}>
-                    {formatINR(fireData.monthlySavings)} / mo invested
+                    <CountUp value={fireData.monthlySavings} prefix="₹" suffix=" / mo invested" />
                   </div>
+                </div>
+
+                <div style={{ margin: '2px 0' }}>
+                  <FlowingSparkline data={[25, 28, 32, 36, 40, 44, 48, 52]} color="#00F0FF" height={22} />
                 </div>
 
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '10px', borderTop: '1px solid rgba(255, 255, 255, 0.06)', fontSize: '12px', color: '#94A3B8' }}>
                   <span>Annual Step-Up Growth</span>
                   <span style={{ fontWeight: 700, color: '#00F0FF' }}>+{fireStepUpPct}% / yr</span>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Card 4: Freedom Velocity Index */}
-              <div className="glass-card glass-card-glow-violet" style={{ padding: '20px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '16px' }}>
+              <motion.div
+                whileHover={{ scale: 1.02, y: -2 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                className="glass-card glass-card-glow-violet glass-card-hover-border"
+                style={{ padding: '20px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '14px' }}
+              >
                 <div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
                     <span style={{ fontSize: '11.5px', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
@@ -854,11 +894,15 @@ Projected FIRE Countdown: ${fireData.yearsToFire} Years (${new Date(fireData.fir
                     </div>
                   </div>
                   <div className="display-lg tabular-nums" style={{ color: '#A78BFA' }}>
-                    {fireData.velocityScore} <span style={{ fontSize: '14px', color: '#94A3B8' }}>/ 100</span>
+                    <CountUp value={fireData.velocityScore} suffix=" / 100" />
                   </div>
                   <div style={{ fontSize: '12px', color: '#94A3B8', fontWeight: 500, marginTop: '2px' }}>
                     Compounding Acceleration Tier
                   </div>
+                </div>
+
+                <div style={{ margin: '2px 0' }}>
+                  <FlowingSparkline data={[40, 48, 55, 62, 68, 74, 80, 88]} color="#A78BFA" height={22} />
                 </div>
 
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '10px', borderTop: '1px solid rgba(255, 255, 255, 0.06)', fontSize: '12px', color: '#94A3B8' }}>
@@ -867,7 +911,7 @@ Projected FIRE Countdown: ${fireData.yearsToFire} Years (${new Date(fireData.fir
                     {fireData.milestones.coastFire.isCoastAchieved ? 'Achieved 🚀' : 'Building'}
                   </span>
                 </div>
-              </div>
+              </motion.div>
             </div>
 
             {/* Split Studio: Calibration Controls (Left) & 6-Tier Spectrum (Right) */}

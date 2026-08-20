@@ -20,12 +20,14 @@ import {
   ChevronRight,
   RefreshCw
 } from 'lucide-react';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import { motion } from 'framer-motion';
 import { apiFetch } from '../api/client';
 import { PinCard } from '../components/UI/PinCard';
+import { CountUp } from '../components/UI/CountUp';
+import { AnimatedDonut } from '../components/UI/AnimatedDonut';
 import { FinancialHealthCard } from '../components/Dashboard/FinancialHealthCard';
 import { HabitNudgesCard } from '../components/Dashboard/HabitNudgesCard';
+import { RealtimeStreamCard } from '../components/Dashboard/RealtimeStreamCard';
 import { usePrivacy } from '../context/PrivacyContext';
 import { useCustomization } from '../context/CustomizationContext';
 
@@ -152,37 +154,6 @@ export const DashboardPage = ({
   const sparklineBudget = [15, 25, 35, 50, 65, 75, 85, Math.min(utilizationPercent || 80, 100)];
   const sparklineForecast = [24, 28, 30, 34, 38, 42, 45, 50];
 
-  const CustomTooltip = ({ active, payload }) => {
-    if (active && payload && payload.length) {
-      const dataItem = payload[0].payload;
-      return (
-        <div
-          style={{
-            background: 'rgba(12, 16, 26, 0.95)',
-            backdropFilter: 'blur(16px)',
-            border: `1px solid ${dataItem.color}`,
-            borderRadius: '12px',
-            padding: '10px 14px',
-            boxShadow: `0 8px 24px rgba(0, 0, 0, 0.5), 0 0 14px ${dataItem.color}30`,
-            color: '#F8FAFC',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '10px',
-          }}
-        >
-          <span style={{ fontSize: '20px' }}>{dataItem.emoji}</span>
-          <div>
-            <div style={{ fontSize: '12px', fontWeight: 600, color: '#94A3B8' }}>{dataItem.name}</div>
-            <div className="font-display tabular-nums" style={{ fontSize: '15px', fontWeight: 800, color: dataItem.color }}>
-              ₹{dataItem.value.toLocaleString()} <span style={{ fontSize: '11px', color: '#94A3B8' }}>({dataItem.percentage}%)</span>
-            </div>
-          </div>
-        </div>
-      );
-    }
-    return null;
-  };
-
   const currentDateFormatted = new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric' }).format(new Date());
 
   return (
@@ -260,7 +231,7 @@ export const DashboardPage = ({
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12.5px' }}>
               <span style={{ color: '#94A3B8' }}>Savings Rate:</span>
               <span className="tabular-nums" style={{ fontWeight: 800, color: (cashFlowSummary.savingsRate || 0) >= 20 ? '#00FF87' : '#FFD700' }}>
-                {cashFlowSummary.savingsRate || 0}%
+                <CountUp value={cashFlowSummary.savingsRate || 0} suffix="%" />
               </span>
             </div>
             <div style={{ width: '1px', height: '14px', background: 'rgba(255, 255, 255, 0.1)' }} />
@@ -274,50 +245,53 @@ export const DashboardPage = ({
         </div>
       </div>
 
-      {/* 2. 4-CARD BENTO KPI GRID */}
-      <div className="grid-kpi">
-        {/* Card 1: Spent This Month */}
-        <PinCard
-          title="Spent This Month"
-          amount={monthlySummary.totalSpend}
-          overlayPill="Outflow"
-          pillColor="mint"
-          sparklineData={sparklineSpend}
-          trendDirection={monthlyComparison.isIncrease ? 'up' : 'down'}
-          trendPercent={monthlyComparison.changePercent}
-          subtitle={`${monthlyComparison.changePercent}% ${monthlyComparison.isIncrease ? 'increase' : 'decrease'} vs last month`}
-        />
+      {/* 2. 4-CARD BENTO KPI GRID WITH AMBIENT GLOW BACKDROP */}
+      <div className="kpi-grid-ambient-wrapper">
+        <div className="kpi-grid-ambient-glow" />
+        <div className="grid-kpi" style={{ position: 'relative', zIndex: 1 }}>
+          {/* Card 1: Spent This Month */}
+          <PinCard
+            title="Spent This Month"
+            amount={monthlySummary.totalSpend}
+            overlayPill="Outflow"
+            pillColor="mint"
+            sparklineData={sparklineSpend}
+            trendDirection={monthlyComparison.isIncrease ? 'up' : 'down'}
+            trendPercent={monthlyComparison.changePercent}
+            subtitle={`${monthlyComparison.changePercent}% ${monthlyComparison.isIncrease ? 'increase' : 'decrease'} vs last month`}
+          />
 
-        {/* Card 2: Inflow & Net Surplus */}
-        <PinCard
-          title="Monthly Inflow"
-          amount={cashFlowSummary.totalIncome}
-          overlayPill={cashFlowSummary.netSavings >= 0 ? `+₹${(cashFlowSummary.netSavings || 0).toLocaleString()} Surplus` : `-₹${Math.abs(cashFlowSummary.netSavings || 0).toLocaleString()} Deficit`}
-          pillColor={cashFlowSummary.netSavings >= 0 ? 'emerald' : 'rose'}
-          sparklineData={sparklineCashflow}
-          subtitle={`Net Savings Rate: ${cashFlowSummary.savingsRate || 0}% of income`}
-        />
+          {/* Card 2: Inflow & Net Surplus */}
+          <PinCard
+            title="Monthly Inflow"
+            amount={cashFlowSummary.totalIncome}
+            overlayPill={cashFlowSummary.netSavings >= 0 ? `+₹${(cashFlowSummary.netSavings || 0).toLocaleString()} Surplus` : `-₹${Math.abs(cashFlowSummary.netSavings || 0).toLocaleString()} Deficit`}
+            pillColor={cashFlowSummary.netSavings >= 0 ? 'emerald' : 'rose'}
+            sparklineData={sparklineCashflow}
+            subtitle={`Net Savings Rate: ${cashFlowSummary.savingsRate || 0}% of income`}
+          />
 
-        {/* Card 3: Daily Pace & Burn */}
-        <PinCard
-          title="Daily Average Pace"
-          amount={monthlySummary.averageDailySpend}
-          overlayPill={velocityWarning ? "Accelerating ⚡" : "On Pace 🛡️"}
-          pillColor={velocityWarning ? "amber" : "emerald"}
-          sparklineData={sparklineBudget}
-          radialProgress={cyclePaceProgress}
-          subtitle={`${daysRemaining} days left in cycle • Burn ₹${monthlySummary.averageDailySpend}/day`}
-        />
+          {/* Card 3: Daily Pace & Burn */}
+          <PinCard
+            title="Daily Average Pace"
+            amount={monthlySummary.averageDailySpend}
+            overlayPill={velocityWarning ? "Accelerating ⚡" : "On Pace 🛡️"}
+            pillColor={velocityWarning ? "amber" : "emerald"}
+            sparklineData={sparklineBudget}
+            radialProgress={cyclePaceProgress}
+            subtitle={`${daysRemaining} days left in cycle • Burn ₹${monthlySummary.averageDailySpend}/day`}
+          />
 
-        {/* Card 4: Projected Month End */}
-        <PinCard
-          title="Projected Month End"
-          amount={spendingVelocity.projectedMonthEndSpend}
-          overlayPill="AI Forecast"
-          pillColor="cyan"
-          sparklineData={sparklineForecast}
-          subtitle="Estimated total spend based on velocity"
-        />
+          {/* Card 4: Projected Month End */}
+          <PinCard
+            title="Projected Month End"
+            amount={spendingVelocity.projectedMonthEndSpend}
+            overlayPill="AI Forecast"
+            pillColor="cyan"
+            sparklineData={sparklineForecast}
+            subtitle="Estimated total spend based on velocity"
+          />
+        </div>
       </div>
 
       {/* 3. AI SUMMARY WEATHER REPORT BANNER */}
@@ -325,7 +299,7 @@ export const DashboardPage = ({
         <motion.div
           whileHover={{ y: -1 }}
           transition={{ duration: 0.15 }}
-          className="glass-card"
+          className="glass-card glass-card-hover-border"
           style={{
             padding: '20px 24px',
             background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(10, 14, 24, 0.9) 100%)',
@@ -402,7 +376,12 @@ export const DashboardPage = ({
         )}
 
         {/* Right Column: Category Breakdown Interactive Donut */}
-        <div className="glass-card" style={{ padding: '22px 24px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+        <motion.div
+          whileHover={{ y: -2 }}
+          transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+          className="glass-card glass-card-hover-border"
+          style={{ padding: '22px 24px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
+        >
           
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
             <div>
@@ -418,66 +397,54 @@ export const DashboardPage = ({
 
           {chartCategoryData.length > 0 ? (
             <div>
-              <div style={{ width: '100%', height: 180, position: 'relative' }}>
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={chartCategoryData}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={54}
-                      outerRadius={80}
-                      paddingAngle={4}
-                      dataKey="value"
-                      cornerRadius={6}
-                    >
-                      {chartCategoryData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} stroke="rgba(8, 11, 17, 0.8)" strokeWidth={2} />
-                      ))}
-                    </Pie>
-                    <Tooltip content={<CustomTooltip />} />
-                  </PieChart>
-                </ResponsiveContainer>
+              {/* Progressive Clockwise Elastic Animated Donut */}
+              <AnimatedDonut
+                data={chartCategoryData}
+                totalSpend={monthlySummary.totalSpend}
+                isPrivacyMaskActive={isPrivacyMaskActive}
+              />
 
-                {/* Center Stat Overlay */}
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    textAlign: 'center',
-                    pointerEvents: 'none',
-                  }}
-                  className={isPrivacyMaskActive ? 'privacy-masked' : ''}
-                >
-                  <div style={{ fontSize: '10px', color: '#64748B', fontWeight: 700, textTransform: 'uppercase' }}>
-                    Total Spend
-                  </div>
-                  <div className="font-display tabular-nums" style={{ fontSize: '17px', fontWeight: 800, color: '#00FF87' }}>
-                    ₹{monthlySummary.totalSpend.toLocaleString()}
-                  </div>
-                </div>
-              </div>
-
-              {/* Progress Bars for Top Categories */}
+              {/* Progress Bars for Top Categories with Staggered Delays */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '12px' }}>
-                {chartCategoryData.slice(0, 4).map((cat) => (
-                  <div key={cat.name} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ fontSize: '14px', flexShrink: 0 }}>{cat.emoji}</span>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', fontWeight: 600, color: '#F1F5F9', marginBottom: '2px' }}>
-                        <span>{cat.name}</span>
-                        <span className="tabular-nums" style={{ color: cat.color }}>
-                          ₹{cat.value.toLocaleString()} ({cat.percentage}%)
-                        </span>
-                      </div>
-                      <div style={{ width: '100%', height: '4px', background: 'rgba(255, 255, 255, 0.06)', borderRadius: '999px', overflow: 'hidden' }}>
-                        <div style={{ height: '100%', width: `${cat.percentage}%`, background: cat.color, borderRadius: '999px' }} />
+                {chartCategoryData.slice(0, 4).map((cat, idx) => {
+                  const isHighCapacity = (cat.percentage || 0) >= 90;
+                  return (
+                    <div key={cat.name} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span style={{ fontSize: '14px', flexShrink: 0 }}>{cat.emoji}</span>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '12px', fontWeight: 600, color: '#F1F5F9', marginBottom: '3px' }}>
+                          <span>{cat.name}</span>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            <span className="tabular-nums" style={{ color: cat.color }}>
+                              <CountUp value={cat.value} prefix="₹" />
+                            </span>
+                            <span
+                              className={isHighCapacity ? 'budget-alert-pulse' : ''}
+                              style={{
+                                fontSize: '11px',
+                                fontWeight: 700,
+                                padding: isHighCapacity ? '1px 6px' : '0',
+                                borderRadius: '6px',
+                                color: isHighCapacity ? '#FF4D6A' : '#94A3B8',
+                              }}
+                            >
+                              {isHighCapacity && '⚠️ '}
+                              {cat.percentage}%
+                            </span>
+                          </div>
+                        </div>
+                        <div style={{ width: '100%', height: '5px', background: 'rgba(255, 255, 255, 0.06)', borderRadius: '999px', overflow: 'hidden' }}>
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: `${cat.percentage}%` }}
+                            transition={{ duration: 0.9, delay: 0.2 + idx * 0.14, ease: 'easeOut' }}
+                            style={{ height: '100%', background: isHighCapacity ? '#F43F5E' : cat.color, borderRadius: '999px' }}
+                          />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           ) : (
@@ -486,8 +453,11 @@ export const DashboardPage = ({
             </div>
           )}
 
-        </div>
+        </motion.div>
       </div>
+
+      {/* 4.2 REAL-TIME STREAMING TELEMETRY LINE CHART */}
+      <RealtimeStreamCard />
 
       {/* 4.5 LIFESTYLE & HABIT LEARNING NUDGES */}
       {modules.lifestyleHabits !== false && (

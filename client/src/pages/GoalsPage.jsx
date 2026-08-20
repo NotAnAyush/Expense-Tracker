@@ -3,6 +3,7 @@ import { Target, Plus, Trash2, Calendar, TrendingUp } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { apiFetch } from '../api/client';
 import { PinCard } from '../components/UI/PinCard';
+import { CountUp } from '../components/UI/CountUp';
 import { usePrivacy } from '../context/PrivacyContext';
 
 export const GoalsPage = () => {
@@ -109,7 +110,7 @@ export const GoalsPage = () => {
 
       {goals.length > 0 ? (
         <div className="grid-masonry">
-          {goals.map((g) => {
+          {goals.map((g, idx) => {
             const current = Number(g.currentAmount) || 0;
             const target = Number(g.targetAmount) || 1;
             const pct = Math.min(100, Math.max(0, Math.round((current / target) * 100)));
@@ -117,8 +118,9 @@ export const GoalsPage = () => {
             return (
               <motion.div
                 key={g._id}
-                whileHover={{ y: -2 }}
-                className="glass-card"
+                whileHover={{ scale: 1.02, y: -2 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                className="glass-card glass-card-hover-border"
                 style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '12px' }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -156,28 +158,31 @@ export const GoalsPage = () => {
 
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', color: '#94A3B8' }}>
                   <span className={isPrivacyMaskActive ? 'privacy-masked' : ''}>
-                    Saved: <strong className="tabular-nums" style={{ color: '#00FF87' }}>₹{current.toLocaleString()}</strong>
+                    Saved: <strong className="tabular-nums" style={{ color: '#00FF87' }}><CountUp value={current} prefix="₹" /></strong>
                   </span>
                   <span className={isPrivacyMaskActive ? 'privacy-masked' : ''}>
-                    Target: <strong className="tabular-nums" style={{ color: '#F1F5F9' }}>₹{target.toLocaleString()}</strong>
+                    Target: <strong className="tabular-nums" style={{ color: '#F1F5F9' }}><CountUp value={target} prefix="₹" /></strong>
                   </span>
                 </div>
 
-                {/* Progress Bar */}
+                {/* Staggered Animated Progress Bar */}
                 <div style={{ width: '100%', height: '6px', backgroundColor: 'rgba(255, 255, 255, 0.06)', borderRadius: '999px', overflow: 'hidden' }}>
-                  <div style={{
-                    height: '100%',
-                    width: `${pct}%`,
-                    backgroundColor: pct >= 100 ? '#00FF87' : '#FFD700',
-                    borderRadius: '999px',
-                    transition: 'var(--transition)'
-                  }} />
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${pct}%` }}
+                    transition={{ duration: 0.9, delay: 0.15 + idx * 0.1, ease: 'easeOut' }}
+                    style={{
+                      height: '100%',
+                      backgroundColor: pct >= 100 ? '#00FF87' : '#FFD700',
+                      borderRadius: '999px',
+                    }}
+                  />
                 </div>
 
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '4px', paddingTop: '8px', borderTop: '1px solid rgba(255, 255, 255, 0.06)', fontSize: '12px', color: '#64748B' }}>
                   <span>Target: {g.targetDate ? new Date(g.targetDate).toLocaleDateString() : 'N/A'}</span>
                   <span className={`tabular-nums ${isPrivacyMaskActive ? 'privacy-masked' : ''}`}>
-                    ₹{remaining.toLocaleString()} remaining
+                    <CountUp value={remaining} prefix="₹" suffix=" remaining" />
                   </span>
                 </div>
               </motion.div>

@@ -18,6 +18,8 @@ import { apiFetch } from '../api/client';
 import { usePrivacy } from '../context/PrivacyContext';
 import { UpiQrModal } from '../components/Groups/UpiQrModal';
 import { AddGroupExpenseModal } from '../components/Groups/AddGroupExpenseModal';
+import { CountUp } from '../components/UI/CountUp';
+import { FlowingSparkline } from '../components/UI/FlowingSparkline';
 
 export const GroupSplitPage = () => {
   const { isPrivacyMaskActive } = usePrivacy();
@@ -265,38 +267,62 @@ export const GroupSplitPage = () => {
               gap: '16px',
             }}
           >
-            <div className="glass-card" style={{ padding: '20px' }}>
+            <motion.div
+              whileHover={{ scale: 1.02, y: -2 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              className="glass-card glass-card-hover-border"
+              style={{ padding: '20px' }}
+            >
               <div style={{ fontSize: '12px', fontWeight: 600, color: '#94A3B8', textTransform: 'uppercase' }}>Total Group Spend</div>
               <div
                 className={`font-display ${isPrivacyMaskActive ? 'privacy-masked' : ''}`}
                 style={{ fontSize: '28px', fontWeight: 800, color: '#F1F5F9', marginTop: '4px' }}
               >
-                ₹{totalGroupSpend.toLocaleString()}
+                <CountUp value={totalGroupSpend} prefix="₹" />
+              </div>
+              <div style={{ marginTop: '8px' }}>
+                <FlowingSparkline data={[15, 18, 22, 26, 25, 30, 28, 34]} color="#F1F5F9" height={24} />
               </div>
               <div style={{ fontSize: '12px', color: '#64748B', marginTop: '4px' }}>
                 {currentGroupData?.expenses?.length || 0} total transactions logged
               </div>
-            </div>
+            </motion.div>
 
-            <div className="glass-card" style={{ padding: '20px' }}>
+            <motion.div
+              whileHover={{ scale: 1.02, y: -2 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              className="glass-card glass-card-hover-border"
+              style={{ padding: '20px' }}
+            >
               <div style={{ fontSize: '12px', fontWeight: 600, color: '#94A3B8', textTransform: 'uppercase' }}>Group Members</div>
               <div className="font-display" style={{ fontSize: '28px', fontWeight: 800, color: '#00FF87', marginTop: '4px' }}>
-                {currentGroupData?.members?.length || 0} People
+                <CountUp value={currentGroupData?.members?.length || 0} suffix=" People" />
+              </div>
+              <div style={{ marginTop: '8px' }}>
+                <FlowingSparkline data={[10, 14, 18, 20, 24, 28, 30, 32]} color="#00FF87" height={24} />
               </div>
               <div style={{ fontSize: '12px', color: '#94A3B8', marginTop: '4px' }}>
                 {currentGroupData?.members?.map(m => m.name).join(', ')}
               </div>
-            </div>
+            </motion.div>
 
-            <div className="glass-card" style={{ padding: '20px' }}>
+            <motion.div
+              whileHover={{ scale: 1.02, y: -2 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              className="glass-card glass-card-hover-border"
+              style={{ padding: '20px' }}
+            >
               <div style={{ fontSize: '12px', fontWeight: 600, color: '#94A3B8', textTransform: 'uppercase' }}>Simplified Settlements</div>
               <div className="font-display" style={{ fontSize: '28px', fontWeight: 800, color: simplifiedTransfers.length > 0 ? '#FFD700' : '#00FF87', marginTop: '4px' }}>
                 {simplifiedTransfers.length === 0 ? 'All Settled Up ✓' : `${simplifiedTransfers.length} Pending`}
               </div>
+              <div style={{ marginTop: '8px' }}>
+                <FlowingSparkline data={[24, 20, 16, 12, 8, 4, 2, 0]} color={simplifiedTransfers.length > 0 ? '#FFD700' : '#00FF87'} height={24} />
+              </div>
               <div style={{ fontSize: '12px', color: '#94A3B8', marginTop: '4px' }}>
                 Reduced to minimum {simplifiedTransfers.length} transactions
               </div>
-            </div>
+            </motion.div>
           </div>
 
           {/* 2. Minimum Cash Flow Graph Simplification Cards */}
