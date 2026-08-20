@@ -157,29 +157,41 @@ npm run build
 
 ## 📂 Project Structure
 
-```
+```text
 Expense-Tracker/V2/
-├── client/
+├── .agents/                 # AI Assistant rules and engineering guidelines
+├── .github/                 # PR & Issue templates for open source collaboration
+├── client/                  # Modern React 19 + Vite Frontend
 │   ├── src/
-│   │   ├── api/             # API client & local date utilities
-│   │   ├── components/
-│   │   │   ├── Expenses/    # ReceiptScanModal, EcommerceSyncModal, TransactionDetailModal
-│   │   │   ├── Dashboard/   # KPI Cards, Category Breakdown, Health Score
-│   │   │   ├── Copilot/     # AI Chat Drawer & Prompt Studio
-│   │   │   ├── UPI/         # UPI QR Code & Payment Flow
-│   │   │   └── Shell/       # Sidebar, Header, Privacy Mask
-│   │   └── pages/           # Dashboard, Expenses, Analytics, FIRE, Vaults
-├── server/
+│   │   ├── api/             # Central API client & token refresh rotation
+│   │   ├── components/      # Modular UI component library & Shell
+│   │   ├── context/         # Auth, Theme, and App state contexts
+│   │   ├── pages/           # Route views (Dashboard, Analytics, Vaults, FIRE)
+│   │   └── index.css        # Vanilla CSS design tokens & responsive utilities
+├── server/                  # Node.js + Express REST API Backend
 │   ├── src/
-│   │   ├── controllers/     # Expense, E-Commerce, UPI, AI, Auth controllers
-│   │   ├── models/          # Expense, Income, Budget, Vault, User schemas
-│   │   ├── routes/          # REST endpoints & webhook routes
-│   │   └── services/
-│   │       ├── ai/          # Vision OCR tensor engine & local RAG
-│   │       └── import/      # E-commerce parser & bank statement import
-│   └── tests/               # 26 Jest test suites (186 tests)
-└── Documentation/           # System architecture & feature blueprints
+│   │   ├── controllers/     # Handlers (Expenses, Auth, Budgets, AI, Vaults)
+│   │   ├── middleware/      # Security stack (Helmet, rateLimiter, Joi validate)
+│   │   ├── models/          # Mongoose Schemas with compound indexing
+│   │   ├── routes/          # Express API route declarations
+│   │   └── services/        # Business logic, FX conversion, AI cascades
+│   └── tests/               # Jest & Supertest test suites
+├── Documentation/           # Consolidated Architecture Hub & Manuals (SSOT)
+│   ├── 00-Index.md          # Master Architecture Map of Content
+│   ├── 01-Architecture/     # Database models, API contracts, services
+│   ├── 02-Design-System/    # UI specs, tokens, component catalog
+│   ├── 03-Features/         # Feature specifications and math formulas
+│   ├── 04-ADR/              # Architecture Decision Records
+│   ├── 05-Tasks/            # Roadmaps, Master Blueprints & Sprints
+│   ├── Manual/              # Developer & Team Collaboration Guide
+│   └── Visual-Canvases/     # Architecture drawings and diagrams
+├── scripts/                 # Automated setup & Git hook installers
+├── .env.example             # Safe environment configuration template
+├── LICENSE                  # MIT License
+└── README.md                # High-level product overview & quickstart
 ```
+
+For comprehensive engineering standards and collaboration workflows, refer to the [Team Collaboration Manual](file:///d:/Project/Expense%20Tracker/V2/Documentation/Manual/TEAM_COLLABORATION_MANUAL.md) and the [Architecture Knowledge Hub](file:///d:/Project/Expense%20Tracker/V2/Documentation/00-Index.md).
 
 ---
 

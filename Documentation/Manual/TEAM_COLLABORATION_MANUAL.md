@@ -50,9 +50,7 @@ The repository uses a cohesive multi-package workspace structure:
 Expense-Tracker-V2/
 ├── .agents/                        # Version-controlled Antigravity AI Customizations
 │   └── rules/                      # Project-wide engineering & coding rules
-│       └── codebase-standards.md   # Automatic standards for AI agents & team
-├── .git/                           # Git metadata & automated hooks
-│   └── hooks/                      # Local Git hooks (e.g. post-merge)
+├── .github/                        # GitHub pull request and issue templates
 ├── client/                         # Modern React 19 + Vite Frontend
 │   ├── public/                     # Static assets (favicons, logos)
 │   ├── src/
@@ -79,11 +77,19 @@ Expense-Tracker-V2/
 │   ├── tests/                      # Jest & Supertest automated test suites (9 suites)
 │   ├── package.json                # Server dependencies & test scripts
 │   └── package-lock.json           # Locked dependency tree
+├── Documentation/                  # Consolidated Knowledge Hub & Architecture SSOT
+│   ├── 00-Index.md                 # Master Architecture Map of Content
+│   ├── 01-Architecture/            # Database models, API contracts, services
+│   ├── 02-Design-System/           # Component catalog, design tokens, UI guidelines
+│   ├── 03-Features/                # Detailed mathematical & algorithmic specs
+│   ├── 04-ADR/                     # Architecture Decision Records
+│   ├── 05-Tasks/                   # Roadmaps, Master Blueprints & Sprints
+│   ├── Manual/                     # Team collaboration and user guides
+│   └── Visual-Canvases/            # Architecture diagrams & visual workflows
 ├── scripts/                        # Automation & devops scripts
 │   └── setup-git-hooks.cjs         # Cross-platform Git hook installer
-├── user manual/                    # Documentation hub for team members
-│   └── TEAM_COLLABORATION_MANUAL.md# Authoritative team guide
 ├── package.json                    # Workspace root task orchestrator
+├── LICENSE                         # Open Source License
 ├── .env.example                    # Environment variable template
 ├── .gitignore                      # Git ignore specifications
 └── README.md                       # High-level project overview
@@ -134,8 +140,8 @@ NODE_ENV=development
 # MongoDB Connection String (Leave empty to use automatic in-memory fallback)
 MONGODB_URI=mongodb://127.0.0.1:27017/expense-tracker-v2
 
-# JWT Secret for access token signing
-JWT_SECRET=super_secret_jwt_key_personal_finance_v2_2026
+# JWT Secret for access token signing (Replace with your strong secret)
+JWT_SECRET=your_jwt_secret_key_here_change_in_production
 
 # Gemini API Key (Optional: fallback analytics are used if omitted)
 GEMINI_API_KEY=your_gemini_api_key_here
@@ -383,12 +389,6 @@ Antigravity automatically discovers and loads customizations stored in the repos
         └── SKILL.md             # Multi-step instructions loaded on demand
 ```
 
-### Rule Precedence Hierarchy:
-1. **Workspace Rules (`<repo>/.agents/rules/`)** *(Highest Priority)*
-2. **Declared Configs (`skills.json`, `plugins.json`)**
-3. **Global User Rules (`~/.gemini/config/`)**
-4. **Built-in System Skills** *(Baseline)*
-
 ---
 
 ## 8. Full-Stack Architecture & Code Conventions
@@ -456,7 +456,7 @@ Richy Rich v2.2 features a provider-agnostic AI layer. Users and team members ca
 
 ### Running Automated Test Suites
 
-The backend includes a comprehensive Jest test suite with 10 suites and 87+ tests:
+The backend includes a comprehensive Jest test suite with 9 suites and 79+ tests:
 
 ```bash
 # Run all test suites
