@@ -148,6 +148,15 @@ export const CustomizationPage = () => {
       core: false,
     },
     {
+      key: 'geotradeTerminal',
+      title: 'GeoTrade Geopolitical Alpha Terminal',
+      desc: '3D WebGL Earth Pulse, 2D Geo Matrix, Survey of India boundaries, and AI macro trading signals with Kelly sizing.',
+      icon: Globe,
+      color: '#00F0FF',
+      tag: 'Macro Recon',
+      core: false,
+    },
+    {
       key: 'deluxeVisuals',
       title: 'Deluxe 60fps Visual FX',
       desc: 'Deep glassmorphism blur filters, ambient glow particles, and responsive Framer Motion physics.',

@@ -24,8 +24,14 @@ export const apiFetch = async (endpoint, options = {}) => {
     ...options.headers,
   };
 
+  const normalizedEndpoint = endpoint.startsWith('/api/')
+    ? endpoint.slice(4)
+    : endpoint.startsWith('/api')
+    ? endpoint.slice(4)
+    : endpoint;
+
   try {
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+    const response = await fetch(`${API_BASE_URL}${normalizedEndpoint}`, {
       ...options,
       headers,
     });

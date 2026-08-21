@@ -89,6 +89,7 @@ graph TD
 - [[Stock-Market-and-Wealth-Intelligence-Ecosystem]] — Real-time tickers, Sovereign Scheme Radar, Scam Shield, and DCF valuation.
 - [[Family-Multi-User-Ledgers-and-Enterprise-Exports]] — Multi-tenant household vaults, role-based permissions, and PDF reports.
 - [[Local-Voice-AI-and-Modular-Model-Hub]] — Resilient continuous voice recognition and on-demand local AI weights.
+- [[GEOTRADE_GEOPOLITICAL_ALPHA_TERMINAL]] — 3D Earth Pulse, 2D Geo Matrix, Survey of India boundaries, and AI macro signals.
 
 ### 04. Architecture Decision Records (`Documentation/04-ADR/`)
 - [[ADR-001-Dual-Token-JWT-Authentication]] — Dual token auth and rotation.
@@ -106,6 +107,7 @@ graph TD
 - [[ADR-013-Local-Voice-AI-and-On-Demand-Modular-Intelligence-Hub]] — Voice AI & Audio Visualizer.
 - [[ADR-014-Wealth-Simulator-Fintech-UIUX-Alignment]] — High-density quant UX design.
 - [[ADR-015-Live-Dynamic-Data-Pipelines-and-Resilient-Market-Sync]] — Dynamic FX and market feeds.
+- [[ADR-016-Geopolitical-Terminal-and-Sovereign-India-Map-Integration]] — 3D Earth Recon & Survey of India boundaries.
 
 ### 05. Tasks, Roadmaps & Blueprints (`Documentation/05-Tasks/`)
 - [[Master-Plan-Prompt-Blueprint]] — Master Antigravity AI-First blueprint and product evolution specs.

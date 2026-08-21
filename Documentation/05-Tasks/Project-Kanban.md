@@ -132,7 +132,19 @@ Use this interactive board in Obsidian or during Antigravity pair-programming se
 - [x] Dynamic Real Yield computation ($R_{\text{real}} = R_{\text{nominal}} - \text{CPI}$) across all T-Bills, Government Savings Schemes, and Bank FDs
 - [x] Frontend 30-Second Auto-Updating Engine with live countdown timer, pulsing radar dot, manual refresh button, and dynamic watchlist search input (`PassiveIncomePage.jsx`)
 - [x] 1-Click "Sync Live Macro" integration in Wealth & FIRE Freedom Simulator (`WealthSimulatorPage.jsx`)
-- [x] On-demand live FX rate refresh and status indicators in Travel Trip Vault (`TripVaultPage.jsx`) and Dashboard (`DashboardPage.jsx`)
 - [x] Complete test suite expansion (34 test suites, 232/232 tests passing with 0 regressions)
 - [x] Logged Architecture Decision Record `[[ADR-015-Live-Dynamic-Data-Pipelines-and-Resilient-Market-Sync]]` and synchronized Obsidian Knowledge Vault
+
+### Phase 15: GeoTrade Geopolitical Alpha Terminal, 3D Earth Recon & Survey of India Integration (v4.0.0)
+- [x] Deep research & decompilation of geopolitical NLP pipelines, LightGBM/XGBoost volatility ensembles, GTI math, and Kelly sizing (`GEOTRADE_DEEP_RESEARCH_AND_ARCHITECTURE.md`, `GEOTRADE_FEATURES_AND_WORKFLOW_SUMMARY.md`, `GEOTRADE_3D_EARTH_AND_FULLSTACK_IMPLEMENTATION_GUIDE.md`)
+- [x] Official Survey of India sovereign boundary GeoJSON dataset integration covering all of Jammu & Kashmir, Ladakh, and Arunachal Pradesh (`worldCountries.js`)
+- [x] Backend Geopolitical Intelligence Engine & REST routes (`geotradeService.js`, `geotradeRoutes.js`, mounted in `server.js`)
+- [x] 3D WebGL Earth Pulse Globe with Euler rotation, atmospheric glow, tension heatmaps, Great Circle Bezier arcs, and pulsing flashpoint rings (`EarthPulseGlobe.jsx`)
+- [x] 2D Vector Map Matrix with interactive region filters and hover threat cards (`GeoMapMatrix.jsx`)
+- [x] Sliding Market Impact Drawer with high-precision HTML5 Canvas Candlestick chart and sector risk meters (`MarketImpactDrawer.jsx`)
+- [x] Quantitative AI Signals Feed with expandable 4-step transparent reasoning chains and interactive Kelly-criterion portfolio allocation sandbox (`AISignalsFeed.jsx`)
+- [x] Cross-Asset Macroeconomic Sensitivity Radar (`ImpactRadar.jsx`)
+- [x] App shell navigation and module customization integration (`App.jsx`, `Sidebar.jsx`, `CustomizationContext.jsx`, `CustomizationPage.jsx`)
+- [x] Logged Architecture Decision Record `[[ADR-016-Geopolitical-Terminal-and-Sovereign-India-Map-Integration]]` and synchronized Obsidian Knowledge Vault (`[[GEOTRADE_GEOPOLITICAL_ALPHA_TERMINAL]]`)
+
 

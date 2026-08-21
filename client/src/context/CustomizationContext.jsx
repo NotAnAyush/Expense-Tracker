@@ -17,6 +17,7 @@ export const DEFAULT_CUSTOMIZATION_CONFIG = {
     bankCsvImport: true,
     advancedTax: true,
     deluxeVisuals: true,
+    geotradeTerminal: true,
   },
   theme: {
     themeId: 'midnight-obsidian',

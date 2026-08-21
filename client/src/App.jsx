@@ -33,17 +33,25 @@ import { CustomizationPage } from './pages/CustomizationPage';
 import { SettingsPage } from './pages/SettingsPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { AuthPage } from './pages/AuthPage';
+import { GeoTradeTerminalPage } from './pages/GeoTradeTerminalPage';
 import { apiFetch } from './api/client';
 import { WifiOff, Wifi } from 'lucide-react';
 
-const VALID_TABS = ['dashboard', 'expenses', 'fire', 'market', 'family', 'trips', 'splits', 'debts', 'budgets', 'goals', 'recurring', 'analytics', 'customization', 'settings', 'profile'];
+const VALID_TABS = ['dashboard', 'expenses', 'geotrade', 'fire', 'market', 'family', 'trips', 'splits', 'debts', 'budgets', 'goals', 'recurring', 'analytics', 'customization', 'settings', 'profile'];
+
+const normalizeTab = (tab) => {
+  if (!tab) return null;
+  const clean = tab.replace('#', '').trim();
+  if (clean === 'geotrade-terminal' || clean === 'geotrade') return 'geotrade';
+  return clean;
+};
 
 const getInitialTab = () => {
-  const hash = window.location.hash.replace('#', '').trim();
+  const hash = normalizeTab(window.location.hash);
   if (VALID_TABS.includes(hash)) {
     return hash;
   }
-  const saved = localStorage.getItem('richy_active_tab');
+  const saved = normalizeTab(localStorage.getItem('richy_active_tab'));
   if (VALID_TABS.includes(saved)) {
     return saved;
   }
@@ -83,7 +91,7 @@ const MainApp = () => {
   // Listen to browser Back/Forward navigation (hashchange)
   useEffect(() => {
     const handleHashChange = () => {
-      const hash = window.location.hash.replace('#', '').trim();
+      const hash = normalizeTab(window.location.hash);
       if (VALID_TABS.includes(hash)) {
         setActiveTabState(hash);
         localStorage.setItem('richy_active_tab', hash);
@@ -307,6 +315,7 @@ const MainApp = () => {
               categories={categories}
             />
           )}
+          {activeTab === 'geotrade' && <GeoTradeTerminalPage key={refreshKey} />}
           {activeTab === 'fire' && <WealthSimulatorPage key={refreshKey} />}
           {activeTab === 'market' && <PassiveIncomePage key={refreshKey} />}
           {activeTab === 'family' && <FamilyVaultPage key={refreshKey} />}

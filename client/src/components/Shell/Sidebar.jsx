@@ -17,7 +17,8 @@ import {
   TrendingUp,
   Plane,
   Palette,
-  Home
+  Home,
+  Globe2
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useAuth } from '../../context/AuthContext';
@@ -63,6 +64,12 @@ export const Sidebar = ({ activeTab, setActiveTab, onOpenCopilot }) => {
           label: 'FIRE Simulator', 
           icon: Flame, 
           badge: { text: 'Monte Carlo', type: 'ai' } 
+        }] : []),
+        ...(modules.geotradeTerminal !== false ? [{ 
+          id: 'geotrade', 
+          label: 'GeoTrade Terminal', 
+          icon: Globe2, 
+          badge: { text: 'GTI LIVE', type: 'live' } 
         }] : []),
         { 
           id: 'market', 
